@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // 관리자 인증 상태 (실제로는 서버에서 관리해야 함)
@@ -292,13 +292,7 @@ const AdminPage = () => {
     return searchMatch && roleMatch && statusMatch;
   });
 
-  // 권한 레벨 정의
-  const roleLevels = {
-    'super_admin': 4,
-    'admin': 3,
-    'content_manager': 2,
-    'editor': 1
-  };
+
 
   const getRoleLabel = (role) => {
     const labels = {

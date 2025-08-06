@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://jungho-corp.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Disallow specific paths
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /_next/
+Disallow: /static/
+
+# Allow important paths
+Allow: /clarus/
+Allow: /tlc/
+Allow: /illutech/
+Allow: /texcom/
+Allow: /business/
+Allow: /projects/
+Allow: /support/
+Allow: /news/ 

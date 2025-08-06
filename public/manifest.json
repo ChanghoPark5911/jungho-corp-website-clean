@@ -1,0 +1,15 @@
+{
+  "short_name": "정호그룹",
+  "name": "정호그룹 - 혁신적인 기술로 더 나은 미래를 만드는 글로벌 기업",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1B365D",
+  "background_color": "#ffffff"
+} 

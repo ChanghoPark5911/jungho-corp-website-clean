@@ -35,7 +35,7 @@ const Header = () => {
     return 'home';
   })();
 
-  // 키보드 네비게이션 처리
+  // 키보드 네비게이션 처리 및 외부 클릭 감지
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -43,9 +43,20 @@ const Header = () => {
       }
     };
 
+    const handleClickOutside = (event) => {
+      if (activeDropdown && !event.target.closest('.dropdown-container')) {
+        setActiveDropdown(null);
+      }
+    };
+
     document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    document.addEventListener('mousedown', handleClickOutside);
+    
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeDropdown]);
 
   // 메인 네비게이션 메뉴
   const mainNavItems = [
@@ -67,6 +78,18 @@ const Header = () => {
   // 드롭다운 토글
   const toggleDropdown = (key) => {
     setActiveDropdown(activeDropdown === key ? null : key);
+  };
+
+  // GROUP 메뉴 아이템 클릭 핸들러
+  const handleGroupItemClick = (path) => {
+    console.log('GROUP 메뉴 클릭:', path);
+    setActiveDropdown(null);
+    
+    // 약간의 지연 후 네비게이션 실행 (드롭다운 애니메이션 완료 후)
+    setTimeout(() => {
+      navigate(path);
+      window.scrollTo(0, 0);
+    }, 100);
   };
 
   // 키보드 이벤트 핸들러
@@ -137,7 +160,7 @@ const Header = () => {
             </button>
             
             {/* GROUP 드롭다운 */}
-            <div className="relative">
+            <div className="relative dropdown-container">
               <button
                 className={`px-4 py-2 text-sm font-medium transition-colors duration-200 flex items-center space-x-1 ${
                   currentPage === 'clarus' || currentPage === 'tlc' || currentPage === 'illutech' || currentPage === 'texcom'
@@ -174,13 +197,7 @@ const Header = () => {
                       className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
                       role="menuitem"
                       aria-label={item.ariaLabel}
-                      onClick={() => {
-                        setActiveDropdown(null);
-                        // React Router를 사용하여 페이지 이동
-                        navigate(item.path);
-                        // 페이지 상단으로 스크롤
-                        window.scrollTo(0, 0);
-                      }}
+                      onClick={() => handleGroupItemClick(item.path)}
                     >
                       {item.label}
                     </button>
@@ -338,13 +355,7 @@ const Header = () => {
                   <button
                     key={item.key}
                     className="w-full text-left px-8 py-2 text-sm text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors duration-200 rounded-lg"
-                    onClick={() => {
-                      setActiveDropdown(null);
-                      // React Router를 사용하여 페이지 이동
-                      navigate(item.path);
-                      // 페이지 상단으로 스크롤
-                      window.scrollTo(0, 0);
-                    }}
+                    onClick={() => handleGroupItemClick(item.path)}
                     aria-label={item.ariaLabel}
                   >
                     {item.label}

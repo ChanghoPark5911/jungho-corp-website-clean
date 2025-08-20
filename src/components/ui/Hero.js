@@ -3,12 +3,14 @@ import Button from './Button';
 
 const Hero = ({
   backgroundImage,
-  mainCopy = "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
-  subCopy = "정호그룹은 조명제어 전문 기업으로서 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다",
+  mainCopy = "4개 계열사가 만드는\n완벽한 조명 생태계",
+  subCopy = "4개 계열사를 활용하여 완벽한 조명 생태계를 달성합니다",
   stats = [],
   primaryAction,
   secondaryAction,
   className = '',
+  enhancedSubtitle = false,
+  enhancedOverlay = false,
   ...props
 }) => {
   return (
@@ -24,8 +26,13 @@ const Hero = ({
       }}
       {...props}
     >
-      {/* 추가 배경 오버레이로 텍스트 가독성 향상 */}
-      <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+             {/* 추가 배경 오버레이로 텍스트 가독성 향상 */}
+       <div className={`absolute inset-0 ${enhancedOverlay ? 'bg-black bg-opacity-80' : 'bg-black bg-opacity-70'}`}></div>
+       
+       {/* 추가 텍스트 가독성을 위한 이중 오버레이 */}
+       {enhancedOverlay && (
+         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
+       )}
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* 메인 콘텐츠 */}
           <div className="mb-16">
@@ -36,7 +43,24 @@ const Hero = ({
               </span>
             ))}
           </h1>
-          <p className="text-2xl md:text-3xl text-white mb-10 max-w-4xl mx-auto leading-relaxed font-medium drop-shadow-lg">
+          <p 
+            className="hero-subtitle"
+            style={{
+              fontSize: 'clamp(1.25rem, 4vw, 1.875rem)',
+              lineHeight: '1.5',
+              marginBottom: '2.5rem',
+              maxWidth: '64rem',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              textAlign: 'center',
+              color: '#ffffff !important',
+              textShadow: '2px 2px 8px black',
+              fontWeight: '600',
+              backgroundColor: 'transparent',
+              border: 'none',
+              outline: 'none'
+            }}
+          >
             {subCopy}
           </p>
           

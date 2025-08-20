@@ -909,4 +909,31 @@ body {
 ::-moz-selection {
   background-color: var(--primary-200);
   color: var(--primary-900);
-} 
+}
+
+/* ===== Hero Subtitle 강제 하얀색 스타일 ===== */
+.hero-subtitle {
+  color: #ffffff !important;
+  color: white !important;
+  color: rgb(255, 255, 255) !important;
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+/* 더 구체적인 선택자로 강제 적용 */
+section .hero-subtitle,
+.hero-section .hero-subtitle,
+.hero-section p,
+section p.hero-subtitle {
+  color: #ffffff !important;
+  color: white !important;
+  color: rgb(255, 255, 255) !important;
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+/* 최고 우선순위로 강제 적용 */
+.hero-subtitle[style*="color"] {
+  color: #ffffff !important;
+  color: white !important;
+  color: rgb(255, 255, 255) !important;
+  color: rgba(255, 255, 255, 1) !important;
+}

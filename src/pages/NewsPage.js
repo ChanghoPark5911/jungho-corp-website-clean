@@ -11,8 +11,8 @@ const NewsPage = () => {
   // 히어로 섹션 데이터
   const heroData = {
     backgroundImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    mainCopy: "정호그룹 소식",
-    subCopy: "정호그룹의 최신 기술 동향과 프로젝트 소식을 확인하세요",
+    mainCopy: "정호그룹 뉴스",
+    subCopy: "40년 전통의 조명제어 전문기업 정호그룹의 최신 소식과 업계 동향을 확인하세요",
     primaryAction: {
       label: "구독하기",
       path: "#subscribe"
@@ -128,7 +128,7 @@ const NewsPage = () => {
       
       {/* 히어로 섹션 */}
       <section className="hero-section">
-        <Hero {...heroData} />
+        <Hero {...heroData} enhancedSubtitle={true} enhancedOverlay={true} />
       </section>
 
       {/* 카테고리 필터 */}

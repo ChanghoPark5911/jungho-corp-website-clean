@@ -18,7 +18,7 @@ const Hero = ({
       className={`relative min-h-screen flex items-center justify-center text-center text-white ${className}`}
       style={{
         background: backgroundImage 
-          ? `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${backgroundImage})`
+          ? `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${backgroundImage})`
           : 'linear-gradient(135deg, #166534 0%, #047857 100%)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -26,12 +26,12 @@ const Hero = ({
       }}
       {...props}
     >
-             {/* 추가 배경 오버레이로 텍스트 가독성 향상 */}
-       <div className={`absolute inset-0 ${enhancedOverlay ? 'bg-black bg-opacity-80' : 'bg-black bg-opacity-70'}`}></div>
+             {/* 배경 오버레이로 텍스트 가독성 향상 */}
+       <div className={`absolute inset-0 ${enhancedOverlay ? 'bg-black bg-opacity-50' : 'bg-black bg-opacity-40'}`}></div>
        
        {/* 추가 텍스트 가독성을 위한 이중 오버레이 */}
        {enhancedOverlay && (
-         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
+         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
        )}
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* 메인 콘텐츠 */}
@@ -58,10 +58,17 @@ const Hero = ({
               fontWeight: '600',
               backgroundColor: 'transparent',
               border: 'none',
-              outline: 'none'
+              outline: 'none',
+              whiteSpace: 'pre-line',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word'
             }}
           >
-            {subCopy}
+            {subCopy.split('\n').map((line, index) => (
+              <span key={index} className="block">
+                {line}
+              </span>
+            ))}
           </p>
           
           {/* 액션 버튼 */}

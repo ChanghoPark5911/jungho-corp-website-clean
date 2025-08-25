@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { COMPANY_INFO, SUBSIDIARIES } from '../utils/constants';
 import { getLanguage, setLanguage, languageOptions } from '../utils/i18n';
 
-const Header = () => {
+const Header = ({ imageData = {} }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [currentLanguage, setCurrentLanguage] = useState(getLanguage()); // 저장된 언어 설정 사용
@@ -85,11 +85,9 @@ const Header = () => {
     console.log('GROUP 메뉴 클릭:', path);
     setActiveDropdown(null);
     
-    // 약간의 지연 후 네비게이션 실행 (드롭다운 애니메이션 완료 후)
-    setTimeout(() => {
-      navigate(path);
-      window.scrollTo(0, 0);
-    }, 100);
+    // 즉시 네비게이션 실행
+    navigate(path);
+    window.scrollTo(0, 0);
   };
 
   // 키보드 이벤트 핸들러
@@ -131,8 +129,23 @@ const Header = () => {
               window.scrollTo(0, 0);
             }}
           >
-            <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">정</span>
+            <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center overflow-hidden relative">
+              {/* 로고 이미지가 있으면 이미지 표시, 없으면 텍스트 표시 */}
+              {imageData.logo && Object.keys(imageData.logo).length > 0 ? (
+                <>
+                  <img 
+                    src={Object.values(imageData.logo)[0].url} 
+                    alt="정호그룹 로고"
+                    className="w-full h-full object-cover"
+                  />
+                  {/* 로고 이미지 표시 표시 */}
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                </>
+                              ) : (
+                  <span className="text-white font-bold text-xl relative z-10">정</span>
+                )}
             </div>
             <span className="text-xl font-bold text-primary hidden sm:block">
               {COMPANY_INFO.name}

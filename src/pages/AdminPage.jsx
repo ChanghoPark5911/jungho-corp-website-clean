@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import HomeContentManager from '../components/admin/HomeContentManager';
+import EnhancedHomeContentManager from '../components/admin/EnhancedHomeContentManager';
 import NewsManager from '../components/admin/NewsManager';
 import SubsidiaryManager from '../components/admin/SubsidiaryManager';
 import FeedbackDashboard from '../components/feedback/FeedbackDashboard';
+import ContentApprovalSystem from '../components/admin/ContentApprovalSystem';
+import AIContentAssistant from '../components/admin/AIContentAssistant';
+import LivePreview from '../components/admin/LivePreview';
+import SimpleContentEditor from '../components/admin/SimpleContentEditor';
+import ImageManager from '../components/admin/ImageManager';
 
 // 관리자 인증 상태 (실제로는 서버에서 관리해야 함)
 const ADMIN_PASSWORD = 'admin123';
@@ -15,44 +20,57 @@ const AdminPage = () => {
   const navigate = useNavigate();
 
   // 홈페이지 데이터 상태
-  const [homeData, setHomeData] = useState({
-    hero: {
-      title: '정호그룹\n조명의 미래를\n만들어갑니다',
-      subtitle: '40년 전통의 조명제어 전문기업',
-      description: '혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다'
-    },
-    achievements: [
-      { number: '40', label: '년 전통' },
-      { number: '1000+', label: '프로젝트' },
-      { number: '50+', label: '국가 진출' },
-      { number: '99%', label: '고객 만족도' }
-    ],
-    group: {
-      title: '정호그룹 소개',
-      description: '정호그룹은 40년간 조명제어 분야에서 혁신적인 기술을 개발하고 있습니다.'
-    },
-    subsidiaries: [
-      {
-        name: '클라루스',
-        subtitle: '조명제어 시스템',
-        description: '스마트 조명제어 솔루션 전문기업'
-      },
-      {
-        name: '정호티엘씨',
-        subtitle: 'LED 조명',
-        description: '친환경 LED 조명 제품 전문기업'
-      },
-      {
-        name: '일루텍',
-        subtitle: '조명 디자인',
-        description: '창의적인 조명 디자인 전문기업'
-      },
-      {
-        name: '정호텍스컴',
-        subtitle: '조명 기술',
-        description: '최첨단 조명 기술 개발 전문기업'
+  const [homeData, setHomeData] = useState(() => {
+    // LocalStorage에서 데이터 불러오기
+    const savedData = localStorage.getItem('homeData');
+    if (savedData) {
+      try {
+        return JSON.parse(savedData);
+      } catch (error) {
+        console.error('LocalStorage 데이터 파싱 오류:', error);
       }
-    ]
+    }
+    
+    // 기본 데이터
+    return {
+      hero: {
+        title: '정호그룹\n조명의 미래를\n만들어갑니다',
+        subtitle: '40년 전통의 조명제어 전문기업',
+        description: '혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다'
+      },
+      achievements: [
+        { number: '40', label: '년 전통' },
+        { number: '1000+', label: '프로젝트' },
+        { number: '50+', label: '국가 진출' },
+        { number: '99%', label: '고객 만족도' }
+      ],
+      group: {
+        title: '정호그룹 소개',
+        description: '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다.'
+      },
+      subsidiaries: [
+        {
+          name: '클라루스',
+          subtitle: '조명제어 시스템',
+          description: '스마트 조명제어 솔루션 전문기업'
+        },
+        {
+          name: '정호티엘씨',
+          subtitle: 'LED 조명',
+          description: '친환경 LED 조명 제품 전문기업'
+        },
+        {
+          name: '일루텍',
+          subtitle: '조명 디자인',
+          description: '창의적인 조명 디자인 전문기업'
+        },
+        {
+          name: '정호텍스컴',
+          subtitle: '조명 기술',
+          description: '최첨단 조명 기술 개발 전문기업'
+        }
+      ]
+    };
   });
 
   // 뉴스 데이터 상태
@@ -248,17 +266,68 @@ const AdminPage = () => {
   // 현재 로그인한 사용자 정보
   const [currentUser, setCurrentUser] = useState(null);
 
+  // 콘텐츠 승인 데이터 상태
+  const [contentApprovals, setContentApprovals] = useState([
+    {
+      id: 1,
+      title: '홈페이지 히어로 타이틀 수정',
+      author: 'editor',
+      section: 'hero',
+      type: 'hero',
+      status: 'pending',
+      createdAt: '2024-01-15T08:00:00Z',
+      changes: {
+        title: {
+          old: '정호그룹\n조명의 미래를\n만들어갑니다',
+          new: '정호그룹\n혁신 기술로\n미래를 만듭니다'
+        }
+      },
+      content: {
+        type: 'hero',
+        data: {
+          title: '정호그룹\n혁신 기술로\n미래를 만듭니다'
+        }
+      }
+    },
+    {
+      id: 2,
+      title: '회사 소개 설명 수정',
+      author: 'manager',
+      section: 'group',
+      type: 'group',
+      status: 'pending',
+      description: 'AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다.',
+      createdAt: '2024-01-15T09:30:00Z',
+      changes: {
+        description: {
+          old: '정호그룹은 40년간 조명제어 분야에서 혁신적인 기술을 개발하고 있습니다.',
+          new: '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다.'
+        }
+      },
+      content: {
+        type: 'group',
+        data: {
+          description: '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다.'
+        }
+      }
+    }
+  ]);
+
   // 인증 처리
   const handleLogin = () => {
     if (password === ADMIN_PASSWORD) {
       setIsAuthenticated(true);
       setCurrentUser(users[0]); // 기본 관리자로 설정
+      // 로그인 후 LocalStorage에서 데이터 로드
+      loadDataFromStorage();
     } else {
       // 사용자별 로그인 처리
       const user = users.find(u => u.username === password);
       if (user) {
         setIsAuthenticated(true);
         setCurrentUser(user);
+        // 로그인 후 LocalStorage에서 데이터 로드
+        loadDataFromStorage();
       } else {
         alert('잘못된 비밀번호입니다.');
       }
@@ -291,11 +360,99 @@ const AdminPage = () => {
     }
   };
 
-  // 콘텐츠 저장 함수
+  // 핵심 기능: 콘텐츠 수정 및 즉시 반영
+  const handleContentSave = (newData) => {
+    console.log('콘텐츠 저장 및 즉시 반영:', newData);
+    
+    // 1. 홈페이지 데이터 업데이트
+    setHomeData(newData);
+    localStorage.setItem('homeData', JSON.stringify(newData));
+    
+    // 2. 전역 상태로 저장 (홈페이지와 공유)
+    window.globalHomeData = newData;
+    
+    // 3. 전역 이벤트 발생 (홈페이지에 알림)
+    window.dispatchEvent(new Event('globalHomeDataChanged'));
+    
+    // 4. 홈페이지로 이동하면서 수정된 데이터 전달
+    const encodedData = encodeURIComponent(JSON.stringify(newData));
+    window.location.href = `/?approved=${encodedData}`;
+    
+    alert('콘텐츠가 저장되어 홈페이지에 즉시 반영되었습니다!');
+  };
+
+  const handleContentApprove = (approvedData) => {
+    // 승인 프로세스가 불필요하므로 단순 저장으로 처리
+    handleContentSave(approvedData);
+  };
+
+  // 콘텐츠 저장 함수 (즉시 반영)
   const saveContent = (section, data) => {
-    // 실제로는 서버에 저장하는 로직이 들어가야 함
-    console.log(`${section} 콘텐츠 저장:`, data);
-    alert(`${section} 콘텐츠가 저장되었습니다.`);
+    console.log(`${section} 콘텐츠 저장 시작:`, data);
+    
+    // 1. 상태 업데이트
+    if (section === 'homepage') {
+      setHomeData(data);
+      console.log('homeData 상태 업데이트 완료');
+    } else if (section === 'news') {
+      setNewsData(data);
+    } else if (section === 'subsidiary') {
+      setSubsidiaryData(data);
+    }
+    
+    // 2. LocalStorage에 저장
+    localStorage.setItem(section, JSON.stringify(data));
+    console.log('LocalStorage 저장 완료');
+    
+    // 3. 홈페이지 콘텐츠인 경우 즉시 반영
+    if (section === 'homepage') {
+      // 전역 상태로 저장 (홈페이지와 공유)
+      window.globalHomeData = data;
+      console.log('전역 상태 저장 완료');
+      
+      // 전역 이벤트 발생 (홈페이지에 알림)
+      window.dispatchEvent(new Event('globalHomeDataChanged'));
+      console.log('전역 이벤트 발생 완료');
+      
+      // 홈페이지로 이동하면서 수정된 데이터 전달
+      const encodedData = encodeURIComponent(JSON.stringify(data));
+      console.log('URL 파라미터 생성 완료:', encodedData);
+      
+      alert('콘텐츠가 저장되었습니다! 홈페이지로 이동하여 변경사항을 확인하세요.');
+      
+      // 홈페이지로 리다이렉트
+      window.location.href = `/?approved=${encodedData}`;
+    } else {
+      alert(`${section} 콘텐츠가 저장되었습니다.`);
+    }
+  };
+
+  // LocalStorage에서 데이터 불러오기 함수
+  const loadDataFromStorage = () => {
+    try {
+      const savedHomeData = localStorage.getItem('homeData');
+      if (savedHomeData) {
+        setHomeData(JSON.parse(savedHomeData));
+      }
+      
+      const savedNewsData = localStorage.getItem('newsData');
+      if (savedNewsData) {
+        setNewsData(JSON.parse(savedNewsData));
+      }
+      
+      const savedSubsidiaryData = localStorage.getItem('subsidiaryData');
+      if (savedSubsidiaryData) {
+        setSubsidiaryData(JSON.parse(savedSubsidiaryData));
+      }
+      
+      // 승인 대기 데이터 로드
+      const savedContentApprovals = localStorage.getItem('contentApprovals');
+      if (savedContentApprovals) {
+        setContentApprovals(JSON.parse(savedContentApprovals));
+      }
+    } catch (error) {
+      console.error('LocalStorage에서 데이터 불러오기 오류:', error);
+    }
   };
 
   // 뉴스 추가 함수
@@ -338,6 +495,95 @@ const AdminPage = () => {
       setSubsidiaryData(JSON.parse(savedData));
     }
   };
+
+  // 이미지 업데이트 핸들러
+  const handleImageUpdate = (section, newImages) => {
+    console.log('이미지 업데이트:', section, newImages);
+    
+    // null 값인 이미지 제거
+    const filteredImages = {};
+    Object.entries(newImages).forEach(([name, image]) => {
+      if (image !== null) {
+        filteredImages[name] = image;
+      }
+    });
+    
+    // 이미지 데이터 업데이트
+    const updatedImageData = {
+      ...imageData,
+      [section]: filteredImages
+    };
+    
+    setImageData(updatedImageData);
+    
+    // LocalStorage에 저장
+    localStorage.setItem('imageData', JSON.stringify(updatedImageData));
+    console.log('이미지 데이터 저장 완료');
+    
+    // 홈페이지 데이터에도 이미지 정보 반영
+    if (section === 'hero' && Object.keys(filteredImages).length > 0) {
+      const firstImage = Object.values(filteredImages)[0];
+      const updatedHomeData = {
+        ...homeData,
+        hero: {
+          ...homeData.hero,
+          backgroundImage: firstImage.url
+        }
+      };
+      
+      setHomeData(updatedHomeData);
+      localStorage.setItem('homeData', JSON.stringify(updatedHomeData));
+      console.log('홈페이지 이미지 데이터 업데이트 완료');
+      
+      // 이미지 업데이트 후 홈페이지로 이동하여 변경사항 확인
+      alert('이미지가 업데이트되었습니다! 홈페이지로 이동하여 변경사항을 확인하세요.');
+      window.location.href = '/';
+    }
+  };
+
+  // 이미지 데이터 상태
+  const [imageData, setImageData] = useState(() => {
+    const savedImages = localStorage.getItem('imageData');
+    if (savedImages) {
+      try {
+        const parsed = JSON.parse(savedImages);
+        console.log('저장된 이미지 데이터 로드:', parsed);
+        return parsed;
+      } catch (error) {
+        console.error('이미지 데이터 파싱 오류:', error);
+      }
+    }
+    
+    // 기본 이미지 데이터 (Unsplash 더미 이미지)
+    const defaultImages = {
+      hero: {
+        'hero-bg.jpg': {
+          url: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          name: 'hero-bg.jpg',
+          size: 0,
+          type: 'image/jpeg',
+          uploadedAt: new Date().toISOString()
+        }
+      },
+      logo: {},
+      gallery: {
+        'project-1.jpg': {
+          url: 'https://images.unsplash.com/photo-1581091226825-a4e2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+          name: 'project-1.jpg',
+          size: 0,
+          type: 'image/jpeg',
+          uploadedAt: new Date().toISOString()
+        }
+      }
+    };
+    
+    console.log('기본 이미지 데이터 생성:', defaultImages);
+    
+    // 기본 데이터를 localStorage에 저장
+    localStorage.setItem('imageData', JSON.stringify(defaultImages));
+    
+    return defaultImages;
+  });
 
   // 대시보드 데이터 로드
   const loadDashboardData = () => {
@@ -503,7 +749,7 @@ const AdminPage = () => {
 
 
   // 대시보드 탭 컴포넌트
-  const DashboardTab = ({ data }) => (
+  const DashboardTab = ({ data, homeData, onSave, onApprove }) => (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold">시스템 대시보드</h2>
@@ -601,133 +847,38 @@ const AdminPage = () => {
                   </a>
                 </div>
               </div>
+
+              {/* 빠른 액세스 */}
+              <div className="mt-8">
+                <h3 className="font-medium text-gray-700 mb-4 text-center text-xl font-bold">🚀 빠른 액세스</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <button
+                    onClick={() => setActiveTab('home')}
+                    className="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg text-left transition-colors"
+                  >
+                    <div className="text-blue-600 font-medium">홈페이지 콘텐츠 관리</div>
+                    <div className="text-sm text-gray-600 mt-1">Hero, Group, Achievements 등 수정</div>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('news')}
+                    className="p-4 bg-green-50 hover:bg-green-100 rounded-lg text-left transition-colors"
+                  >
+                    <div className="text-green-600 font-medium">뉴스 관리</div>
+                    <div className="text-sm text-gray-600 mt-1">뉴스 게시물 등록 및 관리</div>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('subsidiary')}
+                    className="p-4 bg-purple-50 hover:bg-purple-100 rounded-lg text-left transition-colors"
+                  >
+                    <div className="text-purple-600 font-medium">계열사 관리</div>
+                    <div className="text-sm text-gray-600 mt-1">계열사별 콘텐츠 관리</div>
+                  </button>
+                </div>
+              </div>
             </div>
   );
 
-  // 홈페이지 탭 컴포넌트
-  const HomeTab = ({ data, onSave }) => (
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-        <h2 className="text-lg font-semibold">홈페이지 콘텐츠 관리</h2>
-                <button
-          onClick={() => onSave('home', homeData)}
-                  className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition-colors"
-                >
-                  저장
-                </button>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    메인 제목 (줄바꿈은 \n으로 구분)
-                  </label>
-                  <textarea
-                    rows={3}
-            value={data.hero.title}
-                    onChange={(e) => updateHomeData('hero', 'title', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    placeholder="메인 제목을 입력하세요"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    부제목
-                  </label>
-                  <textarea
-                    rows={3}
-            value={data.hero.subtitle}
-                    onChange={(e) => updateHomeData('hero', 'subtitle', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    placeholder="부제목을 입력하세요"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  설명
-                </label>
-                <textarea
-                  rows={2}
-          value={data.hero.description}
-                  onChange={(e) => updateHomeData('hero', 'description', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                  placeholder="설명을 입력하세요"
-                />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {data.achievements.map((achievement, index) => (
-                  <div key={index} className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      지표 {index + 1}
-                    </label>
-                    <input
-                      type="text"
-                      value={achievement.number}
-                      onChange={(e) => updateAchievement(index, 'number', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      placeholder="숫자"
-                    />
-                    <input
-                      type="text"
-                      value={achievement.label}
-                      onChange={(e) => updateAchievement(index, 'label', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      placeholder="라벨"
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    그룹 제목
-                  </label>
-                  <input
-                    type="text"
-            value={data.group.title}
-                    onChange={(e) => updateHomeData('group', 'title', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    placeholder="그룹 제목을 입력하세요"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    그룹 설명
-                  </label>
-                  <textarea
-                    rows={4}
-            value={data.group.description}
-                    onChange={(e) => updateHomeData('group', 'description', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    placeholder="그룹 설명을 입력하세요"
-                  />
-                </div>
-              </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {data.subsidiaries.map((subsidiary, index) => (
-          <div key={index} className="border rounded-lg p-4">
-            <h3 className="font-medium mb-2">{subsidiary.name}</h3>
-            <div className="space-y-2">
-              <input
-                type="text"
-                value={subsidiary.subtitle}
-                onChange={(e) => updateSubsidiary(index, 'subtitle', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                placeholder="부제목"
-              />
-              <textarea
-                rows={3}
-                value={subsidiary.description}
-                onChange={(e) => updateSubsidiary(index, 'description', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                placeholder="설명"
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  
 
   // 뉴스 관리 탭 컴포넌트
   const NewsTab = ({ data, onAdd, onDelete, onSave }) => (
@@ -1383,6 +1534,58 @@ const AdminPage = () => {
               </button>
             )}
 
+            {hasPermission('content') && (
+              <button
+                onClick={() => setActiveTab('approval')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'approval'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                승인 관리
+              </button>
+            )}
+
+            {hasPermission('content') && (
+              <button
+                onClick={() => setActiveTab('ai-assistant')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'ai-assistant'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                AI 어시스턴트
+              </button>
+            )}
+
+            {hasPermission('content') && (
+              <button
+                onClick={() => setActiveTab('live-preview')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'live-preview'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                실시간 미리보기
+              </button>
+            )}
+
+            {hasPermission('content') && (
+              <button
+                onClick={() => setActiveTab('image-management')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'image-management'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                이미지 관리
+              </button>
+            )}
+
             {hasPermission('users') && (
               <button
                 onClick={() => setActiveTab('users')}
@@ -1394,19 +1597,116 @@ const AdminPage = () => {
               >
                 사용자 관리
               </button>
-          )}
+            )}
         </div>
       </div>
       </nav>
 
       {/* 메인 콘텐츠 */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {activeTab === 'dashboard' && hasPermission('all') && (
-          <DashboardTab data={dashboardData} />
+        {activeTab === 'dashboard' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">시스템 현황</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">{dashboardData.systemStatus.server}</div>
+                  <div className="text-sm text-gray-600">서버 상태</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">{dashboardData.systemStatus.database}</div>
+                  <div className="text-sm text-gray-600">데이터베이스</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">{dashboardData.systemStatus.website}</div>
+                  <div className="text-sm text-gray-600">웹사이트</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">{dashboardData.systemStatus.api}</div>
+                  <div className="text-sm text-gray-600">API</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">방문자 통계</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">{dashboardData.statistics.totalVisitors.toLocaleString()}</div>
+                  <div className="text-sm text-gray-600">총 방문자</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">{dashboardData.statistics.monthlyVisitors.toLocaleString()}</div>
+                  <div className="text-sm text-gray-600">월간 방문자</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">{dashboardData.statistics.dailyVisitors.toLocaleString()}</div>
+                  <div className="text-sm text-gray-600">일간 방문자</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">{dashboardData.statistics.pageViews.toLocaleString()}</div>
+                  <div className="text-sm text-gray-600">페이지뷰</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">최근 활동</h3>
+              <div className="space-y-3">
+                {dashboardData.recentActivities.map((activity, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700">{activity.action}</span>
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      <span>{activity.time}</span>
+                      <span className="mx-2">•</span>
+                      <span>{activity.user}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">빠른 액세스</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button
+                  onClick={() => setActiveTab('home')}
+                  className="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg text-left transition-colors"
+                >
+                  <div className="text-blue-600 font-medium">홈페이지 콘텐츠 관리</div>
+                  <div className="text-sm text-gray-600 mt-1">Hero, Group, Achievements 등 수정</div>
+                </button>
+                <button
+                  onClick={() => setActiveTab('news')}
+                  className="p-4 bg-green-50 hover:bg-green-100 rounded-lg text-left transition-colors"
+                >
+                  <div className="text-green-600 font-medium">뉴스 관리</div>
+                  <div className="text-sm text-gray-600 mt-1">뉴스 게시물 등록 및 관리</div>
+                </button>
+                <button
+                  onClick={() => setActiveTab('subsidiary')}
+                  className="p-4 bg-purple-50 hover:bg-purple-100 rounded-lg text-left transition-colors"
+                >
+                  <div className="text-purple-600 font-medium">계열사 관리</div>
+                  <div className="text-sm text-gray-600 mt-1">계열사별 콘텐츠 관리</div>
+                </button>
+              </div>
+            </div>
+          </div>
         )}
         
         {activeTab === 'home' && hasPermission('content') && (
-          <HomeContentManager data={homeData} onSave={saveContent} />
+          <EnhancedHomeContentManager 
+            data={homeData} 
+            onSave={saveContent}
+            onPreview={(data) => {
+              // 미리보기 기능 구현
+              console.log('미리보기 데이터:', data);
+            }}
+          />
         )}
         
         {activeTab === 'news' && hasPermission('content') && (
@@ -1428,6 +1728,219 @@ const AdminPage = () => {
         
         {activeTab === 'feedback' && hasPermission('feedback') && (
           <FeedbackDashboard />
+        )}
+
+        {activeTab === 'approval' && hasPermission('content') && (
+          <div>
+            <div className="mb-4 flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">콘텐츠 승인 관리</h2>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    // 테스트용: 직접 데이터 수정
+                    const testData = {
+                      ...homeData,
+                      hero: {
+                        ...homeData.hero,
+                        title: '정호그룹\n테스트 성공!\n변경된 타이틀입니다'
+                      }
+                    };
+                    setHomeData(testData);
+                    localStorage.setItem('homeData', JSON.stringify(testData));
+                    
+                    // 전역 상태로도 저장
+                    window.globalHomeData = testData;
+                    
+                    // 전역 이벤트 발생 (홈페이지에 알림)
+                    window.dispatchEvent(new Event('globalHomeDataChanged'));
+                    
+                    alert('테스트 데이터가 적용되었습니다! 홈페이지로 이동하여 변경사항을 확인하세요.');
+                    
+                    // 홈페이지로 이동하면서 테스트 데이터 전달
+                    const testDataEncoded = encodeURIComponent(JSON.stringify(testData));
+                    window.location.href = `/?test=${testDataEncoded}`;
+                  }}
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                >
+                  테스트 데이터 적용
+                </button>
+                <button
+                  onClick={() => {
+                    // 전역 상태에서 데이터 새로고침
+                    if (window.globalHomeData) {
+                      setHomeData(window.globalHomeData);
+                      alert('전역 상태에서 데이터가 새로고침되었습니다!');
+                    } else {
+                      // LocalStorage에서 데이터를 강제로 새로고침
+                      const savedData = localStorage.getItem('homeData');
+                      if (savedData) {
+                        try {
+                          const data = JSON.parse(savedData);
+                          setHomeData(data);
+                          // 전역 상태에도 저장
+                          window.globalHomeData = data;
+                          alert('LocalStorage에서 데이터가 새로고침되었습니다!');
+                        } catch (error) {
+                          console.error('데이터 새로고침 오류:', error);
+                        }
+                      } else {
+                        alert('저장된 데이터가 없습니다.');
+                      }
+                    }
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                >
+                  데이터 새로고침
+                </button>
+              </div>
+            </div>
+            <ContentApprovalSystem 
+              currentUser={currentUser}
+              pendingApprovals={contentApprovals.filter(a => a.status === 'pending')}
+              onApprovalChange={(approvedContent) => {
+                console.log('승인된 콘텐츠:', approvedContent);
+                
+                // 승인된 콘텐츠를 실제 데이터에 적용
+                if (approvedContent && approvedContent.status === 'approved') {
+                  console.log('콘텐츠 승인 처리 시작...');
+                  
+                  // 승인된 콘텐츠의 실제 데이터 추출
+                  const contentData = approvedContent.content.data;
+                  
+                  if (approvedContent.type === 'content_update') {
+                    console.log('홈페이지 전체 콘텐츠 업데이트:', contentData);
+                    setHomeData(contentData);
+                    localStorage.setItem('homeData', JSON.stringify(contentData));
+                    
+                    // 전역 상태로도 저장 (홈페이지와 공유)
+                    window.globalHomeData = contentData;
+                    
+                    // 전역 이벤트 발생 (홈페이지에 알림)
+                    window.dispatchEvent(new Event('globalHomeDataChanged'));
+                    
+                    console.log('홈페이지 콘텐츠 업데이트 완료');
+                  }
+                }
+              }}
+            />
+          </div>
+        )}
+
+        {activeTab === 'ai-assistant' && hasPermission('content') && (
+          <AIContentAssistant 
+            currentUser={currentUser}
+            onContentSuggestion={(suggestion) => {
+              console.log('AI 제안 채택:', suggestion);
+              
+              // 제안된 콘텐츠를 해당 섹션에 적용
+              if (suggestion.contentType === 'hero') {
+                setHomeData(prev => {
+                  const updated = {
+                    ...prev,
+                    hero: {
+                      ...prev.hero,
+                      [suggestion.targetSection]: suggestion.content
+                    }
+                  };
+                  // LocalStorage에 즉시 저장
+                  localStorage.setItem('homeData', JSON.stringify(updated));
+                  return updated;
+                });
+              } else if (suggestion.contentType === 'group') {
+                setHomeData(prev => {
+                  const updated = {
+                    ...prev,
+                    group: {
+                      ...prev.group,
+                      [suggestion.targetSection]: suggestion.content
+                    }
+                  };
+                  // LocalStorage에 즉시 저장
+                  localStorage.setItem('homeData', JSON.stringify(updated));
+                  return updated;
+                });
+              }
+              
+              alert('AI 제안 콘텐츠가 적용되었습니다! 웹사이트를 새로고침하면 변경사항을 확인할 수 있습니다.');
+            }}
+          />
+        )}
+
+        {activeTab === 'live-preview' && hasPermission('content') && (
+          <LivePreview 
+            content={homeData.hero}
+            contentType="hero"
+            targetSection="homepage"
+            onSave={(updatedContent) => {
+              console.log('콘텐츠 저장:', updatedContent);
+              
+              // 편집된 콘텐츠를 해당 섹션에 적용
+              if (updatedContent.type === 'hero') {
+                setHomeData(prev => {
+                  const updated = {
+                    ...prev,
+                    hero: {
+                      ...prev.hero,
+                      ...updatedContent.data
+                    }
+                  };
+                  // LocalStorage에 즉시 저장
+                  localStorage.setItem('homeData', JSON.stringify(updated));
+                  return updated;
+                });
+              } else if (updatedContent.type === 'group') {
+                setHomeData(prev => {
+                  const updated = {
+                    ...prev,
+                    group: {
+                      ...prev.group,
+                      ...updatedContent.data
+                    }
+                  };
+                  // LocalStorage에 즉시 저장
+                  localStorage.setItem('homeData', JSON.stringify(updated));
+                  return updated;
+                });
+              }
+              
+              alert('콘텐츠가 성공적으로 저장되었습니다! 웹사이트를 새로고침하면 변경사항을 확인할 수 있습니다.');
+            }}
+          />
+        )}
+
+        {activeTab === 'image-management' && hasPermission('content') && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-lg shadow p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">이미지 관리 시스템</h2>
+              <p className="text-gray-600 mb-6">
+                웹사이트의 다양한 이미지를 관리하고 교체할 수 있습니다. 
+                각 섹션별로 적절한 크기와 형식의 이미지를 업로드하세요.
+              </p>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Hero 배경 이미지 관리 */}
+                <ImageManager
+                  section="hero"
+                  currentImages={imageData.hero || {}}
+                  onImageUpdate={handleImageUpdate}
+                />
+                
+                {/* 로고 이미지 관리 */}
+                <ImageManager
+                  section="logo"
+                  currentImages={imageData.logo || {}}
+                  onImageUpdate={handleImageUpdate}
+                />
+                
+                {/* 갤러리 이미지 관리 */}
+                <ImageManager
+                  section="gallery"
+                  currentImages={imageData.gallery || {}}
+                  onImageUpdate={handleImageUpdate}
+                />
+              </div>
+            </div>
+          </div>
         )}
 
         {activeTab === 'users' && hasPermission('users') && (

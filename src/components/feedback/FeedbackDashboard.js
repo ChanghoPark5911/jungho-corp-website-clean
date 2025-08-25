@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from '../ui/Button';
+import Button from '../ui/Button';
 import WebsiteFeedbackForm from './WebsiteFeedbackForm';
 import ClarusFeedbackForm from './ClarusFeedbackForm';
 import TexcomFeedbackForm from './TexcomFeedbackForm';
@@ -28,7 +28,7 @@ const FeedbackDashboard = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'overview':
-        return <OverviewTab feedbackData={feedbackData} />;
+        return <OverviewTab feedbackData={feedbackData} onTabChange={setActiveTab} />;
       case 'website':
         return <WebsiteFeedbackForm />;
       case 'clarus':
@@ -40,7 +40,7 @@ const FeedbackDashboard = () => {
       case 'illutech':
         return <IllutechFeedbackForm />;
       default:
-        return <OverviewTab feedbackData={feedbackData} />;
+        return <OverviewTab feedbackData={feedbackData} onTabChange={setActiveTab} />;
     }
   };
 
@@ -90,7 +90,7 @@ const FeedbackDashboard = () => {
 };
 
 // 전체 개요 탭 컴포넌트
-const OverviewTab = ({ feedbackData }) => {
+const OverviewTab = ({ feedbackData, onTabChange }) => {
   const totalFeedback = Object.values(feedbackData).flat().length;
   const averageRating = totalFeedback > 0 
     ? (Object.values(feedbackData).flat().reduce((sum, item) => sum + (item.overallRating || 0), 0) / totalFeedback).toFixed(1)
@@ -221,7 +221,7 @@ const OverviewTab = ({ feedbackData }) => {
       <div className="mt-8 flex flex-wrap gap-4">
         <Button
           variant="primary"
-          onClick={() => setActiveTab('website')}
+          onClick={() => onTabChange('website')}
           className="flex items-center space-x-2"
         >
           <span>🌐</span>
@@ -229,7 +229,7 @@ const OverviewTab = ({ feedbackData }) => {
         </Button>
         <Button
           variant="outline"
-          onClick={() => setActiveTab('clarus')}
+          onClick={() => onTabChange('clarus')}
           className="flex items-center space-x-2"
         >
           <span>💡</span>
@@ -237,7 +237,7 @@ const OverviewTab = ({ feedbackData }) => {
         </Button>
         <Button
           variant="outline"
-          onClick={() => setActiveTab('texcom')}
+          onClick={() => onTabChange('texcom')}
           className="flex items-center space-x-2"
         >
           <span>🧵</span>
@@ -245,7 +245,7 @@ const OverviewTab = ({ feedbackData }) => {
         </Button>
         <Button
           variant="outline"
-          onClick={() => setActiveTab('tlc')}
+          onClick={() => onTabChange('tlc')}
           className="flex items-center space-x-2"
         >
           <span>🔧</span>
@@ -253,7 +253,7 @@ const OverviewTab = ({ feedbackData }) => {
         </Button>
         <Button
           variant="outline"
-          onClick={() => setActiveTab('illutech')}
+          onClick={() => onTabChange('illutech')}
           className="flex items-center space-x-2"
         >
           <span>📱</span>

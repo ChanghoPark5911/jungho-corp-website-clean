@@ -152,7 +152,7 @@ const GroupIntro = ({
               {stats && stats.length > 0 && (
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
                   <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-                    <div className="grid grid-cols-2 gap-4 lg:gap-6">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                       {stats.map((stat, index) => (
                         <div key={index} className="text-center">
                           <div className="text-2xl lg:text-3xl font-bold text-white mb-1">

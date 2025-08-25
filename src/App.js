@@ -7,7 +7,7 @@ import { initPerformanceMonitoring } from './utils/performance';
 import { initI18n } from './utils/i18n';
 
 // 페이지 컴포넌트들을 lazy loading으로 import
-const HomePage = lazy(() => import('./pages/HomePage.js'));
+const HomePage = lazy(() => import('./pages/HomePage.jsx'));
 const BusinessPage = lazy(() => import('./pages/BusinessPage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
 const SupportPage = lazy(() => import('./pages/SupportPage'));

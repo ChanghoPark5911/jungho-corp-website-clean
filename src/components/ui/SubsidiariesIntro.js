@@ -151,7 +151,7 @@ const SubsidiariesIntro = ({
               }`}
               style={{ 
                 transitionDelay: `${0.4 + index * 0.2}s`,
-                background: `linear-gradient(135deg, ${subsidiary.color}05 0%, ${subsidiary.color}10 100%)`
+                background: `linear-gradient(135deg, ${(subsidiary.color || '#0066CC')}05 0%, ${(subsidiary.color || '#0066CC')}10 100%)`
               }}
               onClick={() => handleCardClick(subsidiary)}
             >
@@ -159,7 +159,7 @@ const SubsidiariesIntro = ({
               <div 
                 className="absolute inset-0 rounded-2xl transition-all duration-500 opacity-0 hover:opacity-100"
                 style={{ 
-                  background: `linear-gradient(135deg, ${subsidiary.color}15 0%, ${subsidiary.color}25 100%)`
+                  background: `linear-gradient(135deg, ${(subsidiary.color || '#0066CC')}15 0%, ${(subsidiary.color || '#0066CC')}25 100%)`
                 }}
               />
               
@@ -169,45 +169,58 @@ const SubsidiariesIntro = ({
                 <div className="flex justify-center mb-6">
                   <div 
                     className="w-20 h-20 rounded-full flex items-center justify-center transition-all duration-500"
-                    style={{ backgroundColor: `${subsidiary.color}20` }}
+                    style={{ backgroundColor: `${(subsidiary.color || '#0066CC')}20` }}
                   >
                     <div 
                       className="w-12 h-12 text-white flex items-center justify-center"
-                      style={{ color: subsidiary.color }}
+                      style={{ color: subsidiary.color || '#0066CC' }}
                     >
-                      {subsidiary.icon}
+                      {subsidiary.icon || (
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 {/* 제목 */}
                 <h3 className="text-2xl lg:text-3xl font-bold text-primary text-center mb-4">
-                  {subsidiary.title}
+                  {subsidiary.name || subsidiary.title}
                 </h3>
+
+                {/* 부제목 */}
+                {subsidiary.subtitle && (
+                  <p className="text-lg text-blue-600 text-center mb-4 font-semibold">
+                    {subsidiary.subtitle}
+                  </p>
+                )}
 
                 {/* 설명 */}
                 <p className="text-lg text-gray-600 text-center mb-6 leading-relaxed">
                   {subsidiary.description}
                 </p>
 
-                {/* 특징 */}
-                <div className="text-center">
-                  <div 
-                    className="inline-block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-500"
-                    style={{ 
-                      backgroundColor: `${subsidiary.color}20`,
-                      color: subsidiary.color
+                {/* 특징 (기본 데이터에만 존재) */}
+                {subsidiary.feature && (
+                  <div className="text-center">
+                    <div 
+                      className="inline-block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-500"
+                                          style={{ 
+                      backgroundColor: `${(subsidiary.color || '#0066CC')}20`,
+                      color: subsidiary.color || '#0066CC'
                     }}
-                  >
-                    {subsidiary.feature}
+                    >
+                      {subsidiary.feature}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* 클릭 인디케이터 */}
                 <div className="mt-6 text-center">
                   <div 
                     className="inline-flex items-center text-sm font-medium transition-all duration-300 group"
-                    style={{ color: subsidiary.color }}
+                    style={{ color: subsidiary.color || '#0066CC' }}
                   >
                     <span className="mr-2">자세히 보기</span>
                     <svg 

@@ -1,0 +1,4 @@
+[33mf7b9ddf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Add feedback management system
+[33m46cc8ab[m Add Netlify configuration and fix build settings
+[33m964f368[m Fix build errors: Remove unused imports and variables
+[33m2bbdcdd[m Initial commit: 정호그룹 웹사이트 프로젝트

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 const ProjectGallery = ({
   title = "검증된 성과와 신뢰",
   projects = [],
+  galleryImages = {},
   className = '',
   ...props
 }) => {
@@ -47,6 +48,26 @@ const ProjectGallery = ({
 
   // projects가 없으면 기본값 사용
   const projectsToRender = projects && projects.length > 0 ? projects : defaultProjects;
+  
+  // 갤러리 이미지가 있으면 프로젝트 이미지에 적용
+  const projectsWithGalleryImages = projectsToRender.map((project, index) => {
+    const galleryImageKeys = Object.keys(galleryImages);
+    if (galleryImageKeys.length > index) {
+      const galleryImage = galleryImages[galleryImageKeys[index]];
+      return {
+        ...project,
+        image: galleryImage.url || project.image,
+        isGalleryImage: true
+      };
+    }
+    return {
+      ...project,
+      isGalleryImage: false
+    };
+  });
+  
+  // 갤러리 이미지 개수 표시
+  const galleryImageCount = Object.keys(galleryImages).length;
 
   // Intersection Observer 설정
   useEffect(() => {
@@ -89,11 +110,22 @@ const ProjectGallery = ({
           >
             {title}
           </h2>
+          
+          {/* 갤러리 이미지 정보 */}
+          {galleryImageCount > 0 && (
+            <div className={`text-sm text-gray-600 transition-all duration-1000 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '0.3s' }}>
+              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full">
+                📸 갤러리 이미지 {galleryImageCount}장 적용됨
+              </span>
+            </div>
+          )}
         </div>
 
         {/* 프로젝트 갤러리 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {projectsToRender.map((project, index) => (
+          {projectsWithGalleryImages.map((project, index) => (
             <div
               key={index}
               className={`relative group overflow-hidden rounded-2xl shadow-lg transition-all duration-1000 ${
@@ -108,6 +140,13 @@ const ProjectGallery = ({
                   alt={project.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
+                
+                {/* 갤러리 이미지 표시 표시 */}
+                {project.isGalleryImage && (
+                  <div className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                    갤러리 이미지 ✓
+                  </div>
+                )}
                 
                 {/* 오버레이 */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

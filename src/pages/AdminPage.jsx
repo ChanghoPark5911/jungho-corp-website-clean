@@ -400,8 +400,12 @@ const AdminPage = () => {
       setSubsidiaryData(data);
     }
     
-    // 2. LocalStorage에 저장
-    localStorage.setItem(section, JSON.stringify(data));
+    // 2. LocalStorage에 저장 (일관된 키 사용)
+    if (section === 'homepage') {
+      localStorage.setItem('homeData', JSON.stringify(data));
+    } else {
+      localStorage.setItem(section, JSON.stringify(data));
+    }
     console.log('LocalStorage 저장 완료');
     
     // 3. 홈페이지 콘텐츠인 경우 즉시 반영
@@ -414,14 +418,15 @@ const AdminPage = () => {
       window.dispatchEvent(new Event('globalHomeDataChanged'));
       console.log('전역 이벤트 발생 완료');
       
-      // 홈페이지로 이동하면서 수정된 데이터 전달
-      const encodedData = encodeURIComponent(JSON.stringify(data));
-      console.log('URL 파라미터 생성 완료:', encodedData);
+      // postMessage로 다른 탭에 데이터 업데이트 알림
+      if (window.opener) {
+        window.opener.postMessage({ type: 'homeDataUpdated', data: data }, '*');
+      }
       
-      alert('콘텐츠가 저장되었습니다! 홈페이지로 이동하여 변경사항을 확인하세요.');
+      // 현재 페이지에서도 postMessage 발생 (같은 탭의 다른 컴포넌트에 알림)
+      window.postMessage({ type: 'homeDataUpdated', data: data }, '*');
       
-      // 홈페이지로 리다이렉트
-      window.location.href = `/?approved=${encodedData}`;
+      alert('콘텐츠가 저장되었습니다! 홈페이지에서 변경사항을 확인하세요.');
     } else {
       alert(`${section} 콘텐츠가 저장되었습니다.`);
     }

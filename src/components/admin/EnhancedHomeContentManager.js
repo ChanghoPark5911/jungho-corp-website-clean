@@ -55,7 +55,19 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
   useEffect(() => {
     // 데이터가 변경될 때마다 안전하게 처리
     if (data && typeof data === 'object') {
-      setFormData({ ...defaultData, ...data });
+      // LocalStorage에서 최신 데이터 확인
+      const savedData = localStorage.getItem('homeData');
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          setFormData({ ...defaultData, ...parsedData });
+        } catch (error) {
+          console.error('LocalStorage 데이터 파싱 오류:', error);
+          setFormData({ ...defaultData, ...data });
+        }
+      } else {
+        setFormData({ ...defaultData, ...data });
+      }
     } else {
       setFormData(defaultData);
     }
@@ -154,15 +166,21 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
   };
 
   const handleSave = () => {
-    onSave('homepage', formData);
-    setIsEditing(false);
     // LocalStorage에 저장
     localStorage.setItem('homeData', JSON.stringify(formData));
+    
+    // 부모 컴포넌트에 저장 알림
+    onSave('homepage', formData);
+    
+    setIsEditing(false);
     
     // 성공 메시지 표시
     alert('홈페이지 콘텐츠가 성공적으로 저장되었습니다! 홈페이지에서 변경사항을 확인하세요.');
     
-    // 홈페이지 새로고침을 위한 이벤트 발생 (다른 탭에서 열려있을 경우)
+    // postMessage로 다른 탭에 데이터 업데이트 알림
+    window.postMessage({ type: 'homeDataUpdated', data: formData }, '*');
+    
+    // 다른 탭이 열려있을 경우에도 알림
     if (window.opener) {
       window.opener.postMessage({ type: 'homeDataUpdated', data: formData }, '*');
     }

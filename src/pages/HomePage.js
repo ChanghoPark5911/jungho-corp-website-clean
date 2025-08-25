@@ -37,23 +37,7 @@ const HomePage = () => {
   // LocalStorage에서 데이터 불러오기
   useEffect(() => {
     const loadHomeData = () => {
-      // 1. URL 파라미터에서 데이터 확인 (관리자 페이지에서 리다이렉트된 경우)
-      const urlParams = new URLSearchParams(window.location.search);
-      const approvedData = urlParams.get('approved');
-      
-      if (approvedData) {
-        try {
-          const parsedData = JSON.parse(decodeURIComponent(approvedData));
-          setHomeData(parsedData);
-          // URL 파라미터 제거
-          window.history.replaceState({}, document.title, window.location.pathname);
-          return;
-        } catch (error) {
-          console.error('URL 파라미터 데이터 파싱 오류:', error);
-        }
-      }
-      
-      // 2. LocalStorage에서 데이터 불러오기
+      // LocalStorage에서 데이터 불러오기
       const savedData = localStorage.getItem('homeData');
       if (savedData) {
         try {
@@ -95,17 +79,28 @@ const HomePage = () => {
     // 메시지 이벤트 리스너 (다른 탭에서 관리자 페이지가 데이터를 업데이트할 경우)
     const handleMessage = (event) => {
       if (event.data && event.data.type === 'homeDataUpdated') {
+        console.log('postMessage로 데이터 업데이트 수신:', event.data.data);
         setHomeData(event.data.data);
       }
     };
     
     window.addEventListener('message', handleMessage);
+    
+    // 페이지 가시성 변경 감지 (탭 전환 시)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadHomeData();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('globalHomeDataChanged', handleGlobalDataChange);
       window.removeEventListener('message', handleMessage);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 

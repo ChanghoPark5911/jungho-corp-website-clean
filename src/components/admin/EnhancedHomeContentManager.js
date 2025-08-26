@@ -165,7 +165,47 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
     setDragIndex(null);
   };
 
+  // 백업에서 데이터 복구
+  const restoreFromBackup = (backupKey) => {
+    try {
+      const backupData = localStorage.getItem(backupKey);
+      if (backupData) {
+        const parsedData = JSON.parse(backupData);
+        setFormData(parsedData);
+        alert('백업에서 데이터가 복구되었습니다.');
+      }
+    } catch (error) {
+      console.error('백업 복구 오류:', error);
+      alert('백업 복구 중 오류가 발생했습니다.');
+    }
+  };
+
+  // 백업 목록 가져오기
+  const getBackupList = () => {
+    const backupKeys = Object.keys(localStorage).filter(key => key.startsWith('homeData_backup_'));
+    return backupKeys.map(key => ({
+      key,
+      timestamp: key.replace('homeData_backup_', ''),
+      date: new Date(key.replace('homeData_backup_', '').replace(/-/g, ':')).toLocaleString('ko-KR')
+    })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  };
+
   const handleSave = () => {
+    // 저장 전 현재 데이터 백업 생성
+    const currentData = localStorage.getItem('homeData');
+    if (currentData) {
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      localStorage.setItem(`homeData_backup_${timestamp}`, currentData);
+      
+      // 백업 개수 제한 (최근 10개만 유지)
+      const backupKeys = Object.keys(localStorage).filter(key => key.startsWith('homeData_backup_'));
+      if (backupKeys.length > 10) {
+        backupKeys.sort().slice(0, backupKeys.length - 10).forEach(key => {
+          localStorage.removeItem(key);
+        });
+      }
+    }
+    
     // LocalStorage에 저장
     localStorage.setItem('homeData', JSON.stringify(formData));
     
@@ -589,6 +629,48 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
           </div>
         </div>
       )}
+
+      {/* 백업 관리 섹션 */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h3 className="text-lg font-semibold mb-4">데이터 백업 관리</h3>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <p className="text-sm text-gray-600">자동 백업: 저장할 때마다 이전 데이터를 백업합니다.</p>
+            <button
+              onClick={() => {
+                const backupList = getBackupList();
+                if (backupList.length === 0) {
+                  alert('아직 백업이 없습니다.');
+                } else {
+                  console.log('백업 목록:', backupList);
+                }
+              }}
+              className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              백업 목록 보기
+            </button>
+          </div>
+          
+          {getBackupList().length > 0 && (
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h4 className="font-medium mb-3">최근 백업 (최대 10개)</h4>
+              <div className="space-y-2 max-h-40 overflow-y-auto">
+                {getBackupList().slice(0, 5).map((backup) => (
+                  <div key={backup.key} className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">{backup.date}</span>
+                    <button
+                      onClick={() => restoreFromBackup(backup.key)}
+                      className="px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700"
+                    >
+                      복구
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

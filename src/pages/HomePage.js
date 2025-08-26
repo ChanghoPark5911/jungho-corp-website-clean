@@ -34,6 +34,68 @@ const HomePage = () => {
   // 동적 데이터 상태
   const [homeData, setHomeData] = useState(null);
 
+  // 데이터 무결성 검증 함수
+  const validateHomeData = (data) => {
+    if (!data || typeof data !== 'object') return false;
+    
+    // 필수 필드 검증
+    const requiredFields = ['hero', 'achievements', 'group', 'subsidiaries'];
+    for (const field of requiredFields) {
+      if (!data[field]) return false;
+    }
+    
+    // hero 섹션 검증
+    if (!data.hero.title || !data.hero.subtitle) return false;
+    
+    // achievements 배열 검증
+    if (!Array.isArray(data.achievements) || data.achievements.length === 0) return false;
+    for (const achievement of data.achievements) {
+      if (!achievement.number || !achievement.label) return false;
+    }
+    
+    // group 섹션 검증
+    if (!data.group.title || !data.group.description) return false;
+    
+    // subsidiaries 배열 검증
+    if (!Array.isArray(data.subsidiaries) || data.subsidiaries.length === 0) return false;
+    for (const subsidiary of data.subsidiaries) {
+      if (!subsidiary.name || !subsidiary.subtitle) return false;
+    }
+    
+    return true;
+  };
+
+  // 데이터 복구 시도 함수
+  const attemptDataRecovery = () => {
+    try {
+      // 백업 목록 가져오기
+      const backupKeys = Object.keys(localStorage).filter(key => key.startsWith('homeData_backup_'));
+      
+      if (backupKeys.length === 0) {
+        alert('사용 가능한 백업이 없습니다. 기본 데이터를 사용합니다.');
+        return;
+      }
+      
+      // 가장 최근 백업에서 복구 시도
+      const latestBackup = backupKeys.sort().pop();
+      const backupData = localStorage.getItem(latestBackup);
+      
+      if (backupData) {
+        const parsedData = JSON.parse(backupData);
+        if (validateHomeData(parsedData)) {
+          setHomeData(parsedData);
+          localStorage.setItem('homeData', backupData);
+          alert('백업에서 데이터가 성공적으로 복구되었습니다!');
+        } else {
+          alert('백업 데이터에도 문제가 있습니다. 기본 데이터를 사용합니다.');
+        }
+      }
+    } catch (error) {
+      console.error('데이터 복구 오류:', error);
+      alert('데이터 복구 중 오류가 발생했습니다. 기본 데이터를 사용합니다.');
+    }
+  };
+
   // LocalStorage에서 데이터 불러오기
   useEffect(() => {
     const loadHomeData = () => {
@@ -42,9 +104,28 @@ const HomePage = () => {
       if (savedData) {
         try {
           const parsedData = JSON.parse(savedData);
-          setHomeData(parsedData);
+          
+          // 데이터 무결성 검증
+          if (validateHomeData(parsedData)) {
+            setHomeData(parsedData);
+          } else {
+            console.warn('데이터 무결성 검증 실패, 기본 데이터 사용');
+            setHomeData(null);
+            
+            // 사용자에게 데이터 복구 알림
+            const shouldRecover = window.confirm(
+              '저장된 데이터에 문제가 있습니다. 백업에서 복구하시겠습니까?\n\n' +
+              '확인: 백업 복구 시도\n' +
+              '취소: 기본 데이터 사용'
+            );
+            
+            if (shouldRecover) {
+              attemptDataRecovery();
+            }
+          }
         } catch (error) {
           console.error('LocalStorage 데이터 파싱 오류:', error);
+          setHomeData(null);
         }
       }
     };

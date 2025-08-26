@@ -86,6 +86,23 @@ const HomePage = () => {
     
     window.addEventListener('message', handleMessage);
     
+    // 주기적으로 LocalStorage 데이터 확인 (백업 동기화)
+    const intervalId = setInterval(() => {
+      const savedData = localStorage.getItem('homeData');
+      if (savedData && homeData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          // 데이터가 다르면 업데이트
+          if (JSON.stringify(parsedData) !== JSON.stringify(homeData)) {
+            console.log('주기적 동기화로 데이터 업데이트:', parsedData);
+            setHomeData(parsedData);
+          }
+        } catch (error) {
+          console.error('주기적 동기화 데이터 파싱 오류:', error);
+        }
+      }
+    }, 2000); // 2초마다 확인
+    
     // 페이지 가시성 변경 감지 (탭 전환 시)
     const handleVisibilityChange = () => {
       if (!document.hidden) {
@@ -101,6 +118,7 @@ const HomePage = () => {
       window.removeEventListener('globalHomeDataChanged', handleGlobalDataChange);
       window.removeEventListener('message', handleMessage);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      clearInterval(intervalId);
     };
   }, []);
 

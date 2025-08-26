@@ -184,6 +184,17 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
     if (window.opener) {
       window.opener.postMessage({ type: 'homeDataUpdated', data: formData }, '*');
     }
+    
+    // 강제로 storage 이벤트 발생 (같은 탭에서도 감지)
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: 'homeData',
+      newValue: JSON.stringify(formData),
+      oldValue: null,
+      storageArea: localStorage
+    }));
+    
+    // 전역 이벤트도 발생
+    window.dispatchEvent(new Event('globalHomeDataChanged'));
   };
 
   const handlePreview = () => {

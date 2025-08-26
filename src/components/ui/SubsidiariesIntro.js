@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SubsidiariesIntro = ({
   title = "4개 계열사가 만드는 완벽한 조명 생태계",
@@ -10,6 +11,7 @@ const SubsidiariesIntro = ({
   const [isVisible, setIsVisible] = useState(false);
   const [visibleCards, setVisibleCards] = useState([]);
   const sectionRef = useRef(null);
+  const navigate = useNavigate();
 
   // 기본 계열사 데이터 (subsidiaries가 전달되지 않았을 때 사용)
   const defaultSubsidiaries = [
@@ -109,7 +111,16 @@ const SubsidiariesIntro = ({
 
   const handleCardClick = (subsidiary) => {
     if (subsidiary.path) {
-      window.location.href = subsidiary.path;
+      navigate(subsidiary.path);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const handleButtonClick = (e, subsidiary) => {
+    e.stopPropagation(); // 카드 클릭 이벤트 전파 방지
+    if (subsidiary.path) {
+      navigate(subsidiary.path);
+      window.scrollTo(0, 0);
     }
   };
 
@@ -218,11 +229,14 @@ const SubsidiariesIntro = ({
 
                 {/* 클릭 인디케이터 */}
                 <div className="mt-6 text-center">
-                  <div 
-                    className="inline-flex items-center text-sm font-medium transition-all duration-300 group"
-                    style={{ color: subsidiary.color || '#0066CC' }}
+                  <button
+                    onClick={(e) => handleButtonClick(e, subsidiary)}
+                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 group"
+                    style={{ 
+                      background: `linear-gradient(135deg, ${subsidiary.color || '#0066CC'} 0%, ${subsidiary.color || '#0066CC'}dd 100%)`,
+                    }}
                   >
-                    <span className="mr-2">자세히 보기</span>
+                    <span className="mr-2 text-sm">자세히 보기</span>
                     <svg 
                       className="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" 
                       fill="none" 
@@ -236,7 +250,7 @@ const SubsidiariesIntro = ({
                         d="M9 5l7 7-7 7" 
                       />
                     </svg>
-                  </div>
+                  </button>
                 </div>
               </div>
             </div>

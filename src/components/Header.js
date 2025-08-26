@@ -85,9 +85,18 @@ const Header = ({ imageData = {} }) => {
     console.log('GROUP 메뉴 클릭:', path);
     setActiveDropdown(null);
     
-    // 즉시 네비게이션 실행
-    navigate(path);
-    window.scrollTo(0, 0);
+    try {
+      // 즉시 네비게이션 실행
+      navigate(path);
+      window.scrollTo(0, 0);
+      
+      // 네비게이션 성공 확인
+      console.log('네비게이션 성공:', path);
+    } catch (error) {
+      console.error('네비게이션 오류:', error);
+      // 폴백: window.location 사용
+      window.location.href = path;
+    }
   };
 
   // 키보드 이벤트 핸들러

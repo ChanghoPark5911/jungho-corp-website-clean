@@ -13,7 +13,49 @@ const GroupIntro = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [counters, setCounters] = useState({});
+  const [statsData, setStatsData] = useState({
+    years: '40',
+    projects: '1000+',
+    countries: '50+',
+    support: '99%',
+    yearsLabel: '조명제어 전문 경험',
+    projectsLabel: '프로젝트 완료',
+    countriesLabel: '해외 진출국',
+    supportLabel: '고객 만족도'
+  });
+  const [groupData, setGroupData] = useState({
+    title: '40년 전통의 조명제어 전문기업',
+    paragraph1: '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.',
+    paragraph2: 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.',
+    paragraph3: '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
+  });
   const sectionRef = useRef(null);
+
+  // localStorage에서 성과지표 데이터 로드
+  useEffect(() => {
+    const saved = localStorage.getItem('stats_content');
+    if (saved) {
+      try {
+        const parsedData = JSON.parse(saved);
+        setStatsData(parsedData);
+      } catch (error) {
+        console.error('성과지표 데이터 파싱 오류:', error);
+      }
+    }
+  }, []);
+
+  // localStorage에서 그룹소개 데이터 로드
+  useEffect(() => {
+    const saved = localStorage.getItem('group_content');
+    if (saved) {
+      try {
+        const parsedData = JSON.parse(saved);
+        setGroupData(parsedData);
+      } catch (error) {
+        console.error('그룹소개 데이터 파싱 오류:', error);
+      }
+    }
+  }, []);
 
   // Intersection Observer 설정
   useEffect(() => {
@@ -98,7 +140,7 @@ const GroupIntro = ({
                 isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
               }`}
             >
-              {title}
+              {groupData.title}
             </h2>
             
             {/* 내용 */}
@@ -108,9 +150,9 @@ const GroupIntro = ({
               }`}
               style={{ transitionDelay: '0.2s' }}
             >
-              {content.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
+              <p>{groupData.paragraph1}</p>
+              <p>{groupData.paragraph2}</p>
+              <p>{groupData.paragraph3}</p>
             </div>
             
             {/* 액션 버튼 */}
@@ -149,25 +191,51 @@ const GroupIntro = ({
               />
               
               {/* 통계 오버레이 */}
-              {stats && stats.length > 0 && (
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-                  <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-                      {stats.map((stat, index) => (
-                        <div key={index} className="text-center">
-                          <div className="text-2xl lg:text-3xl font-bold text-white mb-1">
-                            {counters[index] || 0}
-                            {stat.suffix}
-                          </div>
-                          <div className="text-sm lg:text-base text-gray-200">
-                            {stat.label}
-                          </div>
-                        </div>
-                      ))}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+                    {/* 경험 년수 */}
+                    <div className="text-center">
+                      <div className="text-2xl lg:text-3xl font-bold text-white mb-1">
+                        {statsData.years}
+                      </div>
+                      <div className="text-sm lg:text-base text-gray-200">
+                        {statsData.yearsLabel}
+                      </div>
+                    </div>
+                    
+                    {/* 프로젝트 수 */}
+                    <div className="text-center">
+                      <div className="text-2xl lg:text-3xl font-bold text-white mb-1">
+                        {statsData.projects}
+                      </div>
+                      <div className="text-sm lg:text-base text-gray-200">
+                        {statsData.projectsLabel}
+                      </div>
+                    </div>
+                    
+                    {/* 해외 진출국 */}
+                    <div className="text-center">
+                      <div className="text-2xl lg:text-3xl font-bold text-white mb-1">
+                        {statsData.countries}
+                      </div>
+                      <div className="text-sm lg:text-base text-gray-200">
+                        {statsData.countriesLabel}
+                      </div>
+                    </div>
+                    
+                    {/* 고객 만족도 */}
+                    <div className="text-center">
+                      <div className="text-2xl lg:text-3xl font-bold text-white mb-1">
+                        {statsData.support}
+                      </div>
+                      <div className="text-sm lg:text-base text-gray-200">
+                        {statsData.supportLabel}
+                      </div>
                     </div>
                   </div>
                 </div>
-              )}
+              </div>
             </div>
             
             {/* 추가 장식 요소 */}

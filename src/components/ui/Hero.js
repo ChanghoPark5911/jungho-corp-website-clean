@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from './Button';
 
 const Hero = ({
   backgroundImage,
-  mainCopy = "4개 계열사가 만드는\n완벽한 조명 생태계",
+  mainCopy = "4개 계열사를 활용하여 완벽한 조명 생태계를 달성합니다",
   subCopy = "4개 계열사를 활용하여 완벽한 조명 생태계를 달성합니다",
   stats = [],
   primaryAction,
@@ -13,6 +13,25 @@ const Hero = ({
   enhancedOverlay = false,
   ...props
 }) => {
+  const [heroData, setHeroData] = useState({
+    mainTitle: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
+    subtitle: "정호그룹은 조명제어 전문 기업으로서 혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다",
+    description: "150개 이상의 프로젝트와 40년간의 경험을 바탕으로 조명의 미래를 혁신합니다"
+  });
+
+  // localStorage에서 히어로 데이터 로드
+  useEffect(() => {
+    const saved = localStorage.getItem('hero_content');
+    if (saved) {
+      try {
+        const parsedData = JSON.parse(saved);
+        setHeroData(parsedData);
+      } catch (error) {
+        console.error('히어로 데이터 파싱 오류:', error);
+      }
+    }
+  }, []);
+
   return (
     <section 
       className={`relative min-h-screen flex items-center justify-center text-center text-white ${className}`}
@@ -37,7 +56,11 @@ const Hero = ({
           {/* 메인 콘텐츠 */}
           <div className="mb-16">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white drop-shadow-2xl">
-            {mainCopy.split('\n').map((line, index) => (
+            {heroData.title ? heroData.title.split('\n').map((line, index) => (
+              <span key={index} className="block">
+                {line}
+              </span>
+            )) : mainCopy.split('\n').map((line, index) => (
               <span key={index} className="block">
                 {line}
               </span>
@@ -64,7 +87,11 @@ const Hero = ({
               overflowWrap: 'break-word'
             }}
           >
-            {subCopy.split('\n').map((line, index) => (
+            {heroData.subtitle ? heroData.subtitle.split('\n').map((line, index) => (
+              <span key={index} className="block">
+                {line}
+              </span>
+            )) : subCopy.split('\n').map((line, index) => (
               <span key={index} className="block">
                 {line}
               </span>

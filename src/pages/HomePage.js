@@ -99,7 +99,24 @@ const HomePage = () => {
   // LocalStorage에서 데이터 불러오기
   useEffect(() => {
     const loadHomeData = () => {
-      // LocalStorage에서 데이터 불러오기
+      // 1. homepage_content 키에서 데이터 로드 (새로운 콘텐츠 관리 시스템)
+      const contentData = localStorage.getItem('homepage_content');
+      if (contentData) {
+        try {
+          const parsedData = JSON.parse(contentData);
+          
+          // 데이터 무결성 검증
+          if (validateHomeData(parsedData)) {
+            setHomeData(parsedData);
+            console.log('homepage_content에서 데이터 로드 완료');
+            return;
+          }
+        } catch (error) {
+          console.error('homepage_content 데이터 파싱 오류:', error);
+        }
+      }
+      
+      // 2. 기존 homeData 키에서 데이터 로드 (하위 호환성)
       const savedData = localStorage.getItem('homeData');
       if (savedData) {
         try {
@@ -134,7 +151,7 @@ const HomePage = () => {
 
     // LocalStorage 변경 감지
     const handleStorageChange = (e) => {
-      if (e.key === 'homeData') {
+      if (e.key === 'homeData' || e.key === 'homepage_content') {
         loadHomeData();
       }
     };
@@ -247,17 +264,58 @@ const HomePage = () => {
   // 현재 사용할 데이터 (LocalStorage 데이터 또는 기본 데이터)
   const currentData = homeData || defaultData;
 
+  // localStorage에서 성과지표 데이터 로드
+  const [statsData, setStatsData] = useState({
+    years: '40',
+    projects: '1000',
+    countries: '50',
+    support: '24/7',
+    yearsLabel: '조명제어 전문 경험',
+    projectsLabel: '프로젝트 완료',
+    countriesLabel: '해외 진출국',
+    supportLabel: '전문 기술 지원'
+  });
+
+  useEffect(() => {
+    const saved = localStorage.getItem('stats_content');
+    if (saved) {
+      try {
+        const parsedData = JSON.parse(saved);
+        setStatsData(parsedData);
+      } catch (error) {
+        console.error('성과지표 데이터 파싱 오류:', error);
+      }
+    }
+  }, []);
+
   // 히어로 섹션 데이터
   const heroData = {
     backgroundImage: optimizedImages.hero.src,
     webpBackgroundImage: optimizedImages.hero.webpSrc,
     mainCopy: currentData.hero.title,
     subCopy: currentData.hero.subtitle,
-    stats: currentData.achievements.map(achievement => ({
-      value: achievement.number,
-      suffix: '',
-      label: achievement.label
-    })),
+    stats: [
+      {
+        value: statsData.years,
+        suffix: '년+',
+        label: statsData.yearsLabel
+      },
+      {
+        value: statsData.projects,
+        suffix: '+',
+        label: statsData.projectsLabel
+      },
+      {
+        value: statsData.countries,
+        suffix: '+',
+        label: statsData.countriesLabel
+      },
+      {
+        value: statsData.support,
+        suffix: '',
+        label: statsData.supportLabel
+      }
+    ],
     primaryAction: {
       label: "사업영역 보기",
       path: "/business"
@@ -274,11 +332,28 @@ const HomePage = () => {
     content: currentData.group.description.split('\n\n'),
     image: optimizedImages.groupIntro.src,
     webpImage: optimizedImages.groupIntro.webpSrc,
-    stats: currentData.achievements.map(achievement => ({
-      value: achievement.number,
-      suffix: '',
-      label: achievement.label
-    })),
+    stats: [
+      {
+        value: statsData.years,
+        suffix: '년',
+        label: '전문 경험'
+      },
+      {
+        value: statsData.projects,
+        suffix: '+',
+        label: '프로젝트'
+      },
+      {
+        value: statsData.countries,
+        suffix: '+',
+        label: '해외 진출국'
+      },
+      {
+        value: statsData.support,
+        suffix: '',
+        label: '기술 지원'
+      }
+    ],
   };
 
   return (

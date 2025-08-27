@@ -10,6 +10,7 @@ import LivePreview from '../components/admin/LivePreview';
 import SimpleContentEditor from '../components/admin/SimpleContentEditor';
 import ImageManager from '../components/admin/ImageManager';
 
+
 // 관리자 인증 상태 (실제로는 서버에서 관리해야 함)
 const ADMIN_PASSWORD = 'admin123';
 
@@ -18,6 +19,19 @@ const AdminPage = () => {
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState('dashboard');
   const navigate = useNavigate();
+
+  // 컴포넌트 마운트 시 데이터 로드
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadHomePageData(); // 통합 데이터 먼저 로드
+      loadHomeData();
+      loadNewsData();
+      loadClarusFiles();
+      loadSubsidiaryData();
+      loadDashboardData();
+      loadUsers();
+    }
+  }, [isAuthenticated]);
 
   // 홈페이지 데이터 상태
   const [homeData, setHomeData] = useState(() => {
@@ -74,18 +88,116 @@ const AdminPage = () => {
   });
 
   // 뉴스 데이터 상태
-  const [newsData, setNewsData] = useState([
-    {
-      id: 1,
-      title: "정호그룹, AI 조명제어 기술로 CES 2024 혁신상 수상",
-      summary: "정호그룹이 개발한 AI 기반 스마트 조명제어 시스템이 CES 2024에서 혁신상을 수상했습니다.",
-      date: "2024.01.15",
-      category: "수상",
-      thumbnail: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      tags: ["AI", "CES", "수상"],
-      link: "#",
-      featured: true
+  const [newsData, setNewsData] = useState(() => {
+    // localStorage에서 뉴스 데이터 로드
+    const savedNewsData = localStorage.getItem('newsData');
+    if (savedNewsData) {
+      try {
+        return JSON.parse(savedNewsData);
+      } catch (error) {
+        console.error('뉴스 데이터 파싱 오류:', error);
+      }
     }
+    
+    // 기본 뉴스 데이터
+    const defaultNewsData = [
+      {
+        id: 1,
+        title: "정호그룹, AI 조명제어 기술로 CES 2024 혁신상 수상",
+        summary: "정호그룹이 개발한 AI 기반 스마트 조명제어 시스템이 CES 2024에서 혁신상을 수상했습니다.",
+        date: "2024.01.15",
+        category: "수상",
+        thumbnail: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        tags: ["AI", "CES", "수상"],
+        link: "#",
+        featured: true
+      }
+    ];
+    
+    // 기본 데이터를 localStorage에 저장
+    localStorage.setItem('newsData', JSON.stringify(defaultNewsData));
+    
+    return defaultNewsData;
+  });
+
+  // 클라루스 파일 데이터 상태
+  const [clarusFiles, setClarusFiles] = useState(() => {
+    // localStorage에서 클라루스 파일 데이터 로드
+    const savedFiles = localStorage.getItem('clarus_files');
+    if (savedFiles) {
+      try {
+        return JSON.parse(savedFiles);
+      } catch (error) {
+        console.error('클라루스 파일 데이터 파싱 오류:', error);
+      }
+    }
+    
+    // 기본 파일 데이터 (없음)
+    return {
+      technicalDocs: null,
+      productCatalog: null
+    };
+  });
+
+  // 홈페이지 섹션별 데이터 상태
+  const [heroData, setHeroData] = useState({
+    title: '40년 축적된 기술력으로\n조명의 미래를 혁신합니다',
+    subtitle: '정호그룹은 조명제어 전문 기업으로서 혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다',
+    description: '150개 이상의 프로젝트와 40년간의 경험을 바탕으로 조명의 미래를 혁신합니다'
+  });
+
+  const [statsData, setStatsData] = useState({
+    years: '40',
+    projects: '800',
+    countries: '7',
+    support: '99',
+    yearsLabel: '조명제어 전문 경험',
+    projectsLabel: '프로젝트 완료',
+    countriesLabel: '해외진출국',
+    supportLabel: '고객만족도'
+  });
+
+  const [groupData, setGroupData] = useState({
+    title: '40년 전통의 조명제어 전문기업',
+    paragraph1: '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.',
+    paragraph2: 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.',
+    paragraph3: '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
+  });
+
+  const [subsidiariesData, setSubsidiariesData] = useState({
+    sectionTitle: '4개 계열사가 만드는 완벽한 조명 생태계',
+    sectionSubtitle: '기술개발부터 고객서비스까지, 각 분야 전문성의 시너지',
+    clarus: {
+      name: '클라루스',
+      subtitle: 'AI 기반 스마트 조명제어',
+      description: '최신 AI 기술을 활용한 스마트 조명제어 시스템을 개발합니다.',
+      feature: 'AI 기반 자동 제어 시스템'
+    },
+    tlc: {
+      name: '정호티엘씨',
+      subtitle: 'IoT 센서 및 제어 장치',
+      description: 'IoT 센서 네트워크와 제어 장치를 통해 스마트한 환경을 구축합니다.',
+      feature: 'IoT 센서 네트워크'
+    },
+    illutech: {
+      name: '일루텍',
+      subtitle: '스마트 물류 솔루션',
+      description: '물류 분야의 자동화와 효율성을 극대화하는 솔루션을 제공합니다.',
+      feature: '스마트 물류 자동화'
+    },
+    texcom: {
+      name: '정호텍스컴',
+      subtitle: '텍스타일 제어 시스템',
+      description: '텍스타일 산업의 생산성을 향상시키는 제어 시스템을 개발합니다.',
+      feature: '텍스타일 제어 시스템'
+    }
+  });
+
+  const [achievementsData, setAchievementsData] = useState([
+    { number: '40', label: '년 전통' },
+    { number: '800+', label: '프로젝트' },
+    { number: '7+', label: '국가 진출' },
+    { number: '99%', label: '고객 만족도' }
   ]);
 
   // 새 뉴스 아이템 상태
@@ -467,13 +579,29 @@ const AdminPage = () => {
       id: Date.now(),
       date: new Date().toLocaleDateString('ko-KR')
     };
-    setNewsData([...newsData, newNews]);
+    const updatedNewsData = [...newsData, newNews];
+    setNewsData(updatedNewsData);
+    
+    // localStorage에 저장
+    localStorage.setItem('newsData', JSON.stringify(updatedNewsData));
+    
+    // 홈화면에 실시간 반영을 위한 이벤트 발생
+    window.dispatchEvent(new Event('newsDataUpdated'));
+    
     alert('뉴스가 추가되었습니다.');
   };
 
   // 뉴스 삭제 함수
   const deleteNews = (id) => {
-    setNewsData(newsData.filter(news => news.id !== id));
+    const updatedNewsData = newsData.filter(news => news.id !== id);
+    setNewsData(updatedNewsData);
+    
+    // localStorage에 저장
+    localStorage.setItem('newsData', JSON.stringify(updatedNewsData));
+    
+    // 홈화면에 실시간 반영을 위한 이벤트 발생
+    window.dispatchEvent(new Event('newsDataUpdated'));
+    
     alert('뉴스가 삭제되었습니다.');
   };
 
@@ -489,7 +617,78 @@ const AdminPage = () => {
   const loadNewsData = () => {
     const savedData = localStorage.getItem('newsData');
     if (savedData) {
-      setNewsData(JSON.parse(savedData));
+      try {
+        const data = JSON.parse(savedData);
+        setNewsData(data);
+        console.log('뉴스 데이터 로드됨:', data);
+      } catch (error) {
+        console.error('뉴스 데이터 로드 오류:', error);
+      }
+    } else {
+      console.log('저장된 뉴스 데이터가 없습니다.');
+    }
+  };
+
+  // 클라루스 파일 데이터 로드
+  const loadClarusFiles = () => {
+    const savedData = localStorage.getItem('clarus_files');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        setClarusFiles(data);
+        console.log('클라루스 파일 데이터 로드됨:', data);
+      } catch (error) {
+        console.error('클라루스 파일 데이터 로드 오류:', error);
+      }
+    } else {
+      console.log('저장된 클라루스 파일 데이터가 없습니다.');
+    }
+  };
+
+  // 클라루스 파일 업로드 처리
+  const handleClarusFileUpload = (fileType, file) => {
+    if (!file) return;
+
+    // 파일을 URL로 변환 (실제 프로덕션에서는 서버에 업로드)
+    const fileUrl = URL.createObjectURL(file);
+    
+    const fileData = {
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      url: fileUrl,
+      uploadedAt: new Date().toISOString()
+    };
+
+    const updatedFiles = {
+      ...clarusFiles,
+      [fileType]: fileData
+    };
+
+    setClarusFiles(updatedFiles);
+    localStorage.setItem('clarus_files', JSON.stringify(updatedFiles));
+    
+    // 홈화면에 실시간 반영을 위한 이벤트 발생
+    window.dispatchEvent(new Event('clarusFilesUpdated'));
+    
+    alert(`${fileType === 'technicalDocs' ? '기술 자료' : '제품 카탈로그'} 파일이 업로드되었습니다.`);
+  };
+
+  // 클라루스 파일 삭제
+  const handleClarusFileDelete = (fileType) => {
+    if (window.confirm('정말로 이 파일을 삭제하시겠습니까?')) {
+      const updatedFiles = {
+        ...clarusFiles,
+        [fileType]: null
+      };
+
+      setClarusFiles(updatedFiles);
+      localStorage.setItem('clarus_files', JSON.stringify(updatedFiles));
+      
+      // 홈화면에 실시간 반영을 위한 이벤트 발생
+      window.dispatchEvent(new Event('clarusFilesUpdated'));
+      
+      alert('파일이 삭제되었습니다.');
     }
   };
 
@@ -601,18 +800,178 @@ const AdminPage = () => {
   // 홈페이지 데이터 저장
   const saveHomeData = () => {
     localStorage.setItem('homeData', JSON.stringify(homeData));
+    
+    // 통합 데이터 구조로도 저장 (데이터 무결성 보장)
+    const existingHomePageData = localStorage.getItem('homePageData');
+    let homePageData = existingHomePageData ? JSON.parse(existingHomePageData) : {};
+    
+    // homeData를 homePageData에 병합
+    homePageData = { ...homePageData, ...homeData };
+    localStorage.setItem('homePageData', JSON.stringify(homePageData));
+    
+    // 홈화면에 실시간 반영을 위한 이벤트 발생
+    window.dispatchEvent(new Event('groupContentUpdated'));
+    window.dispatchEvent(new Event('homePageDataUpdated'));
+    
     alert('홈페이지 데이터가 저장되었습니다.');
+  };
+
+  // 통합 홈페이지 데이터 저장
+  const saveHomePageData = () => {
+    // 모든 관련 데이터를 통합하여 저장
+    const homePageData = {
+      hero: heroData,
+      stats: statsData,
+      group: groupData,
+      subsidiaries: subsidiariesData,
+      achievements: achievementsData,
+      ...homeData
+    };
+    
+    localStorage.setItem('homePageData', JSON.stringify(homePageData));
+    
+    // 모든 관련 이벤트 발생
+    window.dispatchEvent(new Event('heroContentUpdated'));
+    window.dispatchEvent(new Event('statsContentUpdated'));
+    window.dispatchEvent(new Event('groupContentUpdated'));
+    window.dispatchEvent(new Event('subsidiariesContentUpdated'));
+    window.dispatchEvent(new Event('homePageDataUpdated'));
+    
+    alert('통합 홈페이지 데이터가 저장되었습니다!');
+  };
+
+  // 통합 홈페이지 데이터 로드
+  const loadHomePageData = () => {
+    const savedData = localStorage.getItem('homePageData');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        console.log('통합 홈페이지 데이터 로드됨:', data);
+        
+        // 각 섹션별로 데이터 설정
+        if (data.hero) setHeroData(data.hero);
+        if (data.stats) setStatsData(data.stats);
+        if (data.group) setGroupData(data.group);
+        if (data.subsidiaries) setSubsidiariesData(data.subsidiaries);
+        if (data.achievements) setAchievementsData(data.achievements);
+        if (data.home) setHomeData(data.home);
+        
+        return data;
+      } catch (error) {
+        console.error('통합 홈페이지 데이터 로드 오류:', error);
+      }
+    }
+    return null;
+  };
+
+  // 데이터 무결성 검증 및 복구
+  const validateAndRepairData = () => {
+    console.log('데이터 무결성 검증 시작...');
+    
+    const homePageData = localStorage.getItem('homePageData');
+    const heroContent = localStorage.getItem('hero_content');
+    const statsContent = localStorage.getItem('stats_content');
+    const groupContent = localStorage.getItem('group_content');
+    const subsidiariesContent = localStorage.getItem('subsidiaries_content');
+    
+    let needsRepair = false;
+    let repairData = {};
+    
+    // 각 섹션별 데이터 검증
+    if (heroContent) {
+      try {
+        repairData.hero = JSON.parse(heroContent);
+      } catch (error) {
+        console.error('히어로 데이터 파싱 오류, 기본값 사용');
+        repairData.hero = {
+          title: '40년 축적된 기술력으로\n조명의 미래를 혁신합니다',
+          subtitle: '정호그룹은 조명제어 전문 기업으로서...',
+          description: '150개 이상의 프로젝트와...'
+        };
+        needsRepair = true;
+      }
+    }
+    
+    if (statsContent) {
+      try {
+        repairData.stats = JSON.parse(statsContent);
+      } catch (error) {
+        console.error('성과지표 데이터 파싱 오류, 기본값 사용');
+        repairData.stats = {
+          years: '40', projects: '800', countries: '7', support: '99',
+          yearsLabel: '조명제어 전문 경험', projectsLabel: '프로젝트 완료',
+          countriesLabel: '해외진출국', supportLabel: '고객만족도'
+        };
+        needsRepair = true;
+      }
+    }
+    
+    if (groupContent) {
+      try {
+        repairData.group = JSON.parse(groupContent);
+      } catch (error) {
+        console.error('그룹소개 데이터 파싱 오류, 기본값 사용');
+        repairData.group = {
+          title: '40년 전통의 조명제어 전문기업',
+          paragraph1: '1983년 창립 이래 40년간...',
+          paragraph2: 'B2B부터 B2C까지...',
+          paragraph3: '혁신적인 기술과 40년간...'
+        };
+        needsRepair = true;
+      }
+    }
+    
+    if (subsidiariesContent) {
+      try {
+        repairData.subsidiaries = JSON.parse(subsidiariesContent);
+      } catch (error) {
+        console.error('계열사소개 데이터 파싱 오류, 기본값 사용');
+        repairData.subsidiaries = {
+          sectionTitle: '4개 계열사가 만드는 완벽한 조명 생태계',
+          sectionSubtitle: '기술개발부터 고객서비스까지...',
+          clarus: { name: '클라루스', subtitle: 'AI 기반 스마트 조명제어' },
+          tlc: { name: '정호티엘씨', subtitle: 'IoT 센서 및 제어 장치' },
+          illutech: { name: '일루텍', subtitle: '스마트 물류 솔루션' },
+          texcom: { name: '정호텍스컴', subtitle: '텍스타일 제어 시스템' }
+        };
+        needsRepair = true;
+      }
+    }
+    
+    // 통합 데이터 저장
+    if (needsRepair || Object.keys(repairData).length > 0) {
+      localStorage.setItem('homePageData', JSON.stringify(repairData));
+      console.log('데이터 무결성 복구 완료:', repairData);
+      alert('데이터 무결성 검증 및 복구가 완료되었습니다.');
+      
+      // 복구된 데이터로 상태 업데이트
+      if (repairData.hero) setHeroData(repairData.hero);
+      if (repairData.stats) setStatsData(repairData.stats);
+      if (repairData.group) setGroupData(repairData.group);
+      if (repairData.subsidiaries) setSubsidiariesData(repairData.subsidiaries);
+    } else {
+      console.log('데이터 무결성 검증 완료: 모든 데이터가 정상입니다.');
+      alert('데이터 무결성 검증 완료: 모든 데이터가 정상입니다.');
+    }
   };
 
   // 뉴스 데이터 저장
   const saveNewsData = () => {
     localStorage.setItem('newsData', JSON.stringify(newsData));
+    
+    // 홈화면에 실시간 반영을 위한 이벤트 발생
+    window.dispatchEvent(new Event('newsDataUpdated'));
+    
     alert('뉴스 데이터가 저장되었습니다.');
   };
 
   // 계열사별 데이터 저장
   const saveSubsidiaryData = () => {
     localStorage.setItem('subsidiaryData', JSON.stringify(subsidiaryData));
+    
+    // 홈화면에 실시간 반영을 위한 이벤트 발생
+    window.dispatchEvent(new Event('subsidiariesContentUpdated'));
+    
     alert('계열사 데이터가 저장되었습니다.');
   };
 
@@ -878,6 +1237,20 @@ const AdminPage = () => {
                     <div className="text-purple-600 font-medium">계열사 관리</div>
                     <div className="text-sm text-gray-600 mt-1">계열사별 콘텐츠 관리</div>
                   </button>
+                  <button
+                    onClick={() => setActiveTab('clarus-files')}
+                    className="p-4 bg-orange-50 hover:bg-orange-100 rounded-lg text-left transition-colors"
+                  >
+                    <div className="text-orange-600 font-medium">클라루스 파일 관리</div>
+                    <div className="text-sm text-gray-600 mt-1">기술 자료, 카탈로그 파일 관리</div>
+                  </button>
+                  <button
+                    onClick={saveHomePageData}
+                    className="p-4 bg-green-600 hover:bg-green-700 rounded-lg text-left transition-colors text-white"
+                  >
+                    <div className="font-medium">🚀 통합 데이터 저장</div>
+                    <div className="text-sm mt-1 opacity-90">모든 홈페이지 데이터를 한 번에 저장</div>
+                  </button>
                 </div>
               </div>
             </div>
@@ -1101,6 +1474,127 @@ const AdminPage = () => {
                 ))}
               </div>
             </div>
+  );
+
+  // 클라루스 파일 관리 탭 컴포넌트
+  const ClarusFilesTab = ({ files, onUpload, onDelete }) => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-semibold">클라루스 파일 관리</h2>
+        <div className="text-sm text-gray-600">
+          기술 자료와 제품 카탈로그 파일을 관리합니다
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* 기술 자료 관리 */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">기술 자료</h3>
+          
+          {files.technicalDocs ? (
+            <div className="space-y-3">
+              <div className="bg-blue-50 p-3 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-blue-900">{files.technicalDocs.name}</p>
+                    <p className="text-sm text-blue-700">
+                      {(files.technicalDocs.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                    <p className="text-xs text-blue-600">
+                      업로드: {new Date(files.technicalDocs.uploadedAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => onDelete('technicalDocs')}
+                    className="text-red-600 hover:text-red-800 text-sm"
+                  >
+                    삭제
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-gray-500 mb-4">업로드된 기술 자료가 없습니다</p>
+              <label className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                파일 선택
+                <input
+                  type="file"
+                  className="hidden"
+                  accept=".pdf,.doc,.docx,.ppt,.pptx"
+                  onChange={(e) => onUpload('technicalDocs', e.target.files[0])}
+                />
+              </label>
+            </div>
+          )}
+        </div>
+
+        {/* 제품 카탈로그 관리 */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">제품 카탈로그</h3>
+          
+          {files.productCatalog ? (
+            <div className="space-y-3">
+              <div className="bg-green-50 p-3 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-green-900">{files.productCatalog.name}</p>
+                    <p className="text-sm text-green-700">
+                      {(files.productCatalog.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                    <p className="text-xs text-green-600">
+                      업로드: {new Date(files.productCatalog.uploadedAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => onDelete('productCatalog')}
+                    className="text-red-600 hover:text-red-800 text-sm"
+                  >
+                    삭제
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-gray-500 mb-4">업로드된 제품 카탈로그가 없습니다</p>
+              <label className="cursor-pointer bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+                파일 선택
+                <input
+                  type="file"
+                  className="hidden"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={(e) => onUpload('productCatalog', e.target.files[0])}
+                />
+              </label>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 파일 업로드 가이드 */}
+      <div className="bg-gray-50 rounded-lg p-6">
+        <h4 className="font-medium text-gray-900 mb-3">파일 업로드 가이드</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+          <div>
+            <p className="font-medium text-gray-700 mb-2">기술 자료</p>
+            <ul className="space-y-1">
+              <li>• PDF, Word, PowerPoint 파일 지원</li>
+              <li>• 최대 파일 크기: 50MB</li>
+              <li>• 기술 스펙, 매뉴얼 등</li>
+            </ul>
+          </div>
+          <div>
+            <p className="font-medium text-gray-700 mb-2">제품 카탈로그</p>
+            <ul className="space-y-1">
+              <li>• PDF, 이미지 파일 지원</li>
+              <li>• 최대 파일 크기: 50MB</li>
+              <li>• 제품 소개, 사양 등</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 
   // 사용자 관리 탭 컴포넌트
@@ -1526,6 +2020,37 @@ const AdminPage = () => {
               </button>
             )}
             
+            {hasPermission('content') && (
+              <button
+                onClick={() => setActiveTab('clarus-files')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'clarus-files'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                클라루스 파일
+              </button>
+            )}
+            
+            {hasPermission('content') && (
+              <button
+                onClick={saveHomePageData}
+                className="py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium"
+              >
+                🚀 통합 저장
+              </button>
+            )}
+            
+            {hasPermission('content') && (
+              <button
+                onClick={validateAndRepairData}
+                className="py-2 px-4 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors text-sm font-medium"
+              >
+                🔧 데이터 검증
+              </button>
+            )}
+
             {hasPermission('feedback') && (
               <button
                 onClick={() => setActiveTab('feedback')}
@@ -1698,6 +2223,20 @@ const AdminPage = () => {
                   <div className="text-purple-600 font-medium">계열사 관리</div>
                   <div className="text-sm text-gray-600 mt-1">계열사별 콘텐츠 관리</div>
                 </button>
+                <button
+                  onClick={() => setActiveTab('clarus-files')}
+                  className="p-4 bg-orange-50 hover:bg-orange-100 rounded-lg text-left transition-colors"
+                >
+                  <div className="text-orange-600 font-medium">클라루스 파일 관리</div>
+                  <div className="text-sm text-gray-600 mt-1">기술 자료, 카탈로그 파일 관리</div>
+                </button>
+                <button
+                  onClick={saveHomePageData}
+                  className="p-4 bg-green-600 hover:bg-green-700 rounded-lg text-left transition-colors text-white"
+                >
+                  <div className="font-medium">🚀 통합 데이터 저장</div>
+                  <div className="text-sm mt-1 opacity-90">모든 홈페이지 데이터를 한 번에 저장</div>
+                </button>
               </div>
             </div>
           </div>
@@ -1724,10 +2263,18 @@ const AdminPage = () => {
         )}
         
         {activeTab === 'subsidiary' && hasPermission('subsidiary') && (
-          <SubsidiaryManager 
+          <SubsidiaryTab 
             data={subsidiaryData} 
             onSave={saveContent}
             currentUser={currentUser}
+          />
+        )}
+        
+        {activeTab === 'clarus-files' && hasPermission('content') && (
+          <ClarusFilesTab 
+            files={clarusFiles}
+            onUpload={handleClarusFileUpload}
+            onDelete={handleClarusFileDelete}
           />
         )}
         

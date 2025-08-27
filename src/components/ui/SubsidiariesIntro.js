@@ -95,15 +95,50 @@ const SubsidiariesIntro = ({
 
   // localStorage에서 계열사 데이터 로드
   useEffect(() => {
-    const saved = localStorage.getItem('subsidiaries_content');
-    if (saved) {
-      try {
-        const parsedData = JSON.parse(saved);
-        setSubsidiariesData(parsedData);
-      } catch (error) {
-        console.error('계열사 데이터 파싱 오류:', error);
+    const loadSubsidiariesData = () => {
+      // 통합 데이터 구조에서 먼저 로드 시도
+      const homePageData = localStorage.getItem('homePageData');
+      if (homePageData) {
+        try {
+          const parsedData = JSON.parse(homePageData);
+          if (parsedData.subsidiaries) {
+            setSubsidiariesData(parsedData.subsidiaries);
+            console.log('통합 데이터에서 계열사 데이터 로드됨:', parsedData.subsidiaries);
+            return;
+          }
+        } catch (error) {
+          console.error('통합 데이터 파싱 오류:', error);
+        }
       }
-    }
+      
+      // 기존 개별 키에서 로드 (호환성 유지)
+      const saved = localStorage.getItem('subsidiaries_content');
+      if (saved) {
+        try {
+          const parsedData = JSON.parse(saved);
+          setSubsidiariesData(parsedData);
+          console.log('개별 키에서 계열사 데이터 로드됨:', parsedData);
+        } catch (error) {
+          console.error('계열사 데이터 파싱 오류:', error);
+        }
+      }
+    };
+    
+    // 초기 로드
+    loadSubsidiariesData();
+    
+    // 실시간 업데이트 리스너
+    const handleSubsidiariesUpdate = () => {
+      loadSubsidiariesData();
+    };
+    
+    window.addEventListener('subsidiariesContentUpdated', handleSubsidiariesUpdate);
+    window.addEventListener('homePageDataUpdated', handleSubsidiariesUpdate);
+    
+    return () => {
+      window.removeEventListener('subsidiariesContentUpdated', handleSubsidiariesUpdate);
+      window.removeEventListener('homePageDataUpdated', handleSubsidiariesUpdate);
+    };
   }, []);
 
   // subsidiaries가 없으면 기본값 사용

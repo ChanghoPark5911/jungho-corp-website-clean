@@ -15,13 +15,13 @@ const GroupIntro = ({
   const [counters, setCounters] = useState({});
   const [statsData, setStatsData] = useState({
     years: '40',
-    projects: '1000+',
-    countries: '50+',
-    support: '99%',
+    projects: '800',
+    countries: '7',
+    support: '99',
     yearsLabel: '조명제어 전문 경험',
     projectsLabel: '프로젝트 완료',
-    countriesLabel: '해외 진출국',
-    supportLabel: '고객 만족도'
+    countriesLabel: '해외진출국',
+    supportLabel: '고객만족도'
   });
   const [groupData, setGroupData] = useState({
     title: '40년 전통의 조명제어 전문기업',
@@ -33,28 +33,98 @@ const GroupIntro = ({
 
   // localStorage에서 성과지표 데이터 로드
   useEffect(() => {
-    const saved = localStorage.getItem('stats_content');
-    if (saved) {
-      try {
-        const parsedData = JSON.parse(saved);
-        setStatsData(parsedData);
-      } catch (error) {
-        console.error('성과지표 데이터 파싱 오류:', error);
+    const loadStatsData = () => {
+      // 통합 데이터 구조에서 먼저 로드 시도
+      const homePageData = localStorage.getItem('homePageData');
+      if (homePageData) {
+        try {
+          const parsedData = JSON.parse(homePageData);
+          if (parsedData.stats) {
+            setStatsData(parsedData.stats);
+            console.log('통합 데이터에서 성과지표 데이터 로드됨:', parsedData.stats);
+            return;
+          }
+        } catch (error) {
+          console.error('통합 데이터 파싱 오류:', error);
+        }
       }
-    }
+      
+      // 기존 개별 키에서 로드 (호환성 유지)
+      const saved = localStorage.getItem('stats_content');
+      if (saved) {
+        try {
+          const parsedData = JSON.parse(saved);
+          setStatsData(parsedData);
+          console.log('개별 키에서 성과지표 데이터 로드됨:', parsedData);
+        } catch (error) {
+          console.error('성과지표 데이터 파싱 오류:', error);
+        }
+      }
+    };
+    
+    // 초기 로드
+    loadStatsData();
+    
+    // 실시간 업데이트 리스너
+    const handleStatsUpdate = () => {
+      loadStatsData();
+    };
+    
+    window.addEventListener('statsContentUpdated', handleStatsUpdate);
+    window.addEventListener('homePageDataUpdated', handleStatsUpdate);
+    
+    return () => {
+      window.removeEventListener('statsContentUpdated', handleStatsUpdate);
+      window.removeEventListener('homePageDataUpdated', handleStatsUpdate);
+    };
   }, []);
 
   // localStorage에서 그룹소개 데이터 로드
   useEffect(() => {
-    const saved = localStorage.getItem('group_content');
-    if (saved) {
-      try {
-        const parsedData = JSON.parse(saved);
-        setGroupData(parsedData);
-      } catch (error) {
-        console.error('그룹소개 데이터 파싱 오류:', error);
+    const loadGroupData = () => {
+      // 통합 데이터 구조에서 먼저 로드 시도
+      const homePageData = localStorage.getItem('homePageData');
+      if (homePageData) {
+        try {
+          const parsedData = JSON.parse(homePageData);
+          if (parsedData.group) {
+            setGroupData(parsedData.group);
+            console.log('통합 데이터에서 그룹소개 데이터 로드됨:', parsedData.group);
+            return;
+          }
+        } catch (error) {
+          console.error('통합 데이터 파싱 오류:', error);
+        }
       }
-    }
+      
+      // 기존 개별 키에서 로드 (호환성 유지)
+      const saved = localStorage.getItem('group_content');
+      if (saved) {
+        try {
+          const parsedData = JSON.parse(saved);
+          setGroupData(parsedData);
+          console.log('개별 키에서 그룹소개 데이터 로드됨:', parsedData);
+        } catch (error) {
+          console.error('그룹소개 데이터 파싱 오류:', error);
+        }
+      }
+    };
+    
+    // 초기 로드
+    loadGroupData();
+    
+    // 실시간 업데이트 리스너
+    const handleGroupUpdate = () => {
+      loadGroupData();
+    };
+    
+    window.addEventListener('groupContentUpdated', handleGroupUpdate);
+    window.addEventListener('homePageDataUpdated', handleGroupUpdate);
+    
+    return () => {
+      window.removeEventListener('groupContentUpdated', handleGroupUpdate);
+      window.removeEventListener('homePageDataUpdated', handleGroupUpdate);
+    };
   }, []);
 
   // Intersection Observer 설정

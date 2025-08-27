@@ -105,6 +105,37 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
     loadTabContent('stats');
     loadTabContent('group');
     loadTabContent('subsidiaries');
+    
+    // 히어로 섹션 기본 데이터가 없으면 저장
+    const heroSaved = localStorage.getItem('hero_content');
+    if (!heroSaved) {
+      const defaultHeroData = {
+        title: '40년 축적된 기술력으로\n조명의 미래를 혁신합니다',
+        subtitle: '정호그룹은 조명제어 전문 기업으로서 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다',
+        description: '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.'
+      };
+      localStorage.setItem('hero_content', JSON.stringify(defaultHeroData));
+      setHeroContent(defaultHeroData);
+      console.log('히어로 섹션 기본 데이터 저장됨');
+    }
+    
+    // 성과지표 기본 데이터가 없으면 저장
+    const statsSaved = localStorage.getItem('stats_content');
+    if (!statsSaved) {
+      const defaultStatsData = {
+        years: '40',
+        projects: '800',
+        countries: '7',
+        support: '99',
+        yearsLabel: '조명제어 전문 경험',
+        projectsLabel: '프로젝트 완료',
+        countriesLabel: '해외진출국',
+        supportLabel: '고객만족도'
+      };
+      localStorage.setItem('stats_content', JSON.stringify(defaultStatsData));
+      setStatsContent(defaultStatsData);
+      console.log('성과지표 기본 데이터 저장됨');
+    }
   }, []);
 
   // 각 탭별 저장된 데이터 로드
@@ -144,6 +175,45 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
     try {
       const storageKey = `${tabName}_content`;
       localStorage.setItem(storageKey, JSON.stringify(content));
+      
+      // 통합 데이터 구조로도 저장 (데이터 무결성 보장)
+      const existingHomePageData = localStorage.getItem('homePageData');
+      let homePageData = existingHomePageData ? JSON.parse(existingHomePageData) : {};
+      
+      // 해당 섹션 데이터 업데이트
+      homePageData[tabName] = content;
+      
+      // 통합 데이터 저장
+      localStorage.setItem('homePageData', JSON.stringify(homePageData));
+      
+      // 히어로 섹션 저장 시 홈페이지에 실시간 반영
+      if (tabName === 'hero') {
+        window.dispatchEvent(new Event('heroContentUpdated'));
+        console.log('히어로 섹션 업데이트 이벤트 발생');
+      }
+      
+      // 성과지표 저장 시 히어로 섹션에도 알림
+      if (tabName === 'stats') {
+        window.dispatchEvent(new Event('statsContentUpdated'));
+        console.log('성과지표 업데이트 이벤트 발생');
+      }
+      
+      // 그룹소개 저장 시 홈페이지에 실시간 반영
+      if (tabName === 'group') {
+        window.dispatchEvent(new Event('groupContentUpdated'));
+        console.log('그룹소개 업데이트 이벤트 발생');
+      }
+      
+      // 계열사소개 저장 시 홈페이지에 실시간 반영
+      if (tabName === 'subsidiaries') {
+        window.dispatchEvent(new Event('subsidiariesContentUpdated'));
+        console.log('계열사소개 업데이트 이벤트 발생');
+      }
+      
+      // 통합 데이터 업데이트 이벤트 발생
+      window.dispatchEvent(new Event('homePageDataUpdated'));
+      console.log('통합 홈페이지 데이터 업데이트 이벤트 발생');
+      
       alert(`${tabName} 섹션이 저장되었습니다!`);
     } catch (error) {
       console.error(`${tabName} 저장 오류:`, error);
@@ -329,6 +399,18 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
             placeholder="설명을 입력하세요"
           />
         </div>
+        
+        {/* 저장 버튼 - 편집 모드일 때만 표시 */}
+        {isEditMode && (
+          <div className="pt-4">
+            <button
+              onClick={() => saveTabContent('hero', heroContent)}
+              className="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 transition-colors duration-200 font-medium"
+            >
+              히어로 섹션 저장
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -461,6 +543,18 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
             placeholder="고객 만족도"
           />
         </div>
+        
+        {/* 저장 버튼 - 편집 모드일 때만 표시 */}
+        {isEditMode && (
+          <div className="pt-6">
+            <button
+              onClick={() => saveTabContent('stats', statsContent)}
+              className="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 transition-colors duration-200 font-medium"
+            >
+              성과지표 저장
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

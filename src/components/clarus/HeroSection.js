@@ -1,11 +1,69 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const HeroSection = () => {
+  const [fileData, setFileData] = useState({
+    technicalDocs: null,
+    productCatalog: null
+  });
+
+  // localStorage에서 파일 데이터 로드
+  useEffect(() => {
+    const loadFileData = () => {
+      const saved = localStorage.getItem('clarus_files');
+      if (saved) {
+        try {
+          const parsedData = JSON.parse(saved);
+          setFileData(parsedData);
+        } catch (error) {
+          console.error('파일 데이터 파싱 오류:', error);
+        }
+      }
+    };
+    
+    loadFileData();
+    
+    // 실시간 업데이트 리스너
+    const handleFileUpdate = () => {
+      loadFileData();
+    };
+    
+    window.addEventListener('clarusFilesUpdated', handleFileUpdate);
+    
+    return () => {
+      window.removeEventListener('clarusFilesUpdated', handleFileUpdate);
+    };
+  }, []);
+
   const stats = [
     { label: '15년+', value: 'R&D 투자' },
     { label: '50+', value: '특허 보유' },
     { label: '30+', value: '해외 진출국' }
   ];
+
+  // 기술 자료 다운로드
+  const handleTechnicalDocsDownload = () => {
+    if (fileData.technicalDocs) {
+      // 파일 다운로드 링크 생성
+      const link = document.createElement('a');
+      link.href = fileData.technicalDocs.url;
+      link.download = fileData.technicalDocs.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      alert('기술 자료 파일이 아직 업로드되지 않았습니다.');
+    }
+  };
+
+  // 제품 카탈로그 보기
+  const handleProductCatalogView = () => {
+    if (fileData.productCatalog) {
+      // 새 창에서 카탈로그 열기
+      window.open(fileData.productCatalog.url, '_blank');
+    } else {
+      alert('제품 카탈로그 파일이 아직 업로드되지 않았습니다.');
+    }
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -47,13 +105,36 @@ const HeroSection = () => {
 
         {/* CTA 버튼 */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="bg-white text-blue-900 font-semibold py-4 px-8 rounded-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105">
-            기술 자료 다운로드
+          <button 
+            onClick={handleTechnicalDocsDownload}
+            className={`font-semibold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 ${
+              fileData.technicalDocs 
+                ? 'bg-white text-blue-900 hover:bg-blue-50' 
+                : 'bg-gray-400 text-gray-600 cursor-not-allowed'
+            }`}
+            disabled={!fileData.technicalDocs}
+          >
+            {fileData.technicalDocs ? '기술 자료 다운로드' : '기술 자료 준비 중'}
           </button>
-          <button className="bg-transparent border-2 border-white text-white font-semibold py-4 px-8 rounded-lg hover:bg-white hover:text-blue-900 transition-all duration-300">
-            제품 카탈로그 보기
+          <button 
+            onClick={handleProductCatalogView}
+            className={`font-semibold py-4 px-8 rounded-lg transition-all duration-300 ${
+              fileData.productCatalog 
+                ? 'bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-900' 
+                : 'bg-gray-400 text-gray-600 border-2 border-gray-400 cursor-not-allowed'
+            }`}
+            disabled={!fileData.productCatalog}
+          >
+            {fileData.productCatalog ? '제품 카탈로그 보기' : '카탈로그 준비 중'}
           </button>
         </div>
+
+        {/* 파일 상태 표시 */}
+        {(!fileData.technicalDocs || !fileData.productCatalog) && (
+          <div className="mt-6 text-blue-200 text-sm">
+            <p>관리자 페이지에서 관련 파일을 업로드해주세요.</p>
+          </div>
+        )}
       </div>
 
       {/* 스크롤 인디케이터 */}

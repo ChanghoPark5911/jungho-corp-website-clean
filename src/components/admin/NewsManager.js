@@ -38,6 +38,10 @@ const NewsManager = ({ data, onAdd, onDelete, onSave }) => {
       );
       setNewsList(updatedNews);
       onSave('news', updatedNews);
+      
+      // 홈화면에 실시간 반영을 위한 이벤트 발생
+      window.dispatchEvent(new Event('newsDataUpdated'));
+      
       setEditingId(null);
     } else {
       // 추가

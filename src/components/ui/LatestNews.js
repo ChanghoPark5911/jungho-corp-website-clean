@@ -8,7 +8,38 @@ const LatestNews = ({
   ...props
 }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [newsData, setNewsData] = useState([]);
   const sectionRef = useRef(null);
+
+  // localStorage에서 뉴스 데이터 로드 및 실시간 업데이트
+  useEffect(() => {
+    const loadNewsData = () => {
+      const saved = localStorage.getItem('newsData');
+      if (saved) {
+        try {
+          const parsedData = JSON.parse(saved);
+          setNewsData(parsedData);
+          console.log('뉴스 데이터 로드됨:', parsedData);
+        } catch (error) {
+          console.error('뉴스 데이터 파싱 오류:', error);
+        }
+      }
+    };
+    
+    // 초기 로드
+    loadNewsData();
+    
+    // 실시간 업데이트 리스너
+    const handleNewsUpdate = () => {
+      loadNewsData();
+    };
+    
+    window.addEventListener('newsDataUpdated', handleNewsUpdate);
+    
+    return () => {
+      window.removeEventListener('newsDataUpdated', handleNewsUpdate);
+    };
+  }, []);
 
   // 기본 뉴스 데이터 (news가 전달되지 않았을 때 사용)
   const defaultNews = [
@@ -41,8 +72,8 @@ const LatestNews = ({
     }
   ];
 
-  // news가 없으면 기본값 사용
-  const newsToRender = news && news.length > 0 ? news : defaultNews;
+  // localStorage 데이터가 있으면 사용, 없으면 기본값 사용
+  const newsToRender = newsData.length > 0 ? newsData : (news && news.length > 0 ? news : defaultNews);
 
   // Intersection Observer 설정
   useEffect(() => {

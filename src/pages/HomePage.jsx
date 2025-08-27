@@ -4,9 +4,7 @@ import { HomePageSEO } from '../components/SEO';
 import Hero from '../components/ui/Hero';
 import GroupIntro from '../components/ui/GroupIntro';
 import SubsidiariesIntro from '../components/ui/SubsidiariesIntro';
-import CoreTechnologies from '../components/ui/CoreTechnologies';
 import ProjectGallery from '../components/ui/ProjectGallery';
-import GlobalPresence from '../components/ui/GlobalPresence';
 import CustomerSupport from '../components/ui/CustomerSupport';
 import LatestNews from '../components/ui/LatestNews';
 
@@ -39,10 +37,10 @@ const defaultData = {
     description: "150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다."
   },
   achievements: [
-    { number: '40', suffix: '년+', label: '조명제어 전문 경험' },
-    { number: '1000', suffix: '+', label: '프로젝트 완료' },
-    { number: '50', suffix: '+', label: '해외 진출국' },
-    { number: '24', suffix: '/7', label: '전문 기술 지원' }
+    { number: '40', suffix: '년', label: '조명제어 전문 경험' },
+    { number: '800', suffix: '+', label: '프로젝트 완료' },
+    { number: '7', suffix: '+', label: '해외진출국' },
+    { number: '99', suffix: '%', label: '고객만족도' }
   ],
   groupOverview: {
     title: '40년 전통의 조명제어 전문기업',
@@ -293,47 +291,6 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* 핵심 기술 섹션 */}
-        <section className="section">
-          <div className="container">
-            <CoreTechnologies />
-          </div>
-        </section>
-
-        {/* 이미지 표시 위치 안내 섹션 */}
-        {Object.keys(imageData).length > 0 && (
-          <section className="section bg-blue-50 py-8">
-            <div className="container">
-              <div className="text-center">
-                <h3 className="text-2xl font-bold text-blue-800 mb-4">📸 이미지 표시 위치 안내</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  {imageData.hero && Object.keys(imageData.hero).length > 0 && (
-                    <div className="bg-white p-4 rounded-lg shadow">
-                      <div className="text-green-600 font-semibold mb-2">✅ Hero 배경 이미지</div>
-                      <div className="text-gray-600">홈페이지 상단 메인 배경으로 표시됩니다</div>
-                    </div>
-                  )}
-                  {imageData.logo && Object.keys(imageData.logo).length > 0 && (
-                    <div className="bg-white p-4 rounded-lg shadow">
-                      <div className="text-green-600 font-semibold mb-2">✅ 로고 이미지</div>
-                      <div className="text-gray-600">페이지 상단 헤더에 표시됩니다</div>
-                    </div>
-                  )}
-                  {imageData.gallery && Object.keys(imageData.gallery).length > 0 && (
-                    <div className="bg-white p-4 rounded-lg shadow">
-                      <div className="text-green-600 font-semibold mb-2">✅ 갤러리 이미지</div>
-                      <div className="text-gray-600">프로젝트 카드에 표시됩니다</div>
-                      <div className="text-blue-600 text-xs mt-2">
-                        💡 여러 장 업로드 시: 첫 번째 이미지부터 순서대로 프로젝트 카드에 적용됩니다
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
         {/* 프로젝트 갤러리 섹션 */}
         <section className="section bg-neutral-50">
           <div className="container">
@@ -343,14 +300,7 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* 글로벌 진출 섹션 */}
-        <section className="section">
-          <div className="container">
-            <GlobalPresence />
-          </div>
-        </section>
-
-        {/* 고객 지원 섹션 */}
+        {/* 언제나 함께하는 든든한 파트너 섹션 */}
         <section className="section bg-gradient-green-blue">
           <div className="container">
             <CustomerSupport />

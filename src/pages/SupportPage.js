@@ -127,7 +127,7 @@ const SupportPage = () => {
       
       {/* 히어로 섹션 */}
       <section className="hero-section">
-        <Hero {...heroData} />
+        <Hero {...heroData} useLocalStorage={false} />
       </section>
 
       {/* 지원 채널 */}

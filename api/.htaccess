@@ -1,0 +1,22 @@
+RewriteEngine On
+
+# 업로드된 파일 서빙
+RewriteRule ^uploads/(.*)$ ../uploads/$1 [L]
+
+# 파일 다운로드 헤더 설정
+<FilesMatch "\.(pdf|doc|docx|ppt|pptx|jpg|jpeg|png)$">
+    Header set Content-Disposition "inline"
+    Header set Cache-Control "public, max-age=31536000"
+</FilesMatch>
+
+# 보안 설정
+<Files "*.json">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# PHP 파일 실행 허용
+<Files "*.php">
+    Order allow,deny
+    Allow from all
+</Files>

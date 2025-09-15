@@ -8,6 +8,13 @@ import ProjectGallery from '../components/ui/ProjectGallery';
 import GlobalPresence from '../components/ui/GlobalPresence';
 import CustomerSupport from '../components/ui/CustomerSupport';
 import LatestNews from '../components/ui/LatestNews';
+import ScrollAnimation from '../components/ui/ScrollAnimation';
+import ResponsiveContainer from '../components/ui/ResponsiveContainer';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
+import ErrorBoundary from '../components/ui/ErrorBoundary';
+import SkipLink from '../components/ui/SkipLink';
+import ScrollProgress from '../components/ui/ScrollProgress';
+import contentLoader from '../utils/contentLoader';
 
 // 최적화된 이미지 데이터
 const optimizedImages = {
@@ -33,6 +40,9 @@ const optimizedImages = {
 const HomePage = () => {
   // 동적 데이터 상태
   const [homeData, setHomeData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [forceUpdate, setForceUpdate] = useState(0); // 강제 업데이트를 위한 상태
 
   // 데이터 무결성 검증 함수
   const validateHomeData = (data) => {
@@ -72,7 +82,7 @@ const HomePage = () => {
       const backupKeys = Object.keys(localStorage).filter(key => key.startsWith('homeData_backup_'));
       
       if (backupKeys.length === 0) {
-        alert('사용 가능한 백업이 없습니다. 기본 데이터를 사용합니다.');
+        console.log('사용 가능한 백업이 없습니다. 기본 데이터를 사용합니다.');
         return;
       }
       
@@ -85,208 +95,172 @@ const HomePage = () => {
         if (validateHomeData(parsedData)) {
           setHomeData(parsedData);
           localStorage.setItem('homeData', backupData);
-          alert('백업에서 데이터가 성공적으로 복구되었습니다!');
+          console.log('백업에서 데이터가 성공적으로 복구되었습니다!');
         } else {
-          alert('백업 데이터에도 문제가 있습니다. 기본 데이터를 사용합니다.');
+          console.log('백업 데이터에도 문제가 있습니다. 기본 데이터를 사용합니다.');
         }
       }
     } catch (error) {
       console.error('데이터 복구 오류:', error);
-      alert('데이터 복구 중 오류가 발생했습니다. 기본 데이터를 사용합니다.');
     }
   };
 
-  // LocalStorage에서 데이터 불러오기
+  // 데이터 로딩
   useEffect(() => {
-    const loadHomeData = () => {
-      // 1. homepage_content 키에서 데이터 로드 (새로운 콘텐츠 관리 시스템)
-      const contentData = localStorage.getItem('homepage_content');
-      if (contentData) {
-        try {
-          const parsedData = JSON.parse(contentData);
-          
-          // 데이터 무결성 검증
-          if (validateHomeData(parsedData)) {
-            setHomeData(parsedData);
-            console.log('homepage_content에서 데이터 로드 완료');
+    const loadHomeData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // 캐시 무효화
+        contentLoader.invalidateCache('homepage');
+        
+        // 직접 JSON 파일 로드
+        const response = await fetch('/public/content/homepage.json');
+        if (response.ok) {
+          const data = await response.json();
+          if (validateHomeData(data)) {
+            setHomeData(data);
+            contentLoader.saveBackup('homepage', data);
             return;
           }
-        } catch (error) {
-          console.error('homepage_content 데이터 파싱 오류:', error);
         }
-      }
-      
-      // 2. 기존 homeData 키에서 데이터 로드 (하위 호환성)
-      const savedData = localStorage.getItem('homeData');
-      if (savedData) {
-        try {
-          const parsedData = JSON.parse(savedData);
-          
-          // 데이터 무결성 검증
-          if (validateHomeData(parsedData)) {
-            setHomeData(parsedData);
-          } else {
-            console.warn('데이터 무결성 검증 실패, 기본 데이터 사용');
-            setHomeData(null);
-            
-            // 사용자에게 데이터 복구 알림
-            const shouldRecover = window.confirm(
-              '저장된 데이터에 문제가 있습니다. 백업에서 복구하시겠습니까?\n\n' +
-              '확인: 백업 복구 시도\n' +
-              '취소: 기본 데이터 사용'
-            );
-            
-            if (shouldRecover) {
-              attemptDataRecovery();
+        
+        // 폴백 데이터 사용
+        const fallbackData = {
+          hero: {
+            title: "정호그룹의 사업영역",
+            subtitle: "조명제어 전문기업으로서 40년간 축적된 기술력으로,\n다양한 분야에서 혁신적인 솔루션을 제공합니다",
+            description: "수많은 프로젝트의 성공적인 시공 및 운영경험을 바탕으로 최고의 고객가치를 창출합니다"
+          },
+          achievements: [
+            { number: "40", label: "년 전통" },
+            { number: "800+", label: "프로젝트" },
+            { number: "7+", label: "국가 진출" },
+            { number: "99%", label: "고객 만족도" }
+          ],
+          group: {
+            title: "정호그룹 소개",
+            description: "1983년 창립 이래 40년간 조명제어 분야 전문성을 축적해온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어의 새로운 표준을 제시하였습니다."
+          },
+          subsidiaries: [
+            {
+              name: "클라루스",
+              subtitle: "AI 기반 스마트 조명/전력제어",
+              description: "스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문업체"
+            },
+            {
+              name: "정호티엘씨",
+              subtitle: "조명/전력제어의 설계/시공/사후관리",
+              description: "공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축(시공)하고, 사후관리를 담당하는 전문업체"
+            },
+            {
+              name: "일루텍",
+              subtitle: "유.무선 스마트조명제품 쇼핑몰 공급",
+              description: "유.무선 조명제어 제품을 국내외 유명 쇼핑몰에 전시, 판매, 시공기술지원 업체"
+            },
+            {
+              name: "정호텍스컴",
+              subtitle: "섬유의 전통, 패션의 미래를 열어갑니다",
+              description: "40년간 축적된 섬유기계 전문성과 패션브랜드 론칭을 통해 새로운 가치를 창출하는 전문업체"
             }
-          }
-        } catch (error) {
-          console.error('LocalStorage 데이터 파싱 오류:', error);
-          setHomeData(null);
-        }
+          ]
+        };
+        
+        setHomeData(fallbackData);
+        contentLoader.saveBackup('homepage', fallbackData);
+        setForceUpdate(prev => prev + 1); // 강제 업데이트 트리거
+        
+      } catch (err) {
+        console.error('홈페이지 데이터 로딩 실패:', err);
+        setError(err.message);
+        attemptDataRecovery();
+      } finally {
+        setLoading(false);
       }
     };
-
+    
     loadHomeData();
-
-    // LocalStorage 변경 감지
-    const handleStorageChange = (e) => {
-      if (e.key === 'homeData' || e.key === 'homepage_content') {
-        loadHomeData();
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    // 페이지 포커스 시 데이터 새로고침
-    const handleFocus = () => {
-      loadHomeData();
-    };
-    
-    window.addEventListener('focus', handleFocus);
-
-    // 전역 이벤트 리스너 (관리자 페이지에서 발생)
-    const handleGlobalDataChange = () => {
-      if (window.globalHomeData) {
-        setHomeData(window.globalHomeData);
-      }
-    };
-    
-    window.addEventListener('globalHomeDataChanged', handleGlobalDataChange);
-    
-    // 메시지 이벤트 리스너 (다른 탭에서 관리자 페이지가 데이터를 업데이트할 경우)
-    const handleMessage = (event) => {
-      if (event.data && event.data.type === 'homeDataUpdated') {
-        console.log('postMessage로 데이터 업데이트 수신:', event.data.data);
-        setHomeData(event.data.data);
-      }
-    };
-    
-    window.addEventListener('message', handleMessage);
-    
-    // 주기적으로 LocalStorage 데이터 확인 (백업 동기화)
-    const intervalId = setInterval(() => {
-      const savedData = localStorage.getItem('homeData');
-      if (savedData && homeData) {
-        try {
-          const parsedData = JSON.parse(savedData);
-          // 데이터가 다르면 업데이트
-          if (JSON.stringify(parsedData) !== JSON.stringify(homeData)) {
-            console.log('주기적 동기화로 데이터 업데이트:', parsedData);
-            setHomeData(parsedData);
-          }
-        } catch (error) {
-          console.error('주기적 동기화 데이터 파싱 오류:', error);
-        }
-      }
-    }, 2000); // 2초마다 확인
-    
-    // 페이지 가시성 변경 감지 (탭 전환 시)
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        loadHomeData();
-      }
-    };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('focus', handleFocus);
-      window.removeEventListener('globalHomeDataChanged', handleGlobalDataChange);
-      window.removeEventListener('message', handleMessage);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      clearInterval(intervalId);
-    };
   }, []);
 
-  // 기본 데이터 (LocalStorage에 데이터가 없을 때 사용)
-  const defaultData = {
+  // 로딩 상태 표시
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" text="홈페이지를 불러오는 중..." />
+      </div>
+    );
+  }
+
+  // 에러 상태 표시
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
+          <div className="text-center">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+              <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              데이터 로딩 실패
+            </h3>
+            <p className="text-sm text-gray-500 mb-4">
+              {error}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              다시 시도
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 현재 사용할 데이터
+  const currentData = homeData || {
     hero: {
-      title: '정호그룹\n조명의 미래를\n만들어갑니다',
-      subtitle: '40년 전통의 조명제어 전문기업',
-      description: '혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다'
+      title: "정호그룹의 사업영역",
+      subtitle: "조명제어 전문기업으로서 40년간 축적된 기술력으로,\n다양한 분야에서 혁신적인 솔루션을 제공합니다",
+      description: "수많은 프로젝트의 성공적인 시공 및 운영경험을 바탕으로 최고의 고객가치를 창출합니다"
     },
     achievements: [
-      { number: '40', label: '년 전통' },
-      { number: '1000+', label: '프로젝트' },
-      { number: '50+', label: '국가 진출' },
-      { number: '99%', label: '고객 만족도' }
+      { number: "40", label: "년 전통" },
+      { number: "800+", label: "프로젝트" },
+      { number: "7+", label: "국가 진출" },
+      { number: "99%", label: "고객 만족도" }
     ],
     group: {
-      title: '40년 전통의 조명제어 전문기업',
-      description: '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.\n\nB2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.\n\n혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
+      title: "정호그룹 소개",
+      description: "1983년 창립 이래 40년간 조명제어 분야 전문성을 축적해온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어의 새로운 표준을 제시하였습니다."
     },
     subsidiaries: [
       {
-        name: '클라루스',
-        subtitle: '조명제어 시스템',
-        description: '스마트 조명제어 솔루션 전문기업'
+        name: "클라루스",
+        subtitle: "AI 기반 스마트 조명/전력제어",
+        description: "스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문업체"
       },
       {
-        name: '정호티엘씨',
-        subtitle: 'LED 조명',
-        description: '친환경 LED 조명 제품 전문기업'
+        name: "정호티엘씨",
+        subtitle: "조명/전력제어의 설계/시공/사후관리",
+        description: "공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축(시공)하고, 사후관리를 담당하는 전문업체"
       },
       {
-        name: '일루텍',
-        subtitle: '조명 디자인',
-        description: '창의적인 조명 디자인 전문기업'
+        name: "일루텍",
+        subtitle: "유.무선 스마트조명제품 쇼핑몰 공급",
+        description: "유.무선 조명제어 제품을 국내외 유명 쇼핑몰에 전시, 판매, 시공기술지원 업체"
       },
       {
-        name: '정호텍스컴',
-        subtitle: '조명 기술',
-        description: '최첨단 조명 기술 개발 전문기업'
+        name: "정호텍스컴",
+        subtitle: "섬유의 전통, 패션의 미래를 열어갑니다",
+        description: "40년간 축적된 섬유기계 전문성과 패션브랜드 론칭을 통해 새로운 가치를 창출하는 전문업체"
       }
     ]
   };
-
-  // 현재 사용할 데이터 (LocalStorage 데이터 또는 기본 데이터)
-  const currentData = homeData || defaultData;
-
-  // localStorage에서 성과지표 데이터 로드
-  const [statsData, setStatsData] = useState({
-    years: '40',
-    projects: '1000',
-    countries: '50',
-    support: '24/7',
-    yearsLabel: '조명제어 전문 경험',
-    projectsLabel: '프로젝트 완료',
-    countriesLabel: '해외 진출국',
-    supportLabel: '전문 기술 지원'
-  });
-
-  useEffect(() => {
-    const saved = localStorage.getItem('stats_content');
-    if (saved) {
-      try {
-        const parsedData = JSON.parse(saved);
-        setStatsData(parsedData);
-      } catch (error) {
-        console.error('성과지표 데이터 파싱 오류:', error);
-      }
-    }
-  }, []);
 
   // 히어로 섹션 데이터
   const heroData = {
@@ -294,36 +268,19 @@ const HomePage = () => {
     webpBackgroundImage: optimizedImages.hero.webpSrc,
     mainCopy: currentData.hero.title,
     subCopy: currentData.hero.subtitle,
-    stats: [
-      {
-        value: statsData.years,
-        suffix: '년+',
-        label: statsData.yearsLabel
-      },
-      {
-        value: statsData.projects,
-        suffix: '+',
-        label: statsData.projectsLabel
-      },
-      {
-        value: statsData.countries,
-        suffix: '+',
-        label: statsData.countriesLabel
-      },
-      {
-        value: statsData.support,
-        suffix: '',
-        label: statsData.supportLabel
-      }
-    ],
+    stats: currentData.achievements.map(achievement => ({
+      value: achievement.number,
+      label: achievement.label
+    })),
     primaryAction: {
-      label: "사업영역 보기",
+      label: "비즈니스 보기",
       path: "/business"
     },
     secondaryAction: {
       label: "문의하기",
       path: "/support"
-    }
+    },
+    useLocalStorage: false // localStorage 사용 비활성화
   };
 
   // 그룹 소개 섹션 데이터
@@ -332,88 +289,88 @@ const HomePage = () => {
     content: currentData.group.description.split('\n\n'),
     image: optimizedImages.groupIntro.src,
     webpImage: optimizedImages.groupIntro.webpSrc,
-    stats: [
-      {
-        value: statsData.years,
-        suffix: '년',
-        label: '전문 경험'
-      },
-      {
-        value: statsData.projects,
-        suffix: '+',
-        label: '프로젝트'
-      },
-      {
-        value: statsData.countries,
-        suffix: '+',
-        label: '해외 진출국'
-      },
-      {
-        value: statsData.support,
-        suffix: '',
-        label: '기술 지원'
-      }
-    ],
+    stats: currentData.achievements.map(achievement => ({
+      value: achievement.number,
+      label: achievement.label
+    }))
   };
 
   return (
-    <>
+    <ErrorBoundary>
+      <SkipLink />
+      <ScrollProgress />
       <HomePageSEO />
       
       {/* 히어로 섹션 */}
-      <section className="hero-section">
-        <Hero {...heroData} />
-      </section>
+      <ScrollAnimation animation="fadeIn" key={forceUpdate}>
+        <section id="main-content" className="hero-section">
+          <Hero {...heroData} />
+        </section>
+      </ScrollAnimation>
 
       {/* 그룹 소개 섹션 */}
-      <section className="section">
-        <div className="container">
-          <GroupIntro {...groupIntroData} />
-        </div>
-      </section>
+      <ScrollAnimation animation="slideInLeft" delay={200}>
+        <section className="section">
+          <ResponsiveContainer>
+            <GroupIntro {...groupIntroData} />
+          </ResponsiveContainer>
+        </section>
+      </ScrollAnimation>
 
       {/* 계열사 소개 섹션 */}
-      <section className="section bg-gradient-green">
-        <div className="container">
-          <SubsidiariesIntro subsidiaries={currentData.subsidiaries} />
-        </div>
-      </section>
+      <ScrollAnimation animation="slideInRight" delay={400}>
+        <section className="section bg-gradient-green">
+          <ResponsiveContainer>
+            <SubsidiariesIntro subsidiaries={currentData.subsidiaries} />
+          </ResponsiveContainer>
+        </section>
+      </ScrollAnimation>
 
       {/* 핵심 기술 섹션 */}
-      <section className="section">
-        <div className="container">
-          <CoreTechnologies />
-        </div>
-      </section>
+      <ScrollAnimation animation="scaleIn" delay={600}>
+        <section className="section">
+          <ResponsiveContainer>
+            <CoreTechnologies />
+          </ResponsiveContainer>
+        </section>
+      </ScrollAnimation>
 
       {/* 프로젝트 갤러리 섹션 */}
-      <section className="section bg-neutral-50">
-        <div className="container">
-          <ProjectGallery />
-        </div>
-      </section>
+      <ScrollAnimation animation="fadeIn" delay={800}>
+        <section className="section bg-neutral-50">
+          <ResponsiveContainer>
+            <ProjectGallery />
+          </ResponsiveContainer>
+        </section>
+      </ScrollAnimation>
 
       {/* 글로벌 진출 섹션 */}
-      <section className="section">
-        <div className="container">
-          <GlobalPresence />
-        </div>
-      </section>
+      <ScrollAnimation animation="slideInLeft" delay={1000}>
+        <section className="section">
+          <ResponsiveContainer>
+            <GlobalPresence />
+          </ResponsiveContainer>
+        </section>
+      </ScrollAnimation>
 
       {/* 고객 지원 섹션 */}
-      <section className="section bg-gradient-green-blue">
-        <div className="container">
-          <CustomerSupport />
-        </div>
-      </section>
+      <ScrollAnimation animation="slideInRight" delay={1200}>
+        <section className="section bg-gradient-green-blue">
+          <ResponsiveContainer>
+            <CustomerSupport />
+          </ResponsiveContainer>
+        </section>
+      </ScrollAnimation>
 
       {/* 최신 뉴스 섹션 */}
-      <section className="section">
-        <div className="container">
-          <LatestNews />
-        </div>
-      </section>
-    </>
+      <ScrollAnimation animation="bounceIn" delay={1400}>
+        <section className="section">
+          <ResponsiveContainer>
+            <LatestNews />
+          </ResponsiveContainer>
+        </section>
+      </ScrollAnimation>
+    </ErrorBoundary>
   );
 };
 

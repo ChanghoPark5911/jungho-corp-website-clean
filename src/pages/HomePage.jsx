@@ -33,7 +33,7 @@ const optimizedImages = {
 const defaultData = {
   hero: {
     title: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
-    subtitle: "정호그룹은 조명제어 전문 기업으로서 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다",
+    subtitle: "정호그룹은 조명제어 전문 기업으로서,\n혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다",
     description: "150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다."
   },
   achievements: [
@@ -45,8 +45,51 @@ const defaultData = {
   groupOverview: {
     title: '40년 전통의 조명제어 전문기업',
     description: '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.',
-    vision: 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.'
-  }
+    vision: 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.',
+    additionalVision: '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
+  },
+  subsidiaries: [
+    {
+      id: 'clarus',
+      title: '클라루스',
+      subtitle: 'AI 기반 스마트 조명/전력제어',
+      description: '스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문 업체',
+      feature: 'AI 기반 자동 제어 시스템',
+      color: '#0066CC',
+      path: '/clarus',
+      icon: '💡'
+    },
+    {
+      id: 'tlc',
+      title: '정호티엘씨',
+      subtitle: '조명/전력제어의 설계/시공/사후관리',
+      description: '공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축(시공)하고, 사후관리를 담당하는 전문업체',
+      feature: 'IoT 센서 네트워크',
+      color: '#28A745',
+      path: '/tlc',
+      icon: '📡'
+    },
+    {
+      id: 'illutech',
+      title: '일루텍',
+      subtitle: '유.무선 스마트조명제품 쇼핑몰 공급',
+      description: '유.무선 조명제어 제품을 국내외 유명 쇼핑몰에 전시, 판매, 시공기술지원 업체',
+      feature: '스마트 물류 자동화',
+      color: '#FF8C00',
+      path: '/illutech',
+      icon: '🚚'
+    },
+    {
+      id: 'texcom',
+      title: '정호텍스컴',
+      subtitle: '섬유기계의 전통과 첨단패션을 주도하는 온라인 사업',
+      description: '40년간 축적된 섬유기계 전문성과 패션브랜드 론칭을 통해 새로운 가치를 창출하는 전문업체',
+      feature: '텍스타일 제어 시스템',
+      color: '#FF6B9D',
+      path: '/texcom',
+      icon: '🧵'
+    }
+  ]
 };
 
 const HomePage = () => {
@@ -103,58 +146,101 @@ const HomePage = () => {
     return defaultImages;
   });
 
+  // 서버에서 콘텐츠 로드 (영구 저장된 데이터 우선)
   useEffect(() => {
-    console.log('HomePage 컴포넌트가 렌더링되었습니다!');
-    console.log('현재 URL:', window.location.href);
-    console.log('현재 URL 파라미터:', window.location.search);
-
-    // URL 파라미터에서 데이터 로드
-    const urlParams = new URLSearchParams(window.location.search);
-    const approvedData = urlParams.get('approved');
-
-    if (approvedData) {
-      console.log('approved 파라미터 발견:', approvedData);
+    const loadContent = async () => {
       try {
-        const parsedData = JSON.parse(decodeURIComponent(approvedData));
-        console.log('파싱된 데이터:', parsedData);
-        setHomeData(parsedData);
-        setDebugInfo('URL 파라미터에서 데이터 로드됨');
+        console.log('HomePage 컴포넌트가 렌더링되었습니다!');
+        console.log('현재 URL:', window.location.href);
+        console.log('현재 URL 파라미터:', window.location.search);
+
+        // 1. 서버에서 최신 콘텐츠 로드 시도 (IP 주소 사용)
+        console.log('서버에서 콘텐츠 로드 시도...');
+        const response = await fetch('http://localhost:8000/api/get-content');
         
-        // URL 파라미터로 받은 데이터를 localStorage에 저장 (지속성 보장)
-        localStorage.setItem('homeData', JSON.stringify(parsedData));
-        console.log('URL 파라미터 데이터를 localStorage에 저장 완료');
-        
-        // URL 파라미터 제거 (브라우저 히스토리 정리)
-        const newUrl = window.location.pathname;
-        window.history.replaceState({}, document.title, newUrl);
-        console.log('URL 파라미터 제거 완료');
-      } catch (error) {
-        console.error('파싱 오류:', error);
-        setDebugInfo('파싱 오류 발생');
-      }
-    } else {
-      console.log('approved 파라미터가 없습니다');
-      // localStorage에서 데이터 로드 시도
-      const storedData = localStorage.getItem('homeData');
-      if (storedData) {
-        try {
-          const parsedStoredData = JSON.parse(storedData);
-          console.log('LocalStorage에서 데이터 로드:', parsedStoredData);
-          setHomeData(parsedStoredData);
-          setDebugInfo('LocalStorage에서 데이터 로드됨');
-        } catch (error) {
-          console.error('LocalStorage 파싱 오류:', error);
-          setDebugInfo('LocalStorage 파싱 오류');
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success) {
+            console.log('서버에서 콘텐츠 로드 성공:', result.data);
+            setHomeData(result.data);
+            setDebugInfo(`서버에서 로드됨 (${result.source}) - ${result.lastUpdated}`);
+            
+            // LocalStorage에도 백업 저장
+            localStorage.setItem('homeData', JSON.stringify(result.data));
+            console.log('서버 데이터를 LocalStorage에 백업 저장 완료');
+            return;
+          }
         }
-      } else {
-        console.log('기본 데이터 사용');
-        setDebugInfo('기본 데이터 사용');
         
-        // 기본 데이터를 localStorage에 저장하여 다음 방문 시 사용
-        localStorage.setItem('homeData', JSON.stringify(defaultData));
-        console.log('기본 데이터를 localStorage에 저장 완료');
+        // 2. 서버 로드 실패 시 URL 파라미터 확인
+        const urlParams = new URLSearchParams(window.location.search);
+        const approvedData = urlParams.get('approved');
+
+        if (approvedData) {
+          console.log('approved 파라미터 발견:', approvedData);
+          try {
+            const parsedData = JSON.parse(decodeURIComponent(approvedData));
+            console.log('파싱된 데이터:', parsedData);
+            setHomeData(parsedData);
+            setDebugInfo('URL 파라미터에서 데이터 로드됨');
+            
+            // URL 파라미터로 받은 데이터를 localStorage에 저장 (지속성 보장)
+            localStorage.setItem('homeData', JSON.stringify(parsedData));
+            console.log('URL 파라미터 데이터를 localStorage에 저장 완료');
+            
+            // URL 파라미터 제거 (브라우저 히스토리 정리)
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+            console.log('URL 파라미터 제거 완료');
+            return;
+          } catch (error) {
+            console.error('URL 파라미터 파싱 오류:', error);
+            setDebugInfo('URL 파라미터 파싱 오류');
+          }
+        }
+        
+        // 3. LocalStorage에서 데이터 로드 시도
+        const storedData = localStorage.getItem('homeData');
+        if (storedData) {
+          try {
+            const parsedStoredData = JSON.parse(storedData);
+            console.log('LocalStorage에서 데이터 로드:', parsedStoredData);
+            setHomeData(parsedStoredData);
+            setDebugInfo('LocalStorage에서 데이터 로드됨');
+          } catch (error) {
+            console.error('LocalStorage 파싱 오류:', error);
+            setDebugInfo('LocalStorage 파싱 오류');
+          }
+        } else {
+          // 4. 기본 데이터 사용
+          console.log('기본 데이터 사용');
+          setDebugInfo('기본 데이터 사용');
+          
+          // 기본 데이터를 localStorage에 저장하여 다음 방문 시 사용
+          localStorage.setItem('homeData', JSON.stringify(defaultData));
+          console.log('기본 데이터를 localStorage에 저장 완료');
+        }
+        
+      } catch (error) {
+        console.error('콘텐츠 로드 중 오류:', error);
+        setDebugInfo('콘텐츠 로드 오류');
+        
+        // 에러 시 LocalStorage에서 로드 시도
+        const storedData = localStorage.getItem('homeData');
+        if (storedData) {
+          try {
+            const parsedStoredData = JSON.parse(storedData);
+            setHomeData(parsedStoredData);
+            setDebugInfo('오류 후 LocalStorage에서 복구');
+          } catch (localError) {
+            console.error('LocalStorage 복구 실패:', localError);
+            setDebugInfo('복구 실패 - 기본 데이터 사용');
+          }
+        }
       }
-    }
+    };
+    
+    loadContent();
   }, []);
 
   // 이미지 데이터 변경 감지 및 홈페이지 업데이트
@@ -173,8 +259,12 @@ const HomePage = () => {
     }
   }, [imageData]);
 
-  // 히어로 섹션 데이터 (메모리 최적화)
+  // 히어로 섹션 데이터 (메모리 최적화 + 안전한 데이터 접근)
   const heroData = useMemo(() => {
+    // 안전한 데이터 접근을 위한 기본값 설정
+    const safeHero = homeData?.hero || defaultData.hero;
+    const safeAchievements = homeData?.achievements || defaultData.achievements;
+    
     // 이미지 관리에서 업로드된 Hero 배경 이미지 우선 사용
     const heroImages = imageData.hero || {};
     const heroImageKeys = Object.keys(heroImages);
@@ -183,32 +273,33 @@ const HomePage = () => {
       : optimizedImages.hero.src;
     
     console.log('Hero 배경 이미지 설정:', heroBackgroundImage);
+    console.log('안전한 Hero 데이터:', safeHero);
     
     return {
       backgroundImage: heroBackgroundImage,
       webpBackgroundImage: heroBackgroundImage, // WebP 지원을 위해 동일한 이미지 사용
-      mainCopy: homeData.hero.title,
-      subCopy: homeData.hero.subtitle,
+      mainCopy: safeHero.title || '정호그룹\n조명의 미래를\n만들어갑니다',
+      subCopy: safeHero.subtitle || '40년 전통의 조명제어 전문기업',
       stats: [
         {
-          value: homeData.achievements[0].number,
-          suffix: homeData.achievements[0].suffix,
-          label: homeData.achievements[0].label
+          value: safeAchievements[0]?.number || '40',
+          suffix: safeAchievements[0]?.suffix || '년',
+          label: safeAchievements[0]?.label || '조명제어 전문 경험'
         },
         {
-          value: homeData.achievements[1].number,
-          suffix: homeData.achievements[1].suffix,
-          label: homeData.achievements[1].label
+          value: safeAchievements[1]?.number || '1000+',
+          suffix: safeAchievements[1]?.suffix || '',
+          label: safeAchievements[1]?.label || '프로젝트 완료'
         },
         {
-          value: homeData.achievements[2].number,
-          suffix: homeData.achievements[2].suffix,
-          label: homeData.achievements[2].label
+          value: safeAchievements[2]?.number || '50+',
+          suffix: safeAchievements[2]?.suffix || '',
+          label: safeAchievements[2]?.label || '해외 진출국'
         },
         {
-          value: homeData.achievements[3].number,
-          suffix: homeData.achievements[3].suffix,
-          label: homeData.achievements[3].label
+          value: safeAchievements[3]?.number || '99%',
+          suffix: safeAchievements[3]?.suffix || '',
+          label: safeAchievements[3]?.label || '고객 만족도'
         }
       ],
       primaryAction: {
@@ -220,41 +311,46 @@ const HomePage = () => {
         path: "/support"
       }
     };
-  }, [homeData.hero.title, homeData.hero.subtitle, homeData.achievements, imageData.hero]);
+  }, [homeData?.hero?.title, homeData?.hero?.subtitle, homeData?.achievements, imageData.hero]);
 
-  // 그룹 소개 섹션 데이터 (메모리 최적화)
-  const groupIntroData = useMemo(() => ({
-    title: homeData.groupOverview.title,
-    content: [
-      homeData.groupOverview.description,
-      homeData.groupOverview.vision,
-      homeData.groupOverview.additionalVision || "혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다."
-    ],
-    image: optimizedImages.groupIntro.src,
-    webpImage: optimizedImages.groupIntro.webpSrc,
-    stats: [
-      {
-        value: "40",
-        suffix: "년",
-        label: "전문 경험"
-      },
-      {
-        value: "1000",
-        suffix: "+",
-        label: "프로젝트"
-      },
-      {
-        value: "50",
-        suffix: "+",
-        label: "해외 진출국"
-      },
-      {
-        value: "24",
-        suffix: "/7",
-        label: "기술 지원"
-      }
-    ]
-  }), [homeData.groupOverview.title, homeData.groupOverview.description, homeData.groupOverview.vision, homeData.groupOverview.additionalVision]);
+  // 그룹 소개 섹션 데이터 (메모리 최적화 + 안전한 데이터 접근)
+  const groupIntroData = useMemo(() => {
+    // 안전한 데이터 접근을 위한 기본값 설정
+    const safeGroupOverview = homeData?.groupOverview || defaultData.groupOverview;
+    
+    return {
+      title: safeGroupOverview.title || '40년 전통의 조명제어 전문기업',
+      content: [
+        safeGroupOverview.description || '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.',
+        safeGroupOverview.vision || 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.',
+        safeGroupOverview.additionalVision || '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
+      ],
+      image: optimizedImages.groupIntro.src,
+      webpImage: optimizedImages.groupIntro.webpSrc,
+      stats: [
+        {
+          value: "40",
+          suffix: "년",
+          label: "조명제어 전문 경험"
+        },
+        {
+          value: "800",
+          suffix: "+",
+          label: "프로젝트 완료"
+        },
+        {
+          value: "7",
+          suffix: "+",
+          label: "해외 진출국"
+        },
+        {
+          value: "99",
+          suffix: "%",
+          label: "고객 만족도"
+        }
+      ]
+    };
+  }, [homeData?.groupOverview?.title, homeData?.groupOverview?.description, homeData?.groupOverview?.vision, homeData?.groupOverview?.additionalVision]);
 
   // 계열사 소개 섹션 데이터 (메모리 최적화)
   const subsidiariesData = useMemo(() => ({

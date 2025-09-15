@@ -107,7 +107,7 @@ const ProjectsPage = () => {
       
       {/* 히어로 섹션 */}
       <section className="hero-section">
-        <Hero {...heroData} />
+        <Hero {...heroData} useLocalStorage={false} />
       </section>
 
       {/* 프로젝트 통계 */}

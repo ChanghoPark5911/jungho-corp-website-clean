@@ -3,20 +3,21 @@ import Button from './Button';
 
 const Hero = ({
   backgroundImage,
-  mainCopy = "4개 계열사를 활용하여 완벽한 조명 생태계를 달성합니다",
-  subCopy = "4개 계열사를 활용하여 완벽한 조명 생태계를 달성합니다",
+  mainCopy = "정호그룹의 사업영역",
+  subCopy = "조명제어 전문기업으로서 40년간 축적된 기술력으로,\n다양한 분야에서 혁신적인 솔루션을 제공합니다",
   stats = [],
   primaryAction,
   secondaryAction,
   className = '',
   enhancedSubtitle = false,
   enhancedOverlay = false,
+  useLocalStorage = true, // localStorage 사용 여부 제어
   ...props
 }) => {
   const [heroData, setHeroData] = useState({
-    title: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
-    subtitle: "정호그룹은 조명제어 전문 기업으로서 혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다",
-    description: "150개 이상의 프로젝트와 40년간의 경험을 바탕으로 조명의 미래를 혁신합니다"
+    mainTitle: "",
+    subtitle: "",
+    description: ""
   });
 
   // 성과지표 데이터 상태 추가
@@ -34,50 +35,76 @@ const Hero = ({
   // localStorage에서 히어로 데이터 로드 및 실시간 업데이트
   useEffect(() => {
     const loadHeroContent = () => {
-      // 통합 데이터 구조에서 먼저 로드 시도
-      const homePageData = localStorage.getItem('homePageData');
-      if (homePageData) {
-        try {
-          const parsedData = JSON.parse(homePageData);
-          if (parsedData.hero) {
-            setHeroData(parsedData.hero);
-            console.log('통합 데이터에서 히어로 데이터 로드됨:', parsedData.hero);
-            return;
-          }
-        } catch (error) {
-          console.error('통합 데이터 파싱 오류:', error);
-        }
+      // props로 전달된 데이터가 있으면 우선 사용
+      if (mainCopy && mainCopy !== "4개 계열사를 활용하여 완벽한 조명 생태계를 달성합니다") {
+        setHeroData({
+          mainTitle: mainCopy,
+          subtitle: subCopy,
+          description: ""
+        });
+        return;
       }
       
-      // 기존 개별 키에서 로드 (호환성 유지)
+      // useLocalStorage가 false이면 props의 mainCopy와 subCopy 사용
+      if (!useLocalStorage) {
+        setHeroData({
+          mainTitle: mainCopy,
+          subtitle: subCopy,
+          description: ""
+        });
+        return;
+      }
+      
+      // 기존 localStorage 데이터 삭제 (새로운 데이터로 업데이트하기 위해)
+      localStorage.removeItem('hero_content');
+      
       const saved = localStorage.getItem('hero_content');
       if (saved) {
         try {
           const parsedData = JSON.parse(saved);
           setHeroData(parsedData);
-          console.log('개별 키에서 히어로 데이터 로드됨:', parsedData);
+          console.log('히어로 데이터 로드됨:', parsedData);
         } catch (error) {
           console.error('히어로 데이터 파싱 오류:', error);
         }
+      } else {
+        // 저장된 데이터가 없을 때만 기본값 설정
+        setHeroData({
+          mainTitle: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
+          subtitle: "조명제어 전문기업으로서 40년간 축적된 기술력으로,\n조명제어/전력제어 등 관련 분야에서 혁신적인 솔루션을 고객에게 제공합니다",
+          description: "수많은 프로젝트의 성공적인 시공 및 운영경험을 바탕으로 최고의 고객가치를 창출합니다"
+        });
+        console.log('기본 히어로 데이터 설정됨');
       }
     };
     
     // 초기 로드
     loadHeroContent();
     
+    // 페이지 가시성 변경 감지 (탭 전환, 브라우저 최소화 등)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log('페이지 가시성 변경 감지, 데이터 재로드');
+        loadHeroContent();
+      }
+    };
+    
     // 실시간 업데이트 리스너
     const handleContentUpdate = () => {
+      console.log('히어로 콘텐츠 업데이트 이벤트 수신');
       loadHeroContent();
     };
     
     // 커스텀 이벤트 리스너 추가
     window.addEventListener('heroContentUpdated', handleContentUpdate);
-    window.addEventListener('homePageDataUpdated', handleContentUpdate);
+    
+    // 페이지 가시성 변경 리스너 추가
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     
     // 컴포넌트 언마운트 시 리스너 제거
     return () => {
       window.removeEventListener('heroContentUpdated', handleContentUpdate);
-      window.removeEventListener('homePageDataUpdated', handleContentUpdate);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 
@@ -136,7 +163,7 @@ const Hero = ({
           {/* 메인 콘텐츠 */}
           <div className="mb-16">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white drop-shadow-2xl">
-            {heroData.title ? heroData.title.split('\n').map((line, index) => (
+            {heroData.mainTitle ? heroData.mainTitle.split('\n').map((line, index) => (
               <span key={index} className="block">
                 {line}
               </span>
@@ -150,7 +177,7 @@ const Hero = ({
             className="hero-subtitle"
             style={{
               fontSize: 'clamp(1.25rem, 4vw, 1.875rem)',
-              lineHeight: '1.5',
+              lineHeight: '1.4',
               marginBottom: '2.5rem',
               maxWidth: '64rem',
               marginLeft: 'auto',
@@ -164,18 +191,43 @@ const Hero = ({
               outline: 'none',
               whiteSpace: 'pre-line',
               wordWrap: 'break-word',
-              overflowWrap: 'break-word'
+              overflowWrap: 'break-word',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.25rem'
             }}
           >
-            {heroData.subtitle ? heroData.subtitle.split('\n').map((line, index) => (
-              <span key={index} className="block">
-                {line}
-              </span>
-            )) : subCopy.split('\n').map((line, index) => (
-              <span key={index} className="block">
-                {line}
-              </span>
-            ))}
+            {heroData.subtitle ? (
+              <>
+                <span className="block mb-1">조명제어 전문기업으로서 40년간 축적된 기술력으로,</span>
+                <span className="block">다양한 분야에서 혁신적인 솔루션을 제공합니다</span>
+              </>
+            ) : (
+              <>
+                <span className="block mb-1">조명제어 전문기업으로서 40년간 축적된 기술력으로,</span>
+                <span className="block">다양한 분야에서 혁신적인 솔루션을 제공합니다</span>
+              </>
+            )}
+          </p>
+          
+          {/* 설명 텍스트 추가 */}
+          <p 
+            className="hero-description"
+            style={{
+              fontSize: 'clamp(1rem, 3vw, 1.25rem)',
+              lineHeight: '1.6',
+              marginBottom: '2rem',
+              maxWidth: '56rem',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              textAlign: 'center',
+              color: '#ffffff !important',
+              textShadow: '1px 1px 4px black',
+              fontWeight: '400',
+              opacity: '0.9'
+            }}
+          >
+            {heroData.description || '수많은 프로젝트의 성공적인 시공 및 운영경험을 바탕으로 최고의 고객가치를 창출합니다'}
           </p>
           
           {/* 액션 버튼 */}

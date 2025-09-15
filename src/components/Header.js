@@ -85,10 +85,21 @@ const Header = ({ imageData = {} }) => {
     console.log('GROUP 메뉴 클릭:', path);
     setActiveDropdown(null);
     
+    // 현재 페이지와 같은 페이지인지 확인
+    if (location.pathname === path) {
+      console.log('같은 페이지입니다. 스크롤만 상단으로 이동');
+      window.scrollTo(0, 0);
+      return;
+    }
+    
     try {
       // 즉시 네비게이션 실행
-      navigate(path);
-      window.scrollTo(0, 0);
+      navigate(path, { replace: false });
+      
+      // 페이지 전환 후 스크롤 상단으로 이동
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 100);
       
       // 네비게이션 성공 확인
       console.log('네비게이션 성공:', path);
@@ -239,10 +250,20 @@ const Header = ({ imageData = {} }) => {
                 }`}
                 aria-label={item.ariaLabel}
                 onClick={() => {
+                  // 현재 페이지와 같은 페이지인지 확인
+                  if (location.pathname === item.path) {
+                    console.log('같은 페이지입니다. 스크롤만 상단으로 이동');
+                    window.scrollTo(0, 0);
+                    return;
+                  }
+                  
                   // React Router를 사용하여 페이지 이동
-                  navigate(item.path);
-                  // 페이지 상단으로 스크롤
-                  window.scrollTo(0, 0);
+                  navigate(item.path, { replace: false });
+                  
+                  // 페이지 전환 후 스크롤 상단으로 이동
+                  setTimeout(() => {
+                    window.scrollTo(0, 0);
+                  }, 100);
                 }}
               >
                 {item.label}

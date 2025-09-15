@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#1B365D" />
+    <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다."
+      content="정호그룹 - 40년 전통의 조명제어 전문기업"
     />
     <meta name="keywords" content="정호그룹, 클라러스, TLC, 일루테크, 텍스컴, AI, IoT, 물류, 텍스타일" />
     <meta name="author" content="정호그룹" />
@@ -33,7 +33,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <title>정호그룹 - 혁신적인 기술로 더 나은 미래를 만드는 글로벌 기업</title>
+    <title>정호그룹 - 조명제어 전문기업</title>
+    <script>
+      // localStorage 초기화 (개발 중에만 사용)
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        localStorage.removeItem('hero_content');
+        console.log('localStorage 초기화 완료');
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

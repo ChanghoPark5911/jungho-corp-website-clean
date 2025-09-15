@@ -6,23 +6,24 @@ const HeroSection = () => {
     productCatalog: null
   });
 
-  // localStorage에서 파일 데이터 로드
+  // 클라이언트 저장소에서 파일 데이터 로드
   useEffect(() => {
     const loadFileData = () => {
-      const saved = localStorage.getItem('clarus_files');
-      if (saved) {
-        try {
+      try {
+        // 클라이언트 저장소에서 로드
+        const saved = localStorage.getItem('clarus_files_server');
+        if (saved) {
           const parsedData = JSON.parse(saved);
           setFileData(parsedData);
-        } catch (error) {
-          console.error('파일 데이터 파싱 오류:', error);
         }
+      } catch (error) {
+        console.error('클라이언트 저장소 파일 데이터 로드 실패:', error);
       }
     };
     
     loadFileData();
     
-    // 실시간 업데이트 리스너
+    // 실시간 업데이트 리스너 (서버 데이터 새로고침)
     const handleFileUpdate = () => {
       loadFileData();
     };

@@ -52,7 +52,11 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
   const [dragIndex, setDragIndex] = useState(null);
   
   // 각 섹션별 독립적인 상태 관리
-  const [heroContent, setHeroContent] = useState(safeData.hero || {});
+  const [heroContent, setHeroContent] = useState({
+    mainTitle: '40년 축적된 기술력으로\n조명의 미래를 혁신합니다',
+    subtitle: '정호그룹은 조명제어 전문 기업으로서,\n혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다',
+    description: '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.'
+  });
   const [statsContent, setStatsContent] = useState({
     years: '40',
     projects: '1000+',
@@ -97,6 +101,63 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
       feature: '텍스타일 제어 시스템'
     }
   });
+
+  // 히어로 섹션 저장 기능 - 중복 저장 방지
+  const saveHeroContent = () => {
+    try {
+      // 현재 저장된 데이터와 비교하여 변경사항이 있을 때만 저장
+      const currentSaved = localStorage.getItem('hero_content');
+      if (currentSaved) {
+        const parsedCurrent = JSON.parse(currentSaved);
+        if (JSON.stringify(parsedCurrent) === JSON.stringify(heroContent)) {
+          alert('변경사항이 없습니다.');
+          setIsEditMode(false);
+          return;
+        }
+      }
+      
+      // 데이터 저장
+      localStorage.setItem('hero_content', JSON.stringify(heroContent));
+      console.log('히어로 데이터 저장됨:', heroContent);
+      
+      // 성공 메시지
+      alert('히어로 섹션이 저장되었습니다!');
+      setIsEditMode(false);
+      
+      // 즉시 홈페이지에 반영하기 위해 이벤트 발송
+      window.dispatchEvent(new Event('heroContentUpdated'));
+      
+      // 저장 확인을 위한 추가 검증
+      setTimeout(() => {
+        const verifySaved = localStorage.getItem('hero_content');
+        if (verifySaved) {
+          console.log('저장 확인됨:', JSON.parse(verifySaved));
+        } else {
+          console.error('저장 실패: 데이터가 없음');
+        }
+      }, 100);
+      
+    } catch (error) {
+      console.error('히어로 데이터 저장 실패:', error);
+      alert('저장 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  // 데이터 로드 - 기본값 덮어쓰기 방지
+  useEffect(() => {
+    const saved = localStorage.getItem('hero_content');
+    if (saved) {
+      try {
+        const parsedContent = JSON.parse(saved);
+        setHeroContent(parsedContent);
+        console.log('저장된 히어로 데이터 로드됨:', parsedContent);
+      } catch (error) {
+        console.error('히어로 데이터 파싱 오류:', error);
+      }
+    } else {
+      console.log('저장된 히어로 데이터 없음, 기본값 사용');
+    }
+  }, []);
 
   // 컴포넌트 마운트 시 LocalStorage에서 데이터 로드
   useEffect(() => {
@@ -343,7 +404,7 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
     ));
   };
 
-  // 히어로 섹션 렌더링
+    // 히어로 섹션 렌더링
   const renderHeroSection = () => (
     <div className="bg-white rounded-lg shadow p-6">
       <h3 className="text-lg font-semibold mb-4">히어로 섹션</h3>
@@ -353,24 +414,23 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
             메인 제목 (줄바꿈: \n)
           </label>
           <textarea
-            value={heroContent.title || ''}
-            onChange={(e) => setHeroContent({...heroContent, title: e.target.value})}
+            value={heroContent.mainTitle || ''}
+            onChange={(e) => setHeroContent({...heroContent, mainTitle: e.target.value})}
             disabled={!isEditMode}
             className={`w-full p-3 border rounded-md ${
               isEditMode 
                 ? 'border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200' 
                 : 'border-gray-300 bg-gray-50'
             }`}
-            rows={3}
-            placeholder="메인 제목을 입력하세요"
+            rows={4}
+            placeholder="40년 축적된 기술력으로\n조명의 미래를 혁신합니다"
           />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            부제목
+            부제목 (줄바꿈: \n)
           </label>
-          <input
-            type="text"
+          <textarea
             value={heroContent.subtitle || ''}
             onChange={(e) => setHeroContent({...heroContent, subtitle: e.target.value})}
             disabled={!isEditMode}
@@ -379,7 +439,8 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
                 ? 'border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200' 
                 : 'border-gray-300 bg-gray-50'
             }`}
-            placeholder="부제목을 입력하세요"
+            rows={3}
+            placeholder="정호그룹은 조명제어 전문 기업으로서,&#10;혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다"
           />
         </div>
         <div>
@@ -396,7 +457,7 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
                 : 'border-gray-300 bg-gray-50'
             }`}
             rows={3}
-            placeholder="설명을 입력하세요"
+            placeholder="150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다."
           />
         </div>
         
@@ -404,7 +465,7 @@ const EnhancedHomeContentManager = ({ data, onSave, onPreview }) => {
         {isEditMode && (
           <div className="pt-4">
             <button
-              onClick={() => saveTabContent('hero', heroContent)}
+              onClick={saveHeroContent}
               className="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 transition-colors duration-200 font-medium"
             >
               히어로 섹션 저장

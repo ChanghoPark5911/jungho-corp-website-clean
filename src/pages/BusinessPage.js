@@ -33,7 +33,7 @@ const BusinessPage = () => {
     },
     {
       title: "산업용 조명시스템",
-      description: "제조업체의 생산성 향상을 위한 전문적인 산업용 조명제어 시스템을 구축합니다.",
+      description: "물류, 데이터센터 포함, 각종 제조업의 생산성 향상을 위한 산업용 조명제어 솔루션을 공급합니다.",
       icon: "🏭",
       features: ["고정밀 조명", "내구성 설계", "안전 표준 준수", "유지보수 편의성"]
     },
@@ -49,27 +49,27 @@ const BusinessPage = () => {
   const subsidiaries = [
     {
       name: "클라루스",
-      description: "스마트 빌딩 조명제어 전문",
+      description: "AI기반 스마트 조명/전력제어",
       color: "clarus",
-      expertise: ["IoT 조명제어", "빌딩 자동화", "에너지 관리"]
+      expertise: ["IoT 조명제어", "전기에너지 관리", "에너지 관리"]
     },
     {
       name: "정호티엘씨",
-      description: "도시 인프라 조명제어 전문",
+      description: "조명/전력제어의 설계/시공/사후관리",
       color: "tlc",
-      expertise: ["스마트시티", "도로조명", "공원조명"]
+      expertise: ["조명제어설계", "최적시공", "유지보수 및 기술지원"]
     },
     {
       name: "일루텍",
-      description: "산업용 조명시스템 전문",
+      description: "유.무선 스마트조명 제품 쇼핑몰 공급",
       color: "illutech",
-      expertise: ["공장조명", "창고조명", "안전조명"]
+      expertise: ["가정용 스마트 조명", "무선조명 솔루션", "안전조명"]
     },
     {
       name: "정호텍스컴",
-      description: "문화시설 조명예술 전문",
+      description: "섬유기계의 전통과 첨단패션을 주도하는 온라인 사업",
       color: "texcom",
-      expertise: ["예술조명", "무대조명", "전시조명"]
+      expertise: ["섬유기계 도입", "섬유기계 기술지원", "섬유패션 온라인 사업"]
     }
   ];
 
@@ -79,7 +79,7 @@ const BusinessPage = () => {
       
       {/* 히어로 섹션 */}
       <section className="hero-section">
-        <Hero {...heroData} />
+        <Hero {...heroData} useLocalStorage={false} />
       </section>
 
       {/* 사업영역 소개 */}
@@ -144,7 +144,15 @@ const BusinessPage = () => {
                 <div className="mt-6">
                   <Button
                     variant="primary"
-                    onClick={() => window.location.href = `/${subsidiary.name.toLowerCase()}`}
+                    onClick={() => {
+                      const urls = {
+                        "클라루스": "/clarus",
+                        "정호티엘씨": "/tlc", 
+                        "일루텍": "/illutech",
+                        "정호텍스컴": "/texcom"
+                      };
+                      window.location.href = urls[subsidiary.name];
+                    }}
                   >
                     자세히 보기
                   </Button>

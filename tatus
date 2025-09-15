@@ -1,4 +1,10 @@
-[33mf7b9ddf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Add feedback management system
-[33m46cc8ab[m Add Netlify configuration and fix build settings
-[33m964f368[m Fix build errors: Remove unused imports and variables
-[33m2bbdcdd[m Initial commit: 정호그룹 웹사이트 프로젝트
+[33m0679de9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m force redeploy
+[33m20bdb2d[m 수정완료
+[33me78b159[m feat: 그룹소개와 성과지표 섹션 localStorage 연동 완료 - 홈페이지 모든 섹션이 관리자 페이지와 실시간 연동 - 성과지표: 히어로섹션과 그룹소개섹션에 정확하게 반영 - 그룹소개: 40년 전통 제목과 문단 내용 동적 로드 - 계열사소개와 동일한 방식으로 구현 완료
+[33mf24bae4[m 개발 환경 성능 최적화: TypeScript 타입 체크 및 Fast Refresh 설정
+[33m089b231[m 계열사 소개 페이지 개선: 자세히 보기 버튼 스타일링 및 네비게이션 개선
+[33m24f84ca[m feat: 데이터 지속성 보장 시스템 구축 - 자동 백업, 데이터 복구, 무결성 검증, 백업 관리 UI 추가
+[33m41d00d9[m feat: 실시간 동기화 강화 - 주기적 데이터 확인, 강제 이벤트 발생, LivePreview 오타 수정
+[33mc164248[m fix: 홈페이지 콘텐츠 지속성 문제 해결 - LocalStorage 키 통일, postMessage 기반 데이터 동기화, 페이지 가시성 변경 감지 추가
+[33mbf4c7e0[m feat: 홈페이지 콘텐츠 관리 시스템 완성 - EnhancedHomeContentManager, 동적 데이터 연동, LocalStorage 기반 데이터 지속성 구현
+[33mf7b9ddf[m Add feedback management system

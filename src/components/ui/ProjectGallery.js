@@ -7,6 +7,35 @@ const ProjectGallery = ({
   className = '',
   ...props
 }) => {
+  const [projectGalleryImages, setProjectGalleryImages] = useState({});
+
+  // 프로젝트 갤러리 이미지 로드
+  useEffect(() => {
+    const loadProjectGalleryImages = () => {
+      const savedData = localStorage.getItem('project_gallery_images');
+      if (savedData) {
+        try {
+          const data = JSON.parse(savedData);
+          setProjectGalleryImages(data);
+        } catch (error) {
+          console.error('프로젝트 갤러리 이미지 로드 오류:', error);
+        }
+      }
+    };
+    
+    loadProjectGalleryImages();
+    
+    // 실시간 업데이트 리스너
+    const handleProjectGalleryImagesUpdate = () => {
+      loadProjectGalleryImages();
+    };
+    
+    window.addEventListener('projectGalleryImagesUpdated', handleProjectGalleryImagesUpdate);
+    
+    return () => {
+      window.removeEventListener('projectGalleryImagesUpdated', handleProjectGalleryImagesUpdate);
+    };
+  }, []);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
 
@@ -49,14 +78,16 @@ const ProjectGallery = ({
   // projects가 없으면 기본값 사용
   const projectsToRender = projects && projects.length > 0 ? projects : defaultProjects;
   
-  // 갤러리 이미지가 있으면 프로젝트 이미지에 적용
+  // 프로젝트 갤러리 이미지가 있으면 프로젝트 이미지에 적용
   const projectsWithGalleryImages = projectsToRender.map((project, index) => {
-    const galleryImageKeys = Object.keys(galleryImages);
-    if (galleryImageKeys.length > index) {
-      const galleryImage = galleryImages[galleryImageKeys[index]];
+    const projectKey = `project${index + 1}`;
+    const galleryImage = projectGalleryImages[projectKey];
+    
+    if (galleryImage) {
       return {
         ...project,
-        image: galleryImage.url || project.image,
+        image: galleryImage.url,
+        title: galleryImage.title,
         isGalleryImage: true
       };
     }
@@ -67,7 +98,7 @@ const ProjectGallery = ({
   });
   
   // 갤러리 이미지 개수 표시
-  const galleryImageCount = Object.keys(galleryImages).length;
+  const galleryImageCount = Object.keys(projectGalleryImages).filter(key => projectGalleryImages[key]).length;
 
   // Intersection Observer 설정
   useEffect(() => {

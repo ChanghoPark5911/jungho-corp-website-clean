@@ -1,19 +1,36 @@
 import React from 'react';
 
-const LoadingSpinner = React.memo(({ size = 'md', className = '' }) => {
+const LoadingSpinner = ({ 
+  size = 'md', 
+  color = 'blue', 
+  text = '로딩 중...',
+  className = '' 
+}) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
-    md: 'w-6 h-6',
-    lg: 'w-8 h-8',
-    xl: 'w-12 h-12'
+    md: 'w-8 h-8',
+    lg: 'w-12 h-12',
+    xl: 'w-16 h-16'
+  };
+
+  const colorClasses = {
+    blue: 'text-blue-600',
+    green: 'text-green-600',
+    gray: 'text-gray-600',
+    white: 'text-white'
   };
 
   return (
-    <div className={`animate-spin rounded-full border-2 border-gray-300 border-t-blue-600 ${sizeClasses[size]} ${className}`} />
+    <div className={`flex flex-col items-center justify-center ${className}`}>
+      <div className={`animate-spin rounded-full border-2 border-gray-300 border-t-current ${sizeClasses[size]} ${colorClasses[color]}`}></div>
+      {text && (
+        <p className="mt-2 text-sm text-gray-600 animate-pulse">{text}</p>
+      )}
+    </div>
   );
-});
+};
 
-LoadingSpinner.displayName = 'LoadingSpinner';
+export default LoadingSpinner;
 
 // 특화된 로딩 컴포넌트들
 export const LoadingDots = ({ size = 'md', className = '', ...props }) => {
@@ -87,6 +104,4 @@ export const LoadingSkeleton = ({
       ))}
     </div>
   );
-};
-
-export default LoadingSpinner; 
+}; 

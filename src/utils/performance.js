@@ -98,3 +98,121 @@ export const initPerformanceMonitoring = () => {
   monitorNetworkRequests();
   monitorScrollPerformance();
 }; 
+
+// 성능 최적화 유틸리티
+
+// 이미지 지연 로딩
+export const lazyLoadImage = (imgElement, src) => {
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = src;
+          img.classList.remove('lazy');
+          imageObserver.unobserve(img);
+        }
+      });
+    });
+    
+    imageObserver.observe(imgElement);
+  } else {
+    // 폴백: 즉시 로드
+    imgElement.src = src;
+  }
+};
+
+// 디바운스 함수
+export const debounce = (func, wait) => {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+
+// 스로틀 함수
+export const throttle = (func, limit) => {
+  let inThrottle;
+  return function() {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+};
+
+// 메모이제이션
+export const memoize = (fn) => {
+  const cache = new Map();
+  return (...args) => {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    const result = fn.apply(this, args);
+    cache.set(key, result);
+    return result;
+  };
+};
+
+// 성능 측정
+export const measurePerformance = (name, fn) => {
+  const start = performance.now();
+  const result = fn();
+  const end = performance.now();
+  console.log(`${name} 실행 시간: ${end - start}ms`);
+  return result;
+};
+
+// 리소스 프리로딩
+export const preloadResource = (href, as = 'fetch') => {
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.href = href;
+  link.as = as;
+  document.head.appendChild(link);
+};
+
+// 스크롤 성능 최적화
+export const optimizeScroll = (callback) => {
+  let ticking = false;
+  
+  return (event) => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        callback(event);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+};
+
+// 메모리 누수 방지
+export const cleanupEventListeners = (element, eventType, handler) => {
+  if (element && element.removeEventListener) {
+    element.removeEventListener(eventType, handler);
+  }
+};
+
+// 이미지 최적화
+export const optimizeImage = (src, width, quality = 80) => {
+  // WebP 지원 확인
+  const supportsWebP = document.createElement('canvas')
+    .toDataURL('image/webp')
+    .indexOf('data:image/webp') === 0;
+  
+  if (supportsWebP) {
+    return `${src}?w=${width}&q=${quality}&f=webp`;
+  }
+  
+  return `${src}?w=${width}&q=${quality}`;
+}; 

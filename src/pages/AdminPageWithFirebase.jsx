@@ -114,53 +114,27 @@ const AdminPageWithFirebase = () => {
     }
   };
 
-  // 콘텐츠 저장 함수 (로컬 우선 + Firebase 백업)
+  // 콘텐츠 저장 함수 (완전 로컬 저장)
   const saveContent = async (section, data) => {
     setIsLoading(true);
     setSaveStatus('저장 중...');
     
     try {
       if (section === 'homepage') {
-        console.log('저장 시도:', data);
+        console.log('로컬 저장 시도:', data);
         
-        // 1. 먼저 로컬 스토리지에 저장 (항상 성공)
-        try {
-          localStorage.setItem('jungho-corp-content', JSON.stringify({
-            ...data,
-            updatedAt: new Date().toISOString(),
-            version: Date.now(),
-            source: 'local-storage'
-          }));
-          console.log('로컬 스토리지 저장 성공');
-          setSaveStatus('✅ 로컬에 저장 완료!');
-        } catch (localError) {
-          console.error('로컬 저장 실패:', localError);
-          setSaveStatus('❌ 로컬 저장 실패: ' + localError.message);
-          return false;
-        }
+        // 로컬 스토리지에 저장 (Firebase 완전 제외)
+        localStorage.setItem('jungho-corp-content', JSON.stringify({
+          ...data,
+          updatedAt: new Date().toISOString(),
+          version: Date.now(),
+          source: 'local-storage-only'
+        }));
         
-        // 2. Firebase 연결 테스트 및 백업 시도
-        try {
-          const isConnected = await testFirebaseConnection();
-          if (isConnected) {
-            const result = await contentService.saveHomepageContent(data);
-            if (result.success) {
-              console.log('Firebase 백업 저장 성공');
-              setSaveStatus('✅ 로컬 + Firebase 저장 완료!');
-            } else {
-              console.warn('Firebase 백업 실패 (로컬은 성공):', result.error);
-              setSaveStatus('✅ 로컬 저장 완료! (Firebase 백업 실패)');
-            }
-          } else {
-            console.warn('Firebase 연결 실패 (로컬은 성공)');
-            setSaveStatus('✅ 로컬 저장 완료! (Firebase 연결 실패)');
-          }
-        } catch (firebaseError) {
-          console.warn('Firebase 백업 시도 중 오류 (로컬은 성공):', firebaseError);
-          setSaveStatus('✅ 로컬 저장 완료! (Firebase 백업 오류)');
-        }
+        console.log('로컬 스토리지 저장 성공');
+        setSaveStatus('✅ 로컬에 저장 완료!');
         
-        // 3. 로컬 데이터로 UI 업데이트
+        // UI 업데이트
         setHomeData(data);
         
         // 3초 후 상태 메시지 초기화

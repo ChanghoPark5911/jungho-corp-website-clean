@@ -198,17 +198,7 @@ const Hero = ({
               gap: '0.25rem'
             }}
           >
-            {heroData.subtitle ? (
-              <>
-                <span className="block mb-1">조명제어 전문기업으로서 40년간 축적된 기술력으로,</span>
-                <span className="block">다양한 분야에서 혁신적인 솔루션을 제공합니다</span>
-              </>
-            ) : (
-              <>
-                <span className="block mb-1">조명제어 전문기업으로서 40년간 축적된 기술력으로,</span>
-                <span className="block">다양한 분야에서 혁신적인 솔루션을 제공합니다</span>
-              </>
-            )}
+            {heroData.subtitle || subCopy}
           </p>
           
           {/* 설명 텍스트 추가 */}

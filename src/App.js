@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 import { initScrollAnimations, initPageLoadAnimations } from './utils/scrollAnimation';
 import { initPerformanceMonitoring } from './utils/performance';
+import { initAnalytics } from './utils/analytics';
 import { initI18n } from './utils/i18n';
 
 // 페이지 컴포넌트들을 lazy loading으로 import
@@ -17,7 +18,7 @@ const TlcDetailPage = lazy(() => import('./pages/TlcDetailPage'));
 const IllutechDetailPage = lazy(() => import('./pages/IllutechDetailPage'));
 const TexcomDetailPage = lazy(() => import('./pages/TexcomDetailPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
-const AdminPage = lazy(() => import('./pages/AdminPage.jsx'));
+const AdminPage = lazy(() => import('./pages/AdminPageWithFirebase.jsx'));
 const DesignSystem = lazy(() => import('./components/design-system/DesignSystem'));
 
 // 로딩 컴포넌트
@@ -41,6 +42,9 @@ function App() {
     
     // 성능 모니터링 초기화
     initPerformanceMonitoring();
+    
+    // Analytics 초기화
+    initAnalytics();
     
     // 컴포넌트 언마운트 시 observer 정리
     return () => {
@@ -74,4 +78,4 @@ function App() {
   );
 }
 
-export default App; 
+export default App;

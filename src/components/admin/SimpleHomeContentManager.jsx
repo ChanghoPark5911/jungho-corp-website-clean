@@ -50,6 +50,15 @@ const SimpleHomeContentManager = ({ data, onSave }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [originalData, setOriginalData] = useState(safeData);
 
+  // data prop이 변경될 때 formData 업데이트
+  useEffect(() => {
+    if (data && typeof data === 'object') {
+      const updatedData = { ...defaultData, ...data };
+      setFormData(updatedData);
+      setOriginalData(updatedData);
+    }
+  }, [data]);
+
   // 편집모드 시작
   const startEditMode = () => {
     setOriginalData({ ...formData });

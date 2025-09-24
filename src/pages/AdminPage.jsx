@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SimpleHomeContentManager from '../components/admin/SimpleHomeContentManager';
+import FirebaseTest from '../components/FirebaseTest';
+import contentService from '../services/contentService';
 
 const AdminPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -48,6 +50,30 @@ const AdminPage = () => {
   };
 
   const [homeData, setHomeData] = useState(defaultHomeData);
+  const [isLoading, setIsLoading] = useState(false);
+  const [saveStatus, setSaveStatus] = useState('');
+
+  // Firebase에서 콘텐츠 로드
+  useEffect(() => {
+    loadContentFromFirebase();
+  }, []);
+
+  const loadContentFromFirebase = async () => {
+    setIsLoading(true);
+    try {
+      const result = await contentService.loadHomepageContent();
+      if (result.success && result.data) {
+        setHomeData(result.data);
+        console.log('Firebase에서 콘텐츠 로드 성공:', result.data);
+      } else {
+        console.log('Firebase에 저장된 콘텐츠가 없습니다. 기본 데이터 사용');
+      }
+    } catch (error) {
+      console.error('Firebase 콘텐츠 로드 실패:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   // 클라루스 파일 데이터 상태
   const [clarusFiles, setClarusFiles] = useState({
@@ -767,6 +793,16 @@ const AdminPage = () => {
                 홈페이지 콘텐츠
               </button>
               <button
+                onClick={() => setActiveTab('firebase')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'firebase'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Firebase 테스트
+              </button>
+              <button
                 onClick={() => setActiveTab('clarus-files')}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === 'clarus-files'
@@ -806,6 +842,12 @@ const AdminPage = () => {
             data={homeData} 
             onSave={saveContent}
           />
+        )}
+        
+        {activeTab === 'firebase' && (
+          <div className="mt-6">
+            <FirebaseTest />
+          </div>
         )}
         
         {activeTab === 'clarus-files' && (

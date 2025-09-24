@@ -35,8 +35,9 @@ const Hero = ({
   // localStorage에서 히어로 데이터 로드 및 실시간 업데이트
   useEffect(() => {
     const loadHeroContent = () => {
-      // props로 전달된 데이터가 있으면 우선 사용
-      if (mainCopy && mainCopy !== "4개 계열사를 활용하여 완벽한 조명 생태계를 달성합니다") {
+      // props로 전달된 데이터가 있으면 우선 사용 (Firebase 데이터)
+      if (mainCopy && mainCopy !== "정호그룹\n조명의 미래를\n만들어갑니다") {
+        console.log('Props에서 Hero 데이터 사용:', { mainCopy, subCopy });
         setHeroData({
           mainTitle: mainCopy,
           subtitle: subCopy,
@@ -47,6 +48,7 @@ const Hero = ({
       
       // useLocalStorage가 false이면 props의 mainCopy와 subCopy 사용
       if (!useLocalStorage) {
+        console.log('useLocalStorage=false, props 사용:', { mainCopy, subCopy });
         setHeroData({
           mainTitle: mainCopy,
           subtitle: subCopy,
@@ -55,9 +57,7 @@ const Hero = ({
         return;
       }
       
-      // 기존 localStorage 데이터 삭제 (새로운 데이터로 업데이트하기 위해)
-      localStorage.removeItem('hero_content');
-      
+      // 기존 localStorage 로직 (백업용)
       const saved = localStorage.getItem('hero_content');
       if (saved) {
         try {
@@ -71,7 +71,7 @@ const Hero = ({
         // 저장된 데이터가 없을 때만 기본값 설정
         setHeroData({
           mainTitle: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
-          subtitle: "조명제어 전문기업으로서 40년간 축적된 기술력으로,\n조명제어/전력제어 등 관련 분야에서 혁신적인 솔루션을 고객에게 제공합니다",
+          subtitle: "조명제어 전문기업으로서 40년간 축적된 기술력으로,\n다양한 분야에서 혁신적인 솔루션을 제공합니다",
           description: "수많은 프로젝트의 성공적인 시공 및 운영경험을 바탕으로 최고의 고객가치를 창출합니다"
         });
         console.log('기본 히어로 데이터 설정됨');
@@ -106,7 +106,7 @@ const Hero = ({
       window.removeEventListener('heroContentUpdated', handleContentUpdate);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, []);
+  }, [mainCopy, subCopy, useLocalStorage]); // mainCopy, subCopy 의존성 추가
 
   // 성과지표 데이터 로드 및 실시간 업데이트
   useEffect(() => {
@@ -311,4 +311,4 @@ const Hero = ({
   );
 };
 
-export default Hero; 
+export default Hero;

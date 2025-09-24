@@ -7,6 +7,7 @@ import SubsidiariesIntro from '../components/ui/SubsidiariesIntro';
 import ProjectGallery from '../components/ui/ProjectGallery';
 import CustomerSupport from '../components/ui/CustomerSupport';
 import LatestNews from '../components/ui/LatestNews';
+import contentService from '../services/contentService';
 
 // 최적화된 이미지 데이터
 const optimizedImages = {
@@ -146,16 +147,33 @@ const HomePage = () => {
     return defaultImages;
   });
 
-  // 서버에서 콘텐츠 로드 (영구 저장된 데이터 우선)
+  // 서버에서 콘텐츠 로드 (Firebase 우선)
   useEffect(() => {
     const loadContent = async () => {
       try {
         console.log('HomePage 컴포넌트가 렌더링되었습니다!');
         console.log('현재 URL:', window.location.href);
-        console.log('현재 URL 파라미터:', window.location.search);
 
-        // 1. 서버에서 최신 콘텐츠 로드 시도 (IP 주소 사용)
-        console.log('서버에서 콘텐츠 로드 시도...');
+        // 1. Firebase에서 최신 콘텐츠 로드 시도
+        console.log('Firebase에서 콘텐츠 로드 시도...');
+        const firebaseResult = await contentService.loadHomepageContent();
+        
+        if (firebaseResult.success && firebaseResult.data) {
+          console.log('Firebase에서 콘텐츠 로드 성공:', firebaseResult.data);
+          setHomeData(firebaseResult.data);
+          setDebugInfo(`Firebase에서 로드됨 - ${new Date().toLocaleString()}`);
+          
+          // LocalStorage에도 백업 저장
+          localStorage.setItem('homeData', JSON.stringify(firebaseResult.data));
+          console.log('Firebase 데이터를 LocalStorage에 백업 저장 완료');
+          return;
+        }
+        
+        // 2. Firebase 로드 실패 시 기존 로직 사용
+        console.log('Firebase 로드 실패, 기존 로직 사용');
+        
+        // 기존 서버 로드 시도
+        try {
         const response = await fetch('http://localhost:8000/api/get-content');
         
         if (response.ok) {
@@ -170,9 +188,12 @@ const HomePage = () => {
             console.log('서버 데이터를 LocalStorage에 백업 저장 완료');
             return;
           }
+          }
+        } catch (serverError) {
+          console.log('서버 로드 실패:', serverError);
         }
         
-        // 2. 서버 로드 실패 시 URL 파라미터 확인
+        // 3. URL 파라미터 확인
         const urlParams = new URLSearchParams(window.location.search);
         const approvedData = urlParams.get('approved');
 
@@ -184,11 +205,11 @@ const HomePage = () => {
             setHomeData(parsedData);
             setDebugInfo('URL 파라미터에서 데이터 로드됨');
             
-            // URL 파라미터로 받은 데이터를 localStorage에 저장 (지속성 보장)
+            // URL 파라미터로 받은 데이터를 localStorage에 저장
             localStorage.setItem('homeData', JSON.stringify(parsedData));
             console.log('URL 파라미터 데이터를 localStorage에 저장 완료');
             
-            // URL 파라미터 제거 (브라우저 히스토리 정리)
+            // URL 파라미터 제거
             const newUrl = window.location.pathname;
             window.history.replaceState({}, document.title, newUrl);
             console.log('URL 파라미터 제거 완료');
@@ -199,7 +220,7 @@ const HomePage = () => {
           }
         }
         
-        // 3. LocalStorage에서 데이터 로드 시도
+        // 4. LocalStorage에서 데이터 로드 시도
         const storedData = localStorage.getItem('homeData');
         if (storedData) {
           try {
@@ -212,11 +233,11 @@ const HomePage = () => {
             setDebugInfo('LocalStorage 파싱 오류');
           }
         } else {
-          // 4. 기본 데이터 사용
+          // 5. 기본 데이터 사용
           console.log('기본 데이터 사용');
           setDebugInfo('기본 데이터 사용');
           
-          // 기본 데이터를 localStorage에 저장하여 다음 방문 시 사용
+          // 기본 데이터를 localStorage에 저장
           localStorage.setItem('homeData', JSON.stringify(defaultData));
           console.log('기본 데이터를 localStorage에 저장 완료');
         }
@@ -259,9 +280,11 @@ const HomePage = () => {
     }
   }, [imageData]);
 
-  // 히어로 섹션 데이터 (메모리 최적화 + 안전한 데이터 접근)
+  // 히어로 섹션 데이터 (Firebase 데이터 우선 사용)
   const heroData = useMemo(() => {
-    // 안전한 데이터 접근을 위한 기본값 설정
+    console.log('Hero 데이터 생성 중, homeData:', homeData);
+    
+    // Firebase에서 로드된 데이터 우선 사용
     const safeHero = homeData?.hero || defaultData.hero;
     const safeAchievements = homeData?.achievements || defaultData.achievements;
     
@@ -273,11 +296,12 @@ const HomePage = () => {
       : optimizedImages.hero.src;
     
     console.log('Hero 배경 이미지 설정:', heroBackgroundImage);
-    console.log('안전한 Hero 데이터:', safeHero);
+    console.log('Firebase Hero 데이터:', safeHero);
+    console.log('Firebase Achievements 데이터:', safeAchievements);
     
     return {
       backgroundImage: heroBackgroundImage,
-      webpBackgroundImage: heroBackgroundImage, // WebP 지원을 위해 동일한 이미지 사용
+      webpBackgroundImage: heroBackgroundImage,
       mainCopy: safeHero.title || '정호그룹\n조명의 미래를\n만들어갑니다',
       subCopy: safeHero.subtitle || '40년 전통의 조명제어 전문기업',
       stats: [
@@ -311,7 +335,7 @@ const HomePage = () => {
         path: "/support"
       }
     };
-  }, [homeData?.hero?.title, homeData?.hero?.subtitle, homeData?.achievements, imageData.hero]);
+  }, [homeData, imageData.hero]);
 
   // 그룹 소개 섹션 데이터 (메모리 최적화 + 안전한 데이터 접근)
   const groupIntroData = useMemo(() => {
@@ -366,11 +390,23 @@ const HomePage = () => {
     <>
       <HomePageSEO />
       
+      {/* 디버그 정보 표시 (개발용) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed top-4 right-4 bg-black bg-opacity-75 text-white p-3 rounded-lg text-xs z-50 max-w-xs">
+          <div className="font-bold mb-1">🔥 Firebase 디버그 정보</div>
+          <div>상태: {debugInfo}</div>
+          <div>Hero 제목: {homeData?.hero?.title?.substring(0, 20)}...</div>
+          <div>Hero 부제목: {homeData?.hero?.subtitle?.substring(0, 20)}...</div>
+          <div>데이터 소스: {homeData ? 'Firebase/LocalStorage' : '기본값'}</div>
+          <div>Hero Props: {heroData.mainCopy?.substring(0, 15)}...</div>
+        </div>
+      )}
+      
       {/* 원래 구조 그대로 유지 */}
       <div>
         {/* 히어로 섹션 */}
         <section className="hero-section">
-          <Hero {...heroData} />
+          <Hero {...heroData} useLocalStorage={false} />
         </section>
 
         {/* 그룹 소개 섹션 */}

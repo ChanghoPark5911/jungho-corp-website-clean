@@ -18,6 +18,7 @@ import {
   deleteObject 
 } from 'firebase/storage';
 import { db, storage } from '../config/firebase';
+import contentServiceBackup from './contentServiceBackup';
 
 // 콘텐츠 타입 정의
 const CONTENT_TYPES = {
@@ -50,7 +51,7 @@ class ContentService {
     }
   }
 
-  // 홈페이지 콘텐츠 저장
+  // 홈페이지 콘텐츠 저장 (Firebase + 로컬 백업)
   async saveHomepageContent(contentData) {
     try {
       // Firebase 연결 상태 확인
@@ -59,6 +60,16 @@ class ContentService {
       }
 
       console.log('Firebase 저장 시도:', contentData);
+      console.log('Firebase 설정 확인:', {
+        apiKey: process.env.REACT_APP_FIREBASE_API_KEY ? '설정됨' : '미설정',
+        projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || '기본값 사용',
+        authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || '기본값 사용'
+      });
+      
+      // 네트워크 연결 테스트
+      if (!navigator.onLine) {
+        throw new Error('네트워크 연결이 없습니다.');
+      }
       
       const docRef = doc(db, 'content', 'homepage');
       await setDoc(docRef, {
@@ -67,15 +78,50 @@ class ContentService {
         version: Date.now()
       });
       
-      console.log('홈페이지 콘텐츠 저장 완료');
+      console.log('Firebase 홈페이지 콘텐츠 저장 완료');
+      
+      // Firebase 성공 시 로컬 백업도 저장
+      try {
+        await contentServiceBackup.saveHomepageContent(contentData);
+        console.log('로컬 백업 저장 완료');
+      } catch (backupError) {
+        console.warn('로컬 백업 저장 실패 (무시):', backupError);
+      }
+      
       return { success: true, data: contentData };
     } catch (error) {
-      console.error('홈페이지 콘텐츠 저장 실패:', error);
+      console.error('Firebase 홈페이지 콘텐츠 저장 실패:', error);
+      
+      // Firebase 실패 시 로컬 백업으로 저장 시도
+      console.log('Firebase 실패, 로컬 백업으로 저장 시도...');
+      try {
+        const backupResult = await contentServiceBackup.saveHomepageContent(contentData);
+        if (backupResult.success) {
+          console.log('로컬 백업 저장 성공');
+          return { 
+            success: true, 
+            data: contentData,
+            source: 'local-backup',
+            message: 'Firebase 연결 실패로 로컬에 저장되었습니다.'
+          };
+        }
+      } catch (backupError) {
+        console.error('로컬 백업 저장도 실패:', backupError);
+      }
       
       // 더 자세한 오류 정보 제공
       let errorMessage = error.message;
       if (error.code) {
         errorMessage = `${error.code}: ${error.message}`;
+      }
+      
+      // 특별한 오류 처리
+      if (error.message.includes('Failed to fetch')) {
+        errorMessage = '네트워크 연결 오류: Firebase 서버에 연결할 수 없습니다. 환경 변수를 확인해주세요.';
+      } else if (error.code === 'permission-denied') {
+        errorMessage = '권한 오류: Firebase 보안 규칙을 확인해주세요.';
+      } else if (error.code === 'unavailable') {
+        errorMessage = '서비스 불가: Firebase 서비스가 일시적으로 사용할 수 없습니다.';
       }
       
       return { 
@@ -84,7 +130,11 @@ class ContentService {
         details: {
           code: error.code,
           message: error.message,
-          stack: error.stack
+          stack: error.stack,
+          environment: {
+            apiKey: process.env.REACT_APP_FIREBASE_API_KEY ? '설정됨' : '미설정',
+            projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || '기본값 사용'
+          }
         }
       };
     }

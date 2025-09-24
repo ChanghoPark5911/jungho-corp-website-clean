@@ -91,6 +91,13 @@ const AdminPageWithFirebase = () => {
   // Firebase 연결 테스트
   const testFirebaseConnection = async () => {
     try {
+      console.log('Firebase 연결 테스트 시작...');
+      console.log('환경 변수 확인:', {
+        apiKey: process.env.REACT_APP_FIREBASE_API_KEY ? '설정됨' : '미설정',
+        projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || '기본값 사용',
+        authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || '기본값 사용'
+      });
+      
       const result = await contentService.testConnection();
       if (result.success) {
         console.log('Firebase 연결 성공:', result.message);
@@ -107,47 +114,65 @@ const AdminPageWithFirebase = () => {
     }
   };
 
-  // 콘텐츠 저장 함수 (Firebase 연동)
+  // 콘텐츠 저장 함수 (로컬 우선 + Firebase 백업)
   const saveContent = async (section, data) => {
     setIsLoading(true);
     setSaveStatus('저장 중...');
     
     try {
-      // 먼저 Firebase 연결 테스트
-      const isConnected = await testFirebaseConnection();
-      if (!isConnected) {
-        return false;
-      }
-
       if (section === 'homepage') {
-        console.log('Firebase 저장 시도:', data);
+        console.log('저장 시도:', data);
         
-        const result = await contentService.saveHomepageContent(data);
-        
-        if (result.success) {
-          setHomeData(data);
-          setSaveStatus('✅ Firebase에 저장 완료!');
-          console.log('Firebase 저장 성공:', result.data);
-          
-          // 저장 후 최신 콘텐츠 다시 로드하여 관리자 화면에 반영
-          setTimeout(async () => {
-            await loadContentFromFirebase();
-          }, 500);
-          
-          // 3초 후 상태 메시지 초기화
-          setTimeout(() => {
-            setSaveStatus('');
-          }, 3000);
-          return true;
-        } else {
-          setSaveStatus('❌ 저장 실패: ' + result.error);
-          console.error('Firebase 저장 실패:', result.error);
+        // 1. 먼저 로컬 스토리지에 저장 (항상 성공)
+        try {
+          localStorage.setItem('jungho-corp-content', JSON.stringify({
+            ...data,
+            updatedAt: new Date().toISOString(),
+            version: Date.now(),
+            source: 'local-storage'
+          }));
+          console.log('로컬 스토리지 저장 성공');
+          setSaveStatus('✅ 로컬에 저장 완료!');
+        } catch (localError) {
+          console.error('로컬 저장 실패:', localError);
+          setSaveStatus('❌ 로컬 저장 실패: ' + localError.message);
           return false;
         }
+        
+        // 2. Firebase 연결 테스트 및 백업 시도
+        try {
+          const isConnected = await testFirebaseConnection();
+          if (isConnected) {
+            const result = await contentService.saveHomepageContent(data);
+            if (result.success) {
+              console.log('Firebase 백업 저장 성공');
+              setSaveStatus('✅ 로컬 + Firebase 저장 완료!');
+            } else {
+              console.warn('Firebase 백업 실패 (로컬은 성공):', result.error);
+              setSaveStatus('✅ 로컬 저장 완료! (Firebase 백업 실패)');
+            }
+          } else {
+            console.warn('Firebase 연결 실패 (로컬은 성공)');
+            setSaveStatus('✅ 로컬 저장 완료! (Firebase 연결 실패)');
+          }
+        } catch (firebaseError) {
+          console.warn('Firebase 백업 시도 중 오류 (로컬은 성공):', firebaseError);
+          setSaveStatus('✅ 로컬 저장 완료! (Firebase 백업 오류)');
+        }
+        
+        // 3. 로컬 데이터로 UI 업데이트
+        setHomeData(data);
+        
+        // 3초 후 상태 메시지 초기화
+        setTimeout(() => {
+          setSaveStatus('');
+        }, 3000);
+        
+        return true;
       }
     } catch (error) {
-      setSaveStatus('❌ 저장 실패: ' + error.message);
-      console.error('콘텐츠 저장 중 오류:', error);
+      console.error('저장 중 오류 발생:', error);
+      setSaveStatus('❌ 저장 중 오류가 발생했습니다: ' + error.message);
       return false;
     } finally {
       setIsLoading(false);

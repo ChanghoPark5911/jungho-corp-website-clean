@@ -71,7 +71,7 @@ export const savePerformanceData = async (data) => {
 };
 
 // 초기 성능 측정
-export const initializePerformanceMonitoring = () => {
+export const initPerformanceMonitoring = () => {
   if (typeof window !== 'undefined') {
     // 페이지 로드 완료 후 측정
     window.addEventListener('load', () => {

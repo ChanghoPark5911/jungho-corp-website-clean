@@ -74,6 +74,8 @@ const SimpleHomeContentManager = ({ data, onSave }) => {
   // 통합저장
   const handleSave = async () => {
     try {
+      console.log('저장할 데이터:', formData);
+      console.log('Hero Section 데이터:', formData.hero);
       await onSave('homepage', formData);
       setIsEditMode(false);
       alert('✅ 모든 변경사항이 성공적으로 저장되었습니다!');
@@ -92,6 +94,10 @@ const SimpleHomeContentManager = ({ data, onSave }) => {
         [field]: value
       }
     }));
+    
+    // 디버깅을 위한 로그
+    console.log('Hero Section 변경:', section, field, value);
+    console.log('현재 formData.hero:', prev.hero);
   };
 
   // 배열 필드 변경 처리 (achievements, subsidiaries)

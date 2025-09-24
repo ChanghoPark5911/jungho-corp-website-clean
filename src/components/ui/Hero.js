@@ -5,6 +5,7 @@ const Hero = ({
   backgroundImage,
   mainCopy = "정호그룹의 사업영역",
   subCopy = "조명제어 전문기업으로서 40년간 축적된 기술력으로,\n다양한 분야에서 혁신적인 솔루션을 제공합니다",
+  description = "혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다",
   stats = [],
   primaryAction,
   secondaryAction,
@@ -37,11 +38,11 @@ const Hero = ({
     const loadHeroContent = () => {
       // props로 전달된 데이터가 있으면 우선 사용 (Firebase 데이터)
       if (mainCopy && mainCopy !== "정호그룹\n조명의 미래를\n만들어갑니다") {
-        console.log('Props에서 Hero 데이터 사용:', { mainCopy, subCopy });
+        console.log('Props에서 Hero 데이터 사용:', { mainCopy, subCopy, description });
         setHeroData({
           mainTitle: mainCopy,
           subtitle: subCopy,
-          description: ""
+          description: description || ""
         });
         return;
       }

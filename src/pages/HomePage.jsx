@@ -304,6 +304,7 @@ const HomePage = () => {
       webpBackgroundImage: heroBackgroundImage,
       mainCopy: safeHero.title || '정호그룹\n조명의 미래를\n만들어갑니다',
       subCopy: safeHero.subtitle || '40년 전통의 조명제어 전문기업',
+      description: safeHero.description || '혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다',
       stats: [
         {
           value: safeAchievements[0]?.number || '40',

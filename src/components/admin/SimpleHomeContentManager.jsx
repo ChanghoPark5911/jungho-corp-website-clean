@@ -87,17 +87,21 @@ const SimpleHomeContentManager = ({ data, onSave }) => {
 
   // 입력 필드 변경 처리
   const handleInputChange = (section, field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [section]: {
-        ...prev[section],
-        [field]: value
-      }
-    }));
-    
-    // 디버깅을 위한 로그
-    console.log('Hero Section 변경:', section, field, value);
-    console.log('현재 formData.hero:', prev.hero);
+    setFormData(prev => {
+      const newData = {
+        ...prev,
+        [section]: {
+          ...prev[section],
+          [field]: value
+        }
+      };
+      
+      // 디버깅을 위한 로그
+      console.log('Hero Section 변경:', section, field, value);
+      console.log('현재 formData.hero:', newData.hero);
+      
+      return newData;
+    });
   };
 
   // 배열 필드 변경 처리 (achievements, subsidiaries)

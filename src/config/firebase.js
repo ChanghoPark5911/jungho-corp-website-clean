@@ -18,9 +18,19 @@ const firebaseConfig = {
 // Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
 
-// Firebase 서비스들 내보내기
-export const db = getFirestore(app);
-export const storage = getStorage(app);
-export const auth = getAuth(app);
+// Firebase 서비스들 초기화 (연결 설정 포함)
+let db, storage, auth;
 
+try {
+  db = getFirestore(app);
+  storage = getStorage(app);
+  auth = getAuth(app);
+  
+  console.log('Firebase 서비스 초기화 완료');
+} catch (error) {
+  console.error('Firebase 서비스 초기화 실패:', error);
+}
+
+// Firebase 서비스들 내보내기
+export { db, storage, auth };
 export default app;

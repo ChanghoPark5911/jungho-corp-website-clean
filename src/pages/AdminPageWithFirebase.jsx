@@ -88,12 +88,37 @@ const AdminPageWithFirebase = () => {
     }
   };
 
+  // Firebase 연결 테스트
+  const testFirebaseConnection = async () => {
+    try {
+      const result = await contentService.testConnection();
+      if (result.success) {
+        console.log('Firebase 연결 성공:', result.message);
+        return true;
+      } else {
+        console.error('Firebase 연결 실패:', result.error);
+        setSaveStatus('❌ Firebase 연결 실패: ' + result.error);
+        return false;
+      }
+    } catch (error) {
+      console.error('Firebase 연결 테스트 중 오류:', error);
+      setSaveStatus('❌ Firebase 연결 테스트 실패: ' + error.message);
+      return false;
+    }
+  };
+
   // 콘텐츠 저장 함수 (Firebase 연동)
   const saveContent = async (section, data) => {
     setIsLoading(true);
     setSaveStatus('저장 중...');
     
     try {
+      // 먼저 Firebase 연결 테스트
+      const isConnected = await testFirebaseConnection();
+      if (!isConnected) {
+        return false;
+      }
+
       if (section === 'homepage') {
         console.log('Firebase 저장 시도:', data);
         

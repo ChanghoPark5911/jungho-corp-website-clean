@@ -28,9 +28,38 @@ const CONTENT_TYPES = {
 };
 
 class ContentService {
+  // Firebase 연결 테스트
+  async testConnection() {
+    try {
+      if (!db) {
+        return { success: false, error: 'Firebase 데이터베이스가 초기화되지 않았습니다.' };
+      }
+      
+      // 간단한 연결 테스트
+      const testRef = doc(db, 'test', 'connection');
+      await setDoc(testRef, { test: true, timestamp: serverTimestamp() });
+      
+      return { success: true, message: 'Firebase 연결 성공' };
+    } catch (error) {
+      console.error('Firebase 연결 테스트 실패:', error);
+      return { 
+        success: false, 
+        error: error.message,
+        code: error.code 
+      };
+    }
+  }
+
   // 홈페이지 콘텐츠 저장
   async saveHomepageContent(contentData) {
     try {
+      // Firebase 연결 상태 확인
+      if (!db) {
+        throw new Error('Firebase 데이터베이스가 초기화되지 않았습니다.');
+      }
+
+      console.log('Firebase 저장 시도:', contentData);
+      
       const docRef = doc(db, 'content', 'homepage');
       await setDoc(docRef, {
         ...contentData,
@@ -42,7 +71,22 @@ class ContentService {
       return { success: true, data: contentData };
     } catch (error) {
       console.error('홈페이지 콘텐츠 저장 실패:', error);
-      return { success: false, error: error.message };
+      
+      // 더 자세한 오류 정보 제공
+      let errorMessage = error.message;
+      if (error.code) {
+        errorMessage = `${error.code}: ${error.message}`;
+      }
+      
+      return { 
+        success: false, 
+        error: errorMessage,
+        details: {
+          code: error.code,
+          message: error.message,
+          stack: error.stack
+        }
+      };
     }
   }
 

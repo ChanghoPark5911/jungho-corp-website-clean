@@ -74,6 +74,23 @@ const AdminPageWithFirebase = () => {
   const loadContentFromFirebase = async () => {
     setIsLoading(true);
     try {
+      // 1. 로컬 스토리지에서 콘텐츠 로드 시도
+      console.log('로컬 스토리지에서 콘텐츠 로드 시도...');
+      const localData = localStorage.getItem('jungho-corp-content');
+      
+      if (localData) {
+        try {
+          const parsedData = JSON.parse(localData);
+          console.log('로컬 스토리지에서 콘텐츠 로드 성공:', parsedData);
+          setHomeData(parsedData);
+          return;
+        } catch (error) {
+          console.error('로컬 스토리지 데이터 파싱 오류:', error);
+        }
+      }
+      
+      // 2. 로컬 스토리지 실패 시 Firebase 시도
+      console.log('로컬 스토리지 실패, Firebase 시도...');
       const result = await contentService.loadHomepageContent();
       if (result.success && result.data) {
         setHomeData(result.data);
@@ -82,7 +99,7 @@ const AdminPageWithFirebase = () => {
         console.log('Firebase에 저장된 콘텐츠가 없습니다. 기본 데이터 사용');
       }
     } catch (error) {
-      console.error('Firebase 콘텐츠 로드 실패:', error);
+      console.error('콘텐츠 로드 실패:', error);
     } finally {
       setIsLoading(false);
     }
@@ -136,6 +153,11 @@ const AdminPageWithFirebase = () => {
         
         // UI 업데이트
         setHomeData(data);
+        
+        // 저장 후 최신 데이터 다시 로드하여 관리자 화면에 반영
+        setTimeout(async () => {
+          await loadContentFromFirebase();
+        }, 500);
         
         // 3초 후 상태 메시지 초기화
         setTimeout(() => {

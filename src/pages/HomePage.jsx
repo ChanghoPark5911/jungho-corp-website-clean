@@ -147,29 +147,41 @@ const HomePage = () => {
     return defaultImages;
   });
 
-  // 서버에서 콘텐츠 로드 (Firebase 우선)
+  // 서버에서 콘텐츠 로드 (로컬 스토리지 우선)
   useEffect(() => {
     const loadContent = async () => {
       try {
         console.log('HomePage 컴포넌트가 렌더링되었습니다!');
         console.log('현재 URL:', window.location.href);
 
-        // 1. Firebase에서 최신 콘텐츠 로드 시도
-        console.log('Firebase에서 콘텐츠 로드 시도...');
+        // 1. 로컬 스토리지에서 콘텐츠 로드 시도
+        console.log('로컬 스토리지에서 콘텐츠 로드 시도...');
+        const localData = localStorage.getItem('jungho-corp-content');
+        
+        if (localData) {
+          try {
+            const parsedData = JSON.parse(localData);
+            console.log('로컬 스토리지에서 콘텐츠 로드 성공:', parsedData);
+            setHomeData(parsedData);
+            setDebugInfo(`로컬 스토리지에서 로드됨 - ${new Date().toLocaleString()}`);
+            return;
+          } catch (error) {
+            console.error('로컬 스토리지 데이터 파싱 오류:', error);
+          }
+        }
+        
+        // 2. 로컬 스토리지 실패 시 Firebase 시도
+        console.log('로컬 스토리지 실패, Firebase 시도...');
         const firebaseResult = await contentService.loadHomepageContent();
         
         if (firebaseResult.success && firebaseResult.data) {
           console.log('Firebase에서 콘텐츠 로드 성공:', firebaseResult.data);
           setHomeData(firebaseResult.data);
           setDebugInfo(`Firebase에서 로드됨 - ${new Date().toLocaleString()}`);
-          
-          // LocalStorage에도 백업 저장
-          localStorage.setItem('homeData', JSON.stringify(firebaseResult.data));
-          console.log('Firebase 데이터를 LocalStorage에 백업 저장 완료');
           return;
         }
         
-        // 2. Firebase 로드 실패 시 기존 로직 사용
+        // 3. Firebase 로드 실패 시 기존 로직 사용
         console.log('Firebase 로드 실패, 기존 로직 사용');
         
         // 기존 서버 로드 시도

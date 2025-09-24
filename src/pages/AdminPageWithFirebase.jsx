@@ -8,7 +8,7 @@ const AdminPageWithFirebase = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState('home');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 초기 로딩 상태를 true로 설정
   const [saveStatus, setSaveStatus] = useState('');
 
   // 기본 데이터
@@ -53,6 +53,16 @@ const AdminPageWithFirebase = () => {
   };
 
   const [homeData, setHomeData] = useState(defaultHomeData);
+
+  // 초기 로딩 완료
+  useEffect(() => {
+    // 초기 로딩 완료
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Firebase에서 콘텐츠 로드
   useEffect(() => {
@@ -135,6 +145,18 @@ const AdminPageWithFirebase = () => {
     setPassword('');
     setActiveTab('home');
   };
+
+  // 로딩 상태 표시
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return (

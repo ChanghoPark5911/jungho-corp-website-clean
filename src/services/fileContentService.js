@@ -1,25 +1,16 @@
-// 파일 기반 콘텐츠 저장 서비스 (Firebase 완전 제외)
+// 간단한 로컬 저장 서비스
 class FileContentService {
   constructor() {
     this.storageKey = 'jungho-corp-content';
   }
 
-  // 콘텐츠 저장 (로컬 스토리지만 사용)
+  // 콘텐츠 저장
   async saveContent(contentData) {
     try {
-      const data = {
-        ...contentData,
-        updatedAt: new Date().toISOString(),
-        version: Date.now(),
-        source: 'file-storage'
-      };
-      
-      localStorage.setItem(this.storageKey, JSON.stringify(data));
-      console.log('파일 저장 성공:', data);
-      
-      return { success: true, data };
+      localStorage.setItem(this.storageKey, JSON.stringify(contentData));
+      return { success: true, data: contentData };
     } catch (error) {
-      console.error('파일 저장 실패:', error);
+      console.error('저장 실패:', error);
       return { success: false, error: error.message };
     }
   }

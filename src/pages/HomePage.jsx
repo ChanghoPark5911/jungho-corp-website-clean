@@ -7,7 +7,6 @@ import SubsidiariesIntro from '../components/ui/SubsidiariesIntro';
 import ProjectGallery from '../components/ui/ProjectGallery';
 import CustomerSupport from '../components/ui/CustomerSupport';
 import LatestNews from '../components/ui/LatestNews';
-import contentService from '../services/contentService';
 import fileContentService from '../services/fileContentService';
 
 // 최적화된 이미지 데이터

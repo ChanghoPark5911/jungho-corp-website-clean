@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Button from './Button';
 
+// 줄바꿈 변환 함수
+const formatTextWithLineBreaks = (text) => {
+  if (!text) return '';
+  return text.split('\n').map((line, index) => (
+    <React.Fragment key={index}>
+      {line}
+      {index < text.split('\n').length - 1 && <br />}
+    </React.Fragment>
+  ));
+};
+
 const Hero = ({
   backgroundImage,
   mainCopy = "정호그룹의 사업영역",
@@ -215,10 +226,11 @@ const Hero = ({
               color: '#ffffff !important',
               textShadow: '1px 1px 4px black',
               fontWeight: '400',
-              opacity: '0.9'
+              opacity: '0.9',
+              whiteSpace: 'pre-line'
             }}
           >
-            {heroData.description || '수많은 프로젝트의 성공적인 시공 및 운영경험을 바탕으로 최고의 고객가치를 창출합니다'}
+            {formatTextWithLineBreaks(heroData.description || '수많은 프로젝트의 성공적인 시공 및 운영경험을 바탕으로 최고의 고객가치를 창출합니다')}
           </p>
           
           {/* 액션 버튼 */}

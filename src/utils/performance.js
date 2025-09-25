@@ -1,6 +1,6 @@
 // 성능 모니터링 유틸리티
 export const performanceMonitor = {
-  // 페이지 로드 시간 측정
+// 페이지 로드 시간 측정
   measurePageLoad: () => {
     if (typeof window !== 'undefined' && window.performance) {
       const navigation = window.performance.getEntriesByType('navigation')[0];
@@ -30,7 +30,7 @@ export const performanceMonitor = {
   // Core Web Vitals 측정
   measureWebVitals: () => {
     if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
-      const observer = new PerformanceObserver((list) => {
+    const observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           console.log('Web Vital:', entry.name, entry.value);
         }
@@ -94,4 +94,4 @@ export const initPerformanceMonitoring = () => {
     // Web Vitals 측정 시작
     performanceMonitor.measureWebVitals();
   }
-};
+}; 

@@ -29,10 +29,6 @@ const AdminPageWithFirebase = () => {
       title: '정호그룹 소개',
       description: '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다.'
     },
-    subsidiariesIntro: {
-      title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
-      description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'
-    },
     subsidiaries: [
       {
         name: '클라루스',

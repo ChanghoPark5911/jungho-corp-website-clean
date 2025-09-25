@@ -4,7 +4,6 @@ import { HomePageSEO } from '../components/SEO';
 import Hero from '../components/ui/Hero';
 import GroupIntro from '../components/ui/GroupIntro';
 import SubsidiariesIntro from '../components/ui/SubsidiariesIntro';
-import SubsidiariesIntroNew from '../components/ui/SubsidiariesIntroNew';
 import ProjectGallery from '../components/ui/ProjectGallery';
 import CustomerSupport from '../components/ui/CustomerSupport';
 import LatestNews from '../components/ui/LatestNews';
@@ -91,11 +90,7 @@ const defaultData = {
       path: '/texcom',
       icon: '🧵'
     }
-  ],
-  subsidiariesIntro: {
-    title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
-    description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'
-  }
+  ]
 };
 
 const HomePage = () => {
@@ -434,14 +429,6 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* 새로운 계열사 소개 섹션 */}
-        <SubsidiariesIntroNew 
-          data={{
-            title: homeData.subsidiariesIntro?.title || '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
-            description: homeData.subsidiariesIntro?.description || '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출',
-            subsidiaries: homeData.subsidiaries || []
-          }}
-        />
 
         {/* 언제나 함께하는 든든한 파트너 섹션 */}
         <section className="section bg-gradient-green-blue">

@@ -19,10 +19,6 @@ const SimpleHomeContentManager = ({ data, onSave }) => {
       title: '정호그룹 소개',
       description: '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다.'
     },
-    subsidiariesIntro: {
-      title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
-      description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'
-    },
     subsidiaries: [
       {
         name: '클라루스',
@@ -272,39 +268,6 @@ const SimpleHomeContentManager = ({ data, onSave }) => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-500"
               rows={6}
               placeholder="설명을 입력하세요 (줄바꿈: Enter 키 사용)"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* 계열사 소개 섹션 */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">계열사 소개</h3>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              제목 (줄바꿈 지원)
-            </label>
-            <textarea
-              value={formData.subsidiariesIntro?.title || ''}
-              onChange={(e) => handleInputChange('subsidiariesIntro', 'title', e.target.value)}
-              disabled={!isEditMode}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-500"
-              rows={3}
-              placeholder="제목을 입력하세요 (줄바꿈: Enter 키 사용)"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              설명
-            </label>
-            <textarea
-              value={formData.subsidiariesIntro?.description || ''}
-              onChange={(e) => handleInputChange('subsidiariesIntro', 'description', e.target.value)}
-              disabled={!isEditMode}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-500"
-              rows={3}
-              placeholder="설명을 입력하세요"
             />
           </div>
         </div>

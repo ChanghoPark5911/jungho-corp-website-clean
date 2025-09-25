@@ -80,6 +80,7 @@ const SimpleHomeContentManager = ({ data, onSave }) => {
     try {
       console.log('저장할 데이터:', formData);
       console.log('Hero Section 데이터:', formData.hero);
+      console.log('Subsidiaries Intro 데이터:', formData.subsidiariesIntro);
       await onSave('homepage', formData);
       setIsEditMode(false);
       alert('✅ 모든 변경사항이 성공적으로 저장되었습니다!');
@@ -101,8 +102,8 @@ const SimpleHomeContentManager = ({ data, onSave }) => {
       };
       
       // 디버깅을 위한 로그
-      console.log('Hero Section 변경:', section, field, value);
-      console.log('현재 formData.hero:', newData.hero);
+      console.log('데이터 변경:', section, field, value);
+      console.log('현재 formData:', newData);
       
       return newData;
     });

@@ -74,7 +74,7 @@ const SubsidiariesIntro = ({
         iconColor: item.iconColor || 'bg-gray-200',
         textColor: item.textColor || 'text-green-800',
         buttonColor: item.buttonColor || 'bg-green-700',
-        path: item.path || '/'
+        path: item.path || `/${item.id || item.name || 'unknown'}`
       }));
     }
     return defaultSubsidiaries;
@@ -131,7 +131,7 @@ const SubsidiariesIntro = ({
     console.log(`클릭된 회사: ${companyName}, 경로: ${path}`);
     console.log('현재 window.location:', window.location.href);
     
-    if (path && path !== '/') {
+    if (path && path !== '/' && path !== 'undefined') {
       console.log(`네비게이션 시도: ${path}`);
       try {
         // 강제로 페이지 이동
@@ -143,7 +143,7 @@ const SubsidiariesIntro = ({
         window.location.pathname = path;
       }
     } else {
-      console.log('유효하지 않은 경로입니다.');
+      console.log('유효하지 않은 경로입니다. path:', path);
     }
   };
 

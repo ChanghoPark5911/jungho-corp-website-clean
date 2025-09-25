@@ -165,19 +165,8 @@ const HomePage = () => {
           return;
         }
         
-        // 2. 로컬 스토리지 실패 시 Firebase 시도
-        console.log('로컬 스토리지 실패, Firebase 시도...');
-        const firebaseResult = await contentService.loadHomepageContent();
-        
-        if (firebaseResult.success && firebaseResult.data) {
-          console.log('Firebase에서 콘텐츠 로드 성공:', firebaseResult.data);
-          setHomeData(firebaseResult.data);
-          setDebugInfo(`Firebase에서 로드됨 - ${new Date().toLocaleString()}`);
-          return;
-        }
-        
-        // 3. Firebase 로드 실패 시 기존 로직 사용
-        console.log('Firebase 로드 실패, 기존 로직 사용');
+        // 2. 로컬 스토리지 실패 시 기본값 사용
+        console.log('로컬 스토리지 실패, 기본값 사용');
         
         // 기존 서버 로드 시도
         try {

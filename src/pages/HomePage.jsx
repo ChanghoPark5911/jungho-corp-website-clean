@@ -8,6 +8,7 @@ import ProjectGallery from '../components/ui/ProjectGallery';
 import CustomerSupport from '../components/ui/CustomerSupport';
 import LatestNews from '../components/ui/LatestNews';
 import contentService from '../services/contentService';
+import fileContentService from '../services/fileContentService';
 
 // 최적화된 이미지 데이터
 const optimizedImages = {
@@ -154,20 +155,15 @@ const HomePage = () => {
         console.log('HomePage 컴포넌트가 렌더링되었습니다!');
         console.log('현재 URL:', window.location.href);
 
-        // 1. 로컬 스토리지에서 콘텐츠 로드 시도
-        console.log('로컬 스토리지에서 콘텐츠 로드 시도...');
-        const localData = localStorage.getItem('jungho-corp-content');
+        // 1. 파일 기반 콘텐츠 로드 시도
+        console.log('파일 기반 콘텐츠 로드 시도...');
+        const fileResult = await fileContentService.loadContent();
         
-        if (localData) {
-          try {
-            const parsedData = JSON.parse(localData);
-            console.log('로컬 스토리지에서 콘텐츠 로드 성공:', parsedData);
-            setHomeData(parsedData);
-            setDebugInfo(`로컬 스토리지에서 로드됨 - ${new Date().toLocaleString()}`);
-            return;
-          } catch (error) {
-            console.error('로컬 스토리지 데이터 파싱 오류:', error);
-          }
+        if (fileResult.success && fileResult.data) {
+          console.log('파일 기반 콘텐츠 로드 성공:', fileResult.data);
+          setHomeData(fileResult.data);
+          setDebugInfo(`파일에서 로드됨 - ${new Date().toLocaleString()}`);
+          return;
         }
         
         // 2. 로컬 스토리지 실패 시 Firebase 시도

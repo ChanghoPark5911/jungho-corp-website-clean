@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import SimpleHomeContentManager from '../components/admin/SimpleHomeContentManager';
 import FirebaseTest from '../components/FirebaseTest';
 import contentService from '../services/contentService';
+import fileContentService from '../services/fileContentService';
 
 const AdminPageWithFirebase = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -131,40 +132,40 @@ const AdminPageWithFirebase = () => {
     }
   };
 
-  // 콘텐츠 저장 함수 (완전 로컬 저장)
+  // 콘텐츠 저장 함수 (파일 기반 저장)
   const saveContent = async (section, data) => {
     setIsLoading(true);
     setSaveStatus('저장 중...');
     
     try {
       if (section === 'homepage') {
-        console.log('로컬 저장 시도:', data);
+        console.log('파일 저장 시도:', data);
         
-        // 로컬 스토리지에 저장 (Firebase 완전 제외)
-        localStorage.setItem('jungho-corp-content', JSON.stringify({
-          ...data,
-          updatedAt: new Date().toISOString(),
-          version: Date.now(),
-          source: 'local-storage-only'
-        }));
+        // 파일 기반 저장 (Firebase 완전 제외)
+        const result = await fileContentService.saveContent(data);
         
-        console.log('로컬 스토리지 저장 성공');
-        setSaveStatus('✅ 로컬에 저장 완료!');
-        
-        // UI 업데이트
-        setHomeData(data);
-        
-        // 저장 후 최신 데이터 다시 로드하여 관리자 화면에 반영
-        setTimeout(async () => {
-          await loadContentFromFirebase();
-        }, 500);
-        
-        // 3초 후 상태 메시지 초기화
-        setTimeout(() => {
-          setSaveStatus('');
-        }, 3000);
-        
-        return true;
+        if (result.success) {
+          console.log('파일 저장 성공');
+          setSaveStatus('✅ 파일에 저장 완료!');
+          
+          // UI 업데이트
+          setHomeData(data);
+          
+          // 저장 후 최신 데이터 다시 로드
+          setTimeout(async () => {
+            await loadContentFromFirebase();
+          }, 500);
+          
+          // 3초 후 상태 메시지 초기화
+          setTimeout(() => {
+            setSaveStatus('');
+          }, 3000);
+          
+          return true;
+        } else {
+          setSaveStatus('❌ 파일 저장 실패: ' + result.error);
+          return false;
+        }
       }
     } catch (error) {
       console.error('저장 중 오류 발생:', error);

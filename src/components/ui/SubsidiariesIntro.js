@@ -134,13 +134,18 @@ const SubsidiariesIntro = ({
     if (path && path !== '/' && path !== 'undefined') {
       console.log(`네비게이션 시도: ${path}`);
       try {
-        // 강제로 페이지 이동
-        window.location.href = path;
-        console.log('네비게이션 성공!');
+        // React Router의 navigate 사용
+        navigate(path);
+        console.log('React Router 네비게이션 성공!');
       } catch (error) {
-        console.error('네비게이션 오류:', error);
-        // 대체 방법으로 시도
-        window.location.pathname = path;
+        console.error('React Router 네비게이션 오류:', error);
+        // 대체 방법으로 window.location 사용
+        try {
+          window.location.href = path;
+          console.log('window.location 네비게이션 성공!');
+        } catch (fallbackError) {
+          console.error('모든 네비게이션 방법 실패:', fallbackError);
+        }
       }
     } else {
       console.log('유효하지 않은 경로입니다. path:', path);

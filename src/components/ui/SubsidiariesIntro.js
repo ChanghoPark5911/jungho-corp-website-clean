@@ -5,6 +5,7 @@ const SubsidiariesIntro = ({
   title = "4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계",
   subtitle = "기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출",
   subsidiaries = [],
+  subsidiariesIntro = null, // 관리자에서 수정한 제목/설명 데이터
   className = '',
   ...props
 }) => {
@@ -156,10 +157,10 @@ const SubsidiariesIntro = ({
         {/* 섹션 헤더 */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-green-600 mb-6 leading-tight whitespace-pre-line">
-            {title}
+            {subsidiariesIntro?.title || title}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            {subtitle}
+            {subsidiariesIntro?.description || subtitle}
           </p>
         </div>
 

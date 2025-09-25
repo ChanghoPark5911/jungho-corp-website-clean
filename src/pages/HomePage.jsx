@@ -164,7 +164,17 @@ const HomePage = () => {
         
         if (fileResult.success && fileResult.data) {
           console.log('파일 기반 콘텐츠 로드 성공:', fileResult.data);
-          setHomeData(fileResult.data);
+          console.log('Subsidiaries Intro 데이터:', fileResult.data.subsidiariesIntro);
+          
+          // subsidiariesIntro 데이터가 없으면 기본값으로 병합
+          const mergedData = {
+            ...defaultData,
+            ...fileResult.data,
+            subsidiariesIntro: fileResult.data.subsidiariesIntro || defaultData.subsidiariesIntro
+          };
+          
+          console.log('병합된 데이터:', mergedData);
+          setHomeData(mergedData);
           setDebugInfo(`파일에서 로드됨 - ${new Date().toLocaleString()}`);
           return;
         }
@@ -384,8 +394,12 @@ const HomePage = () => {
       { id: 'tlc', title: '정호티엘씨', subtitle: 'IoT 센서 및 제어 장치', description: 'IoT 센서 네트워크와 제어 장치를 통해 실시간 모니터링을 제공합니다.', feature: 'IoT 센서 네트워크', color: 'tlc', icon: '📡' },
       { id: 'illutech', title: '일루텍', subtitle: '스마트 물류 솔루션', description: '물류 분야의 자동화와 효율성을 극대화하는 스마트 솔루션을 제공합니다.', feature: '스마트 물류 자동화', color: 'illutech', icon: '🚚' },
       { id: 'texcom', title: '정호텍스컴', subtitle: '텍스타일 제어 시스템', description: '텍스타일 산업의 생산성을 향상시키는 전문 제어 시스템을 개발합니다.', feature: '텍스타일 제어 시스템', color: 'texcom', icon: '🧵' }
-    ]
-  }), [homeData.subsidiaries]);
+    ],
+    subsidiariesIntro: homeData.subsidiariesIntro || {
+      title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
+      description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'
+    }
+  }), [homeData.subsidiaries, homeData.subsidiariesIntro]);
 
   return (
     <>
@@ -433,67 +447,6 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* 계열사 소개 섹션 */}
-        <section className="py-20 bg-gradient-to-br from-green-50 to-blue-50">
-          <div className="container mx-auto px-4">
-            {/* 상단 제목 및 설명 */}
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight">
-                {homeData.subsidiariesIntro?.title?.split('\n').map((line, index) => (
-                  <React.Fragment key={index}>
-                    {line}
-                    {index < homeData.subsidiariesIntro.title.split('\n').length - 1 && <br />}
-                  </React.Fragment>
-                )) || '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계'}
-              </h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                {homeData.subsidiariesIntro?.description || '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'}
-              </p>
-            </div>
-
-            {/* 4개 계열사 2x2 그리드 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {homeData.subsidiaries.map((company, index) => (
-                <div
-                  key={company.id}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 border border-gray-100"
-                >
-                  {/* 회사 아이콘 */}
-                  <div className="flex items-center mb-6">
-                    <div 
-                      className="w-16 h-16 rounded-full flex items-center justify-center text-2xl mr-4"
-                      style={{ backgroundColor: company.color + '20' }}
-                    >
-                      {company.icon}
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                        {company.title}
-                      </h3>
-                      <p className="text-sm font-medium text-gray-500">
-                        {company.subtitle}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 설명 */}
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {company.description}
-                  </p>
-
-                  {/* 자세히 보기 버튼 */}
-                  <button
-                    className="w-full py-3 px-6 rounded-lg font-medium text-white transition-all duration-300 hover:shadow-lg"
-                    style={{ backgroundColor: company.color }}
-                    onClick={() => window.location.href = company.path}
-                  >
-                    자세히 보기 →
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* 언제나 함께하는 든든한 파트너 섹션 */}
         <section className="section bg-gradient-green-blue">

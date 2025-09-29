@@ -1,92 +1,119 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import newsService, { NEWS_CATEGORIES, NEWS_CATEGORY_LABELS } from '../services/newsService';
 
 const NewsPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState(NEWS_CATEGORIES.ALL);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedNews, setSelectedNews] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState('');
+  const [newsList, setNewsList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // 뉴스 데이터
-  const newsData = [
+  // 뉴스 데이터 로드
+  useEffect(() => {
+    loadNews();
+  }, [selectedCategory, searchTerm]);
+
+  const loadNews = async () => {
+    setLoading(true);
+    setError('');
+    
+    try {
+      const result = await newsService.getNewsList({
+        category: selectedCategory,
+        searchTerm: searchTerm,
+        limitCount: 50
+      });
+      
+      if (result.success) {
+        setNewsList(result.data);
+      } else {
+        setError(result.error || '뉴스를 불러오는데 실패했습니다.');
+        // Firebase에서 데이터를 가져올 수 없는 경우 기본 데이터 사용
+        setNewsList(getDefaultNews());
+      }
+    } catch (err) {
+      console.error('뉴스 로드 오류:', err);
+      setError('뉴스를 불러오는 중 오류가 발생했습니다.');
+      // 오류 발생 시 기본 데이터 사용
+      setNewsList(getDefaultNews());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 기본 뉴스 데이터 (Firebase 연결 실패 시 사용)
+  const getDefaultNews = () => [
     {
-      id: 1,
+      id: 'default-1',
       title: '정호그룹, 새로운 AI 기반 조명제어 시스템 출시',
       category: 'technology',
-      date: '2024-01-15',
+      publishedAt: new Date('2024-01-15'),
       summary: '40년 전통의 조명제어 전문기업 정호그룹이 AI 기술을 접목한 혁신적인 조명제어 시스템을 출시하여 업계의 주목을 받고 있습니다.',
       content: '정호그룹은 최근 40년간 축적된 기술력을 바탕으로 AI 기술을 접목한 혁신적인 조명제어 시스템을 출시했습니다. 이번 시스템은 기존 대비 40% 이상의 에너지 효율성을 향상시키며, 머신러닝 알고리즘을 통해 사용 패턴을 학습하여 최적의 조명 환경을 자동으로 제공합니다.',
       author: '정호그룹 마케팅팀',
-      readTime: '3분'
+      readTime: '3분',
+      viewCount: 156
     },
     {
-      id: 2,
+      id: 'default-2',
       title: '정호그룹, 동남아시아 시장 진출 확대',
       category: 'business',
-      date: '2024-01-10',
+      publishedAt: new Date('2024-01-10'),
       summary: '정호그룹이 동남아시아 시장 진출을 확대하여 싱가포르, 말레이시아, 태국 등 주요 국가에 현지 법인을 설립했습니다.',
       content: '정호그룹은 동남아시아 시장 진출을 확대하여 싱가포르, 말레이시아, 태국 등 주요 국가에 현지 법인을 설립했습니다. 이번 진출은 정호그룹의 글로벌 확장 전략의 일환으로, 현지 시장에 특화된 조명제어 솔루션을 제공할 예정입니다.',
       author: '정호그룹 해외사업팀',
-      readTime: '2분'
-    },
-    {
-      id: 3,
-      title: '정호그룹, ESG 경영 우수사례 선정',
-      category: 'esg',
-      date: '2024-01-05',
-      summary: '정호그룹이 환경부에서 주관하는 ESG 경영 우수사례에 선정되어 지속가능한 경영에 대한 노력을 인정받았습니다.',
-      content: '정호그룹이 환경부에서 주관하는 ESG 경영 우수사례에 선정되었습니다. 특히 에너지 효율적인 조명제어 기술 개발과 친환경 제품 생산 과정에서의 탄소 배출량 감축 노력이 높이 평가되었습니다.',
-      author: '정호그룹 ESG팀',
-      readTime: '4분'
-    },
-    {
-      id: 4,
-      title: '정호그룹, 2024년 기술혁신상 수상',
-      category: 'awards',
-      date: '2024-01-03',
-      summary: '정호그룹이 한국기술혁신협회에서 주관하는 2024년 기술혁신상을 수상했습니다.',
-      content: '정호그룹이 한국기술혁신협회에서 주관하는 2024년 기술혁신상을 수상했습니다. 이번 수상은 정호그룹이 개발한 AI 기반 조명제어 시스템의 혁신성과 실용성을 인정받은 결과입니다.',
-      author: '정호그룹 기술개발팀',
-      readTime: '3분'
-    },
-    {
-      id: 5,
-      title: '정호그룹, 대학과 산학협력 MOU 체결',
-      category: 'business',
-      date: '2023-12-28',
-      summary: '정호그룹이 서울대학교, KAIST 등 주요 대학과 산학협력 MOU를 체결하여 미래 기술 개발에 박차를 가하고 있습니다.',
-      content: '정호그룹이 서울대학교, KAIST 등 주요 대학과 산학협력 MOU를 체결했습니다. 이번 협력은 미래 조명제어 기술 개발과 인재 양성을 위한 것으로, 공동 연구개발과 인턴십 프로그램 운영을 포함합니다.',
-      author: '정호그룹 인사팀',
-      readTime: '2분'
-    },
-    {
-      id: 6,
-      title: '정호그룹, 스마트홈 조명제어 시장 진출',
-      category: 'technology',
-      date: '2023-12-20',
-      summary: '정호그룹이 스마트홈 조명제어 시장에 진출하여 일반 가정용 제품 라인업을 확대했습니다.',
-      content: '정호그룹이 스마트홈 조명제어 시장에 진출하여 일반 가정용 제품 라인업을 확대했습니다. 이번 진출은 기존 상업용 중심의 사업을 가정용 시장으로 확장하는 전략의 일환입니다.',
-      author: '정호그룹 제품개발팀',
-      readTime: '3분'
+      readTime: '2분',
+      viewCount: 89
     }
   ];
 
-  const categories = [
-    { id: 'all', label: '전체', count: newsData.length },
-    { id: 'technology', label: '기술', count: newsData.filter(n => n.category === 'technology').length },
-    { id: 'business', label: '사업', count: newsData.filter(n => n.category === 'business').length },
-    { id: 'esg', label: 'ESG', count: newsData.filter(n => n.category === 'esg').length },
-    { id: 'awards', label: '수상', count: newsData.filter(n => n.category === 'awards').length }
-  ];
+  // 카테고리 통계 계산
+  const getCategoryStats = () => {
+    const stats = {};
+    Object.values(NEWS_CATEGORIES).forEach(category => {
+      if (category !== NEWS_CATEGORIES.ALL) {
+        stats[category] = newsList.filter(n => n.category === category).length;
+      }
+    });
+    stats[NEWS_CATEGORIES.ALL] = newsList.length;
+    return stats;
+  };
 
-  // 필터링된 뉴스
-  const filteredNews = newsData.filter(news => {
-    const categoryMatch = selectedCategory === 'all' || news.category === selectedCategory;
-    const searchMatch = news.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                       news.summary.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                       news.content.toLowerCase().includes(searchTerm.toLowerCase());
-    return categoryMatch && searchMatch;
-  });
+  const categoryStats = getCategoryStats();
+  const categories = Object.values(NEWS_CATEGORIES).map(category => ({
+    id: category,
+    label: NEWS_CATEGORY_LABELS[category],
+    count: categoryStats[category] || 0
+  }));
+
+  // 날짜 포맷팅 함수
+  const formatDate = (date) => {
+    if (!date) return '';
+    const d = new Date(date);
+    return d.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+  };
+
+  // 뉴스 클릭 핸들러 (조회수 증가)
+  const handleNewsClick = async (news) => {
+    setSelectedNews(news);
+    setIsModalOpen(true);
+    
+    // Firebase에서 뉴스인 경우 조회수 증가
+    if (news.id && !news.id.startsWith('default-')) {
+      try {
+        await newsService.incrementViewCount(news.id);
+      } catch (error) {
+        console.error('조회수 증가 실패:', error);
+      }
+    }
+  };
 
   // 뉴스레터 구독 처리
   const handleNewsletterSubscribe = (e) => {
@@ -98,6 +125,7 @@ const NewsPage = () => {
   };
 
   return (
+    <>
     <div className="min-h-screen bg-gray-50">
       {/* 1. 히어로 섹션 */}
       <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-20 relative overflow-hidden">
@@ -105,7 +133,7 @@ const NewsPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">정호그룹 뉴스</h1>
-            <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8">
+            <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8 text-white">
               40년 전통의 조명제어 전문기업 정호그룹의 최신 소식과 업계 동향을 확인하세요
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm">
@@ -161,37 +189,80 @@ const NewsPage = () => {
       {/* 3. 뉴스 목록 */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* 에러 메시지 */}
+          {error && (
+            <div className="mb-8 bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded-lg">
+              <p className="text-sm">
+                <strong>주의:</strong> {error} 기본 데이터를 표시합니다.
+              </p>
+            </div>
+          )}
+
           {/* 결과 카운트 */}
           <div className="mb-8">
             <p className="text-gray-600">
-              총 <span className="font-semibold text-primary-600">{filteredNews.length}</span>개의 뉴스를 찾았습니다
+              총 <span className="font-semibold text-primary-600">{newsList.length}</span>개의 뉴스를 찾았습니다
               {searchTerm && ` (검색어: "${searchTerm}")`}
             </p>
           </div>
 
+          {/* 로딩 상태 */}
+          {loading && (
+            <div className="text-center py-16">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">뉴스를 불러오는 중...</p>
+            </div>
+          )}
+
           {/* 뉴스 그리드 */}
+          {!loading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredNews.map(news => (
+              {newsList.map(news => (
               <div
                 key={news.id}
                 className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
-                onClick={() => {
-                  setSelectedNews(news);
-                  setIsModalOpen(true);
-                }}
+                  onClick={() => handleNewsClick(news)}
               >
                 {/* 이미지 영역 */}
-                <div className="h-48 bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black/10"></div>
-                  <div className="relative z-10 text-white text-center">
+                  <div className="h-48 relative overflow-hidden">
+                    {news.featuredImageUrl ? (
+                      // 실제 이미지가 있는 경우
+                      <>
+                        <img
+                          src={news.featuredImageUrl}
+                          alt={news.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            // 이미지 로드 실패 시 기본 이미지로 대체
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center" style={{display: 'none'}}>
+                          <div className="text-white text-center">
+                            <svg className="w-12 h-12 mx-auto mb-2 opacity-80" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                            </svg>
+                            <span className="text-sm">이미지 로드 실패</span>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      // 기본 이미지가 없는 경우
+                      <div className="w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
+                        <div className="text-white text-center">
                     <svg className="w-12 h-12 mx-auto mb-2 opacity-80" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                     </svg>
                     <span className="text-sm">뉴스 이미지</span>
                   </div>
+                      </div>
+                    )}
+                    
+                    {/* 카테고리 배지 */}
                   <div className="absolute top-4 left-4">
                     <span className="bg-white/20 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
-                      {categories.find(c => c.id === news.category)?.label}
+                        {NEWS_CATEGORY_LABELS[news.category] || news.category}
                     </span>
                   </div>
                 </div>
@@ -199,13 +270,24 @@ const NewsPage = () => {
                 {/* 콘텐츠 영역 */}
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-3 text-sm text-gray-500">
-                    <span>{news.date}</span>
+                      <span>{formatDate(news.publishedAt)}</span>
+                      <div className="flex items-center space-x-3">
                     <span className="flex items-center">
                       <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
                       </svg>
                       {news.readTime}
                     </span>
+                        {news.viewCount && (
+                          <span className="flex items-center">
+                            <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                              <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                            </svg>
+                            {news.viewCount}
+                          </span>
+                        )}
+                      </div>
                   </div>
                   
                   <h3 className="text-lg font-bold mb-3 text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">
@@ -226,9 +308,10 @@ const NewsPage = () => {
               </div>
             ))}
           </div>
+          )}
           
           {/* 검색 결과 없음 */}
-          {filteredNews.length === 0 && (
+          {!loading && newsList.length === 0 && (
             <div className="text-center py-16">
               <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
@@ -244,7 +327,7 @@ const NewsPage = () => {
       <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">최신 뉴스를 이메일로 받아보세요</h2>
-          <p className="text-xl mb-8 opacity-90">
+          <p className="text-xl mb-8 opacity-90 text-white">
             정호그룹의 최신 소식과 업계 동향을 매주 이메일로 받아보실 수 있습니다
           </p>
           
@@ -265,7 +348,7 @@ const NewsPage = () => {
             </button>
           </form>
           
-          <p className="text-sm opacity-75 mt-4">
+          <p className="text-sm opacity-75 mt-4 text-white">
             언제든지 구독을 해지할 수 있습니다. 개인정보는 안전하게 보호됩니다.
           </p>
         </div>
@@ -360,16 +443,36 @@ const NewsPage = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
+              {/* 이미지 영역 */}
+              {selectedNews.featuredImageUrl && (
+                <div className="mb-6">
+                  <img
+                    src={selectedNews.featuredImageUrl}
+                    alt={selectedNews.title}
+                    className="w-full h-64 object-cover rounded-lg"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                </div>
+              )}
+
               {/* 헤더 */}
               <div className="flex justify-between items-start mb-6">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm font-medium">
-                      {categories.find(c => c.id === selectedNews.category)?.label}
+                      {NEWS_CATEGORY_LABELS[selectedNews.category] || selectedNews.category}
                     </span>
-                    <span className="text-gray-500 text-sm">{selectedNews.date}</span>
+                    <span className="text-gray-500 text-sm">{formatDate(selectedNews.publishedAt)}</span>
                     <span className="text-gray-500 text-sm">•</span>
                     <span className="text-gray-500 text-sm">{selectedNews.readTime}</span>
+                    {selectedNews.viewCount && (
+                      <>
+                        <span className="text-gray-500 text-sm">•</span>
+                        <span className="text-gray-500 text-sm">조회 {selectedNews.viewCount}</span>
+                      </>
+                    )}
                   </div>
                   <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                     {selectedNews.title}
@@ -439,6 +542,7 @@ const NewsPage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

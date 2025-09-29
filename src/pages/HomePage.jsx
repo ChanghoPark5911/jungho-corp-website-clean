@@ -7,7 +7,7 @@ import SubsidiariesIntro from '../components/ui/SubsidiariesIntro';
 import ProjectGallery from '../components/ui/ProjectGallery';
 import CustomerSupport from '../components/ui/CustomerSupport';
 import LatestNews from '../components/ui/LatestNews';
-import fileContentService from '../services/fileContentService';
+import homepageContentService from '../services/homepageContentService';
 
 // 최적화된 이미지 데이터
 const optimizedImages = {
@@ -151,86 +151,30 @@ const HomePage = () => {
     return defaultImages;
   });
 
-  // 서버에서 콘텐츠 로드 (로컬 스토리지 우선)
+  // Firebase에서 홈페이지 콘텐츠 로드 (단순화된 버전)
   useEffect(() => {
     const loadContent = async () => {
       try {
         console.log('HomePage 컴포넌트가 렌더링되었습니다!');
         console.log('현재 URL:', window.location.href);
 
-        // 1. 파일 기반 콘텐츠 로드 시도
-        console.log('파일 기반 콘텐츠 로드 시도...');
-        const fileResult = await fileContentService.loadContent();
+        // 1. Firebase에서 홈페이지 콘텐츠 로드 시도
+        console.log('Firebase 홈페이지 콘텐츠 로드 시도...');
+        const firebaseContent = await homepageContentService.getHomepageContent();
         
-        if (fileResult.success && fileResult.data) {
-          console.log('파일 기반 콘텐츠 로드 성공:', fileResult.data);
-          console.log('Subsidiaries Intro 데이터:', fileResult.data.subsidiariesIntro);
+        if (firebaseContent) {
+          console.log('Firebase 홈페이지 콘텐츠 로드 성공:', firebaseContent);
+          setHomeData(firebaseContent);
+          setDebugInfo(`Firebase에서 로드됨 - ${new Date().toLocaleString()}`);
           
-          // subsidiariesIntro 데이터가 없으면 기본값으로 병합
-          const mergedData = {
-            ...defaultData,
-            ...fileResult.data,
-            subsidiariesIntro: fileResult.data.subsidiariesIntro || defaultData.subsidiariesIntro
-          };
-          
-          console.log('병합된 데이터:', mergedData);
-          setHomeData(mergedData);
-          setDebugInfo(`파일에서 로드됨 - ${new Date().toLocaleString()}`);
+          // Firebase 데이터를 localStorage에 백업 저장
+          localStorage.setItem('homeData', JSON.stringify(firebaseContent));
+          console.log('Firebase 데이터를 LocalStorage에 백업 저장 완료');
           return;
         }
         
-        // 2. 로컬 스토리지 실패 시 기본값 사용
-        console.log('로컬 스토리지 실패, 기본값 사용');
-        
-        // 기존 서버 로드 시도
-        try {
-        const response = await fetch('http://localhost:8000/api/get-content');
-        
-        if (response.ok) {
-          const result = await response.json();
-          if (result.success) {
-            console.log('서버에서 콘텐츠 로드 성공:', result.data);
-            setHomeData(result.data);
-            setDebugInfo(`서버에서 로드됨 (${result.source}) - ${result.lastUpdated}`);
-            
-            // LocalStorage에도 백업 저장
-            localStorage.setItem('homeData', JSON.stringify(result.data));
-            console.log('서버 데이터를 LocalStorage에 백업 저장 완료');
-            return;
-          }
-          }
-        } catch (serverError) {
-          console.log('서버 로드 실패:', serverError);
-        }
-        
-        // 3. URL 파라미터 확인
-        const urlParams = new URLSearchParams(window.location.search);
-        const approvedData = urlParams.get('approved');
-
-        if (approvedData) {
-          console.log('approved 파라미터 발견:', approvedData);
-          try {
-            const parsedData = JSON.parse(decodeURIComponent(approvedData));
-            console.log('파싱된 데이터:', parsedData);
-            setHomeData(parsedData);
-            setDebugInfo('URL 파라미터에서 데이터 로드됨');
-            
-            // URL 파라미터로 받은 데이터를 localStorage에 저장
-            localStorage.setItem('homeData', JSON.stringify(parsedData));
-            console.log('URL 파라미터 데이터를 localStorage에 저장 완료');
-            
-            // URL 파라미터 제거
-            const newUrl = window.location.pathname;
-            window.history.replaceState({}, document.title, newUrl);
-            console.log('URL 파라미터 제거 완료');
-            return;
-          } catch (error) {
-            console.error('URL 파라미터 파싱 오류:', error);
-            setDebugInfo('URL 파라미터 파싱 오류');
-          }
-        }
-        
-        // 4. LocalStorage에서 데이터 로드 시도
+        // 2. Firebase 실패 시 LocalStorage에서 로드 시도
+        console.log('Firebase 실패, LocalStorage에서 로드 시도...');
         const storedData = localStorage.getItem('homeData');
         if (storedData) {
           try {
@@ -238,36 +182,29 @@ const HomePage = () => {
             console.log('LocalStorage에서 데이터 로드:', parsedStoredData);
             setHomeData(parsedStoredData);
             setDebugInfo('LocalStorage에서 데이터 로드됨');
+            return;
           } catch (error) {
             console.error('LocalStorage 파싱 오류:', error);
             setDebugInfo('LocalStorage 파싱 오류');
           }
-        } else {
-          // 5. 기본 데이터 사용
-          console.log('기본 데이터 사용');
-          setDebugInfo('기본 데이터 사용');
-          
-          // 기본 데이터를 localStorage에 저장
-          localStorage.setItem('homeData', JSON.stringify(defaultData));
-          console.log('기본 데이터를 localStorage에 저장 완료');
         }
+        
+        // 3. 기본 데이터 사용
+        console.log('기본 데이터 사용');
+        setDebugInfo('기본 데이터 사용');
+        setHomeData(defaultData);
+        
+        // 기본 데이터를 localStorage에 저장
+        localStorage.setItem('homeData', JSON.stringify(defaultData));
+        console.log('기본 데이터를 LocalStorage에 저장 완료');
         
       } catch (error) {
         console.error('콘텐츠 로드 중 오류:', error);
         setDebugInfo('콘텐츠 로드 오류');
         
-        // 에러 시 LocalStorage에서 로드 시도
-        const storedData = localStorage.getItem('homeData');
-        if (storedData) {
-          try {
-            const parsedStoredData = JSON.parse(storedData);
-            setHomeData(parsedStoredData);
-            setDebugInfo('오류 후 LocalStorage에서 복구');
-          } catch (localError) {
-            console.error('LocalStorage 복구 실패:', localError);
-            setDebugInfo('복구 실패 - 기본 데이터 사용');
-          }
-        }
+        // 에러 시 기본 데이터 사용
+        setHomeData(defaultData);
+        setDebugInfo('오류 후 기본 데이터 사용');
       }
     };
     

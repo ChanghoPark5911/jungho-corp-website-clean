@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProjectsPageSEO } from '../components/SEO';
 import Hero from '../components/ui/Hero';
 import Section from '../components/ui/Section';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import projectService from '../services/projectService';
+import { 
+  PROJECT_CATEGORIES, 
+  PROJECT_CATEGORY_LABELS 
+} from '../services/projectService';
 
 const ProjectsPage = () => {
+  // 동적 프로젝트 상태
+  const [dynamicProjects, setDynamicProjects] = useState([]);
+  const [featuredProjects, setFeaturedProjects] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(PROJECT_CATEGORIES.ALL);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showDynamicGallery, setShowDynamicGallery] = useState(false);
+  
+  // 프로젝트 상세 모달 상태
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+
   // 히어로 섹션 데이터
   const heroData = {
     backgroundImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
@@ -17,81 +34,91 @@ const ProjectsPage = () => {
     }
   };
 
-  // 주요 프로젝트 데이터
-  const projects = [
-    {
-      title: "삼성전자 반도체 공장",
-      category: "산업용 조명",
-      description: "삼성전자 반도체 제조 공장의 조명제어 시스템을 구축하여 생산성 향상과 에너지 절약을 동시에 달성했습니다.",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      stats: {
-        area: "50,000㎡",
-        duration: "6개월",
-        savings: "30% 에너지 절약"
-      },
-      features: ["고정밀 조명제어", "안전성 향상", "원격 모니터링", "자동화 시스템"]
-    },
-    {
-      title: "서울시 스마트시티 조명",
-      category: "도시 인프라",
-      description: "서울시 전체 도로조명을 스마트 조명제어 시스템으로 업그레이드하여 도시의 안전성과 에너지 효율성을 개선했습니다.",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      stats: {
-        area: "전 서울시",
-        duration: "2년",
-        savings: "40% 에너지 절약"
-      },
-      features: ["중앙 집중식 제어", "실시간 모니터링", "자동 점등/소등", "안전성 향상"]
-    },
-    {
-      title: "롯데월드타워",
-      category: "스마트 빌딩",
-      description: "롯데월드타워의 조명제어 시스템을 구축하여 건물의 아름다움과 기능성을 동시에 만족시키는 솔루션을 제공했습니다.",
-      image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      stats: {
-        area: "123층",
-        duration: "1년",
-        savings: "25% 에너지 절약"
-      },
-      features: ["IoT 조명제어", "스케줄링", "원격 제어", "에너지 관리"]
-    },
-    {
-      title: "국립중앙박물관",
-      category: "문화시설",
-      description: "국립중앙박물관의 전시 조명을 예술적으로 제어하여 관람객들에게 최적의 관람 환경을 제공합니다.",
-      image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      stats: {
-        area: "전시관 전체",
-        duration: "8개월",
-        savings: "문화적 가치 증대"
-      },
-      features: ["예술적 조명", "색온도 조절", "프로그래밍", "보존 조명"]
-    },
-    {
-      title: "인천국제공항",
-      category: "공공시설",
-      description: "인천국제공항의 조명제어 시스템을 구축하여 안전성과 효율성을 동시에 만족시키는 솔루션을 제공했습니다.",
-      image: "https://images.unsplash.com/photo-1436491865332-9a4e7380ffa3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      stats: {
-        area: "공항 전체",
-        duration: "1.5년",
-        savings: "35% 에너지 절약"
-      },
-      features: ["24시간 운영", "안전 조명", "자동 점검", "원격 관리"]
-    },
-    {
-      title: "부산 해운대 마린시티",
-      category: "관광시설",
-      description: "부산 해운대 마린시티의 야간 조명을 아름답게 제어하여 관광지의 매력을 극대화했습니다.",
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      stats: {
-        area: "해운대 일대",
-        duration: "10개월",
-        savings: "관광객 증가"
-      },
-      features: ["관광 조명", "다이나믹 효과", "절전 모드", "스케줄링"]
+  // 동적 프로젝트 로드
+  useEffect(() => {
+    loadDynamicProjects();
+    loadFeaturedProjects();
+  }, [selectedCategory, searchTerm]);
+
+  const loadDynamicProjects = async () => {
+    setLoading(true);
+    try {
+      // 모든 프로젝트를 가져온 후 클라이언트에서 필터링
+      const allProjects = await projectService.getProjectList(PROJECT_CATEGORIES.ALL);
+      
+      let filteredProjects = allProjects;
+      
+      // 카테고리 필터링
+      if (selectedCategory !== PROJECT_CATEGORIES.ALL) {
+        filteredProjects = filteredProjects.filter(project => project.category === selectedCategory);
+      }
+      
+      // 검색어 필터링
+      if (searchTerm.trim()) {
+        const searchLower = searchTerm.toLowerCase();
+        filteredProjects = filteredProjects.filter(project => 
+          project.title.toLowerCase().includes(searchLower) ||
+          project.description.toLowerCase().includes(searchLower) ||
+          project.client?.toLowerCase().includes(searchLower) ||
+          PROJECT_CATEGORY_LABELS[project.category]?.toLowerCase().includes(searchLower)
+        );
+      }
+      
+      setDynamicProjects(filteredProjects);
+    } catch (err) {
+      console.error('동적 프로젝트 로드 실패:', err);
+      // 오프라인 모드: 기본 데이터 사용
+      const defaultProjects = projectService.getDefaultProjects();
+      let filteredProjects = defaultProjects;
+      
+      // 카테고리 필터링
+      if (selectedCategory !== PROJECT_CATEGORIES.ALL) {
+        filteredProjects = filteredProjects.filter(project => project.category === selectedCategory);
+      }
+      
+      // 검색어 필터링
+      if (searchTerm.trim()) {
+        const searchLower = searchTerm.toLowerCase();
+        filteredProjects = filteredProjects.filter(project => 
+          project.title.toLowerCase().includes(searchLower) ||
+          project.description.toLowerCase().includes(searchLower) ||
+          project.client?.toLowerCase().includes(searchLower) ||
+          PROJECT_CATEGORY_LABELS[project.category]?.toLowerCase().includes(searchLower)
+        );
+      }
+      
+      setDynamicProjects(filteredProjects);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const loadFeaturedProjects = async () => {
+    try {
+      console.log('주요 프로젝트 로드 시작');
+      const featured = await projectService.getFeaturedProjects();
+      console.log('주요 프로젝트 로드 성공:', featured.length, '개');
+      console.log('주요 프로젝트 데이터:', featured);
+      setFeaturedProjects(featured);
+    } catch (err) {
+      console.error('주요 프로젝트 로드 실패:', err);
+      console.error('오류 상세:', err.message);
+      setFeaturedProjects([]);
+    }
+  };
+
+  // 프로젝트 상세 모달 열기
+  const openProjectDetail = (project) => {
+    setSelectedProject(project);
+    setIsDetailModalOpen(true);
+  };
+
+  // 프로젝트 상세 모달 닫기
+  const closeProjectDetail = () => {
+    setSelectedProject(null);
+    setIsDetailModalOpen(false);
+  };
+
 
   // 프로젝트 통계
   const projectStats = [
@@ -138,18 +165,35 @@ const ProjectsPage = () => {
             </p>
           </div>
 
+          {loading ? (
+            <div className="text-center py-8">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              <p className="mt-2 text-gray-600">프로젝트를 불러오는 중...</p>
+            </div>
+          ) : featuredProjects.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-all duration-300">
+              {featuredProjects.map((project, index) => (
+                <Card key={project.id || index} className="overflow-hidden hover:shadow-lg transition-all duration-300">
                 <div className="relative h-48 overflow-hidden">
+                    {project.featuredImageUrl ? (
                   <img 
-                    src={project.image} 
+                        src={project.featuredImageUrl} 
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                  />
+                        onError={(e) => {
+                          e.target.src = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                        <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                      </div>
+                    )}
                   <div className="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-sm">
-                    {project.category}
-                  </div>
+                      {PROJECT_CATEGORY_LABELS[project.category]}
+                    </div>
                 </div>
                 
                 <div className="p-6">
@@ -157,32 +201,36 @@ const ProjectsPage = () => {
                   <p className="text-gray-600 mb-4">{project.description}</p>
                   
                   {/* 프로젝트 통계 */}
+                    {project.projectOverview && (
                   <div className="grid grid-cols-3 gap-4 mb-4 text-sm">
                     <div className="text-center">
-                      <div className="font-semibold text-primary">{project.stats.area}</div>
+                          <div className="font-semibold text-primary">{project.projectOverview.area || '-'}</div>
                       <div className="text-gray-500">면적</div>
                     </div>
                     <div className="text-center">
-                      <div className="font-semibold text-primary">{project.stats.duration}</div>
+                          <div className="font-semibold text-primary">{project.projectOverview.period || project.duration || '-'}</div>
                       <div className="text-gray-500">기간</div>
                     </div>
                     <div className="text-center">
-                      <div className="font-semibold text-primary">{project.stats.savings}</div>
+                          <div className="font-semibold text-primary">{project.projectOverview.effects || '-'}</div>
                       <div className="text-gray-500">효과</div>
                     </div>
                   </div>
+                    )}
                   
                   {/* 주요 특징 */}
+                    {project.projectOverview?.features && project.projectOverview.features.length > 0 && (
                   <div className="mb-4">
                     <h4 className="font-semibold text-gray-800 mb-2">주요 특징:</h4>
                     <div className="flex flex-wrap gap-2">
-                      {project.features.map((feature, idx) => (
+                          {project.projectOverview.features.map((feature, idx) => (
                         <span key={idx} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
                           {feature}
                         </span>
                       ))}
                     </div>
                   </div>
+                    )}
                   
                   <Button
                     variant="primary"
@@ -196,6 +244,11 @@ const ProjectsPage = () => {
               </Card>
             ))}
           </div>
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              주요 프로젝트가 등록되지 않았습니다.
+            </div>
+          )}
         </div>
       </Section>
 
@@ -211,23 +264,29 @@ const ProjectsPage = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="text-center">
               <div className="text-4xl mb-4">🏢</div>
-              <h3 className="text-xl font-bold text-primary mb-2">스마트 빌딩</h3>
+              <h3 className="text-xl font-bold text-primary mb-2">스마트빌딩</h3>
               <div className="text-3xl font-bold text-primary mb-2">350+</div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
-              <div className="text-4xl mb-4">🌃</div>
-              <h3 className="text-xl font-bold text-primary mb-2">도시 인프라</h3>
+              <div className="text-4xl mb-4">🏛️</div>
+              <h3 className="text-xl font-bold text-primary mb-2">공공시설</h3>
               <div className="text-3xl font-bold text-primary mb-2">200+</div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
               <div className="text-4xl mb-4">🏭</div>
-              <h3 className="text-xl font-bold text-primary mb-2">산업용 조명</h3>
+              <h3 className="text-xl font-bold text-primary mb-2">산업용시설</h3>
               <div className="text-3xl font-bold text-primary mb-2">250+</div>
+              <p className="text-gray-600">완료 프로젝트</p>
+            </Card>
+            <Card className="text-center">
+              <div className="text-4xl mb-4">📦</div>
+              <h3 className="text-xl font-bold text-primary mb-2">물류 및 데이터센터</h3>
+              <div className="text-3xl font-bold text-primary mb-2">120+</div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
@@ -236,9 +295,284 @@ const ProjectsPage = () => {
               <div className="text-3xl font-bold text-primary mb-2">150+</div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
+            <Card className="text-center">
+              <div className="text-4xl mb-4">🏖️</div>
+              <h3 className="text-xl font-bold text-primary mb-2">관광시설</h3>
+              <div className="text-3xl font-bold text-primary mb-2">80+</div>
+              <p className="text-gray-600">완료 프로젝트</p>
+            </Card>
           </div>
         </div>
       </Section>
+
+      {/* 동적 프로젝트 갤러리 */}
+      <Section className="py-20 bg-white">
+        <div className="container">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+              프로젝트 갤러리
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+              관리자가 등록한 최신 프로젝트들을 확인해보세요
+            </p>
+            
+            {/* 필터링 및 검색 */}
+            <div className="max-w-2xl mx-auto mb-8">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    placeholder="프로젝트 검색..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    {Object.entries(PROJECT_CATEGORY_LABELS).map(([key, label]) => (
+                      <option key={key} value={key}>{label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              <span className="ml-3 text-gray-600">프로젝트를 불러오는 중...</span>
+            </div>
+          ) : dynamicProjects.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="text-gray-400 mb-4">
+                <svg className="mx-auto h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">등록된 프로젝트가 없습니다</h3>
+              <p className="text-gray-600">관리자가 프로젝트를 등록하면 여기에 표시됩니다.</p>
+            </div>
+          ) : (
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+              {/* 테이블 헤더 */}
+              <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-700">
+                  <div className="col-span-4">프로젝트명</div>
+                  <div className="col-span-2">카테고리</div>
+                  <div className="col-span-2">고객사</div>
+                  <div className="col-span-2">기간</div>
+                  <div className="col-span-1">조회수</div>
+                  <div className="col-span-1">상세</div>
+                </div>
+              </div>
+              
+              {/* 프로젝트 목록 */}
+              <div className="divide-y divide-gray-200">
+                {dynamicProjects.map((project) => (
+                  <div 
+                    key={project.id} 
+                    className="px-6 py-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                    onClick={() => openProjectDetail(project)}
+                  >
+                    <div className="grid grid-cols-12 gap-4 items-center">
+                      <div className="col-span-4">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                            {project.featuredImageUrl ? (
+                              <img
+                                src={project.featuredImageUrl}
+                                alt={project.title}
+                                className="w-full h-full object-cover rounded-lg"
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                  e.target.nextSibling.style.display = 'flex';
+                                }}
+                              />
+                            ) : null}
+                            <div 
+                              className={`w-full h-full bg-gray-200 rounded-lg flex items-center justify-center ${project.featuredImageUrl ? 'hidden' : 'flex'}`}
+                            >
+                              <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                              </svg>
+                            </div>
+                          </div>
+                          <div>
+                            <h3 className="text-sm font-medium text-gray-900 truncate">{project.title}</h3>
+                            <p className="text-xs text-gray-500 truncate">{project.description}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-span-2">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          {PROJECT_CATEGORY_LABELS[project.category] || project.category}
+                        </span>
+                      </div>
+                      <div className="col-span-2 text-sm text-gray-900">
+                        {project.client || '-'}
+                      </div>
+                      <div className="col-span-2 text-sm text-gray-900">
+                        {project.duration || project.projectOverview?.period || '-'}
+                      </div>
+                      <div className="col-span-1 text-sm text-gray-500">
+                        {project.viewCount || 0}
+                      </div>
+                      <div className="col-span-1">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openProjectDetail(project);
+                          }}
+                          className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                        >
+                          보기
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </Section>
+
+      {/* 프로젝트 상세 모달 */}
+      {isDetailModalOpen && selectedProject && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              {/* 헤더 */}
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    {selectedProject.title}
+                  </h3>
+                  <div className="flex items-center space-x-4">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                      {PROJECT_CATEGORY_LABELS[selectedProject.category] || selectedProject.category}
+                    </span>
+                    {selectedProject.isFeatured && (
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                        주요 프로젝트
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  onClick={closeProjectDetail}
+                  className="text-gray-500 hover:text-gray-700 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* 프로젝트 이미지 */}
+              {selectedProject.featuredImageUrl && (
+                <div className="mb-6">
+                  <img
+                    src={selectedProject.featuredImageUrl}
+                    alt={selectedProject.title}
+                    className="w-full h-64 object-cover rounded-lg"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                </div>
+              )}
+
+              {/* 프로젝트 정보 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-3">기본 정보</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">고객사:</span>
+                      <span className="font-medium">{selectedProject.client || '-'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">투입 인원:</span>
+                      <span className="font-medium">{selectedProject.teamSize || '-'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">프로젝트 기간:</span>
+                      <span className="font-medium">{selectedProject.duration || selectedProject.projectOverview?.period || '-'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">조회수:</span>
+                      <span className="font-medium">{selectedProject.viewCount || 0}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {selectedProject.projectOverview && (
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-3">프로젝트 개요</h4>
+                    <div className="space-y-2">
+                      {selectedProject.projectOverview.area && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">면적:</span>
+                          <span className="font-medium">{selectedProject.projectOverview.area}</span>
+                        </div>
+                      )}
+                      {selectedProject.projectOverview.effects && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">효과:</span>
+                          <span className="font-medium">{selectedProject.projectOverview.effects}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 프로젝트 설명 */}
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-gray-900 mb-3">프로젝트 설명</h4>
+                <p className="text-gray-700 leading-relaxed">{selectedProject.description}</p>
+              </div>
+
+              {/* 주요 특징 */}
+              {selectedProject.projectOverview?.features && selectedProject.projectOverview.features.length > 0 && (
+                <div className="mb-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-3">주요 특징</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedProject.projectOverview.features.map((feature, idx) => (
+                      <span key={idx} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 하단 버튼 */}
+              <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+                <button
+                  onClick={closeProjectDetail}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  닫기
+                </button>
+                <button
+                  onClick={() => window.location.href = "/support"}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  문의하기
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* CTA 섹션 */}
       <Section className="py-20 bg-gradient-green">

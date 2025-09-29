@@ -62,6 +62,17 @@ const SubsidiariesIntro = ({
     }
   ];
 
+  // 계열사 이름을 경로로 매핑하는 함수
+  const getPathFromName = (name) => {
+    const nameMapping = {
+      '클라루스': '/clarus',
+      '정호티엘씨': '/tlc',
+      '일루텍': '/illutech',
+      '정호텍스컴': '/texcom'
+    };
+    return nameMapping[name] || `/${name}`;
+  };
+
   // 안전한 subsidiaries 데이터 사용
   const safeSubsidiaries = React.useMemo(() => {
     if (subsidiaries && Array.isArray(subsidiaries) && subsidiaries.length > 0) {
@@ -74,7 +85,7 @@ const SubsidiariesIntro = ({
         iconColor: item.iconColor || 'bg-gray-200',
         textColor: item.textColor || 'text-green-800',
         buttonColor: item.buttonColor || 'bg-green-700',
-        path: item.path || `/${item.id || item.name || 'unknown'}`
+        path: item.path || getPathFromName(item.name || item.title)
       }));
     }
     return defaultSubsidiaries;
@@ -131,11 +142,17 @@ const SubsidiariesIntro = ({
     console.log(`클릭된 회사: ${companyName}, 경로: ${path}`);
     console.log('현재 window.location:', window.location.href);
     
-    if (path && path !== '/' && path !== 'undefined') {
+    if (path && path !== '/' && path !== 'undefined' && path.startsWith('/')) {
       console.log(`네비게이션 시도: ${path}`);
       try {
         // React Router의 navigate 사용
-        navigate(path);
+        navigate(path, { replace: false });
+        
+        // 페이지 전환 후 스크롤 상단으로 이동
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+        }, 100);
+        
         console.log('React Router 네비게이션 성공!');
       } catch (error) {
         console.error('React Router 네비게이션 오류:', error);
@@ -149,6 +166,7 @@ const SubsidiariesIntro = ({
       }
     } else {
       console.log('유효하지 않은 경로입니다. path:', path);
+      console.log('사용 가능한 경로들:', defaultSubsidiaries.map(s => s.path));
     }
   };
 

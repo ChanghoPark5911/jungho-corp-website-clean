@@ -1,125 +1,79 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SupportPageSEO } from '../components/SEO';
 import Hero from '../components/ui/Hero';
 import Section from '../components/ui/Section';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import staticPageContentService from '../services/staticPageContentService';
 
 const SupportPage = () => {
-  // 히어로 섹션 데이터
-  const heroData = {
-    backgroundImage: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    mainCopy: "고객 지원",
-    subCopy: "정호그룹의 전문가들이 24시간 내에 답변드립니다. 언제든지 문의해주세요.",
-    primaryAction: {
-      label: "지금 문의하기",
-      path: "#contact"
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    loadSupportContent();
+  }, []);
+
+  const loadSupportContent = async () => {
+    try {
+      console.log('고객지원 페이지 콘텐츠 로드 시작');
+      const data = await staticPageContentService.getStaticPageContent('support');
+      console.log('고객지원 페이지 콘텐츠 로드 성공:', data);
+      setContent(data);
+    } catch (err) {
+      console.error('고객지원 페이지 콘텐츠 로드 실패:', err);
+      setError('콘텐츠를 불러오는데 실패했습니다.');
+      // 기본 데이터 사용
+      setContent(staticPageContentService.getDefaultSupportContent());
+    } finally {
+      setLoading(false);
     }
   };
 
-  // 지원 채널 데이터
-  const supportChannels = [
-    {
-      title: "전화 상담",
-      description: "전문 엔지니어가 직접 답변드립니다",
-      contact: "1588-1234",
-      hours: "평일 09:00-18:00",
-      icon: "📞",
-      action: {
-        label: "전화하기",
-        onClick: () => window.location.href = "tel:1588-1234"
-      }
-    },
-    {
-      title: "이메일 문의",
-      description: "상세한 기술 문의사항을 보내주세요",
-      contact: "support@jungho.com",
-      hours: "24시간 접수 가능",
-      icon: "📧",
-      action: {
-        label: "이메일 보내기",
-        onClick: () => window.location.href = "mailto:support@jungho.com"
-      }
-    },
-    {
-      title: "카카오톡",
-      description: "실시간 채팅으로 빠른 답변을 받으세요",
-      contact: "@정호그룹",
-      hours: "평일 09:00-18:00",
-      icon: "💬",
-      action: {
-        label: "채팅 시작",
-        path: "https://open.kakao.com/정호그룹"
-      }
-    },
-    {
-      title: "온라인 문의",
-      description: "웹사이트를 통한 간편한 문의",
-      contact: "24시간 접수",
-      hours: "24시간 접수 가능",
-      icon: "🌐",
-      action: {
-        label: "문의하기",
-        path: "#contact-form"
-      }
-    }
-  ];
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600">고객지원 페이지를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
 
-  // 지원 서비스 데이터
-  const supportServices = [
-    {
-      title: "기술 상담",
-      description: "조명제어 시스템에 대한 전문적인 기술 상담을 제공합니다.",
-      icon: "🔧",
-      features: ["시스템 설계", "기술 검토", "최적화 방안", "비용 분석"]
-    },
-    {
-      title: "설치 지원",
-      description: "전문 엔지니어가 현장에서 직접 설치를 지원합니다.",
-      icon: "⚙️",
-      features: ["현장 설치", "시스템 연동", "테스트", "교육"]
-    },
-    {
-      title: "유지보수",
-      description: "정기적인 점검과 예방정비로 시스템을 안정적으로 운영합니다.",
-      icon: "🔍",
-      features: ["정기 점검", "예방정비", "고장 수리", "부품 교체"]
-    },
-    {
-      title: "교육 서비스",
-      description: "시스템 운영자를 위한 전문 교육을 제공합니다.",
-      icon: "📚",
-      features: ["운영 교육", "기술 교육", "매뉴얼 제공", "온라인 지원"]
-    }
-  ];
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <button 
+            onClick={loadSupportContent}
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
+          >
+            다시 시도
+          </button>
+        </div>
+      </div>
+    );
+  }
 
-  // FAQ 데이터
-  const faqs = [
-    {
-      question: "조명제어 시스템 도입에 얼마나 시간이 걸리나요?",
-      answer: "프로젝트 규모에 따라 다르지만, 일반적으로 3-6개월 정도 소요됩니다. 상세한 일정은 기술 상담을 통해 안내드립니다."
-    },
-    {
-      question: "기존 조명 시스템과 호환되나요?",
-      answer: "네, 대부분의 기존 조명 시스템과 호환됩니다. 정확한 호환성은 현장 점검을 통해 확인해드립니다."
-    },
-    {
-      question: "에너지 절약 효과는 어느 정도인가요?",
-      answer: "일반적으로 20-40%의 에너지 절약 효과를 기대할 수 있습니다. 구체적인 수치는 사용 패턴에 따라 달라집니다."
-    },
-    {
-      question: "원격 제어가 가능한가요?",
-      answer: "네, IoT 기술을 활용한 원격 제어가 가능합니다. 스마트폰 앱이나 웹 인터페이스를 통해 언제든지 제어할 수 있습니다."
-    },
-    {
-      question: "유지보수 비용은 얼마인가요?",
-      answer: "시스템 규모와 서비스 수준에 따라 다르며, 연간 시스템 구축 비용의 5-10% 정도입니다. 상세한 견적은 문의해주세요."
-    },
-    {
-      question: "긴급 상황 시 지원이 가능한가요?",
-      answer: "네, 24시간 긴급 지원 서비스를 제공합니다. 전화나 온라인을 통해 언제든지 연락하실 수 있습니다."
-    }
-  ];
+  if (!content) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">콘텐츠를 불러올 수 없습니다.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 콘텐츠에서 데이터 추출
+  const heroData = content.hero || {};
+  const supportChannels = content.supportChannels || [];
+  const supportServices = content.supportServices || [];
+  const faqs = content.faqs || [];
+  const contactForm = content.contactForm || {};
 
   return (
     <>
@@ -156,9 +110,9 @@ const SupportPage = () => {
                   variant="primary"
                   size="sm"
                   className="w-full"
-                  onClick={channel.action.onClick || (() => window.location.href = channel.action.path)}
+                  onClick={channel.action?.onClick ? () => window.location.href = channel.action.onClick : (() => window.location.href = channel.action?.path)}
                 >
-                  {channel.action.label}
+                  {channel.action?.label}
                 </Button>
               </Card>
             ))}
@@ -185,7 +139,7 @@ const SupportPage = () => {
                 <h3 className="text-xl font-bold text-primary mb-4">{service.title}</h3>
                 <p className="text-gray-600 mb-6">{service.description}</p>
                 <ul className="text-sm text-gray-500 space-y-2">
-                  {service.features.map((feature, idx) => (
+                  {service.features?.map((feature, idx) => (
                     <li key={idx} className="flex items-center justify-center">
                       <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
                       {feature}
@@ -230,10 +184,10 @@ const SupportPage = () => {
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              문의하기
+              {contactForm.title || "문의하기"}
             </h2>
             <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-              프로젝트에 대한 상세한 문의사항을 남겨주시면 전문가가 빠른 시일 내에 답변드립니다
+              {contactForm.description || "프로젝트에 대한 상세한 문의사항을 남겨주시면 전문가가 빠른 시일 내에 답변드립니다"}
             </p>
           </div>
 
@@ -243,7 +197,7 @@ const SupportPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      이름 *
+                      {contactForm.fields?.name?.label || "이름"} *
                     </label>
                     <input
                       type="text"
@@ -254,7 +208,7 @@ const SupportPage = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      회사명
+                      {contactForm.fields?.company?.label || "회사명"}
                     </label>
                     <input
                       type="text"
@@ -267,7 +221,7 @@ const SupportPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      이메일 *
+                      {contactForm.fields?.email?.label || "이메일"} *
                     </label>
                     <input
                       type="email"
@@ -278,7 +232,7 @@ const SupportPage = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      연락처 *
+                      {contactForm.fields?.phone?.label || "연락처"} *
                     </label>
                     <input
                       type="tel"
@@ -291,22 +245,28 @@ const SupportPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    문의 분야
+                    {contactForm.fields?.category?.label || "문의 분야"}
                   </label>
                   <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                    <option>문의 분야를 선택하세요</option>
-                    <option>스마트 빌딩 조명제어</option>
-                    <option>도시 조명 인프라</option>
-                    <option>산업용 조명시스템</option>
-                    <option>문화시설 조명예술</option>
-                    <option>기술 상담</option>
-                    <option>기타</option>
+                    {contactForm.fields?.category?.options?.map((option, index) => (
+                      <option key={index} value={option}>{option}</option>
+                    )) || (
+                      <>
+                        <option>문의 분야를 선택하세요</option>
+                        <option>스마트 빌딩 조명제어</option>
+                        <option>도시 조명 인프라</option>
+                        <option>산업용 조명시스템</option>
+                        <option>문화시설 조명예술</option>
+                        <option>기술 상담</option>
+                        <option>기타</option>
+                      </>
+                    )}
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    문의 내용 *
+                    {contactForm.fields?.message?.label || "문의 내용"} *
                   </label>
                   <textarea
                     rows="6"
@@ -338,4 +298,4 @@ const SupportPage = () => {
   );
 };
 
-export default SupportPage; 
+export default SupportPage;

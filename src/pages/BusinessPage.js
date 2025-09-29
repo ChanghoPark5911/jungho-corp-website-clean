@@ -1,77 +1,80 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BusinessPageSEO } from '../components/SEO';
 import Hero from '../components/ui/Hero';
 import Section from '../components/ui/Section';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import staticPageContentService from '../services/staticPageContentService';
 
 const BusinessPage = () => {
-  // 히어로 섹션 데이터
-  const heroData = {
-    backgroundImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    mainCopy: "정호그룹의 사업영역",
-    subCopy: "조명제어 전문기업으로서 40년간 축적된 기술력으로 다양한 분야에서 혁신적인 솔루션을 제공합니다",
-    primaryAction: {
-      label: "문의하기",
-      path: "/support"
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    loadBusinessContent();
+  }, []);
+
+  const loadBusinessContent = async () => {
+    try {
+      console.log('사업영역 페이지 콘텐츠 로드 시작');
+      const data = await staticPageContentService.getStaticPageContent('business');
+      console.log('사업영역 페이지 콘텐츠 로드 성공:', data);
+      setContent(data);
+    } catch (err) {
+      console.error('사업영역 페이지 콘텐츠 로드 실패:', err);
+      setError('콘텐츠를 불러오는데 실패했습니다.');
+      // 기본 데이터 사용
+      setContent(staticPageContentService.getDefaultBusinessContent());
+    } finally {
+      setLoading(false);
     }
   };
 
-  // 사업영역 데이터
-  const businessAreas = [
-    {
-      title: "스마트 빌딩 조명제어",
-      description: "IoT 기술을 활용한 지능형 빌딩 조명제어 시스템으로 에너지 효율성을 극대화합니다.",
-      icon: "🏢",
-      features: ["자동 밝기 조절", "모션 센서 연동", "스케줄링 기능", "원격 제어"]
-    },
-    {
-      title: "도시 조명 인프라",
-      description: "도시 전체의 조명을 통합 관리하는 스마트시티 조명제어 솔루션을 제공합니다.",
-      icon: "🌃",
-      features: ["중앙 집중식 제어", "실시간 모니터링", "에너지 절약", "안전성 향상"]
-    },
-    {
-      title: "산업용 조명시스템",
-      description: "물류, 데이터센터 포함, 각종 제조업의 생산성 향상을 위한 산업용 조명제어 솔루션을 공급합니다.",
-      icon: "🏭",
-      features: ["고정밀 조명", "내구성 설계", "안전 표준 준수", "유지보수 편의성"]
-    },
-    {
-      title: "문화시설 조명예술",
-      description: "박물관, 갤러리, 공연장 등 문화시설의 조명을 예술적으로 제어하는 시스템을 제공합니다.",
-      icon: "🎭",
-      features: ["색온도 조절", "다이나믹 효과", "프로그래밍", "예술적 표현"]
-    }
-  ];
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600">사업영역 페이지를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
 
-  // 계열사별 전문분야
-  const subsidiaries = [
-    {
-      name: "클라루스",
-      description: "AI기반 스마트 조명/전력제어",
-      color: "clarus",
-      expertise: ["IoT 조명제어", "전기에너지 관리", "에너지 관리"]
-    },
-    {
-      name: "정호티엘씨",
-      description: "조명/전력제어의 설계/시공/사후관리",
-      color: "tlc",
-      expertise: ["조명제어설계", "최적시공", "유지보수 및 기술지원"]
-    },
-    {
-      name: "일루텍",
-      description: "유.무선 스마트조명 제품 쇼핑몰 공급",
-      color: "illutech",
-      expertise: ["가정용 스마트 조명", "무선조명 솔루션", "안전조명"]
-    },
-    {
-      name: "정호텍스컴",
-      description: "섬유기계의 전통과 첨단패션을 주도하는 온라인 사업",
-      color: "texcom",
-      expertise: ["섬유기계 도입", "섬유기계 기술지원", "섬유패션 온라인 사업"]
-    }
-  ];
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <button 
+            onClick={loadBusinessContent}
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
+          >
+            다시 시도
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!content) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">콘텐츠를 불러올 수 없습니다.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 콘텐츠에서 데이터 추출
+  const heroData = content.hero || {};
+  const businessAreas = content.businessAreas || [];
+  const subsidiaries = content.subsidiaries || [];
+  const technology = content.technology || {};
+  const cta = content.cta || {};
+
 
   return (
     <>
@@ -90,7 +93,7 @@ const BusinessPage = () => {
               핵심 사업영역
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              40년간 축적된 조명제어 기술력을 바탕으로 다양한 분야에서 혁신적인 솔루션을 제공합니다
+              {technology.description || "40년간 축적된 조명제어 기술력을 바탕으로 다양한 분야에서 혁신적인 솔루션을 제공합니다"}
             </p>
           </div>
 
@@ -168,35 +171,48 @@ const BusinessPage = () => {
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-              차별화된 기술력
+              {technology.title || "차별화된 기술력"}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              국내 최초 E/F2-BUS 프로토콜 개발부터 최신 IoT 기술까지
+              {technology.description || "국내 최초 E/F2-BUS 프로토콜 개발부터 최신 IoT 기술까지"}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="text-center">
-              <div className="text-4xl mb-4">🔧</div>
-              <h3 className="text-xl font-bold text-primary mb-4">자체 개발 프로토콜</h3>
-              <p className="text-gray-600">
-                국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 독자적인 기술력을 확보했습니다.
-              </p>
-            </Card>
-            <Card className="text-center">
-              <div className="text-4xl mb-4">🌐</div>
-              <h3 className="text-xl font-bold text-primary mb-4">IoT 통합 솔루션</h3>
-              <p className="text-gray-600">
-                최신 IoT 기술을 활용하여 스마트한 조명제어 시스템을 구축합니다.
-              </p>
-            </Card>
-            <Card className="text-center">
-              <div className="text-4xl mb-4">⚡</div>
-              <h3 className="text-xl font-bold text-primary mb-4">에너지 효율성</h3>
-              <p className="text-gray-600">
-                에너지 절약과 사용자 편의성을 동시에 만족시키는 솔루션을 제공합니다.
-              </p>
-            </Card>
+            {technology.features?.map((feature, index) => (
+              <Card key={index} className="text-center">
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-bold text-primary mb-4">{feature.title}</h3>
+                <p className="text-gray-600">
+                  {feature.description}
+                </p>
+              </Card>
+            )) || (
+              // 기본 기술력 데이터 (fallback)
+              <>
+                <Card className="text-center">
+                  <div className="text-4xl mb-4">🔧</div>
+                  <h3 className="text-xl font-bold text-primary mb-4">자체 개발 프로토콜</h3>
+                  <p className="text-gray-600">
+                    국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 독자적인 기술력을 확보했습니다.
+                  </p>
+                </Card>
+                <Card className="text-center">
+                  <div className="text-4xl mb-4">🌐</div>
+                  <h3 className="text-xl font-bold text-primary mb-4">IoT 통합 솔루션</h3>
+                  <p className="text-gray-600">
+                    최신 IoT 기술을 활용하여 스마트한 조명제어 시스템을 구축합니다.
+                  </p>
+                </Card>
+                <Card className="text-center">
+                  <div className="text-4xl mb-4">⚡</div>
+                  <h3 className="text-xl font-bold text-primary mb-4">에너지 효율성</h3>
+                  <p className="text-gray-600">
+                    에너지 절약과 사용자 편의성을 동시에 만족시키는 솔루션을 제공합니다.
+                  </p>
+                </Card>
+              </>
+            )}
           </div>
         </div>
       </Section>
@@ -205,28 +221,43 @@ const BusinessPage = () => {
       <Section className="py-20 bg-gradient-green">
         <div className="container text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            프로젝트 문의하기
+            {cta.title || "프로젝트 문의하기"}
           </h2>
           <p className="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
-            정호그룹의 전문가들이 귀사의 프로젝트에 최적화된 솔루션을 제안해드립니다.
+            {cta.description || "정호그룹의 전문가들이 귀사의 프로젝트에 최적화된 솔루션을 제안해드립니다."}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={() => window.location.href = "/support"}
-              className="text-lg px-8 py-4"
-            >
-              문의하기
-            </Button>
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => window.location.href = "/projects"}
-              className="text-lg px-8 py-4"
-            >
-              프로젝트 보기
-            </Button>
+            {cta.buttons?.map((button, index) => (
+              <Button
+                key={index}
+                variant={button.variant || "secondary"}
+                size="lg"
+                onClick={() => window.location.href = button.path}
+                className="text-lg px-8 py-4"
+              >
+                {button.label}
+              </Button>
+            )) || (
+              // 기본 CTA 버튼 (fallback)
+              <>
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  onClick={() => window.location.href = "/support"}
+                  className="text-lg px-8 py-4"
+                >
+                  문의하기
+                </Button>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  onClick={() => window.location.href = "/projects"}
+                  className="text-lg px-8 py-4"
+                >
+                  프로젝트 보기
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </Section>

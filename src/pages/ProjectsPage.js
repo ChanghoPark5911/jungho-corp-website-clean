@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { ProjectsPageSEO } from '../components/SEO';
+import SEO from '../components/SEO';
 import Hero from '../components/ui/Hero';
 import Section from '../components/ui/Section';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import ProjectGalleryAdvanced from '../components/ProjectGalleryAdvanced';
 import projectService from '../services/projectService';
+import projectGalleryService from '../services/projectGalleryService';
+import { useI18n } from '../hooks/useI18n';
 import { 
   PROJECT_CATEGORIES, 
   PROJECT_CATEGORY_LABELS 
 } from '../services/projectService';
 
 const ProjectsPage = () => {
+  const { t } = useI18n(); // 다국어 지원
   // 동적 프로젝트 상태
   const [dynamicProjects, setDynamicProjects] = useState([]);
   const [featuredProjects, setFeaturedProjects] = useState([]);
+  const [galleryProjects, setGalleryProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(PROJECT_CATEGORIES.ALL);
   const [searchTerm, setSearchTerm] = useState('');
@@ -38,7 +43,17 @@ const ProjectsPage = () => {
   useEffect(() => {
     loadDynamicProjects();
     loadFeaturedProjects();
+    loadGalleryProjects();
   }, [selectedCategory, searchTerm]);
+
+  const loadGalleryProjects = () => {
+    try {
+      const galleryProjects = projectGalleryService.getAllProjects();
+      setGalleryProjects(galleryProjects);
+    } catch (error) {
+      console.error('갤러리 프로젝트 로드 오류:', error);
+    }
+  };
 
   const loadDynamicProjects = async () => {
     setLoading(true);
@@ -130,12 +145,29 @@ const ProjectsPage = () => {
 
   return (
     <>
-      <ProjectsPageSEO />
+      <SEO 
+        title="프로젝트 - 정호그룹"
+        description="정호그룹의 주요 프로젝트와 성과를 확인하세요. 40년 전통의 조명제어 전문기업의 다양한 프로젝트 사례를 소개합니다."
+        keywords="정호그룹, 프로젝트, 조명제어, LED조명, 스마트조명, 프로젝트 사례"
+      />
       
       {/* 히어로 섹션 */}
       <section className="hero-section">
         <Hero {...heroData} useLocalStorage={false} />
       </section>
+
+      {/* 프로젝트 갤러리 */}
+      <Section className="py-16">
+        <div className="container">
+          <ProjectGalleryAdvanced 
+            projects={galleryProjects}
+            onProjectSelect={(project) => {
+              setSelectedProject(project);
+              setIsDetailModalOpen(true);
+            }}
+          />
+        </div>
+      </Section>
 
       {/* 프로젝트 통계 */}
       <Section className="py-16 bg-gray-50">

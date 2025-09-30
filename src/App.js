@@ -2,10 +2,14 @@ import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import LoadingSpinner from './components/ui/LoadingSpinner';
+import PWAInstallPrompt from './components/PWAInstallPrompt';
+import PerformanceDashboard from './components/PerformanceDashboard';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { initScrollAnimations, initPageLoadAnimations } from './utils/scrollAnimation';
 import { initPerformanceMonitoring } from './utils/performance';
 import { initAnalytics } from './utils/analytics';
 import { initI18n } from './utils/i18n';
+import performanceMonitor from './utils/performanceMonitor';
 
 // 페이지 컴포넌트들을 lazy loading으로 import
 const HomePage = lazy(() => import('./pages/HomePage.jsx'));
@@ -46,6 +50,13 @@ function App() {
     // Analytics 초기화
     initAnalytics();
     
+    // 성능 모니터링 시작
+    performanceMonitor.trackPageView('App', { 
+      userAgent: navigator.userAgent,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      language: navigator.language
+    });
+    
     // 컴포넌트 언마운트 시 observer 정리
     return () => {
       if (scrollObserver) {
@@ -55,26 +66,30 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Layout>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/business" element={<BusinessPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/support" element={<SupportPage />} />
-            <Route path="/news" element={<NewsPage />} />
-            <Route path="/clarus" element={<ClarusDetailPage />} />
-            <Route path="/tlc" element={<TlcDetailPage />} />
-            <Route path="/illutech" element={<IllutechDetailPage />} />
-            <Route path="/texcom" element={<TexcomDetailPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/design-system" element={<DesignSystem />} />
-          </Routes>
-        </Suspense>
-      </Layout>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <Layout>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/business" element={<BusinessPage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/support" element={<SupportPage />} />
+              <Route path="/news" element={<NewsPage />} />
+              <Route path="/clarus" element={<ClarusDetailPage />} />
+              <Route path="/tlc" element={<TlcDetailPage />} />
+              <Route path="/illutech" element={<IllutechDetailPage />} />
+              <Route path="/texcom" element={<TexcomDetailPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/design-system" element={<DesignSystem />} />
+            </Routes>
+          </Suspense>
+          <PWAInstallPrompt />
+          <PerformanceDashboard />
+        </Layout>
+      </Router>
+    </ThemeProvider>
   );
 }
 

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { HomePageSEO } from '../components/SEO';
+import SEO from '../components/SEO';
 import Hero from '../components/ui/Hero';
 import GroupIntro from '../components/ui/GroupIntro';
 import SubsidiariesIntro from '../components/ui/SubsidiariesIntro';
@@ -8,6 +8,7 @@ import ProjectGallery from '../components/ui/ProjectGallery';
 import CustomerSupport from '../components/ui/CustomerSupport';
 import LatestNews from '../components/ui/LatestNews';
 import homepageContentService from '../services/homepageContentService';
+import { useI18n } from '../hooks/useI18n';
 
 // 최적화된 이미지 데이터
 const optimizedImages = {
@@ -100,6 +101,7 @@ const defaultData = {
 const HomePage = () => {
   const [homeData, setHomeData] = useState(defaultData);
   const [debugInfo, setDebugInfo] = useState('초기화됨');
+  const { t } = useI18n(); // 다국어 지원
   
   // 이미지 데이터 상태 추가 - 메모리 최적화
   const [imageData, setImageData] = useState(() => {
@@ -275,15 +277,15 @@ const HomePage = () => {
         }
       ],
       primaryAction: {
-        label: "사업영역 보기",
+        label: t('buttons.learnMore', { fallback: "사업영역 보기" }),
         path: "/business"
       },
       secondaryAction: {
-        label: "문의하기",
+        label: t('buttons.contact', { fallback: "문의하기" }),
         path: "/support"
       }
     };
-  }, [homeData, imageData.hero]);
+  }, [homeData, imageData.hero, t]);
 
   // 그룹 소개 섹션 데이터 (메모리 최적화 + 안전한 데이터 접근)
   const groupIntroData = useMemo(() => {
@@ -340,19 +342,12 @@ const HomePage = () => {
 
   return (
     <>
-      <HomePageSEO />
+      <SEO 
+        title="정호그룹 - 조명제어 전문기업"
+        description="40년 전통의 조명제어 전문기업으로, 클라러스, TLC, 일루테크, 텍스컴 등 계열사를 통해 혁신적인 솔루션을 제공합니다."
+        keywords="정호그룹, 조명제어, 클라러스, TLC, 일루테크, 텍스컴, LED조명, 스마트조명"
+      />
       
-      {/* 디버그 정보 표시 (개발용) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed top-4 right-4 bg-black bg-opacity-75 text-white p-3 rounded-lg text-xs z-50 max-w-xs">
-          <div className="font-bold mb-1">🔥 Firebase 디버그 정보</div>
-          <div>상태: {debugInfo}</div>
-          <div>Hero 제목: {homeData?.hero?.title?.substring(0, 20)}...</div>
-          <div>Hero 부제목: {homeData?.hero?.subtitle?.substring(0, 20)}...</div>
-          <div>데이터 소스: {homeData ? 'Firebase/LocalStorage' : '기본값'}</div>
-          <div>Hero Props: {heroData.mainCopy?.substring(0, 15)}...</div>
-        </div>
-      )}
       
       {/* 원래 구조 그대로 유지 */}
       <div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HomePageSEO } from '../components/SEO';
+import SEO from '../components/SEO';
 import Hero from '../components/ui/Hero';
 import GroupIntro from '../components/ui/GroupIntro';
 import SubsidiariesIntro from '../components/ui/SubsidiariesIntro';
@@ -299,7 +299,11 @@ const HomePage = () => {
     <ErrorBoundary>
       <SkipLink />
       <ScrollProgress />
-      <HomePageSEO />
+      <SEO 
+        title="정호그룹 - 조명제어 전문기업"
+        description="40년 전통의 조명제어 전문기업으로, 클라러스, TLC, 일루테크, 텍스컴 등 계열사를 통해 혁신적인 솔루션을 제공합니다."
+        keywords="정호그룹, 조명제어, 클라러스, TLC, 일루테크, 텍스컴, LED조명, 스마트조명"
+      />
       
       {/* 히어로 섹션 */}
       <ScrollAnimation animation="fadeIn" key={forceUpdate}>

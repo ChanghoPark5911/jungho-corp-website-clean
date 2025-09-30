@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { BusinessPageSEO } from '../components/SEO';
+import SEO from '../components/SEO';
 import Hero from '../components/ui/Hero';
 import Section from '../components/ui/Section';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import staticPageContentService from '../services/staticPageContentService';
+import { useI18n } from '../hooks/useI18n';
 
 const BusinessPage = () => {
+  const { t } = useI18n(); // 다국어 지원
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,7 +38,7 @@ const BusinessPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">사업영역 페이지를 불러오는 중...</p>
+          <p className="text-gray-600">{t('common.loading', { fallback: '사업영역 페이지를 불러오는 중...' })}</p>
         </div>
       </div>
     );
@@ -51,7 +53,7 @@ const BusinessPage = () => {
             onClick={loadBusinessContent}
             className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
           >
-            다시 시도
+            {t('buttons.retry', { fallback: '다시 시도' })}
           </button>
         </div>
       </div>
@@ -62,7 +64,7 @@ const BusinessPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600">콘텐츠를 불러올 수 없습니다.</p>
+          <p className="text-gray-600">{t('common.error', { fallback: '콘텐츠를 불러올 수 없습니다.' })}</p>
         </div>
       </div>
     );
@@ -78,7 +80,11 @@ const BusinessPage = () => {
 
   return (
     <>
-      <BusinessPageSEO />
+      <SEO 
+        title="사업영역 - 정호그룹"
+        description="정호그룹의 다양한 사업영역을 소개합니다. 클라러스, TLC, 일루테크, 텍스컴 등 계열사의 전문 분야를 확인하세요."
+        keywords="정호그룹, 사업영역, 클라러스, TLC, 일루테크, 텍스컴, 조명제어, LED조명"
+      />
       
       {/* 히어로 섹션 */}
       <section className="hero-section">

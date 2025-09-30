@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SimpleHomeContentManager from '../components/admin/SimpleHomeContentManager';
 import FirebaseTest from '../components/FirebaseTest';
+import AdminI18nManager from '../components/AdminI18nManager';
 import contentService from '../services/contentService';
 
 const AdminPage = () => {
@@ -803,6 +804,16 @@ const AdminPage = () => {
                 Firebase 테스트
               </button>
               <button
+                onClick={() => setActiveTab('i18n')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'i18n'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                다국어 관리
+              </button>
+              <button
                 onClick={() => setActiveTab('clarus-files')}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === 'clarus-files'
@@ -847,6 +858,12 @@ const AdminPage = () => {
         {activeTab === 'firebase' && (
           <div className="mt-6">
             <FirebaseTest />
+          </div>
+        )}
+        
+        {activeTab === 'i18n' && (
+          <div className="mt-6">
+            <AdminI18nManager />
           </div>
         )}
         

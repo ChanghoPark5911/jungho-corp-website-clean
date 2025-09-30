@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import ThemeToggle from './ThemeToggle';
 
 const Layout = ({ children }) => {
   // 이미지 데이터 상태
@@ -20,12 +21,15 @@ const Layout = ({ children }) => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors duration-300">
       <Header imageData={imageData} />
       <main className="flex-grow pt-15 md:pt-18 lg:pt-20">
         {children}
       </main>
       <Footer />
+      
+      {/* 다크모드 토글 버튼 */}
+      <ThemeToggle />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  darkMode: 'class', // 다크모드 활성화
   // 성능 최적화를 위한 설정
   future: {
     hoverOnlyWhenSupported: true,
@@ -55,6 +56,19 @@ module.exports = {
         illutech: { 500: '#22C55E' },
         texcom: { 500: '#16A34A' },
         'bright-green': '#6EE7B7',
+        // 다크모드 색상 추가
+        dark: {
+          50: '#F9FAFB',
+          100: '#F3F4F6',
+          200: '#E5E7EB',
+          300: '#D1D5DB',
+          400: '#9CA3AF',
+          500: '#6B7280',
+          600: '#4B5563',
+          700: '#374151',
+          800: '#1F2937',
+          900: '#111827',
+        },
       },
       fontFamily: {
         'korean': ['Noto Sans KR', 'sans-serif'],

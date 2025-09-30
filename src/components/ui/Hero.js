@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Button from './Button';
+import { useI18n } from '../../hooks/useI18n';
 
 // 줄바꿈 변환 함수
 const formatTextWithLineBreaks = (text) => {
@@ -14,9 +15,9 @@ const formatTextWithLineBreaks = (text) => {
 
 const Hero = ({
   backgroundImage,
-  mainCopy = "정호그룹의 사업영역",
-  subCopy = "조명제어 전문기업으로서 40년간 축적된 기술력으로,\n다양한 분야에서 혁신적인 솔루션을 제공합니다",
-  description = "혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다",
+  mainCopy,
+  subCopy,
+  description,
   stats = [],
   primaryAction,
   secondaryAction,
@@ -26,11 +27,24 @@ const Hero = ({
   useLocalStorage = true, // localStorage 사용 여부 제어
   ...props
 }) => {
+  const { t, currentLanguage } = useI18n(); // 다국어 지원
+  
   const [heroData, setHeroData] = useState({
     mainTitle: "",
     subtitle: "",
     description: ""
   });
+  
+  // 언어 변경 감지
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      // 언어가 변경되면 컴포넌트 강제 리렌더링
+      setHeroData(prev => ({ ...prev }));
+    };
+    
+    window.addEventListener('languageChanged', handleLanguageChange);
+    return () => window.removeEventListener('languageChanged', handleLanguageChange);
+  }, []);
 
   // 성과지표 데이터 상태 추가
   const [statsData, setStatsData] = useState({
@@ -174,64 +188,69 @@ const Hero = ({
        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center justify-center flex-1">
           {/* 메인 콘텐츠 */}
           <div className="mb-16">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white drop-shadow-2xl">
-            {heroData.mainTitle ? heroData.mainTitle.split('\n').map((line, index) => (
-              <span key={index} className="block">
-                {line}
-              </span>
-            )) : mainCopy.split('\n').map((line, index) => (
-              <span key={index} className="block">
-                {line}
-              </span>
-            ))}
-          </h1>
-          <p 
-            className="hero-subtitle"
-            style={{
-              fontSize: 'clamp(1.25rem, 4vw, 1.875rem)',
-              lineHeight: '1.4',
-              marginBottom: '2.5rem',
-              maxWidth: '64rem',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              textAlign: 'center',
-              color: '#ffffff !important',
-              textShadow: '2px 2px 8px black',
-              fontWeight: '600',
-              backgroundColor: 'transparent',
-              border: 'none',
-              outline: 'none',
-              whiteSpace: 'pre-line',
-              wordWrap: 'break-word',
-              overflowWrap: 'break-word',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.25rem'
-            }}
-          >
-            {heroData.subtitle || subCopy}
-          </p>
+                 <h1 
+                   className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white drop-shadow-2xl"
+                   data-i18n-key="home.hero.title"
+                 >
+                   {(() => {
+                     const title = t('home.hero.title', { fallback: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다" });
+                     console.log('Hero Title:', title, 'Language:', currentLanguage);
+                     return title.split('\n').map((line, index) => (
+                       <span key={index} className="block">
+                         {line}
+                       </span>
+                     ));
+                   })()}
+                 </h1>
+                 <p
+                   className="hero-subtitle"
+                   data-i18n-key="home.hero.subtitle"
+                   style={{
+                     fontSize: 'clamp(1.25rem, 4vw, 1.875rem)',
+                     lineHeight: '1.4',
+                     marginBottom: '2.5rem',
+                     maxWidth: '64rem',
+                     marginLeft: 'auto',
+                     marginRight: 'auto',
+                     textAlign: 'center',
+                     color: '#ffffff !important',
+                     textShadow: '2px 2px 8px black',
+                     fontWeight: '600',
+                     backgroundColor: 'transparent',
+                     border: 'none',
+                     outline: 'none',
+                     whiteSpace: 'pre-line',
+                     wordWrap: 'break-word',
+                     overflowWrap: 'break-word',
+                     display: 'flex',
+                     flexDirection: 'column',
+                     gap: '0.25rem'
+                   }}
+                 >
+                   {formatTextWithLineBreaks(t('home.hero.subtitle', { fallback: "정호그룹은 조명제어 전문 기업으로서, 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다" }))}
+                 </p>
           
           {/* 설명 텍스트 추가 */}
-          <p 
-            className="hero-description"
-            style={{
-              fontSize: 'clamp(1rem, 3vw, 1.25rem)',
-              lineHeight: '1.6',
-              marginBottom: '2rem',
-              maxWidth: '56rem',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              textAlign: 'center',
-              color: '#ffffff !important',
-              textShadow: '1px 1px 4px black',
-              fontWeight: '400',
-              opacity: '0.9',
-              whiteSpace: 'pre-line'
-            }}
-          >
-            {formatTextWithLineBreaks(heroData.description || '수많은 프로젝트의 성공적인 시공 및 운영경험을 바탕으로 최고의 고객가치를 창출합니다')}
-          </p>
+                 <p
+                   className="hero-description"
+                   data-i18n-key="home.hero.description"
+                   style={{
+                     fontSize: 'clamp(1rem, 3vw, 1.25rem)',
+                     lineHeight: '1.6',
+                     marginBottom: '2rem',
+                     maxWidth: '56rem',
+                     marginLeft: 'auto',
+                     marginRight: 'auto',
+                     textAlign: 'center',
+                     color: '#ffffff !important',
+                     textShadow: '1px 1px 4px black',
+                     fontWeight: '400',
+                     opacity: '0.9',
+                     whiteSpace: 'pre-line'
+                   }}
+                 >
+                   {formatTextWithLineBreaks(t('home.hero.description', { fallback: '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.' }))}
+                 </p>
           
           {/* 액션 버튼 */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { COMPANY_INFO, SUBSIDIARIES } from '../utils/constants';
 import { getLanguage, setLanguage, languageOptions } from '../utils/i18n';
+import LanguageSelector from './LanguageSelector';
+import { useI18n } from '../hooks/useI18n';
 
 const Header = ({ imageData = {} }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [currentLanguage, setCurrentLanguage] = useState(getLanguage()); // 저장된 언어 설정 사용
+  const { t } = useI18n(); // 다국어 지원
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -131,8 +134,8 @@ const Header = ({ imageData = {} }) => {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white shadow-lg' 
-          : 'bg-white'
+          ? 'bg-white dark:bg-gray-900 shadow-lg' 
+          : 'bg-white dark:bg-gray-900'
       }`}
       role="banner"
     >
@@ -266,65 +269,15 @@ const Header = ({ imageData = {} }) => {
                   }, 100);
                 }}
               >
-                {item.label}
+                {t(`header.navigation.${item.key}`, { fallback: item.label })}
               </button>
             ))}
           </nav>
 
           {/* 우측 버튼 그룹 */}
           <div className="flex items-center space-x-3">
-            {/* 언어 선택 버튼 */}
-            <div className="relative">
-              <button
-                className="px-3 py-2 text-xs sm:text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-all duration-200 border border-gray-300 hover:border-primary-300 flex items-center space-x-1 sm:space-x-2"
-                onClick={() => toggleDropdown('language')}
-                onKeyPress={(e) => handleKeyPress(e, () => toggleDropdown('language'))}
-                aria-haspopup="true"
-                aria-expanded={activeDropdown === 'language'}
-                aria-label="언어 선택"
-              >
-                <span className="text-sm">
-                  {languageOptions.find(lang => lang.code === currentLanguage)?.flag || '🌐'}
-                </span>
-                <span className="hidden sm:inline">
-                  {languageOptions.find(lang => lang.code === currentLanguage)?.name || '한국어'}
-                </span>
-                <svg 
-                  className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-200 ${
-                    activeDropdown === 'language' ? 'rotate-180' : ''
-                  }`} 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              
-              {activeDropdown === 'language' && (
-                <div 
-                  className="absolute top-full right-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
-                  role="menu"
-                >
-                  {languageOptions.map((language) => (
-                    <button
-                      key={language.code}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors duration-200 flex items-center space-x-2 ${
-                        currentLanguage === language.code
-                          ? 'text-primary-600 bg-primary-50 font-medium'
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`}
-                      onClick={() => handleLanguageChange(language.code)}
-                      role="menuitem"
-                      aria-label={`${language.name}로 변경`}
-                    >
-                      <span className="text-sm">{language.flag}</span>
-                      <span>{language.name}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            {/* 언어 선택기 */}
+            <LanguageSelector />
 
             {/* 관리자 버튼 */}
             <button

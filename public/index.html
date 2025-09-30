@@ -2,15 +2,17 @@
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="정호그룹 - 40년 전통의 조명제어 전문기업"
+      content="정호그룹은 40년 전통의 조명제어 전문기업으로, 클라러스, TLC, 일루테크, 텍스컴 등 계열사를 통해 AI, IoT, 물류, 텍스타일 분야의 혁신적인 솔루션을 제공합니다."
     />
-    <meta name="keywords" content="정호그룹, 클라러스, TLC, 일루테크, 텍스컴, AI, IoT, 물류, 텍스타일" />
+    <meta name="keywords" content="정호그룹, 조명제어, 클라러스, TLC, 일루테크, 텍스컴, LED조명, 스마트조명, IoT, AI, 물류, 텍스타일, 조명시스템, 조명제어시스템, 조명솔루션" />
     <meta name="author" content="정호그룹" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+    <link rel="canonical" href="https://www.jungho.com/" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -26,20 +28,87 @@
     <meta property="twitter:description" content="정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다." />
     <meta property="twitter:image" content="%PUBLIC_URL%/og-image.jpg" />
     
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="정호그룹" />
     
     <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <title>정호그룹 - 조명제어 전문기업</title>
+    <title>정호그룹 - 조명제어 전문기업 | 40년 전통의 조명솔루션</title>
+    
+    <!-- 구조화된 데이터 (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "정호그룹",
+      "alternateName": "Jungho Group",
+      "url": "https://www.jungho.com",
+      "logo": "https://www.jungho.com/logo.png",
+      "description": "40년 전통의 조명제어 전문기업으로, 클라러스, TLC, 일루테크, 텍스컴 등 계열사를 통해 AI, IoT, 물류, 텍스타일 분야의 혁신적인 솔루션을 제공합니다.",
+      "foundingDate": "1984",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "KR",
+        "addressLocality": "서울"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+82-2-1234-5678",
+        "contactType": "customer service"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/jungho-group",
+        "https://www.facebook.com/junghogroup"
+      ],
+      "subOrganization": [
+        {
+          "@type": "Organization",
+          "name": "클라러스",
+          "description": "조명제어 시스템 전문기업"
+        },
+        {
+          "@type": "Organization", 
+          "name": "TLC",
+          "description": "LED 조명 전문기업"
+        },
+        {
+          "@type": "Organization",
+          "name": "일루테크", 
+          "description": "조명 디자인 전문기업"
+        },
+        {
+          "@type": "Organization",
+          "name": "텍스컴",
+          "description": "조명 기술 개발 전문기업"
+        }
+      ]
+    }
+    </script>
     <script>
       // localStorage 초기화 (개발 중에만 사용)
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         localStorage.removeItem('hero_content');
         console.log('localStorage 초기화 완료');
       }
+      
+      // Service Worker 등록 (일시적으로 비활성화)
+      // if ('serviceWorker' in navigator) {
+      //   window.addEventListener('load', () => {
+      //     navigator.serviceWorker.register('/sw.js')
+      //       .then((registration) => {
+      //         console.log('Service Worker 등록 성공:', registration.scope);
+      //       })
+      //       .catch((error) => {
+      //         console.log('Service Worker 등록 실패:', error);
+      //       });
+      //   });
+      // }
     </script>
   </head>
   <body>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Button from './Button';
+import { useI18n } from '../../hooks/useI18n';
 
 const GroupIntro = ({
   title,
@@ -11,6 +12,7 @@ const GroupIntro = ({
   className = '',
   ...props
 }) => {
+  const { t } = useI18n(); // 다국어 지원
   const [isVisible, setIsVisible] = useState(false);
   const [counters, setCounters] = useState({});
   const [statsData, setStatsData] = useState({
@@ -129,7 +131,7 @@ const GroupIntro = ({
                 isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
               }`}
             >
-              {displayTitle}
+              {t('home.group.title', { fallback: displayTitle })}
             </h2>
             
             {/* 내용 */}

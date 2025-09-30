@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { NewsPageSEO } from '../components/SEO';
+import SEO from '../components/SEO';
 import Hero from '../components/ui/Hero';
 import Section from '../components/ui/Section';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import { useI18n } from '../hooks/useI18n';
 
 const NewsPage = () => {
+  const { t } = useI18n(); // 다국어 지원
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   // 히어로 섹션 데이터
@@ -124,7 +126,11 @@ const NewsPage = () => {
 
   return (
     <>
-      <NewsPageSEO />
+      <SEO 
+        title="뉴스 - 정호그룹"
+        description="정호그룹의 최신 뉴스와 소식을 확인하세요. 조명제어 분야의 혁신적인 기술과 프로젝트 소식을 제공합니다."
+        keywords="정호그룹, 뉴스, 소식, 조명제어, 기술혁신, 프로젝트"
+      />
       
       {/* 히어로 섹션 */}
       <section className="hero-section">

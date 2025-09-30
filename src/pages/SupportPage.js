@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { SupportPageSEO } from '../components/SEO';
+import SEO from '../components/SEO';
 import Hero from '../components/ui/Hero';
 import Section from '../components/ui/Section';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import staticPageContentService from '../services/staticPageContentService';
+import { useI18n } from '../hooks/useI18n';
 
 const SupportPage = () => {
+  const { t } = useI18n(); // 다국어 지원
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -77,7 +79,11 @@ const SupportPage = () => {
 
   return (
     <>
-      <SupportPageSEO />
+      <SEO 
+        title="고객지원 - 정호그룹"
+        description="정호그룹의 고객지원 서비스를 확인하세요. 24/7 기술지원, A/S 서비스, 교육 프로그램 등 다양한 지원 서비스를 제공합니다."
+        keywords="정호그룹, 고객지원, A/S, 기술지원, 교육프로그램, 고객서비스"
+      />
       
       {/* 히어로 섹션 */}
       <section className="hero-section">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useI18n } from '../../hooks/useI18n';
 
 const SubsidiariesIntro = ({
   title = "4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계",
@@ -9,6 +10,7 @@ const SubsidiariesIntro = ({
   className = '',
   ...props
 }) => {
+  const { t } = useI18n(); // 다국어 지원
   const [isVisible, setIsVisible] = useState(false);
   const [companyLogos, setCompanyLogos] = useState({});
   const sectionRef = useRef(null);
@@ -180,10 +182,10 @@ const SubsidiariesIntro = ({
         {/* 섹션 헤더 */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-green-600 mb-6 leading-tight whitespace-pre-line">
-            {subsidiariesIntro?.title || title}
+            {t('home.subsidiaries.title', { fallback: subsidiariesIntro?.title || title })}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            {subsidiariesIntro?.description || subtitle}
+            {t('home.subsidiaries.description', { fallback: subsidiariesIntro?.description || subtitle })}
           </p>
         </div>
 

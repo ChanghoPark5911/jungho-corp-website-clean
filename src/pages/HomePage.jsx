@@ -251,29 +251,29 @@ const HomePage = () => {
     return {
       backgroundImage: heroBackgroundImage,
       webpBackgroundImage: heroBackgroundImage,
-      mainCopy: safeHero.title || '정호그룹\n조명의 미래를\n만들어갑니다',
-      subCopy: safeHero.subtitle || '40년 전통의 조명제어 전문기업',
-      description: safeHero.description || '혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다',
+      mainCopy: safeHero.title || t('home.hero.title', { fallback: '정호그룹\n조명의 미래를\n만들어갑니다' }),
+      subCopy: safeHero.subtitle || t('home.hero.subtitle', { fallback: '40년 전통의 조명제어 전문기업' }),
+      description: safeHero.description || t('home.hero.description', { fallback: '혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다' }),
       stats: [
         {
           value: safeAchievements[0]?.number || '40',
-          suffix: safeAchievements[0]?.suffix || '년',
-          label: safeAchievements[0]?.label || '조명제어 전문 경험'
+          suffix: safeAchievements[0]?.suffix || t('home.stats.years.suffix', { fallback: '년' }),
+          label: safeAchievements[0]?.label || t('home.stats.years.label', { fallback: '조명제어 전문 경험' })
         },
         {
           value: safeAchievements[1]?.number || '1000+',
           suffix: safeAchievements[1]?.suffix || '',
-          label: safeAchievements[1]?.label || '프로젝트 완료'
+          label: safeAchievements[1]?.label || t('home.stats.projects.label', { fallback: '프로젝트 완료' })
         },
         {
           value: safeAchievements[2]?.number || '50+',
           suffix: safeAchievements[2]?.suffix || '',
-          label: safeAchievements[2]?.label || '해외 진출국'
+          label: safeAchievements[2]?.label || t('home.stats.countries.label', { fallback: '해외 진출국' })
         },
         {
           value: safeAchievements[3]?.number || '99%',
           suffix: safeAchievements[3]?.suffix || '',
-          label: safeAchievements[3]?.label || '고객 만족도'
+          label: safeAchievements[3]?.label || t('home.stats.satisfaction.label', { fallback: '고객 만족도' })
         }
       ],
       primaryAction: {
@@ -343,9 +343,9 @@ const HomePage = () => {
   return (
     <>
       <SEO 
-        title="정호그룹 - 조명제어 전문기업"
-        description="40년 전통의 조명제어 전문기업으로, 클라러스, TLC, 일루테크, 텍스컴 등 계열사를 통해 혁신적인 솔루션을 제공합니다."
-        keywords="정호그룹, 조명제어, 클라러스, TLC, 일루테크, 텍스컴, LED조명, 스마트조명"
+        title={t('seo.home.title', { fallback: '정호그룹 - 조명제어 전문기업' })}
+        description={t('seo.home.description', { fallback: '40년 전통의 조명제어 전문기업으로, 클라러스, TLC, 일루테크, 텍스컴 등 계열사를 통해 혁신적인 솔루션을 제공합니다.' })}
+        keywords={t('seo.home.keywords', { fallback: '정호그룹, 조명제어, 클라러스, TLC, 일루테크, 텍스컴, LED조명, 스마트조명' })}
       />
       
       

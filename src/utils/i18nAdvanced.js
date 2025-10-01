@@ -175,12 +175,35 @@ class I18nAdvanced {
           yes: '예',
           no: '아니오'
         },
+        // SEO
+        seo: {
+          home: {
+            title: '정호그룹 - 조명제어 전문기업',
+            description: '40년 전통의 조명제어 전문기업으로, 클라러스, TLC, 일루테크, 텍스컴 등 계열사를 통해 혁신적인 솔루션을 제공합니다.',
+            keywords: '정호그룹, 조명제어, 클라러스, TLC, 일루테크, 텍스컴, LED조명, 스마트조명'
+          }
+        },
         // 홈페이지
         home: {
           hero: {
             title: '40년 축적된 기술력으로\n조명의 미래를 혁신합니다',
             subtitle: '정호그룹은 조명제어 전문 기업으로서, 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다',
             description: '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.'
+          },
+          stats: {
+            years: {
+              suffix: '년',
+              label: '조명제어 전문 경험'
+            },
+            projects: {
+              label: '프로젝트 완료'
+            },
+            countries: {
+              label: '해외 진출국'
+            },
+            satisfaction: {
+              label: '고객 만족도'
+            }
           },
           achievements: {
             years: '년 전통',
@@ -394,12 +417,35 @@ class I18nAdvanced {
           yes: 'Yes',
           no: 'No'
         },
+        // SEO
+        seo: {
+          home: {
+            title: 'Jungho Group - Lighting Control Specialist',
+            description: 'A lighting control specialist company with 40 years of tradition, providing innovative solutions through subsidiaries such as Clarus, TLC, Illutech, and Texcom.',
+            keywords: 'Jungho Group, Lighting Control, Clarus, TLC, Illutech, Texcom, LED Lighting, Smart Lighting'
+          }
+        },
         // Homepage
         home: {
           hero: {
             title: 'Innovating the Future of Lighting\nwith 40 Years of Technology',
             subtitle: 'Jungho Group is a lighting control specialist company that supports customer success with innovative technology and perfect service',
             description: 'We provide the best solutions based on experience in operating more than 150 projects and 85,000 control points.'
+          },
+          stats: {
+            years: {
+              suffix: ' Years',
+              label: 'Lighting Control Expertise'
+            },
+            projects: {
+              label: 'Projects Completed'
+            },
+            countries: {
+              label: 'Countries Expanded'
+            },
+            satisfaction: {
+              label: 'Customer Satisfaction'
+            }
           },
           achievements: {
             years: 'Years Tradition',
@@ -518,12 +564,35 @@ class I18nAdvanced {
             news: '新闻'
           }
         },
+        // SEO
+        seo: {
+          home: {
+            title: '正浩集团 - 照明控制专业企业',
+            description: '拥有40年传统的照明控制专业企业，通过Clarus、TLC、Illutech、Texcom等子公司提供创新解决方案。',
+            keywords: '正浩集团, 照明控制, Clarus, TLC, Illutech, Texcom, LED照明, 智能照明'
+          }
+        },
         // Homepage
         home: {
           hero: {
             title: '用40年积累的技术力\n创新照明的未来',
             subtitle: '正浩集团是照明控制专业企业，以创新技术和完美服务支持客户成功',
             description: '基于150多个项目和85,000多个控制点的运营经验，提供最佳解决方案。'
+          },
+          stats: {
+            years: {
+              suffix: '年',
+              label: '照明控制专业经验'
+            },
+            projects: {
+              label: '项目完成'
+            },
+            countries: {
+              label: '海外进出国'
+            },
+            satisfaction: {
+              label: '客户满意度'
+            }
           },
           achievements: {
             years: '年传统',
@@ -596,12 +665,35 @@ class I18nAdvanced {
             news: 'ニュース'
           }
         },
+        // SEO
+        seo: {
+          home: {
+            title: '正浩グループ - 照明制御専門企業',
+            description: '40年の伝統を持つ照明制御専門企業として、Clarus、TLC、Illutech、Texcomなどの子会社を通じて革新的なソリューションを提供します。',
+            keywords: '正浩グループ, 照明制御, Clarus, TLC, Illutech, Texcom, LED照明, スマート照明'
+          }
+        },
         // Homepage
         home: {
           hero: {
             title: '40年蓄積された技術力で\n照明の未来を革新します',
             subtitle: '正浩グループは照明制御専門企業として、革新的な技術と完璧なサービスで顧客の成功を支援します',
             description: '150以上のプロジェクトと85,000以上の制御ポイントの運営経験を基に最高のソリューションを提供します。'
+          },
+          stats: {
+            years: {
+              suffix: '年',
+              label: '照明制御専門経験'
+            },
+            projects: {
+              label: 'プロジェクト完了'
+            },
+            countries: {
+              label: '海外進出国'
+            },
+            satisfaction: {
+              label: '顧客満足度'
+            }
           },
           achievements: {
             years: '年伝統',

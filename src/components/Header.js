@@ -179,7 +179,8 @@ const Header = ({ imageData = {} }) => {
           </button>
 
           {/* 네비게이션 - 모바일에서는 작은 간격, 데스크톱에서는 큰 간격 */}
-          <nav className="flex items-center space-x-1 sm:space-x-2 md:space-x-4 lg:space-x-8 overflow-x-auto scrollbar-hide max-w-full" role="navigation" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <div className="flex-1 overflow-x-auto scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <nav className="flex items-center space-x-1 sm:space-x-2 md:space-x-4 lg:space-x-8" role="navigation">
             {/* HOME */}
             <button
               className={`px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm lg:px-4 font-medium transition-colors duration-200 whitespace-nowrap ${
@@ -276,7 +277,8 @@ const Header = ({ imageData = {} }) => {
                 {t(`header.navigation.${item.key}`, { fallback: item.label })}
               </button>
             ))}
-          </nav>
+            </nav>
+          </div>
 
           {/* 우측 버튼 그룹 */}
           <div className="flex items-center space-x-3">

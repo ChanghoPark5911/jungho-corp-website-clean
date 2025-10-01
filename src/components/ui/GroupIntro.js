@@ -35,10 +35,10 @@ const GroupIntro = ({
     t('home.group.content.para3', { fallback: '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.' })
   ];
   const displayStats = stats && Array.isArray(stats) && stats.length > 0 ? stats : [
-    { value: '40', suffix: '년', label: '조명제어 전문 경험' },
-    { value: '800', suffix: '+', label: '프로젝트 완료' },
-    { value: '7', suffix: '+', label: '해외 진출국' },
-    { value: '99', suffix: '%', label: '고객 만족도' }
+    { value: '40', suffix: t('home.stats.years.suffix'), label: t('home.stats.years.label') },
+    { value: '800', suffix: '+', label: t('home.stats.projects.label') },
+    { value: '7', suffix: '+', label: t('home.stats.countries.label') },
+    { value: '99', suffix: '%', label: t('home.stats.satisfaction.label') }
   ];
 
   // localStorage에서 성과지표 데이터 로드 (기존 호환성 유지)

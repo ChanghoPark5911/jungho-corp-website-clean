@@ -16,13 +16,13 @@ const SubsidiariesIntro = ({
   const sectionRef = useRef(null);
   const navigate = useNavigate();
 
-  // 이미지와 정확히 똑같은 계열사 데이터
+  // 번역을 사용하는 계열사 데이터
   const defaultSubsidiaries = [
     {
       id: 'clarus',
-      title: '클라루스',
-      subtitle: 'AI 기반 스마트 조명/전력제어',
-      description: '스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문 업체',
+      title: t('home.companyCards.clarus.title'),
+      subtitle: t('home.companyCards.clarus.subtitle'),
+      description: t('home.companyCards.clarus.description'),
       color: 'bg-gray-100',
       iconColor: 'bg-gray-200',
       textColor: 'text-green-800',
@@ -31,9 +31,9 @@ const SubsidiariesIntro = ({
     },
     {
       id: 'tlc',
-      title: '정호티엘씨',
-      subtitle: '조명/전력제어의 설계/시공/사후관리',
-      description: '공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축(시공)하고, 사후관리를 담당하는 전문업체',
+      title: t('home.companyCards.tlc.title'),
+      subtitle: t('home.companyCards.tlc.subtitle'),
+      description: t('home.companyCards.tlc.description'),
       color: 'bg-gray-100',
       iconColor: 'bg-gray-200',
       textColor: 'text-green-800',
@@ -42,9 +42,9 @@ const SubsidiariesIntro = ({
     },
     {
       id: 'illutech',
-      title: '일루텍',
-      subtitle: '유.무선 스마트조명제품 쇼핑몰 공급',
-      description: '유.무선 조명제어 제품을 국내외 유명 쇼핑몰에 전시, 판매, 시공기술지원 업체',
+      title: t('home.companyCards.illutech.title'),
+      subtitle: t('home.companyCards.illutech.subtitle'),
+      description: t('home.companyCards.illutech.description'),
       color: 'bg-gray-100',
       iconColor: 'bg-gray-200',
       textColor: 'text-green-800',
@@ -53,9 +53,9 @@ const SubsidiariesIntro = ({
     },
     {
       id: 'texcom',
-      title: '정호텍스컴',
-      subtitle: '섬유기계의 전통과 첨단패션을 주도하는 온라인 사업',
-      description: '40년간 축적된 섬유기계 전문성과 패션브랜드 론칭을 통해 새로운 가치를 창출하는 전문업체',
+      title: t('home.companyCards.texcom.title'),
+      subtitle: t('home.companyCards.texcom.subtitle'),
+      description: t('home.companyCards.texcom.description'),
       color: 'bg-gray-100',
       iconColor: 'bg-gray-200',
       textColor: 'text-green-800',
@@ -242,7 +242,7 @@ const SubsidiariesIntro = ({
                   }}
                   className={`inline-block px-6 py-3 rounded-lg text-sm font-medium text-white ${subsidiary.buttonColor} hover:opacity-80 transition-opacity`}
                 >
-                  자세히 보기 &gt;
+                  {t('buttons.viewDetails')} &gt;
                 </button>
               </div>
             </div>

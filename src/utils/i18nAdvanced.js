@@ -265,10 +265,10 @@ class I18nAdvanced {
               feature: '스마트 물류 자동화'
             },
             texcom: {
-              title: '텍스컴',
-              subtitle: '섬유기계 및 스마트팩토리 솔루션',
-              description: '섬유기계 제조 및 스마트팩토리 솔루션을 제공하는 전문업체',
-              feature: '스마트팩토리 솔루션'
+              title: '정호텍스컴',
+              subtitle: '섬유기계의 전통과 첨단패션을 주도하는 온라인 사업',
+              description: '40년간 축적된 섬유기계 전문성과 패션브랜드 론칭을 통해 새로운 가치를 창출하는 전문업체',
+              feature: '섬유기계 및 패션 브랜드'
             }
           },
           // 프로젝트 갤러리
@@ -541,10 +541,10 @@ class I18nAdvanced {
               feature: 'Smart Logistics Automation'
             },
             texcom: {
-              title: 'Texcom',
-              subtitle: 'Textile Machinery and Smart Factory Solutions',
-              description: 'Professional company providing textile machinery manufacturing and smart factory solutions',
-              feature: 'Smart Factory Solutions'
+              title: 'Jungho Texcom',
+              subtitle: 'Online Business Leading Textile Machinery Tradition and Cutting-edge Fashion',
+              description: 'Professional company creating new value through 40 years of accumulated textile machinery expertise and fashion brand launching',
+              feature: 'Textile Machinery & Fashion Brands'
             }
           },
           // Project Gallery
@@ -703,6 +703,32 @@ class I18nAdvanced {
           subsidiaries: {
             title: '4个子公司打造\n完美的照明/电力控制及纺织机械生态系统',
             description: '从技术开发到客户服务，通过各领域专业性创造协同效应'
+          },
+          companyCards: {
+            clarus: {
+              title: 'Clarus',
+              subtitle: '基于AI的智能照明/电力控制',
+              description: '开发智能照明/电力控制系统，生产核心设备，向国内外供应的专业企业',
+              feature: '基于AI的自动控制系统'
+            },
+            tlc: {
+              title: '正浩TLC',
+              subtitle: '照明/电力控制的设计/施工/售后管理',
+              description: '为公共机构、办公楼、物流和数据中心设计和建设最佳智能照明环境，并负责售后管理的专业企业',
+              feature: 'IoT传感器网络'
+            },
+            illutech: {
+              title: 'Illutech',
+              subtitle: '有线/无线智能照明产品商城供应',
+              description: '在国内外知名商城展示、销售有线/无线照明控制产品，并提供施工技术支持的企业',
+              feature: '智能物流自动化'
+            },
+            texcom: {
+              title: '正浩Texcom',
+              subtitle: '引领纺织机械传统和尖端时尚的在线业务',
+              description: '通过40年积累的纺织机械专业知识和时尚品牌推出创造新价值的专业企业',
+              feature: '纺织机械及时尚品牌'
+            }
           }
         },
         // Projects
@@ -841,6 +867,32 @@ class I18nAdvanced {
           subsidiaries: {
             title: '4つの子会社が作る\n完璧な照明/電力制御及び繊維機械エコシステム',
             description: '技術開発から顧客サービスまで、各分野の専門性によるシナジー創出'
+          },
+          companyCards: {
+            clarus: {
+              title: 'Clarus',
+              subtitle: 'AIベースのスマート照明/電力制御',
+              description: 'スマート照明/電力制御システム開発、コアデバイス生産、国内外に供給する専門企業',
+              feature: 'AIベースの自動制御システム'
+            },
+            tlc: {
+              title: '正浩TLC',
+              subtitle: '照明/電力制御の設計/施工/アフターサービス',
+              description: '公共機関、オフィスビル、物流およびデータセンターに最適なスマート照明環境を設計・構築（施工）し、アフターサービスを担当する専門企業',
+              feature: 'IoTセンサーネットワーク'
+            },
+            illutech: {
+              title: 'Illutech',
+              subtitle: '有線/無線スマート照明製品ショッピングモール供給',
+              description: '有線/無線照明制御製品を国内外の有名ショッピングモールで展示、販売、施工技術支援を提供する企業',
+              feature: 'スマート物流自動化'
+            },
+            texcom: {
+              title: '正浩Texcom',
+              subtitle: '繊維機械の伝統と先端ファッションを主導するオンライン事業',
+              description: '40年間蓄積された繊維機械の専門性とファッションブランドのローンチを通じて新しい価値を創出する専門企業',
+              feature: '繊維機械及びファッションブランド'
+            }
           }
         },
         // Projects

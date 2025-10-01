@@ -224,13 +224,13 @@ const Header = ({ imageData = {} }) => {
               
               {activeDropdown === 'group' && (
                 <div 
-                  className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
+                  className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
                   role="menu"
                 >
                   {groupDropdownItems.map((item) => (
                     <button
                       key={item.key}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                       role="menuitem"
                       aria-label={item.ariaLabel}
                       onClick={() => handleGroupItemClick(item.path)}

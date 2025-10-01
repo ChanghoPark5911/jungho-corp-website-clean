@@ -142,8 +142,8 @@ const Header = ({ imageData = {} }) => {
       }`}
       role="banner"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 relative">
           {/* 로고 */}
           <button 
             className="flex items-center space-x-3"
@@ -179,7 +179,7 @@ const Header = ({ imageData = {} }) => {
           </button>
 
           {/* 네비게이션 - 모바일에서는 작은 간격, 데스크톱에서는 큰 간격 */}
-          <nav className="flex items-center space-x-1 sm:space-x-2 md:space-x-4 lg:space-x-8 overflow-x-auto scrollbar-hide" role="navigation">
+          <nav className="flex items-center space-x-1 sm:space-x-2 md:space-x-4 lg:space-x-8" role="navigation">
             {/* HOME */}
             <button
               className={`px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm lg:px-4 font-medium transition-colors duration-200 whitespace-nowrap ${
@@ -227,7 +227,7 @@ const Header = ({ imageData = {} }) => {
               
               {activeDropdown === 'group' && (
                 <div 
-                  className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
+                  className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-[9999]"
                   role="menu"
                 >
                   {groupDropdownItems.map((item) => (

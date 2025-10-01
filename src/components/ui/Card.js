@@ -42,7 +42,7 @@ const Card = ({
         ${shadowClasses[shadow]}
         ${paddingClasses[padding]}
         ${hoverClasses}
-        bg-white rounded-lg border border-gray-200 text-horizontal
+        bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-horizontal text-gray-900 dark:text-gray-100
         ${className}
       `}
       style={{

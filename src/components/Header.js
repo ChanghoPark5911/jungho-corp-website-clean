@@ -175,11 +175,11 @@ const Header = ({ imageData = {} }) => {
             </span>
           </button>
 
-          {/* 데스크톱 네비게이션 */}
-          <nav className="flex items-center space-x-8" role="navigation">
+          {/* 네비게이션 - 모바일에서는 작은 간격, 데스크톱에서는 큰 간격 */}
+          <nav className="flex items-center space-x-1 sm:space-x-2 md:space-x-4 lg:space-x-8 overflow-x-auto scrollbar-hide" role="navigation">
             {/* HOME */}
             <button
-              className={`px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+              className={`px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm lg:px-4 font-medium transition-colors duration-200 whitespace-nowrap ${
                 currentPage === 'home' 
                   ? 'text-primary-600 bg-primary-50 rounded-lg' 
                   : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg'
@@ -198,7 +198,7 @@ const Header = ({ imageData = {} }) => {
             {/* GROUP 드롭다운 */}
             <div className="relative dropdown-container">
               <button
-                className={`px-4 py-2 text-sm font-medium transition-colors duration-200 flex items-center space-x-1 ${
+                className={`px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm lg:px-4 font-medium transition-colors duration-200 flex items-center space-x-1 whitespace-nowrap ${
                   currentPage === 'clarus' || currentPage === 'tlc' || currentPage === 'illutech' || currentPage === 'texcom'
                     ? 'text-primary-600 bg-primary-50 rounded-lg' 
                     : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg'
@@ -246,7 +246,7 @@ const Header = ({ imageData = {} }) => {
             {mainNavItems.slice(1).map((item) => (
               <button
                 key={item.key}
-                className={`px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                className={`px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm lg:px-4 font-medium transition-colors duration-200 whitespace-nowrap ${
                   currentPage === item.key 
                     ? 'text-primary-600 bg-primary-50 rounded-lg' 
                     : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg'
@@ -298,92 +298,9 @@ const Header = ({ imageData = {} }) => {
               <span className="hidden xs:inline">관리자</span>
             </button>
 
-            {/* 모바일 메뉴 버튼 - 숨김 */}
-            <button
-              className="hidden p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100 transition-colors duration-200"
-              onClick={() => setActiveDropdown(activeDropdown === 'mobile' ? null : 'mobile')}
-              onKeyPress={(e) => handleKeyPress(e, () => setActiveDropdown(activeDropdown === 'mobile' ? null : 'mobile'))}
-              aria-label="모바일 메뉴 열기"
-              aria-expanded={activeDropdown === 'mobile'}
-              aria-controls="mobile-menu"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
+            {/* 모바일 메뉴 버튼은 숨김 처리 */}
           </div>
         </div>
-
-        {/* 모바일 메뉴 - 숨김 */}
-        {activeDropdown === 'mobile' && (
-          <div 
-            id="mobile-menu"
-            className="hidden bg-white border-t border-gray-200 py-4"
-            role="navigation"
-          >
-            <div className="space-y-2">
-              {mainNavItems.map((item) => (
-                <button
-                  key={item.key}
-                  className={`w-full text-left px-4 py-2 text-base transition-colors duration-200 ${
-                    currentPage === item.key 
-                      ? 'text-primary-600 font-semibold bg-primary-50 rounded-lg' 
-                      : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg'
-                  }`}
-                  onClick={() => {
-                    console.log('Navigating to:', item.path);
-                    setActiveDropdown(null);
-                    // React Router를 사용하여 페이지 이동
-                    navigate(item.path);
-                    // 페이지 상단으로 스크롤
-                    window.scrollTo(0, 0);
-                  }}
-                  aria-label={item.ariaLabel}
-                >
-                  {item.label}
-                </button>
-              ))}
-              
-              {/* 모바일 GROUP 메뉴 */}
-              <div className="border-t border-gray-200 pt-2">
-                <div className="px-4 py-2 text-sm font-medium text-gray-500">GROUP</div>
-                {groupDropdownItems.map((item) => (
-                  <button
-                    key={item.key}
-                    className="w-full text-left px-8 py-2 text-sm text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors duration-200 rounded-lg"
-                    onClick={() => handleGroupItemClick(item.path)}
-                    aria-label={item.ariaLabel}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* 모바일 언어 선택 메뉴 */}
-              <div className="border-t border-gray-200 pt-2">
-                <div className="px-4 py-2 text-sm font-medium text-gray-500">언어 선택</div>
-                {languageOptions.map((language) => (
-                  <button
-                    key={language.code}
-                    className={`w-full text-left px-8 py-2 text-sm transition-colors duration-200 flex items-center space-x-2 rounded-lg ${
-                      currentLanguage === language.code
-                        ? 'text-primary-600 bg-primary-50 font-medium'
-                        : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
-                    }`}
-                    onClick={() => {
-                      handleLanguageChange(language.code);
-                      setActiveDropdown(null);
-                    }}
-                    aria-label={`${language.name}로 변경`}
-                  >
-                    <span className="text-sm">{language.flag}</span>
-                    <span>{language.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </header>
   );

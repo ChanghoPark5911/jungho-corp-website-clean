@@ -16,8 +16,8 @@ const Section = ({
   };
 
   const backgroundClasses = {
-    'white': 'bg-white',
-    'gray': 'bg-gray-50',
+    'white': 'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100',
+    'gray': 'bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100',
     'primary': 'bg-primary text-white',
     'secondary': 'bg-secondary text-white',
     'transparent': 'bg-transparent',

@@ -175,16 +175,16 @@ const SubsidiariesIntro = ({
   return (
     <section 
       ref={sectionRef}
-      className={`subsidiaries-intro-section bg-white py-16 ${className}`}
+      className={`subsidiaries-intro-section bg-white dark:bg-gray-800 py-16 ${className}`}
       {...props}
     >
       <div className="container mx-auto px-4">
         {/* 섹션 헤더 */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-green-600 mb-6 leading-tight whitespace-pre-line">
+          <h2 className="text-4xl md:text-5xl font-bold text-green-600 dark:text-green-400 mb-6 leading-tight whitespace-pre-line">
             {t('home.subsidiaries.title', { fallback: subsidiariesIntro?.title || title })}
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
             {t('home.subsidiaries.description', { fallback: subsidiariesIntro?.description || subtitle })}
           </p>
         </div>
@@ -200,7 +200,7 @@ const SubsidiariesIntro = ({
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <div
-                className={`${subsidiary.color} rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer h-full p-6`}
+                className={`${subsidiary.color} dark:bg-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer h-full p-6`}
                 onClick={() => handleCardClick(subsidiary.path, subsidiary.title)}
               >
                 {/* 상단 원형 아이콘 */}
@@ -222,15 +222,15 @@ const SubsidiariesIntro = ({
                 </div>
 
                 {/* 제목과 부제목 */}
-                <h3 className={`text-2xl font-bold mb-2 ${subsidiary.textColor}`}>
+                <h3 className={`text-2xl font-bold mb-2 ${subsidiary.textColor} dark:text-green-400`}>
                   {subsidiary.title}
                 </h3>
-                <p className={`text-lg font-semibold mb-3 ${subsidiary.textColor}`}>
+                <p className={`text-lg font-semibold mb-3 ${subsidiary.textColor} dark:text-green-300`}>
                   {subsidiary.subtitle}
                 </p>
 
                 {/* 설명 */}
-                <p className="text-gray-600 mb-4 leading-relaxed text-sm">
+                <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed text-sm">
                   {subsidiary.description}
                 </p>
 

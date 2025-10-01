@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
@@ -31,6 +31,15 @@ const PageLoader = () => (
     <LoadingSpinner size="lg" />
   </div>
 );
+
+// 페이지 전환 시 스크롤을 맨 위로 이동
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 function App() {
   // 애니메이션 및 성능 모니터링 초기화
@@ -68,6 +77,7 @@ function App() {
   return (
     <ThemeProvider>
       <Router>
+        <ScrollToTop />
         <Layout>
           <Suspense fallback={<PageLoader />}>
             <Routes>
@@ -86,7 +96,7 @@ function App() {
             </Routes>
           </Suspense>
           <PWAInstallPrompt />
-          <PerformanceDashboard />
+          {/* PerformanceDashboard는 관리자 페이지로 이동 */}
         </Layout>
       </Router>
     </ThemeProvider>

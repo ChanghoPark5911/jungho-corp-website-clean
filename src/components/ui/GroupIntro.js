@@ -117,7 +117,7 @@ const GroupIntro = ({
   return (
     <section 
       ref={sectionRef}
-      className={`group-intro-section py-16 lg:py-24 ${className}`}
+      className={`group-intro-section py-16 lg:py-24 bg-white dark:bg-gray-900 ${className}`}
       {...props}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -136,7 +136,7 @@ const GroupIntro = ({
             
             {/* 내용 */}
             <div 
-              className={`space-y-6 text-lg text-gray-700 leading-relaxed transition-all duration-1000 ${
+              className={`space-y-6 text-lg text-gray-700 dark:text-gray-100 leading-relaxed transition-all duration-1000 ${
                 isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
               }`}
               style={{ transitionDelay: '0.2s' }}

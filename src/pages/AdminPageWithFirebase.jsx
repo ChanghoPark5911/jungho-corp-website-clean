@@ -5,6 +5,7 @@ import StaticPageContentManager from '../components/admin/StaticPageContentManag
 import FirebaseTest from '../components/FirebaseTest';
 import NewsManager from '../components/admin/NewsManager';
 import ProjectManager from '../components/admin/ProjectManager';
+import PerformanceDashboard from '../components/PerformanceDashboard';
 
 const AdminPageWithFirebase = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -165,6 +166,16 @@ const AdminPageWithFirebase = () => {
                 >
                   Firebase 테스트
                 </button>
+                <button
+                  onClick={() => setActiveTab('performance')}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === 'performance'
+                      ? 'border-blue-500 text-blue-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  성능 모니터링
+                </button>
               </nav>
             </div>
           </div>
@@ -197,6 +208,12 @@ const AdminPageWithFirebase = () => {
           {activeTab === 'firebase' && (
             <div className="p-6">
               <FirebaseTest />
+            </div>
+          )}
+          
+          {activeTab === 'performance' && (
+            <div className="p-6">
+              <PerformanceDashboard />
             </div>
           )}
         </div>

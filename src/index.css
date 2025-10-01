@@ -540,6 +540,15 @@ body {
 
 /* ===== Utility Classes ===== */
 @layer utilities {
+  /* 스크롤바 숨김 */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
   /* Text Colors */
   .text-primary { color: var(--primary-600); }
   .text-accent { color: var(--accent-500); }

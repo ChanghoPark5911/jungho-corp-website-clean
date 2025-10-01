@@ -17,9 +17,9 @@ const Typography = ({
     'h6': 'text-sm md:text-base lg:text-lg font-medium text-bright-green leading-tight',
     
     // 본문 스타일
-    'body': 'text-body md:text-body-md lg:text-body-lg text-gray-700 leading-relaxed',
-    'body-large': 'text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed',
-    'body-small': 'text-sm md:text-base text-gray-600 leading-relaxed',
+    'body': 'text-body md:text-body-md lg:text-body-lg text-gray-700 dark:text-gray-300 leading-relaxed',
+    'body-large': 'text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed',
+    'body-small': 'text-sm md:text-base text-gray-600 dark:text-gray-400 leading-relaxed',
     
     // 특수 스타일
     'caption': 'text-xs md:text-sm text-gray-500 leading-relaxed',

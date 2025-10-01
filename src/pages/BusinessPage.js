@@ -81,9 +81,9 @@ const BusinessPage = () => {
   return (
     <>
       <SEO 
-        title="사업영역 - 정호그룹"
-        description="정호그룹의 다양한 사업영역을 소개합니다. 클라러스, TLC, 일루테크, 텍스컴 등 계열사의 전문 분야를 확인하세요."
-        keywords="정호그룹, 사업영역, 클라러스, TLC, 일루테크, 텍스컴, 조명제어, LED조명"
+        title={t('seo.business.title', { fallback: '사업영역 - 정호그룹' })}
+        description={t('seo.business.description', { fallback: '정호그룹의 다양한 사업영역을 소개합니다. 클라러스, TLC, 일루테크, 텍스컴 등 계열사의 전문 분야를 확인하세요.' })}
+        keywords={t('seo.business.keywords', { fallback: '정호그룹, 사업영역, 클라러스, TLC, 일루테크, 텍스컴, 조명제어, LED조명' })}
       />
       
       {/* 히어로 섹션 */}
@@ -96,10 +96,10 @@ const BusinessPage = () => {
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-              핵심 사업영역
+              {t('business.coreAreas.title', { fallback: '핵심 사업영역' })}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {technology.description || "40년간 축적된 조명제어 기술력을 바탕으로 다양한 분야에서 혁신적인 솔루션을 제공합니다"}
+              {technology.description || t('business.coreAreas.description', { fallback: '40년간 축적된 조명제어 기술력을 바탕으로 다양한 분야에서 혁신적인 솔루션을 제공합니다' })}
             </p>
           </div>
 
@@ -128,10 +128,10 @@ const BusinessPage = () => {
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-              계열사별 전문분야
+              {t('business.subsidiaries.title', { fallback: '계열사별 전문분야' })}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              4개 계열사가 각각의 전문분야에서 최고의 솔루션을 제공합니다
+              {t('business.subsidiaries.description', { fallback: '4개 계열사가 각각의 전문분야에서 최고의 솔루션을 제공합니다' })}
             </p>
           </div>
 
@@ -141,7 +141,7 @@ const BusinessPage = () => {
                 <h3 className="text-2xl font-bold text-primary mb-4">{subsidiary.name}</h3>
                 <p className="text-gray-600 mb-6">{subsidiary.description}</p>
                 <div className="space-y-3">
-                  <h4 className="font-semibold text-gray-800">전문분야:</h4>
+                  <h4 className="font-semibold text-gray-800">{t('business.expertise', { fallback: '전문분야:' })}</h4>
                   <div className="flex flex-wrap gap-2">
                     {subsidiary.expertise.map((exp, idx) => (
                       <span key={idx} className="bg-primary-100 text-primary-600 px-3 py-1 rounded-full text-sm">
@@ -163,7 +163,7 @@ const BusinessPage = () => {
                       window.location.href = urls[subsidiary.name];
                     }}
                   >
-                    자세히 보기
+                    {t('buttons.learnMore', { fallback: '자세히 보기' })}
                   </Button>
                 </div>
               </Card>

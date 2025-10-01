@@ -181,6 +181,11 @@ class I18nAdvanced {
             title: '정호그룹 - 조명제어 전문기업',
             description: '40년 전통의 조명제어 전문기업으로, 클라러스, TLC, 일루테크, 텍스컴 등 계열사를 통해 혁신적인 솔루션을 제공합니다.',
             keywords: '정호그룹, 조명제어, 클라러스, TLC, 일루테크, 텍스컴, LED조명, 스마트조명'
+          },
+          business: {
+            title: '사업영역 - 정호그룹',
+            description: '정호그룹의 다양한 사업영역을 소개합니다. 클라러스, TLC, 일루테크, 텍스컴 등 계열사의 전문 분야를 확인하세요.',
+            keywords: '정호그룹, 사업영역, 클라러스, TLC, 일루테크, 텍스컴, 조명제어, LED조명'
           }
         },
         // 홈페이지
@@ -296,6 +301,15 @@ class I18nAdvanced {
         business: {
           title: '사업영역',
           description: '정호그룹의 다양한 사업영역을 소개합니다',
+          coreAreas: {
+            title: '핵심 사업영역',
+            description: '40년간 축적된 조명제어 기술력을 바탕으로 다양한 분야에서 혁신적인 솔루션을 제공합니다'
+          },
+          subsidiaries: {
+            title: '계열사별 전문분야',
+            description: '4개 계열사가 각각의 전문분야에서 최고의 솔루션을 제공합니다'
+          },
+          expertise: '전문분야:',
           sections: {
             lighting: '조명제어',
             smartFactory: '스마트팩토리',
@@ -423,6 +437,11 @@ class I18nAdvanced {
             title: 'Jungho Group - Lighting Control Specialist',
             description: 'A lighting control specialist company with 40 years of tradition, providing innovative solutions through subsidiaries such as Clarus, TLC, Illutech, and Texcom.',
             keywords: 'Jungho Group, Lighting Control, Clarus, TLC, Illutech, Texcom, LED Lighting, Smart Lighting'
+          },
+          business: {
+            title: 'Business Areas - Jungho Group',
+            description: 'Introducing various business areas of Jungho Group. Check out the specialized fields of subsidiaries such as Clarus, TLC, Illutech, and Texcom.',
+            keywords: 'Jungho Group, Business Areas, Clarus, TLC, Illutech, Texcom, Lighting Control, LED Lighting'
           }
         },
         // Homepage
@@ -508,6 +527,18 @@ class I18nAdvanced {
             readMore: 'Read More'
           }
         },
+        // Business
+        business: {
+          coreAreas: {
+            title: 'Core Business Areas',
+            description: 'We provide innovative solutions in various fields based on 40 years of accumulated lighting control technology'
+          },
+          subsidiaries: {
+            title: 'Specialized Fields by Subsidiary',
+            description: '4 subsidiaries provide the best solutions in their respective specialized fields'
+          },
+          expertise: 'Expertise:'
+        },
         // Projects
         projects: {
           title: 'Project Gallery',
@@ -570,6 +601,11 @@ class I18nAdvanced {
             title: '正浩集团 - 照明控制专业企业',
             description: '拥有40年传统的照明控制专业企业，通过Clarus、TLC、Illutech、Texcom等子公司提供创新解决方案。',
             keywords: '正浩集团, 照明控制, Clarus, TLC, Illutech, Texcom, LED照明, 智能照明'
+          },
+          business: {
+            title: '业务领域 - 正浩集团',
+            description: '介绍正浩集团的各种业务领域。了解Clarus、TLC、Illutech、Texcom等子公司的专业领域。',
+            keywords: '正浩集团, 业务领域, Clarus, TLC, Illutech, Texcom, 照明控制, LED照明'
           }
         },
         // Homepage
@@ -634,6 +670,18 @@ class I18nAdvanced {
             demo: '查看演示',
             caseStudy: '案例研究'
           }
+        },
+        // Business
+        business: {
+          coreAreas: {
+            title: '核心业务领域',
+            description: '基于40年积累的照明控制技术力，在各个领域提供创新解决方案'
+          },
+          subsidiaries: {
+            title: '各子公司专业领域',
+            description: '4个子公司在各自的专业领域提供最佳解决方案'
+          },
+          expertise: '专业领域:'
         }
       },
       ja: {
@@ -671,6 +719,11 @@ class I18nAdvanced {
             title: '正浩グループ - 照明制御専門企業',
             description: '40年の伝統を持つ照明制御専門企業として、Clarus、TLC、Illutech、Texcomなどの子会社を通じて革新的なソリューションを提供します。',
             keywords: '正浩グループ, 照明制御, Clarus, TLC, Illutech, Texcom, LED照明, スマート照明'
+          },
+          business: {
+            title: '事業領域 - 正浩グループ',
+            description: '正浩グループの様々な事業領域を紹介します。Clarus、TLC、Illutech、Texcomなどの子会社の専門分野をご確認ください。',
+            keywords: '正浩グループ, 事業領域, Clarus, TLC, Illutech, Texcom, 照明制御, LED照明'
           }
         },
         // Homepage
@@ -735,6 +788,18 @@ class I18nAdvanced {
             demo: 'デモを見る',
             caseStudy: 'ケーススタディ'
           }
+        },
+        // Business
+        business: {
+          coreAreas: {
+            title: 'コアビジネス領域',
+            description: '40年間蓄積された照明制御技術力を基に、様々な分野で革新的なソリューションを提供します'
+          },
+          subsidiaries: {
+            title: '子会社別専門分野',
+            description: '4つの子会社がそれぞれの専門分野で最高のソリューションを提供します'
+          },
+          expertise: '専門分野:'
         }
       }
     };

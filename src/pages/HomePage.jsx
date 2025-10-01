@@ -293,36 +293,15 @@ const HomePage = () => {
     const safeGroupOverview = homeData?.groupOverview || defaultData.groupOverview;
     
     return {
-      title: safeGroupOverview.title || '40년 전통의 조명제어 전문기업',
-      content: [
-        safeGroupOverview.description || '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.',
-        safeGroupOverview.vision || 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.',
-        safeGroupOverview.additionalVision || '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
-      ],
+      title: safeGroupOverview.title, // undefined면 GroupIntro가 번역 사용
+      content: safeGroupOverview.description && safeGroupOverview.vision ? [
+        safeGroupOverview.description,
+        safeGroupOverview.vision,
+        safeGroupOverview.additionalVision
+      ] : undefined, // undefined면 GroupIntro가 번역 사용
       image: optimizedImages.groupIntro.src,
       webpImage: optimizedImages.groupIntro.webpSrc,
-      stats: [
-        {
-          value: "40",
-          suffix: "년",
-          label: "조명제어 전문 경험"
-        },
-        {
-          value: "800",
-          suffix: "+",
-          label: "프로젝트 완료"
-        },
-        {
-          value: "7",
-          suffix: "+",
-          label: "해외 진출국"
-        },
-        {
-          value: "99",
-          suffix: "%",
-          label: "고객 만족도"
-        }
-      ]
+      stats: undefined // GroupIntro가 자체 기본값 사용
     };
   }, [homeData?.groupOverview?.title, homeData?.groupOverview?.description, homeData?.groupOverview?.vision, homeData?.groupOverview?.additionalVision]);
 

@@ -290,45 +290,25 @@ const Hero = ({
         </div>
       </div>
 
-      {/* 성과지표 - flexbox를 사용하여 하단에 안전하게 배치 */}
-      <div className="w-full pb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-3 text-white drop-shadow-lg">
-                {statsData.years}<span className="text-3xl md:text-4xl">년</span>
-              </div>
-              <div className="text-lg md:text-xl text-white font-medium drop-shadow-md">
-                {statsData.yearsLabel}
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-3 text-white drop-shadow-lg">
-                {statsData.projects}<span className="text-3xl md:text-4xl">+</span>
-              </div>
-              <div className="text-lg md:text-xl text-white font-medium drop-shadow-md">
-                {statsData.projectsLabel}
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-3 text-white drop-shadow-lg">
-                {statsData.countries}<span className="text-3xl md:text-4xl">+</span>
-              </div>
-              <div className="text-lg md:text-xl text-white font-medium drop-shadow-md">
-                {statsData.countriesLabel}
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-3 text-white drop-shadow-lg">
-                {statsData.support}<span className="text-3xl md:text-4xl">%</span>
-              </div>
-              <div className="text-lg md:text-xl text-white font-medium drop-shadow-md">
-                {statsData.supportLabel}
-              </div>
+      {/* 성과지표 - props의 stats 사용 (다국어 지원) */}
+      {stats && stats.length > 0 && (
+        <div className="w-full pb-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-4xl md:text-5xl font-bold mb-3 text-white drop-shadow-lg">
+                    {stat.value}<span className="text-3xl md:text-4xl">{stat.suffix}</span>
+                  </div>
+                  <div className="text-lg md:text-xl text-white font-medium drop-shadow-md">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };

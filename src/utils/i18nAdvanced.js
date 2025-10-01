@@ -232,8 +232,13 @@ class I18nAdvanced {
             satisfaction: '고객 만족도'
           },
           group: {
-            title: '정호그룹 소개',
-            description: '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다.'
+            title: '40년 전통의 조명제어 전문기업',
+            description: '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다.',
+            content: {
+              para1: '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.',
+              para2: 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.',
+              para3: '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
+            }
           },
           subsidiaries: {
             title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
@@ -503,8 +508,13 @@ class I18nAdvanced {
             satisfaction: 'Customer Satisfaction'
           },
           group: {
-            title: 'About Jungho Group',
-            description: 'Jungho Group is a global company providing innovative solutions in various fields such as AI, IoT, logistics, and textiles.'
+            title: 'Lighting Control Specialist with 40 Years of Tradition',
+            description: 'Jungho Group is a global company providing innovative solutions in various fields such as AI, IoT, logistics, and textiles.',
+            content: {
+              para1: 'Since its establishment in 1983, Jungho Group has built expertise in the lighting control field for 40 years and presented a new paradigm in lighting control technology by independently developing the E/F2-BUS protocol, the first in Korea.',
+              para2: 'We build a complete ecosystem from B2B to B2C to meet all customer requirements, and provide total solutions through synergy between our 4 subsidiaries.',
+              para3: 'Based on innovative technology and 40 years of accumulated know-how, we support customer success and are growing as a global leader in the lighting control field.'
+            }
           },
           subsidiaries: {
             title: '4 Subsidiaries Creating\nPerfect Lighting/Power Control and Textile Machinery Ecosystem',
@@ -682,8 +692,13 @@ class I18nAdvanced {
             satisfaction: '客户满意度'
           },
           group: {
-            title: '正浩集团介绍',
-            description: '正浩集团是在AI、IoT、物流、纺织等各个领域提供创新解决方案的全球企业。'
+            title: '拥有40年传统的照明控制专业企业',
+            description: '正浩集团是在AI、IoT、物流、纺织等各个领域提供创新解决方案的全球企业。',
+            content: {
+              para1: '自1983年创立以来，正浩集团在照明控制领域积累了40年的专业经验，独立开发了韩国首个E/F2-BUS协议，提出了照明控制技术的新范式。',
+              para2: '从B2B到B2C构建完整生态系统，满足客户的所有需求，并通过4个子公司之间的协同效应提供总体解决方案。',
+              para3: '基于创新技术和40年积累的专业知识支持客户成功，正在成长为照明控制领域的全球领导者。'
+            }
           },
           subsidiaries: {
             title: '4个子公司打造\n完美的照明/电力控制及纺织机械生态系统',
@@ -815,8 +830,13 @@ class I18nAdvanced {
             satisfaction: '顧客満足度'
           },
           group: {
-            title: '正浩グループ紹介',
-            description: '正浩グループはAI、IoT、物流、テキスタイルなど様々な分野で革新的なソリューションを提供するグローバル企業です。'
+            title: '40年の伝統を持つ照明制御専門企業',
+            description: '正浩グループはAI、IoT、物流、テキスタイルなど様々な分野で革新的なソリューションを提供するグローバル企業です。',
+            content: {
+              para1: '1983年の創立以来40年間、照明制御分野で専門性を築いてきた正浩グループは、国内初のE/F2-BUSプロトコルを独自開発し、照明制御技術の新しいパラダイムを提示しました。',
+              para2: 'B2BからB2Cまで完全なエコシステムを構築し、顧客のすべての要求事項を満たし、4つの子会社間のシナジーを通じてトータルソリューションを提供します。',
+              para3: '革新的な技術と40年間蓄積されたノウハウを基に顧客の成功を支援し、照明制御分野のグローバルリーダーとして成長しています。'
+            }
           },
           subsidiaries: {
             title: '4つの子会社が作る\n完璧な照明/電力制御及び繊維機械エコシステム',

@@ -27,12 +27,12 @@ const GroupIntro = ({
   });
   const sectionRef = useRef(null);
 
-  // props에서 전달받은 데이터를 우선 사용
-  const displayTitle = title || '40년 전통의 조명제어 전문기업';
+  // props에서 전달받은 데이터를 우선 사용, 없으면 번역 사용
+  const displayTitle = title || t('home.group.title', { fallback: '40년 전통의 조명제어 전문기업' });
   const displayContent = content && Array.isArray(content) && content.length > 0 ? content : [
-    '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.',
-    'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.',
-    '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
+    t('home.group.content.para1', { fallback: '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.' }),
+    t('home.group.content.para2', { fallback: 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.' }),
+    t('home.group.content.para3', { fallback: '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.' })
   ];
   const displayStats = stats && Array.isArray(stats) && stats.length > 0 ? stats : [
     { value: '40', suffix: '년', label: '조명제어 전문 경험' },

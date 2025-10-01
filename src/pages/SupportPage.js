@@ -80,8 +80,8 @@ const SupportPage = () => {
   return (
     <>
       <SEO 
-        title="고객지원 - 정호그룹"
-        description="정호그룹의 고객지원 서비스를 확인하세요. 24/7 기술지원, A/S 서비스, 교육 프로그램 등 다양한 지원 서비스를 제공합니다."
+        title={t('seo.support.title', { fallback: '고객지원 - 정호그룹' })}
+        description={t('seo.support.description', { fallback: '정호그룹의 고객지원 서비스를 확인하세요. 24/7 기술지원, A/S 서비스, 교육 프로그램 등 다양한 지원 서비스를 제공합니다.' })}
         keywords="정호그룹, 고객지원, A/S, 기술지원, 교육프로그램, 고객서비스"
       />
       

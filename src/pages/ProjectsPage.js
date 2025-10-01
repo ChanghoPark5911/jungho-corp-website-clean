@@ -31,8 +31,8 @@ const ProjectsPage = () => {
   // 히어로 섹션 데이터
   const heroData = {
     backgroundImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    mainCopy: "정호그룹 프로젝트",
-    subCopy: "40년간 축적된 기술력으로 완성한 다양한 프로젝트들을 소개합니다",
+    mainCopy: t('projects.hero.title', { fallback: '정호그룹 프로젝트' }),
+    subCopy: t('projects.hero.subtitle', { fallback: '40년간 축적된 기술력으로 완성한 다양한 프로젝트들을 소개합니다' }),
     primaryAction: {
       label: "문의하기",
       path: "/support"
@@ -146,8 +146,8 @@ const ProjectsPage = () => {
   return (
     <>
       <SEO 
-        title="프로젝트 - 정호그룹"
-        description="정호그룹의 주요 프로젝트와 성과를 확인하세요. 40년 전통의 조명제어 전문기업의 다양한 프로젝트 사례를 소개합니다."
+        title={t('seo.projects.title', { fallback: '프로젝트 - 정호그룹' })}
+        description={t('seo.projects.description', { fallback: '정호그룹의 주요 프로젝트와 성과를 확인하세요. 40년 전통의 조명제어 전문기업의 다양한 프로젝트 사례를 소개합니다.' })}
         keywords="정호그룹, 프로젝트, 조명제어, LED조명, 스마트조명, 프로젝트 사례"
       />
       

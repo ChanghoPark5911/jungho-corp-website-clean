@@ -127,8 +127,8 @@ const NewsPage = () => {
   return (
     <>
       <SEO 
-        title="뉴스 - 정호그룹"
-        description="정호그룹의 최신 뉴스와 소식을 확인하세요. 조명제어 분야의 혁신적인 기술과 프로젝트 소식을 제공합니다."
+        title={t('seo.news.title', { fallback: '뉴스 - 정호그룹' })}
+        description={t('seo.news.description', { fallback: '정호그룹의 최신 뉴스와 소식을 확인하세요. 조명제어 분야의 혁신적인 기술과 프로젝트 소식을 제공합니다.' })}
         keywords="정호그룹, 뉴스, 소식, 조명제어, 기술혁신, 프로젝트"
       />
       

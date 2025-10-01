@@ -186,6 +186,21 @@ class I18nAdvanced {
             title: '사업영역 - 정호그룹',
             description: '정호그룹의 다양한 사업영역을 소개합니다. 클라러스, TLC, 일루테크, 텍스컴 등 계열사의 전문 분야를 확인하세요.',
             keywords: '정호그룹, 사업영역, 클라러스, TLC, 일루테크, 텍스컴, 조명제어, LED조명'
+          },
+          projects: {
+            title: '프로젝트 - 정호그룹',
+            description: '정호그룹의 주요 프로젝트와 성과를 확인하세요. 40년 전통의 조명제어 전문기업의 다양한 프로젝트 사례를 소개합니다.',
+            keywords: '정호그룹, 프로젝트, 조명제어, LED조명, 스마트조명, 프로젝트 사례'
+          },
+          support: {
+            title: '고객지원 - 정호그룹',
+            description: '정호그룹의 고객지원 서비스를 확인하세요. 24/7 기술지원, A/S 서비스, 교육 프로그램 등 다양한 지원 서비스를 제공합니다.',
+            keywords: '정호그룹, 고객지원, A/S, 기술지원, 교육프로그램, 고객서비스'
+          },
+          news: {
+            title: '뉴스 - 정호그룹',
+            description: '정호그룹의 최신 뉴스와 소식을 확인하세요. 조명제어 분야의 혁신적인 기술과 프로젝트 소식을 제공합니다.',
+            keywords: '정호그룹, 뉴스, 소식, 조명제어, 기술혁신, 프로젝트'
           }
         },
         // 홈페이지
@@ -442,6 +457,21 @@ class I18nAdvanced {
             title: 'Business Areas - Jungho Group',
             description: 'Introducing various business areas of Jungho Group. Check out the specialized fields of subsidiaries such as Clarus, TLC, Illutech, and Texcom.',
             keywords: 'Jungho Group, Business Areas, Clarus, TLC, Illutech, Texcom, Lighting Control, LED Lighting'
+          },
+          projects: {
+            title: 'Projects - Jungho Group',
+            description: 'Check out major projects and achievements of Jungho Group. Introducing various project cases from a lighting control specialist company with 40 years of tradition.',
+            keywords: 'Jungho Group, Projects, Lighting Control, LED Lighting, Smart Lighting, Project Cases'
+          },
+          support: {
+            title: 'Customer Support - Jungho Group',
+            description: 'Check out Jungho Group\'s customer support services. We provide various support services such as 24/7 technical support, A/S service, and training programs.',
+            keywords: 'Jungho Group, Customer Support, A/S, Technical Support, Training Program, Customer Service'
+          },
+          news: {
+            title: 'News - Jungho Group',
+            description: 'Check out the latest news and updates from Jungho Group. We provide innovative technology and project news in the field of lighting control.',
+            keywords: 'Jungho Group, News, Updates, Lighting Control, Technology Innovation, Projects'
           }
         },
         // Homepage
@@ -606,6 +636,21 @@ class I18nAdvanced {
             title: '业务领域 - 正浩集团',
             description: '介绍正浩集团的各种业务领域。了解Clarus、TLC、Illutech、Texcom等子公司的专业领域。',
             keywords: '正浩集团, 业务领域, Clarus, TLC, Illutech, Texcom, 照明控制, LED照明'
+          },
+          projects: {
+            title: '项目 - 正浩集团',
+            description: '查看正浩集团的主要项目和成就。介绍拥有40年传统的照明控制专业企业的各种项目案例。',
+            keywords: '正浩集团, 项目, 照明控制, LED照明, 智能照明, 项目案例'
+          },
+          support: {
+            title: '客户支持 - 正浩集团',
+            description: '查看正浩集团的客户支持服务。提供24/7技术支持、售后服务、培训项目等各种支持服务。',
+            keywords: '正浩集团, 客户支持, 售后, 技术支持, 培训项目, 客户服务'
+          },
+          news: {
+            title: '新闻 - 正浩集团',
+            description: '查看正浩集团的最新新闻和消息。提供照明控制领域的创新技术和项目消息。',
+            keywords: '正浩集团, 新闻, 消息, 照明控制, 技术创新, 项目'
           }
         },
         // Homepage
@@ -724,6 +769,21 @@ class I18nAdvanced {
             title: '事業領域 - 正浩グループ',
             description: '正浩グループの様々な事業領域を紹介します。Clarus、TLC、Illutech、Texcomなどの子会社の専門分野をご確認ください。',
             keywords: '正浩グループ, 事業領域, Clarus, TLC, Illutech, Texcom, 照明制御, LED照明'
+          },
+          projects: {
+            title: 'プロジェクト - 正浩グループ',
+            description: '正浩グループの主要プロジェクトと成果をご確認ください。40年の伝統を持つ照明制御専門企業の様々なプロジェクト事例を紹介します。',
+            keywords: '正浩グループ, プロジェクト, 照明制御, LED照明, スマート照明, プロジェクト事例'
+          },
+          support: {
+            title: 'カスタマーサポート - 正浩グループ',
+            description: '正浩グループのカスタマーサポートサービスをご確認ください。24/7技術サポート、アフターサービス、教育プログラムなど様々なサポートサービスを提供します。',
+            keywords: '正浩グループ, カスタマーサポート, アフターサービス, 技術サポート, 教育プログラム, 顧客サービス'
+          },
+          news: {
+            title: 'ニュース - 正浩グループ',
+            description: '正浩グループの最新ニュースとお知らせをご確認ください。照明制御分野の革新的な技術とプロジェクトのニュースを提供します。',
+            keywords: '正浩グループ, ニュース, お知らせ, 照明制御, 技術革新, プロジェクト'
           }
         },
         // Homepage

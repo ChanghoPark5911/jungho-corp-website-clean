@@ -23,7 +23,7 @@ const Layout = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors duration-300">
       <Header imageData={imageData} />
-      <main className="flex-grow pt-16">
+      <main className="flex-grow pt-20">
         {children}
       </main>
       <Footer />

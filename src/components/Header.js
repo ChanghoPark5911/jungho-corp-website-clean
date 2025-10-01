@@ -80,7 +80,10 @@ const Header = ({ imageData = {} }) => {
 
   // 드롭다운 토글
   const toggleDropdown = (key) => {
-    setActiveDropdown(activeDropdown === key ? null : key);
+    console.log('toggleDropdown 호출:', key, '현재 activeDropdown:', activeDropdown);
+    const newValue = activeDropdown === key ? null : key;
+    console.log('새로운 activeDropdown 값:', newValue);
+    setActiveDropdown(newValue);
   };
 
   // GROUP 메뉴 아이템 클릭 핸들러

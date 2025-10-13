@@ -16,13 +16,13 @@ const SubsidiariesIntro = ({
   const sectionRef = useRef(null);
   const navigate = useNavigate();
 
-  // 번역을 사용하는 계열사 데이터
-  const defaultSubsidiaries = [
+  // i18n에서 계열사 데이터 가져오기
+  const defaultSubsidiaries = React.useMemo(() => [
     {
       id: 'clarus',
-      title: t('home.companyCards.clarus.title'),
-      subtitle: t('home.companyCards.clarus.subtitle'),
-      description: t('home.companyCards.clarus.description'),
+      title: t('home.subsidiaries.clarus.title', { fallback: '클라루스' }),
+      subtitle: t('home.subsidiaries.clarus.subtitle', { fallback: 'AI 기반 스마트 조명/전력제어' }),
+      description: t('home.subsidiaries.clarus.description', { fallback: '스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문 업체' }),
       color: 'bg-gray-100',
       iconColor: 'bg-gray-200',
       textColor: 'text-green-800',
@@ -31,9 +31,9 @@ const SubsidiariesIntro = ({
     },
     {
       id: 'tlc',
-      title: t('home.companyCards.tlc.title'),
-      subtitle: t('home.companyCards.tlc.subtitle'),
-      description: t('home.companyCards.tlc.description'),
+      title: t('home.subsidiaries.tlc.title', { fallback: '정호티엘씨' }),
+      subtitle: t('home.subsidiaries.tlc.subtitle', { fallback: '조명/전력제어의 설계/시공/사후관리' }),
+      description: t('home.subsidiaries.tlc.description', { fallback: '공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축하고, 사후관리를 담당하는 전문업체' }),
       color: 'bg-gray-100',
       iconColor: 'bg-gray-200',
       textColor: 'text-green-800',
@@ -42,9 +42,9 @@ const SubsidiariesIntro = ({
     },
     {
       id: 'illutech',
-      title: t('home.companyCards.illutech.title'),
-      subtitle: t('home.companyCards.illutech.subtitle'),
-      description: t('home.companyCards.illutech.description'),
+      title: t('home.subsidiaries.illutech.title', { fallback: '일루텍' }),
+      subtitle: t('home.subsidiaries.illutech.subtitle', { fallback: '유.무선 스마트조명제품 쇼핑몰 공급' }),
+      description: t('home.subsidiaries.illutech.description', { fallback: '유.무선 조명제어 제품을 국내의 유명 쇼핑몰에 전문 판매, 편리한 시공기술지원 업체' }),
       color: 'bg-gray-100',
       iconColor: 'bg-gray-200',
       textColor: 'text-green-800',
@@ -53,16 +53,16 @@ const SubsidiariesIntro = ({
     },
     {
       id: 'texcom',
-      title: t('home.companyCards.texcom.title'),
-      subtitle: t('home.companyCards.texcom.subtitle'),
-      description: t('home.companyCards.texcom.description'),
+      title: t('home.subsidiaries.texcom.title', { fallback: '정호텍스컴' }),
+      subtitle: t('home.subsidiaries.texcom.subtitle', { fallback: '섬유기계 도염, 운영을 통해 국내 섬유산업 지원과 자체 패션브랜드 운영' }),
+      description: t('home.subsidiaries.texcom.description', { fallback: '40년간 축적된 섬유기계 전문성과 패션브랜드 운영을 통해 새로운 가치를 창출하는 전문업체' }),
       color: 'bg-gray-100',
       iconColor: 'bg-gray-200',
       textColor: 'text-green-800',
       buttonColor: 'bg-green-700',
       path: '/texcom'
     }
-  ];
+  ], [t]);
 
   // 계열사 이름을 경로로 매핑하는 함수
   const getPathFromName = (name) => {
@@ -75,7 +75,8 @@ const SubsidiariesIntro = ({
     return nameMapping[name] || `/${name}`;
   };
 
-  // 안전한 subsidiaries 데이터 사용
+  // props의 subsidiaries가 있으면 우선 사용 (홈페이지 관리에서 저장한 데이터)
+  // 없으면 i18n 데이터 사용
   const safeSubsidiaries = React.useMemo(() => {
     if (subsidiaries && Array.isArray(subsidiaries) && subsidiaries.length > 0) {
       return subsidiaries.map(item => ({
@@ -91,7 +92,7 @@ const SubsidiariesIntro = ({
       }));
     }
     return defaultSubsidiaries;
-  }, [subsidiaries]);
+  }, [subsidiaries, defaultSubsidiaries]);
 
   // 회사 로고 데이터 로드
   useEffect(() => {
@@ -141,33 +142,14 @@ const SubsidiariesIntro = ({
 
   // 카드 클릭 핸들러
   const handleCardClick = (path, companyName) => {
-    console.log(`클릭된 회사: ${companyName}, 경로: ${path}`);
-    console.log('현재 window.location:', window.location.href);
+    console.log(`🔵 클릭된 회사: ${companyName}, 경로: ${path}`);
+    console.log('🔵 현재 경로:', window.location.pathname);
     
     if (path && path !== '/' && path !== 'undefined' && path.startsWith('/')) {
-      console.log(`네비게이션 시도: ${path}`);
-      try {
-        // React Router의 navigate 사용
-        navigate(path, { replace: false });
-        
-        // 페이지 전환 후 스크롤 상단으로 이동
-        setTimeout(() => {
-          window.scrollTo(0, 0);
-        }, 100);
-        
-        console.log('React Router 네비게이션 성공!');
-      } catch (error) {
-        console.error('React Router 네비게이션 오류:', error);
-        // 대체 방법으로 window.location 사용
-        try {
-          window.location.href = path;
-          console.log('window.location 네비게이션 성공!');
-        } catch (fallbackError) {
-          console.error('모든 네비게이션 방법 실패:', fallbackError);
-        }
-      }
+      console.log(`🚀 네비게이션 시작: ${path}`);
+      window.location.href = path;
     } else {
-      console.log('유효하지 않은 경로입니다. path:', path);
+      console.error('❌ 유효하지 않은 경로:', path);
       console.log('사용 가능한 경로들:', defaultSubsidiaries.map(s => s.path));
     }
   };
@@ -183,6 +165,7 @@ const SubsidiariesIntro = ({
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-green-600 dark:text-green-400 mb-6 leading-tight">
             {(() => {
+              // props 우선, 없으면 i18n
               const sectionTitle = subsidiariesIntro?.title || t('home.subsidiaries.title', { fallback: title });
               // \n을 실제 줄바꿈으로 변환
               const processedTitle = sectionTitle.replace(/\\n/g, '\n');
@@ -195,6 +178,7 @@ const SubsidiariesIntro = ({
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
             {(() => {
+              // props 우선, 없으면 i18n
               const sectionDescription = subsidiariesIntro?.description || t('home.subsidiaries.description', { fallback: subtitle });
               // \n을 실제 줄바꿈으로 변환
               const processedDescription = sectionDescription.replace(/\\n/g, '\n');
@@ -274,7 +258,7 @@ const SubsidiariesIntro = ({
                   }}
                   className={`inline-block px-6 py-3 rounded-lg text-sm font-medium text-white ${subsidiary.buttonColor} hover:opacity-80 transition-opacity`}
                 >
-                  {t('buttons.viewDetails')} &gt;
+                  상세보기 &gt;
                 </button>
               </div>
             </div>

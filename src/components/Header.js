@@ -88,32 +88,21 @@ const Header = ({ imageData = {} }) => {
 
   // GROUP 메뉴 아이템 클릭 핸들러
   const handleGroupItemClick = (path) => {
-    console.log('GROUP 메뉴 클릭:', path);
+    console.log('🔵 GROUP 메뉴 클릭:', path);
+    console.log('🔵 현재 경로:', location.pathname);
+    console.log('🔵 navigate 함수:', typeof navigate);
     setActiveDropdown(null);
     
     // 현재 페이지와 같은 페이지인지 확인
     if (location.pathname === path) {
-      console.log('같은 페이지입니다. 스크롤만 상단으로 이동');
+      console.log('✅ 같은 페이지입니다. 스크롤만 상단으로 이동');
       window.scrollTo(0, 0);
       return;
     }
     
-    try {
-      // 즉시 네비게이션 실행
-      navigate(path, { replace: false });
-      
-      // 페이지 전환 후 스크롤 상단으로 이동
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-      }, 100);
-      
-      // 네비게이션 성공 확인
-      console.log('네비게이션 성공:', path);
-    } catch (error) {
-      console.error('네비게이션 오류:', error);
-      // 폴백: window.location 사용
-      window.location.href = path;
-    }
+    console.log('🚀 네비게이션 시작...');
+    // 강제로 window.location 사용
+    window.location.href = path;
   };
 
   // 키보드 이벤트 핸들러
@@ -190,10 +179,11 @@ const Header = ({ imageData = {} }) => {
               }`}
               aria-label="홈페이지로 이동"
               onClick={() => {
-                // React Router를 사용하여 홈페이지로 이동
-                navigate('/');
-                // 페이지 상단으로 스크롤
-                window.scrollTo(0, 0);
+                if (location.pathname === '/') {
+                  window.scrollTo(0, 0);
+                } else {
+                  window.location.href = '/';
+                }
               }}
             >
               HOME
@@ -258,23 +248,19 @@ const Header = ({ imageData = {} }) => {
                 }`}
                 aria-label={item.ariaLabel}
                 onClick={() => {
+                  console.log('🔵 메뉴 클릭:', item.label, item.path);
                   // 현재 페이지와 같은 페이지인지 확인
                   if (location.pathname === item.path) {
-                    console.log('같은 페이지입니다. 스크롤만 상단으로 이동');
+                    console.log('✅ 같은 페이지입니다. 스크롤만 상단으로 이동');
                     window.scrollTo(0, 0);
                     return;
                   }
                   
-                  // React Router를 사용하여 페이지 이동
-                  navigate(item.path, { replace: false });
-                  
-                  // 페이지 전환 후 스크롤 상단으로 이동
-                  setTimeout(() => {
-                    window.scrollTo(0, 0);
-                  }, 100);
+                  console.log('🚀 페이지 이동:', item.path);
+                  window.location.href = item.path;
                 }}
               >
-                {t(`header.navigation.${item.key}`, { fallback: item.label })}
+                {t(`header.navigation.${item.key}`) || item.label}
               </button>
             ))}
             </nav>

@@ -51,92 +51,58 @@ export const getProjectList = async (category = PROJECT_CATEGORIES.ALL, limitCou
   try {
     console.log('프로젝트 목록 조회 시작:', { category, limitCount });
     
-    // 1. localStorage에서 먼저 확인 (관리자가 저장한 데이터 우선)
+    // 1. localStorage에서 관리자가 추가한 프로젝트 확인
+    let adminProjects = [];
     const localProjects = localStorage.getItem('projects_data');
     if (localProjects) {
       try {
-        let projects = JSON.parse(localProjects);
-        console.log('✅ localStorage에서 프로젝트 데이터 로드:', projects.length, '개');
+        adminProjects = JSON.parse(localProjects);
+        console.log('✅ localStorage에서 관리자 프로젝트 로드:', adminProjects.length, '개');
         
         // 날짜 변환
-        projects = projects.map(project => ({
+        adminProjects = adminProjects.map(project => ({
           ...project,
           createdAt: project.createdAt ? new Date(project.createdAt) : new Date(),
           updatedAt: project.updatedAt ? new Date(project.updatedAt) : new Date(),
-          publishedAt: project.publishedAt ? new Date(project.publishedAt) : new Date()
+          publishedAt: project.publishedAt ? new Date(project.publishedAt) : new Date(),
+          source: 'admin' // 관리자 프로젝트 표시
         }));
         
         // 게시 상태 필터링
-        projects = projects.filter(project => project.isPublished !== false);
-        console.log('게시된 프로젝트 수:', projects.length);
-        
-        // 카테고리 필터링
-        if (category !== PROJECT_CATEGORIES.ALL) {
-          projects = projects.filter(project => project.category === category);
-          console.log('카테고리 필터링 후:', projects.length);
-        }
-        
-        // 정렬
-        projects.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        
-        // 제한
-        if (limitCount) {
-          projects = projects.slice(0, limitCount);
-        }
-        
-        console.log('✅ localStorage 최종 프로젝트 수:', projects.length, '개');
-        return projects;
+        adminProjects = adminProjects.filter(project => project.isPublished !== false);
+        console.log('게시된 관리자 프로젝트 수:', adminProjects.length);
       } catch (error) {
         console.error('❌ localStorage 프로젝트 데이터 파싱 오류:', error);
       }
     }
     
-    // 2. Firebase에서 데이터 로드
-    console.log('Firebase DB 상태:', db ? '연결됨' : '연결 안됨');
+    // 2. 기본 프로젝트 데이터 가져오기
+    const defaultProjects = getDefaultProjects().map(project => ({
+      ...project,
+      source: 'default' // 기본 프로젝트 표시
+    }));
+    console.log('✅ 기본 프로젝트 로드:', defaultProjects.length, '개');
     
-    // 단순한 쿼리로 시작 (인덱스 문제 방지)
-    const q = query(collection(db, PROJECTS_COLLECTION));
-    console.log('Firestore 쿼리 실행 중...');
-    const querySnapshot = await getDocs(q);
-    console.log('Firestore 쿼리 결과:', querySnapshot.size, '개 문서');
+    // 3. 관리자 프로젝트 + 기본 프로젝트 합치기
+    let allProjects = [...adminProjects, ...defaultProjects];
+    console.log('✅ 전체 프로젝트 수 (합계):', allProjects.length, '개');
     
-    let projects = [];
-    
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      console.log('문서 데이터:', doc.id, data);
-      projects.push({
-        id: doc.id,
-        ...data,
-        // Firestore Timestamp를 JavaScript Date로 변환
-        createdAt: data.createdAt?.toDate?.() || new Date(),
-        updatedAt: data.updatedAt?.toDate?.() || new Date(),
-        publishedAt: data.publishedAt?.toDate?.() || new Date()
-      });
-    });
-    
-    console.log('원본 프로젝트 수:', projects.length);
-    
-    // 클라이언트 사이드에서 필터링
-    projects = projects.filter(project => project.isPublished !== false);
-    console.log('게시된 프로젝트 수:', projects.length);
-    
-    // 카테고리 필터링
+    // 4. 카테고리 필터링
     if (category !== PROJECT_CATEGORIES.ALL) {
-      projects = projects.filter(project => project.category === category);
-      console.log('카테고리 필터링 후:', projects.length);
+      allProjects = allProjects.filter(project => project.category === category);
+      console.log('카테고리 필터링 후:', allProjects.length);
     }
     
-    // 정렬
-    projects.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    // 5. 정렬 (최신순)
+    allProjects.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     
-    // 제한
+    // 6. 제한
     if (limitCount) {
-      projects = projects.slice(0, limitCount);
+      allProjects = allProjects.slice(0, limitCount);
     }
     
-    console.log('✅ Firebase 최종 프로젝트 수:', projects.length, '개');
-    return projects;
+    console.log('✅ 최종 프로젝트 수:', allProjects.length, '개');
+    return allProjects;
   } catch (error) {
     console.error('프로젝트 목록 조회 오류:', error);
     console.log('오프라인 모드로 전환 - 기본 데이터 사용');

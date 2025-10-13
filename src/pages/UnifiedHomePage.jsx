@@ -38,17 +38,8 @@ const UnifiedHomePage = () => {
   
   // 이벤트 기반 새로고침 제거 - 무한 루프 방지
 
-  // 디버깅: unifiedContent 로드 상태 확인
-  console.log('🔍 홈화면 데이터 로드 상태:', {
-    unifiedContent,
-    loading: contentLoading,
-    error: contentError,
-    hasUnifiedContent: !!unifiedContent
-  });
-
   // localStorage에서 직접 확인
   const localData = localStorage.getItem('homepage_content_ko');
-  console.log('💾 localStorage 데이터:', localData ? JSON.parse(localData) : '없음');
   
   // 강제로 localStorage 무시하고 기본값 사용 (개발용)
   const forceDefault = localStorage.getItem('forceDefault') !== 'false'; // localStorage에서 설정 확인
@@ -58,12 +49,9 @@ const UnifiedHomePage = () => {
   const restoreDefault = urlParams.get('restore') === 'true';
   
   if (restoreDefault) {
-    console.log('🔄 기본값 복원: localStorage 강제 초기화');
     localStorage.removeItem('homepage_content_ko');
     localStorage.removeItem('homepage_preview');
-    // URL에서 파라미터 제거
     window.history.replaceState({}, document.title, window.location.pathname);
-    // 페이지 새로고침으로 완전 초기화
     window.location.reload();
   }
 
@@ -72,7 +60,6 @@ const UnifiedHomePage = () => {
   
   // 강제 기본값 사용 또는 기본값 복원 모드
   if (forceDefault || restoreDefault) {
-    console.log('🔄 강제 기본값 사용 모드');
     homeData = null; // 강제로 기본값 사용
   } else {
     // 1. localStorage에서 관리자가 저장한 데이터 확인
@@ -80,7 +67,6 @@ const UnifiedHomePage = () => {
     if (freshLocalData) {
       try {
         homeData = JSON.parse(freshLocalData);
-        console.log('✅ localStorage에서 관리자 데이터 로드 성공:', homeData);
       } catch (error) {
         console.error('❌ localStorage 데이터 파싱 오류:', error);
         homeData = unifiedContent;
@@ -88,16 +74,11 @@ const UnifiedHomePage = () => {
     } else {
       // 2. Firebase에서 데이터 로드
       homeData = unifiedContent;
-      console.log('📖 Firebase에서 데이터 로드:', homeData);
     }
   }
 
-  // 최종 데이터 확인
-  console.log('🎯 최종 homeData:', homeData);
-
   // 폴백: 기본값 사용 (homeData가 없거나 빈 객체인 경우)
   if (!homeData || Object.keys(homeData).length === 0) {
-    console.log('⚠️ homeData가 없어서 기본값 사용');
     homeData = {
       hero: {
         title: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
@@ -173,39 +154,37 @@ const UnifiedHomePage = () => {
       subCopy: homeData.hero?.subtitle,
       description: homeData.hero?.description,
       stats: homeData.achievements,
-      primaryAction: { label: '사업영역 보기', onClick: () => console.log('사업영역 보기 클릭') },
-      secondaryAction: { label: '문의하기', onClick: () => console.log('문의하기 클릭') }
+      primaryAction: { label: '사업영역 보기', onClick: () => {} },
+      secondaryAction: { label: '문의하기', onClick: () => {} }
     };
-    console.log('🎯 Hero 컴포넌트에 전달되는 데이터:', data);
     return data;
   }, [homeData.hero, homeData.achievements, t]);
 
-  // 그룹 소개 섹션 데이터
+  // 그룹 소개 섹션 데이터 - 홈페이지 관리 데이터 우선
   const groupIntroData = useMemo(() => {
     const safeGroupOverview = homeData.groupOverview || {};
-    console.log('🔍 그룹소개 데이터:', safeGroupOverview);
+    
+    // description을 \n\n으로 분리하여 여러 단락으로 만들기
+    let contentArray = undefined;
+    if (safeGroupOverview.description) {
+      // \n\n (두 개의 줄바꿈)으로 단락 구분
+      contentArray = safeGroupOverview.description
+        .split(/\n\n+/)  // 두 개 이상의 연속된 줄바꿈으로 분리
+        .map(para => para.trim())  // 각 단락의 앞뒤 공백 제거
+        .filter(para => para.length > 0);  // 빈 단락 제거
+    }
+    
     return {
       title: safeGroupOverview.title,
-      content: safeGroupOverview.description ? [
-        safeGroupOverview.description
-      ] : undefined,
+      content: contentArray,
       image: optimizedImages.groupIntro.src,
       webpImage: optimizedImages.groupIntro.webpSrc,
       stats: homeData.achievements || []
     };
   }, [homeData?.groupOverview?.title, homeData?.groupOverview?.description, homeData?.achievements]);
 
-  // 계열사 소개 섹션 데이터
+  // 계열사 소개 섹션 - 홈페이지 관리 데이터 우선
   const subsidiariesData = useMemo(() => {
-    console.log('🔍 계열사 데이터:', homeData.subsidiaries);
-    console.log('🔍 계열사 섹션 제목/설명:', homeData.subsidiariesIntro);
-    console.log('🔍 최종 계열사 데이터:', {
-      subsidiaries: homeData.subsidiaries || [],
-      subsidiariesIntro: homeData.subsidiariesIntro || {
-        title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
-        description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'
-      }
-    });
     return {
       subsidiaries: homeData.subsidiaries || [],
       subsidiariesIntro: homeData.subsidiariesIntro || {

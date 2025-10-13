@@ -14,23 +14,10 @@ const ProjectGallery = ({
   
   useEffect(() => {
     const loadProjectData = () => {
-      // 관리자에서 저장한 프로젝트 데이터 우선 확인
-      const savedProjects = localStorage.getItem('projects_data');
-      if (savedProjects) {
-        try {
-          const parsedProjects = JSON.parse(savedProjects);
-          setProjectData(parsedProjects);
-          console.log('✅ 관리자 프로젝트 데이터 로드됨:', parsedProjects);
-          return;
-        } catch (error) {
-          console.error('❌ 프로젝트 데이터 파싱 오류:', error);
-        }
-      }
-      
-      // 기본 프로젝트 데이터 사용
+      // 1. 기본 프로젝트 데이터
       const defaultProjects = [
         {
-          id: '1',
+          id: 'default-1',
           title: '삼성전자 반도체',
           description: '반도체 제조 공장의 조명제어 시스템 구축',
           client: '삼성전자',
@@ -39,10 +26,12 @@ const ProjectGallery = ({
           status: '완료',
           image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
           technologies: ['LED 제어', '스마트 조명'],
-          features: ['에너지 절약', '자동 제어']
+          features: ['에너지 절약', '자동 제어'],
+          createdAt: new Date('2024-01-01'),
+          source: 'default'
         },
         {
-          id: '2',
+          id: 'default-2',
           title: 'LG디스플레이',
           description: '디스플레이 제조 공정의 조명 최적화',
           client: 'LG디스플레이',
@@ -51,10 +40,12 @@ const ProjectGallery = ({
           status: '완료',
           image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
           technologies: ['LED 제어', '스마트 조명'],
-          features: ['에너지 절약', '자동 제어']
+          features: ['에너지 절약', '자동 제어'],
+          createdAt: new Date('2024-01-02'),
+          source: 'default'
         },
         {
-          id: '3',
+          id: 'default-3',
           title: '현대자동차 울산',
           description: '자동차 제조 공장의 조명시스템 통합',
           client: '현대자동차',
@@ -63,10 +54,12 @@ const ProjectGallery = ({
           status: '완료',
           image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
           technologies: ['LED 제어', '스마트 조명'],
-          features: ['에너지 절약', '자동 제어']
+          features: ['에너지 절약', '자동 제어'],
+          createdAt: new Date('2024-01-03'),
+          source: 'default'
         },
         {
-          id: '4',
+          id: 'default-4',
           title: '롯데월드타워',
           description: '초고층 건물의 조명제어 시스템',
           client: '롯데월드타워',
@@ -75,11 +68,38 @@ const ProjectGallery = ({
           status: '완료',
           image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
           technologies: ['LED 제어', '스마트 조명'],
-          features: ['에너지 절약', '자동 제어']
+          features: ['에너지 절약', '자동 제어'],
+          createdAt: new Date('2024-01-04'),
+          source: 'default'
         }
       ];
-      setProjectData(defaultProjects);
-      console.log('⚠️ 기본 프로젝트 데이터 사용');
+      
+      // 2. 관리자가 추가한 프로젝트 데이터
+      let adminProjects = [];
+      const savedProjects = localStorage.getItem('projects_data');
+      if (savedProjects) {
+        try {
+          adminProjects = JSON.parse(savedProjects);
+          // 날짜 변환
+          adminProjects = adminProjects.map(project => ({
+            ...project,
+            createdAt: project.createdAt ? new Date(project.createdAt) : new Date(),
+            source: 'admin'
+          }));
+          console.log('✅ 관리자 프로젝트 데이터 로드됨:', adminProjects.length, '개');
+        } catch (error) {
+          console.error('❌ 프로젝트 데이터 파싱 오류:', error);
+        }
+      }
+      
+      // 3. 기본 + 관리자 프로젝트 합치기
+      const allProjects = [...adminProjects, ...defaultProjects];
+      
+      // 4. 최신순 정렬
+      allProjects.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      
+      setProjectData(allProjects);
+      console.log('✅ 전체 프로젝트 데이터:', allProjects.length, '개 (관리자:', adminProjects.length, '+ 기본:', defaultProjects.length, ')');
     };
     
     // 초기 로드

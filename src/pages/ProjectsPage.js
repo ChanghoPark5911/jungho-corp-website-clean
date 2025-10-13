@@ -31,8 +31,8 @@ const ProjectsPage = () => {
   // 히어로 섹션 데이터
   const heroData = {
     backgroundImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    mainCopy: t('projects.hero.title', { fallback: '정호그룹 프로젝트' }),
-    subCopy: t('projects.hero.subtitle', { fallback: '40년간 축적된 기술력으로 완성한 다양한 프로젝트들을 소개합니다' }),
+    mainCopy: "정호그룹 프로젝트",
+    subCopy: "40년간 축적된 기술력으로 완성한 다양한 프로젝트들을 소개합니다",
     primaryAction: {
       label: "문의하기",
       path: "/support"

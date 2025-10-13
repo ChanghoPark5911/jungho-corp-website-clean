@@ -1,16 +1,23 @@
 // 고급 다국어 지원 시스템
 class I18nAdvanced {
   constructor() {
-    this.currentLanguage = this.getStoredLanguage() || 'ko';
-    this.translations = {};
-    this.fallbackLanguage = 'ko';
     this.supportedLanguages = ['ko', 'en', 'zh', 'ja'];
+    this.fallbackLanguage = 'ko';
     this.languageNames = {
       ko: '한국어',
       en: 'English',
       zh: '中文',
       ja: '日本語'
     };
+    
+    // 저장된 언어를 먼저 확인
+    const storedLang = localStorage.getItem('preferredLanguage');
+    this.currentLanguage = (storedLang && this.supportedLanguages.includes(storedLang)) ? storedLang : 'ko';
+    
+    console.log('🚀 i18nAdvanced 초기화 - 현재 언어:', this.currentLanguage);
+    console.log('📦 localStorage.preferredLanguage:', storedLang);
+    
+    this.translations = {};
     
     this.init();
   }
@@ -23,11 +30,27 @@ class I18nAdvanced {
   // 저장된 언어 설정 가져오기
   getStoredLanguage() {
     try {
-      return localStorage.getItem('preferredLanguage') || 
-             this.detectBrowserLanguage() || 
-             'ko';
+      const stored = localStorage.getItem('preferredLanguage');
+      
+      // 저장된 언어가 있으면 무조건 그것을 사용
+      if (stored && this.supportedLanguages.includes(stored)) {
+        console.log('✅ 저장된 언어 사용:', stored);
+        return stored;
+      }
+      
+      // 저장된 언어가 없을 때만 브라우저 언어 감지
+      const detected = this.detectBrowserLanguage();
+      const result = detected || 'ko';
+      
+      console.log('🔍 언어 설정 로드:', {
+        stored: '없음',
+        detected: detected,
+        result: result
+      });
+      
+      return result;
     } catch (error) {
-      console.error('언어 설정 로드 오류:', error);
+      console.error('❌ 언어 설정 로드 오류:', error);
       return 'ko';
     }
   }
@@ -64,17 +87,27 @@ class I18nAdvanced {
     try {
       // localStorage에서 번역 데이터 로드
       const storedTranslations = localStorage.getItem('i18nTranslations');
+      console.log('🔍 i18nTranslations 로드 시도:', storedTranslations ? '데이터 있음' : '데이터 없음');
+      
       if (storedTranslations) {
         this.translations = JSON.parse(storedTranslations);
-        console.log('번역 데이터 로드 완료:', Object.keys(this.translations));
+        console.log('✅ 번역 데이터 로드 완료:', Object.keys(this.translations));
+        console.log('📝 현재 언어:', this.currentLanguage);
+        console.log('📝 현재 언어 데이터:', this.translations[this.currentLanguage] ? '있음' : '없음');
+        
+        // 샘플 번역 확인
+        if (this.translations[this.currentLanguage]) {
+          console.log('🔍 home.hero.title 번역:', this.translations[this.currentLanguage]['home.hero.title']);
+        }
       } else {
         // 기본 번역 데이터 생성
+        console.log('📝 기본 번역 데이터 생성');
         this.translations = this.getDefaultTranslations();
         this.saveTranslations();
-        console.log('기본 번역 데이터 생성 완료');
+        console.log('✅ 기본 번역 데이터 생성 완료');
       }
     } catch (error) {
-      console.error('번역 데이터 로드 오류:', error);
+      console.error('❌ 번역 데이터 로드 오류:', error);
       this.translations = this.getDefaultTranslations();
     }
   }
@@ -958,8 +991,10 @@ class I18nAdvanced {
   // 언어 변경
   setLanguage(language) {
     if (this.supportedLanguages.includes(language)) {
+      console.log('🌐 언어 변경:', language);
       this.currentLanguage = language;
       localStorage.setItem('preferredLanguage', language);
+      console.log('✅ preferredLanguage 저장 완료:', localStorage.getItem('preferredLanguage'));
       
       // HTML lang 속성 업데이트
       document.documentElement.lang = language;
@@ -990,8 +1025,22 @@ class I18nAdvanced {
 
   // 번역 함수
   t(key, params = {}) {
+    const currentLangData = this.translations[this.currentLanguage];
+    const fallbackLangData = this.translations[this.fallbackLanguage];
+    
+    // 1. 먼저 평평한 키로 직접 검색 시도 (예: 'header.navigation.home')
+    if (currentLangData && currentLangData[key]) {
+      return this.interpolate(currentLangData[key], params);
+    }
+    
+    // 2. 폴백 언어에서 평평한 키로 검색
+    if (fallbackLangData && fallbackLangData[key]) {
+      return this.interpolate(fallbackLangData[key], params);
+    }
+    
+    // 3. 중첩된 객체 구조로 검색 (예: header.navigation.home → header['navigation']['home'])
     const keys = key.split('.');
-    let value = this.translations[this.currentLanguage];
+    let value = currentLangData;
     
     // 키 경로 따라가기
     for (const k of keys) {
@@ -999,7 +1048,7 @@ class I18nAdvanced {
         value = value[k];
       } else {
         // 현재 언어에서 찾을 수 없으면 폴백 언어로 시도
-        value = this.translations[this.fallbackLanguage];
+        value = fallbackLangData;
         for (const k of keys) {
           if (value && typeof value === 'object' && k in value) {
             value = value[k];
@@ -1030,6 +1079,12 @@ class I18nAdvanced {
   setupLanguageChangeListener() {
     window.addEventListener('languageChanged', (event) => {
       console.log('언어 변경 이벤트 수신:', event.detail.language);
+    });
+    
+    // i18n 데이터 업데이트 이벤트 리스너 추가
+    window.addEventListener('i18nDataUpdated', () => {
+      console.log('🔄 i18n 데이터 업데이트 감지 - 번역 데이터 다시 로드');
+      this.loadTranslations();
     });
   }
 

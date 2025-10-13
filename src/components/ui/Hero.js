@@ -61,47 +61,29 @@ const Hero = ({
   // localStorage에서 히어로 데이터 로드 및 실시간 업데이트
   useEffect(() => {
     const loadHeroContent = () => {
-      // props로 전달된 데이터가 있으면 우선 사용 (Firebase 데이터)
-      if (mainCopy && mainCopy !== "정호그룹\n조명의 미래를\n만들어갑니다") {
-        console.log('Props에서 Hero 데이터 사용:', { mainCopy, subCopy, description });
+      // preferredLanguage 직접 확인
+      const storedLang = localStorage.getItem('preferredLanguage');
+      
+      // 강제로 영어 사용 (테스트)
+      if (storedLang === 'en') {
         setHeroData({
-          mainTitle: mainCopy,
-          subtitle: subCopy,
-          description: description || ""
+          mainTitle: "Innovating the Future of Lighting\nwith 40 Years of Accumulated Technology",
+          subtitle: "Jungho Group is a professional lighting control company that supports customer success with innovative technology and perfect service",
+          description: "We provide the best solutions based on experience in operating more than 150 projects and over 85,000 control points."
         });
         return;
       }
       
-      // useLocalStorage가 false이면 props의 mainCopy와 subCopy 사용
-      if (!useLocalStorage) {
-        console.log('useLocalStorage=false, props 사용:', { mainCopy, subCopy });
-        setHeroData({
-          mainTitle: mainCopy,
-          subtitle: subCopy,
-          description: ""
-        });
-        return;
-      }
+      // 한국어 기본값
+      const i18nTitle = t('home.hero.title');
+      const i18nSubtitle = t('home.hero.subtitle');
+      const i18nDescription = t('home.hero.description');
       
-      // 기존 localStorage 로직 (백업용)
-      const saved = localStorage.getItem('hero_content');
-      if (saved) {
-        try {
-          const parsedData = JSON.parse(saved);
-          setHeroData(parsedData);
-          console.log('히어로 데이터 로드됨:', parsedData);
-        } catch (error) {
-          console.error('히어로 데이터 파싱 오류:', error);
-        }
-      } else {
-        // 저장된 데이터가 없을 때만 기본값 설정
-        setHeroData({
-          mainTitle: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
-          subtitle: "조명제어 전문기업으로서 40년간 축적된 기술력으로,\n다양한 분야에서 혁신적인 솔루션을 제공합니다",
-          description: "수많은 프로젝트의 성공적인 시공 및 운영경험을 바탕으로 최고의 고객가치를 창출합니다"
-        });
-        console.log('기본 히어로 데이터 설정됨');
-      }
+      setHeroData({
+        mainTitle: i18nTitle.replace(/\\n/g, '\n'),
+        subtitle: i18nSubtitle.replace(/\\n/g, '\n'),
+        description: i18nDescription.replace(/\\n/g, '\n')
+      });
     };
     
     // 초기 로드
@@ -110,14 +92,12 @@ const Hero = ({
     // 페이지 가시성 변경 감지 (탭 전환, 브라우저 최소화 등)
     const handleVisibilityChange = () => {
       if (!document.hidden) {
-        console.log('페이지 가시성 변경 감지, 데이터 재로드');
         loadHeroContent();
       }
     };
     
     // 실시간 업데이트 리스너
     const handleContentUpdate = () => {
-      console.log('히어로 콘텐츠 업데이트 이벤트 수신');
       loadHeroContent();
     };
     
@@ -132,7 +112,7 @@ const Hero = ({
       window.removeEventListener('heroContentUpdated', handleContentUpdate);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [mainCopy, subCopy, useLocalStorage]); // mainCopy, subCopy 의존성 추가
+  }, [mainCopy, subCopy, useLocalStorage, currentLanguage, t]); // currentLanguage 추가로 언어 변경 시 다시 로드
 
   // 성과지표 데이터 로드 및 실시간 업데이트
   useEffect(() => {
@@ -142,7 +122,6 @@ const Hero = ({
         try {
           const parsedContent = JSON.parse(saved);
           setStatsData(parsedContent);
-          console.log('성과지표 데이터 로드됨:', parsedContent);
         } catch (error) {
           console.error('성과지표 데이터 로드 실패:', error);
         }
@@ -193,17 +172,16 @@ const Hero = ({
                    data-i18n-key="home.hero.title"
                  >
                    {(() => {
-                     // mainCopy prop이 있으면 우선 사용, 없으면 번역 사용
-                     const title = mainCopy || t('home.hero.title', { fallback: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다" });
-                     console.log('Hero Title:', title, 'Language:', currentLanguage, 'mainCopy:', mainCopy);
-                     // \n을 실제 줄바꿈으로 변환
-                     const processedTitle = title.replace(/\\n/g, '\n');
-                     return processedTitle.split('\n').map((line, index) => (
-                       <span key={index} className="block">
-                         {line}
-                       </span>
-                     ));
-                   })()}
+                    // heroData state 우선 사용!
+                    const title = heroData.mainTitle || mainCopy || t('home.hero.title', { fallback: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다" });
+                    // \n을 실제 줄바꿈으로 변환
+                    const processedTitle = title.replace(/\\n/g, '\n');
+                    return processedTitle.split('\n').map((line, index) => (
+                      <span key={index} className="block">
+                        {line}
+                      </span>
+                    ));
+                  })()}
                  </h1>
                  <p
                    className="hero-subtitle"
@@ -231,11 +209,11 @@ const Hero = ({
                    }}
                  >
                    {(() => {
-                     const subtitle = subCopy || t('home.hero.subtitle', { fallback: "정호그룹은 조명제어 전문 기업으로서, 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다" });
-                     // \n을 실제 줄바꿈으로 변환
-                     const processedSubtitle = subtitle.replace(/\\n/g, '\n');
-                     return formatTextWithLineBreaks(processedSubtitle);
-                   })()}
+                    const subtitle = heroData.subtitle || subCopy || t('home.hero.subtitle', { fallback: "정호그룹은 조명제어 전문 기업으로서, 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다" });
+                    // \n을 실제 줄바꿈으로 변환
+                    const processedSubtitle = subtitle.replace(/\\n/g, '\n');
+                    return formatTextWithLineBreaks(processedSubtitle);
+                  })()}
                  </p>
           
           {/* 설명 텍스트 추가 */}
@@ -258,10 +236,10 @@ const Hero = ({
                    }}
                  >
                    {(() => {
-                     const desc = description || t('home.hero.description', { fallback: '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.' });
-                     // \n을 실제 줄바꿈으로 변환
-                     const processedDesc = desc.replace(/\\n/g, '\n');
-                     return formatTextWithLineBreaks(processedDesc);
+                    const desc = heroData.description || description || t('home.hero.description', { fallback: '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.' });
+                    // \n을 실제 줄바꿈으로 변환
+                    const processedDesc = desc.replace(/\\n/g, '\n');
+                    return formatTextWithLineBreaks(processedDesc);
                    })()}
                  </p>
           
@@ -280,11 +258,7 @@ const Hero = ({
                 }}
                 className="text-xl px-10 py-5 font-semibold"
               >
-                {(() => {
-                  const translatedText = t(primaryAction.label, { fallback: primaryAction.label });
-                  console.log('Primary Action Translation:', primaryAction.label, '->', translatedText);
-                  return translatedText;
-                })()}
+                {t(primaryAction.label, { fallback: primaryAction.label })}
               </Button>
             )}
             {secondaryAction && (
@@ -300,11 +274,7 @@ const Hero = ({
                 }}
                 className="text-xl px-10 py-5 font-semibold"
               >
-                {(() => {
-                  const translatedText = t(secondaryAction.label, { fallback: secondaryAction.label });
-                  console.log('Secondary Action Translation:', secondaryAction.label, '->', translatedText);
-                  return translatedText;
-                })()}
+                {t(secondaryAction.label, { fallback: secondaryAction.label })}
               </Button>
             )}
           </div>

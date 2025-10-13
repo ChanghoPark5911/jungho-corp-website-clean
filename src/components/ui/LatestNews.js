@@ -14,16 +14,51 @@ const LatestNews = ({
   // localStorage에서 뉴스 데이터 로드 및 실시간 업데이트
   useEffect(() => {
     const loadNewsData = () => {
-      const saved = localStorage.getItem('newsData');
+      // 관리자에서 저장한 뉴스 데이터 우선 확인
+      const saved = localStorage.getItem('news_data');
       if (saved) {
         try {
           const parsedData = JSON.parse(saved);
           setNewsData(parsedData);
-          console.log('뉴스 데이터 로드됨:', parsedData);
+          console.log('✅ 관리자 뉴스 데이터 로드됨:', parsedData);
+          return;
         } catch (error) {
-          console.error('뉴스 데이터 파싱 오류:', error);
+          console.error('❌ 뉴스 데이터 파싱 오류:', error);
         }
       }
+      
+      // 기본 뉴스 데이터 사용
+      const defaultNews = [
+        {
+          id: '1',
+          title: '정호그룹, 새로운 LED 조명 솔루션 출시',
+          content: '40년간의 기술력으로 개발한 혁신적인 LED 조명 제어 시스템을 출시했습니다.',
+          date: '2024-01-15',
+          category: '보도자료',
+          featured: true,
+          image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+        },
+        {
+          id: '2',
+          title: '글로벌 파트너십 확장',
+          content: '해외 시장 진출을 위한 새로운 파트너십을 체결했습니다.',
+          date: '2024-01-10',
+          category: '일반',
+          featured: false,
+          image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+        },
+        {
+          id: '3',
+          title: '기술 혁신 상 수상',
+          content: '조명제어 분야의 기술 혁신을 인정받아 상을 수상했습니다.',
+          date: '2024-01-05',
+          category: '공지사항',
+          featured: false,
+          image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+        }
+      ];
+      setNewsData(defaultNews);
+      console.log('⚠️ 기본 뉴스 데이터 사용');
     };
     
     // 초기 로드
@@ -74,6 +109,8 @@ const LatestNews = ({
 
   // localStorage 데이터가 있으면 사용, 없으면 기본값 사용
   const newsToRender = newsData.length > 0 ? newsData : (news && news.length > 0 ? news : defaultNews);
+  
+  console.log('🔍 뉴스 렌더링 데이터:', newsToRender);
 
   // Intersection Observer 설정
   useEffect(() => {
@@ -146,7 +183,7 @@ const LatestNews = ({
               {/* 썸네일 이미지 */}
               <div className="relative h-48 overflow-hidden">
                 <img 
-                  src={newsItem.thumbnail} 
+                  src={newsItem.image || newsItem.thumbnail || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'} 
                   alt={newsItem.title}
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                 />
@@ -155,6 +192,13 @@ const LatestNews = ({
                 {newsItem.category && (
                   <div className="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
                     {newsItem.category}
+                  </div>
+                )}
+                
+                {/* 주요 뉴스 배지 */}
+                {newsItem.featured && (
+                  <div className="absolute top-4 right-4 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    주요
                   </div>
                 )}
                 
@@ -170,7 +214,7 @@ const LatestNews = ({
                   {newsItem.title}
                 </h3>
                 <p className="text-gray-600 mb-4 line-clamp-3">
-                  {newsItem.summary}
+                  {newsItem.content || newsItem.summary}
                 </p>
                 
                 {/* 태그 */}

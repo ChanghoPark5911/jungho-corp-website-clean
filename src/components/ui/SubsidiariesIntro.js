@@ -181,11 +181,29 @@ const SubsidiariesIntro = ({
       <div className="container mx-auto px-4">
         {/* 섹션 헤더 */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-green-600 dark:text-green-400 mb-6 leading-tight whitespace-pre-line">
-            {t('home.subsidiaries.title', { fallback: subsidiariesIntro?.title || title })}
+          <h2 className="text-4xl md:text-5xl font-bold text-green-600 dark:text-green-400 mb-6 leading-tight">
+            {(() => {
+              const sectionTitle = subsidiariesIntro?.title || t('home.subsidiaries.title', { fallback: title });
+              // \n을 실제 줄바꿈으로 변환
+              const processedTitle = sectionTitle.replace(/\\n/g, '\n');
+              return processedTitle.split('\n').map((line, index) => (
+                <span key={index} className="block">
+                  {line}
+                </span>
+              ));
+            })()}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            {t('home.subsidiaries.description', { fallback: subsidiariesIntro?.description || subtitle })}
+            {(() => {
+              const sectionDescription = subsidiariesIntro?.description || t('home.subsidiaries.description', { fallback: subtitle });
+              // \n을 실제 줄바꿈으로 변환
+              const processedDescription = sectionDescription.replace(/\\n/g, '\n');
+              return processedDescription.split('\n').map((line, index) => (
+                <span key={index} className="block">
+                  {line}
+                </span>
+              ));
+            })()}
           </p>
         </div>
 
@@ -223,10 +241,24 @@ const SubsidiariesIntro = ({
 
                 {/* 제목과 부제목 */}
                 <h3 className={`text-2xl font-bold mb-2 ${subsidiary.textColor} dark:text-green-400`}>
-                  {subsidiary.title}
+                  {(() => {
+                    const processedTitle = subsidiary.title.replace(/\\n/g, '\n');
+                    return processedTitle.split('\n').map((line, index) => (
+                      <span key={index} className="block">
+                        {line}
+                      </span>
+                    ));
+                  })()}
                 </h3>
                 <p className={`text-lg font-semibold mb-3 ${subsidiary.textColor} dark:text-green-300`}>
-                  {subsidiary.subtitle}
+                  {(() => {
+                    const processedSubtitle = subsidiary.subtitle.replace(/\\n/g, '\n');
+                    return processedSubtitle.split('\n').map((line, index) => (
+                      <span key={index} className="block">
+                        {line}
+                      </span>
+                    ));
+                  })()}
                 </p>
 
                 {/* 설명 */}

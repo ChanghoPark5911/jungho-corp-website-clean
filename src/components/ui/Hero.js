@@ -193,9 +193,12 @@ const Hero = ({
                    data-i18n-key="home.hero.title"
                  >
                    {(() => {
-                     const title = t('home.hero.title', { fallback: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다" });
-                     console.log('Hero Title:', title, 'Language:', currentLanguage);
-                     return title.split('\n').map((line, index) => (
+                     // mainCopy prop이 있으면 우선 사용, 없으면 번역 사용
+                     const title = mainCopy || t('home.hero.title', { fallback: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다" });
+                     console.log('Hero Title:', title, 'Language:', currentLanguage, 'mainCopy:', mainCopy);
+                     // \n을 실제 줄바꿈으로 변환
+                     const processedTitle = title.replace(/\\n/g, '\n');
+                     return processedTitle.split('\n').map((line, index) => (
                        <span key={index} className="block">
                          {line}
                        </span>
@@ -227,7 +230,12 @@ const Hero = ({
                      gap: '0.25rem'
                    }}
                  >
-                   {formatTextWithLineBreaks(t('home.hero.subtitle', { fallback: "정호그룹은 조명제어 전문 기업으로서, 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다" }))}
+                   {(() => {
+                     const subtitle = subCopy || t('home.hero.subtitle', { fallback: "정호그룹은 조명제어 전문 기업으로서, 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다" });
+                     // \n을 실제 줄바꿈으로 변환
+                     const processedSubtitle = subtitle.replace(/\\n/g, '\n');
+                     return formatTextWithLineBreaks(processedSubtitle);
+                   })()}
                  </p>
           
           {/* 설명 텍스트 추가 */}
@@ -249,7 +257,12 @@ const Hero = ({
                      whiteSpace: 'pre-line'
                    }}
                  >
-                   {formatTextWithLineBreaks(t('home.hero.description', { fallback: '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.' }))}
+                   {(() => {
+                     const desc = description || t('home.hero.description', { fallback: '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.' });
+                     // \n을 실제 줄바꿈으로 변환
+                     const processedDesc = desc.replace(/\\n/g, '\n');
+                     return formatTextWithLineBreaks(processedDesc);
+                   })()}
                  </p>
           
           {/* 액션 버튼 */}
@@ -267,7 +280,11 @@ const Hero = ({
                 }}
                 className="text-xl px-10 py-5 font-semibold"
               >
-                {primaryAction.label}
+                {(() => {
+                  const translatedText = t(primaryAction.label, { fallback: primaryAction.label });
+                  console.log('Primary Action Translation:', primaryAction.label, '->', translatedText);
+                  return translatedText;
+                })()}
               </Button>
             )}
             {secondaryAction && (
@@ -283,7 +300,11 @@ const Hero = ({
                 }}
                 className="text-xl px-10 py-5 font-semibold"
               >
-                {secondaryAction.label}
+                {(() => {
+                  const translatedText = t(secondaryAction.label, { fallback: secondaryAction.label });
+                  console.log('Secondary Action Translation:', secondaryAction.label, '->', translatedText);
+                  return translatedText;
+                })()}
               </Button>
             )}
           </div>

@@ -9,31 +9,91 @@ const ProjectGallery = ({
 }) => {
   const [projectGalleryImages, setProjectGalleryImages] = useState({});
 
-  // 프로젝트 갤러리 이미지 로드
+  // 프로젝트 데이터 로드
+  const [projectData, setProjectData] = useState([]);
+  
   useEffect(() => {
-    const loadProjectGalleryImages = () => {
-      const savedData = localStorage.getItem('project_gallery_images');
-      if (savedData) {
+    const loadProjectData = () => {
+      // 관리자에서 저장한 프로젝트 데이터 우선 확인
+      const savedProjects = localStorage.getItem('projects_data');
+      if (savedProjects) {
         try {
-          const data = JSON.parse(savedData);
-          setProjectGalleryImages(data);
+          const parsedProjects = JSON.parse(savedProjects);
+          setProjectData(parsedProjects);
+          console.log('✅ 관리자 프로젝트 데이터 로드됨:', parsedProjects);
+          return;
         } catch (error) {
-          console.error('프로젝트 갤러리 이미지 로드 오류:', error);
+          console.error('❌ 프로젝트 데이터 파싱 오류:', error);
         }
       }
+      
+      // 기본 프로젝트 데이터 사용
+      const defaultProjects = [
+        {
+          id: '1',
+          title: '삼성전자 반도체',
+          description: '반도체 제조 공장의 조명제어 시스템 구축',
+          client: '삼성전자',
+          year: '2024',
+          category: '조명제어',
+          status: '완료',
+          image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          technologies: ['LED 제어', '스마트 조명'],
+          features: ['에너지 절약', '자동 제어']
+        },
+        {
+          id: '2',
+          title: 'LG디스플레이',
+          description: '디스플레이 제조 공정의 조명 최적화',
+          client: 'LG디스플레이',
+          year: '2024',
+          category: '조명제어',
+          status: '완료',
+          image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          technologies: ['LED 제어', '스마트 조명'],
+          features: ['에너지 절약', '자동 제어']
+        },
+        {
+          id: '3',
+          title: '현대자동차 울산',
+          description: '자동차 제조 공장의 조명시스템 통합',
+          client: '현대자동차',
+          year: '2023',
+          category: '조명제어',
+          status: '완료',
+          image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          technologies: ['LED 제어', '스마트 조명'],
+          features: ['에너지 절약', '자동 제어']
+        },
+        {
+          id: '4',
+          title: '롯데월드타워',
+          description: '초고층 건물의 조명제어 시스템',
+          client: '롯데월드타워',
+          year: '2023',
+          category: '조명제어',
+          status: '완료',
+          image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          technologies: ['LED 제어', '스마트 조명'],
+          features: ['에너지 절약', '자동 제어']
+        }
+      ];
+      setProjectData(defaultProjects);
+      console.log('⚠️ 기본 프로젝트 데이터 사용');
     };
     
-    loadProjectGalleryImages();
+    // 초기 로드
+    loadProjectData();
     
     // 실시간 업데이트 리스너
-    const handleProjectGalleryImagesUpdate = () => {
-      loadProjectGalleryImages();
+    const handleProjectUpdate = () => {
+      loadProjectData();
     };
     
-    window.addEventListener('projectGalleryImagesUpdated', handleProjectGalleryImagesUpdate);
+    window.addEventListener('projectsDataUpdated', handleProjectUpdate);
     
     return () => {
-      window.removeEventListener('projectGalleryImagesUpdated', handleProjectGalleryImagesUpdate);
+      window.removeEventListener('projectsDataUpdated', handleProjectUpdate);
     };
   }, []);
   const [isVisible, setIsVisible] = useState(false);
@@ -75,8 +135,10 @@ const ProjectGallery = ({
     }
   ];
 
-  // projects가 없으면 기본값 사용
-  const projectsToRender = projects && projects.length > 0 ? projects : defaultProjects;
+  // localStorage 데이터가 있으면 사용, 없으면 기본값 사용
+  const projectsToRender = projectData.length > 0 ? projectData : (projects && projects.length > 0 ? projects : defaultProjects);
+  
+  console.log('🔍 프로젝트 렌더링 데이터:', projectsToRender);
   
   // 프로젝트 갤러리 이미지가 있으면 프로젝트 이미지에 적용
   const projectsWithGalleryImages = projectsToRender.map((project, index) => {
@@ -195,11 +257,20 @@ const ProjectGallery = ({
                         <span>{detail}</span>
                       </div>
                     ))}
+                    {project.technologies && project.technologies.slice(0, 2).map((tech, techIndex) => (
+                      <div key={techIndex} className="flex items-center text-sm">
+                        <div className="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
+                        <span>{tech}</span>
+                      </div>
+                    ))}
                   </div>
                   
                   {/* 완료 연도 */}
                   <div className="mt-4 pt-3 border-t border-white/20">
                     <span className="text-sm font-medium">완료: {project.year}</span>
+                    {project.client && (
+                      <span className="text-sm text-gray-300 ml-2">• {project.client}</span>
+                    )}
                   </div>
                 </div>
               </div>

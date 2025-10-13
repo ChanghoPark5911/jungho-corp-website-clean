@@ -208,7 +208,9 @@ class I18nAdvanced {
           hero: {
             title: '40년 축적된 기술력으로\n조명의 미래를 혁신합니다',
             subtitle: '정호그룹은 조명제어 전문 기업으로서, 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다',
-            description: '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.'
+            description: '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.',
+            primaryAction: '사업영역 보기',
+            secondaryAction: '문의하기'
           },
           stats: {
             years: {
@@ -484,7 +486,9 @@ class I18nAdvanced {
           hero: {
             title: 'Innovating the Future of Lighting\nwith 40 Years of Technology',
             subtitle: 'Jungho Group is a lighting control specialist company that supports customer success with innovative technology and perfect service',
-            description: 'We provide the best solutions based on experience in operating more than 150 projects and 85,000 control points.'
+            description: 'We provide the best solutions based on experience in operating more than 150 projects and 85,000 control points.',
+            primaryAction: 'View Business Areas',
+            secondaryAction: 'Contact Us'
           },
           stats: {
             years: {
@@ -668,7 +672,9 @@ class I18nAdvanced {
           hero: {
             title: '用40年积累的技术力\n创新照明的未来',
             subtitle: '正浩集团是照明控制专业企业，以创新技术和完美服务支持客户成功',
-            description: '基于150多个项目和85,000多个控制点的运营经验，提供最佳解决方案。'
+            description: '基于150多个项目和85,000多个控制点的运营经验，提供最佳解决方案。',
+            primaryAction: '查看业务领域',
+            secondaryAction: '联系我们'
           },
           stats: {
             years: {
@@ -832,7 +838,9 @@ class I18nAdvanced {
           hero: {
             title: '40年蓄積された技術力で\n照明の未来を革新します',
             subtitle: '正浩グループは照明制御専門企業として、革新的な技術と完璧なサービスで顧客の成功を支援します',
-            description: '150以上のプロジェクトと85,000以上の制御ポイントの運営経験を基に最高のソリューションを提供します。'
+            description: '150以上のプロジェクトと85,000以上の制御ポイントの運営経験を基に最高のソリューションを提供します。',
+            primaryAction: '事業領域を見る',
+            secondaryAction: 'お問い合わせ'
           },
           stats: {
             years: {

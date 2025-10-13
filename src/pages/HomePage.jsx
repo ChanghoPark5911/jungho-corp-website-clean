@@ -7,8 +7,8 @@ import SubsidiariesIntro from '../components/ui/SubsidiariesIntro';
 import ProjectGallery from '../components/ui/ProjectGallery';
 import CustomerSupport from '../components/ui/CustomerSupport';
 import LatestNews from '../components/ui/LatestNews';
-import homepageContentService from '../services/homepageContentService';
 import { useI18n } from '../hooks/useI18n';
+import useUnifiedContent from '../hooks/useUnifiedContent';
 
 // 최적화된 이미지 데이터
 const optimizedImages = {
@@ -162,18 +162,20 @@ const HomePage = () => {
 
         // 1. Firebase에서 홈페이지 콘텐츠 로드 시도
         console.log('Firebase 홈페이지 콘텐츠 로드 시도...');
-        const firebaseContent = await homepageContentService.getHomepageContent();
+            // Firebase 콘텐츠 로드 (기존 방식 유지)
+            // const firebaseContent = await homepageContentService.getHomepageContent();
         
-        if (firebaseContent) {
-          console.log('Firebase 홈페이지 콘텐츠 로드 성공:', firebaseContent);
-          setHomeData(firebaseContent);
-          setDebugInfo(`Firebase에서 로드됨 - ${new Date().toLocaleString()}`);
-          
-          // Firebase 데이터를 localStorage에 백업 저장
-          localStorage.setItem('homeData', JSON.stringify(firebaseContent));
-          console.log('Firebase 데이터를 LocalStorage에 백업 저장 완료');
-          return;
-        }
+        // Firebase 콘텐츠 로드 성공 시 처리 (임시 비활성화)
+        // if (firebaseContent) {
+        //   console.log('Firebase 홈페이지 콘텐츠 로드 성공:', firebaseContent);
+        //   setHomeData(firebaseContent);
+        //   setDebugInfo(`Firebase에서 로드됨 - ${new Date().toLocaleString()}`);
+        //   
+        //   // Firebase 데이터를 localStorage에 백업 저장
+        //   localStorage.setItem('homeData', JSON.stringify(firebaseContent));
+        //   console.log('Firebase 데이터를 LocalStorage에 백업 저장 완료');
+        //   return;
+        // }
         
         // 2. Firebase 실패 시 LocalStorage에서 로드 시도
         console.log('Firebase 실패, LocalStorage에서 로드 시도...');

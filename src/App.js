@@ -13,6 +13,7 @@ import performanceMonitor from './utils/performanceMonitor';
 
 // 페이지 컴포넌트들을 lazy loading으로 import
 const HomePage = lazy(() => import('./pages/HomePage.jsx'));
+const UnifiedHomePage = lazy(() => import('./pages/UnifiedHomePage.jsx')); // Added
 const BusinessPage = lazy(() => import('./pages/BusinessPage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
 const SupportPage = lazy(() => import('./pages/SupportPage'));
@@ -23,6 +24,7 @@ const IllutechDetailPage = lazy(() => import('./pages/IllutechDetailPage'));
 const TexcomDetailPage = lazy(() => import('./pages/TexcomDetailPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const AdminPage = lazy(() => import('./pages/AdminPageWithFirebase.jsx'));
+const UnifiedAdminPage = lazy(() => import('./pages/UnifiedAdminPage.jsx')); // Added
 const DesignSystem = lazy(() => import('./components/design-system/DesignSystem'));
 
 // 로딩 컴포넌트
@@ -80,8 +82,9 @@ function App() {
         <ScrollToTop />
         <Layout>
           <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
+                <Routes>
+                  <Route path="/" element={<UnifiedHomePage />} />
+                  <Route path="/old" element={<div>기존 홈페이지 임시 비활성화</div>} />
               <Route path="/business" element={<BusinessPage />} />
               <Route path="/projects" element={<ProjectsPage />} />
               <Route path="/support" element={<SupportPage />} />
@@ -92,6 +95,7 @@ function App() {
               <Route path="/texcom" element={<TexcomDetailPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/admin-unified" element={<UnifiedAdminPage />} /> {/* Added */}
               <Route path="/design-system" element={<DesignSystem />} />
             </Routes>
           </Suspense>

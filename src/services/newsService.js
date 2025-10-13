@@ -52,6 +52,52 @@ class NewsService {
         searchTerm = ''
       } = options;
 
+      // 1. localStorage에서 먼저 확인 (관리자가 저장한 데이터 우선)
+      const localNews = localStorage.getItem('news_data');
+      if (localNews) {
+        try {
+          let newsList = JSON.parse(localNews);
+          
+          // 날짜 변환
+          newsList = newsList.map(news => ({
+            ...news,
+            publishedAt: news.publishedAt ? new Date(news.publishedAt) : new Date(),
+            createdAt: news.createdAt ? new Date(news.createdAt) : new Date(),
+            updatedAt: news.updatedAt ? new Date(news.updatedAt) : new Date()
+          }));
+
+          // 카테고리 필터링
+          if (category !== NEWS_CATEGORIES.ALL) {
+            newsList = newsList.filter(news => news.category === category);
+          }
+
+          // 검색어 필터링
+          if (searchTerm) {
+            const searchLower = searchTerm.toLowerCase();
+            newsList = newsList.filter(news => 
+              news.title.toLowerCase().includes(searchLower) ||
+              (news.summary && news.summary.toLowerCase().includes(searchLower)) ||
+              (news.content && news.content.toLowerCase().includes(searchLower))
+            );
+          }
+
+          // 날짜순 정렬
+          newsList.sort((a, b) => b.publishedAt - a.publishedAt);
+
+          console.log('✅ localStorage에서 뉴스 데이터 로드:', newsList.length, '개');
+          return {
+            success: true,
+            data: newsList.slice(0, limitCount),
+            lastDoc: null,
+            hasMore: false,
+            source: 'localStorage'
+          };
+        } catch (error) {
+          console.error('❌ localStorage 뉴스 데이터 파싱 오류:', error);
+        }
+      }
+
+      // 2. Firebase에서 데이터 로드
       let q = query(
         collection(db, NEWS_COLLECTION),
         orderBy('publishedAt', 'desc'),
@@ -93,11 +139,13 @@ class NewsService {
         );
       }
 
+      console.log('✅ Firebase에서 뉴스 데이터 로드:', filteredNews.length, '개');
       return {
         success: true,
         data: filteredNews,
         lastDoc: snapshot.docs[snapshot.docs.length - 1] || null,
-        hasMore: snapshot.docs.length === limitCount
+        hasMore: snapshot.docs.length === limitCount,
+        source: 'firebase'
       };
     } catch (error) {
       console.error('뉴스 목록 조회 실패:', error);

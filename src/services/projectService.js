@@ -50,6 +50,48 @@ export const PROJECT_CATEGORY_LABELS = {
 export const getProjectList = async (category = PROJECT_CATEGORIES.ALL, limitCount = 50) => {
   try {
     console.log('프로젝트 목록 조회 시작:', { category, limitCount });
+    
+    // 1. localStorage에서 먼저 확인 (관리자가 저장한 데이터 우선)
+    const localProjects = localStorage.getItem('projects_data');
+    if (localProjects) {
+      try {
+        let projects = JSON.parse(localProjects);
+        console.log('✅ localStorage에서 프로젝트 데이터 로드:', projects.length, '개');
+        
+        // 날짜 변환
+        projects = projects.map(project => ({
+          ...project,
+          createdAt: project.createdAt ? new Date(project.createdAt) : new Date(),
+          updatedAt: project.updatedAt ? new Date(project.updatedAt) : new Date(),
+          publishedAt: project.publishedAt ? new Date(project.publishedAt) : new Date()
+        }));
+        
+        // 게시 상태 필터링
+        projects = projects.filter(project => project.isPublished !== false);
+        console.log('게시된 프로젝트 수:', projects.length);
+        
+        // 카테고리 필터링
+        if (category !== PROJECT_CATEGORIES.ALL) {
+          projects = projects.filter(project => project.category === category);
+          console.log('카테고리 필터링 후:', projects.length);
+        }
+        
+        // 정렬
+        projects.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        // 제한
+        if (limitCount) {
+          projects = projects.slice(0, limitCount);
+        }
+        
+        console.log('✅ localStorage 최종 프로젝트 수:', projects.length, '개');
+        return projects;
+      } catch (error) {
+        console.error('❌ localStorage 프로젝트 데이터 파싱 오류:', error);
+      }
+    }
+    
+    // 2. Firebase에서 데이터 로드
     console.log('Firebase DB 상태:', db ? '연결됨' : '연결 안됨');
     
     // 단순한 쿼리로 시작 (인덱스 문제 방지)
@@ -93,7 +135,7 @@ export const getProjectList = async (category = PROJECT_CATEGORIES.ALL, limitCou
       projects = projects.slice(0, limitCount);
     }
     
-    console.log('최종 프로젝트 수:', projects.length, '개');
+    console.log('✅ Firebase 최종 프로젝트 수:', projects.length, '개');
     return projects;
   } catch (error) {
     console.error('프로젝트 목록 조회 오류:', error);

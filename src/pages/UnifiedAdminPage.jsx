@@ -1830,7 +1830,13 @@ const I18nManagement = ({ data, onSave, isLoading }) => {
             'home.group.para2': parsed.groupOverview?.vision || '',
             'home.group.para3': parsed.groupOverview?.additionalVision || '',
             'home.subsidiaries.title': parsed.subsidiariesIntro?.title || '',
-            'home.subsidiaries.description': parsed.subsidiariesIntro?.description || ''
+            'home.subsidiaries.description': parsed.subsidiariesIntro?.description || '',
+            // 헤더 네비게이션
+            'header.navigation.home': 'HOME',
+            'header.navigation.business': '사업영역',
+            'header.navigation.projects': '프로젝트',
+            'header.navigation.news': '뉴스',
+            'header.navigation.support': '고객지원'
           };
           setKoreanReferenceData(reference);
           console.log('✅ 한국어 참고 데이터 로드:', reference);

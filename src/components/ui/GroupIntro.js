@@ -12,7 +12,7 @@ const GroupIntro = ({
   className = '',
   ...props
 }) => {
-  const { t } = useI18n(); // 다국어 지원
+  const { t, currentLanguage } = useI18n(); // 다국어 지원
   const [isVisible, setIsVisible] = useState(false);
   const [counters, setCounters] = useState({});
   const [statsData, setStatsData] = useState({
@@ -27,23 +27,40 @@ const GroupIntro = ({
   });
   const sectionRef = useRef(null);
 
-  // 한국어: props 우선, 없으면 i18n
-  // 다른 언어: i18n만 사용
-  const displayTitle = title || t('home.group.title', { fallback: '40년 전통의 조명제어 전문기업' });
+  // 제목: 한국어일 때만 props 우선, 다른 언어는 i18n 사용
+  const displayTitle = React.useMemo(() => {
+    if (currentLanguage === 'ko' && title) {
+      return title;
+    }
+    return t('home.group.title') || title || '40년 전통의 조명제어 전문기업';
+  }, [currentLanguage, title, t]);
   
+  // 내용: 한국어일 때만 props 우선, 다른 언어는 i18n 사용
   const displayContent = React.useMemo(() => {
-    // 1. props의 content가 있으면 최우선 사용 (홈페이지 관리에서 저장한 한국어)
-    if (content && Array.isArray(content) && content.length > 0) {
+    // 한국어가 아니거나, props content가 없으면 i18n 사용
+    if (currentLanguage !== 'ko' || !content || content.length === 0) {
+      const para1 = t('home.group.para1');
+      const para2 = t('home.group.para2');
+      const para3 = t('home.group.para3');
+      
+      // i18n에서 가져온 데이터가 있으면 사용
+      if (para1 || para2 || para3) {
+        return [para1, para2, para3].filter(Boolean);
+      }
+    }
+    
+    // 한국어이고 props content가 있으면 사용
+    if (currentLanguage === 'ko' && content && content.length > 0) {
       return content;
     }
     
-    // 2. i18n 번역 사용 (영어/중국어/일본어 등)
+    // 폴백: 기본 한국어 텍스트
     return [
-      t('home.group.para1', { fallback: '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.' }),
-      t('home.group.para2', { fallback: 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.' }),
-      t('home.group.para3', { fallback: '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.' })
+      '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.',
+      'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.',
+      '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
     ];
-  }, [content, t]);
+  }, [currentLanguage, content, t]);
   const displayStats = stats && Array.isArray(stats) && stats.length > 0 ? stats : [
     { value: '40', suffix: '년', label: '조명제어 전문 경험' },
     { value: '800', suffix: '+', label: '프로젝트 완료' },

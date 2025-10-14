@@ -239,6 +239,62 @@ const UnifiedAdminPage = () => {
           localStorage.setItem('homepage_content_ko', JSON.stringify(data));
           console.log('💾 localStorage 저장 완료:', data);
           
+          // 🔄 i18nTranslations의 한국어 섹션도 동기화
+          const existingI18n = localStorage.getItem('i18nTranslations');
+          let i18nData = existingI18n ? JSON.parse(existingI18n) : {};
+          
+          // 기존 i18n 데이터가 없으면 기본 구조 생성
+          if (!i18nData.ko) {
+            i18nData.ko = {};
+          }
+          if (!i18nData.ko.home) {
+            i18nData.ko.home = {};
+          }
+          
+          // 홈페이지 데이터를 i18n 구조로 매핑
+          i18nData.ko.home.hero = {
+            title: data.hero?.title || '',
+            subtitle: data.hero?.subtitle || '',
+            description: data.hero?.description || '',
+            primaryAction: '사업영역 보기',
+            secondaryAction: '문의하기'
+          };
+          
+          i18nData.ko.home.stats = {
+            years: {
+              suffix: '년',
+              label: data.achievements?.[0]?.label || '조명제어 전문 경험'
+            },
+            projects: {
+              label: data.achievements?.[1]?.label || '프로젝트 완료'
+            },
+            countries: {
+              label: data.achievements?.[2]?.label || '해외진출국'
+            },
+            satisfaction: {
+              label: data.achievements?.[3]?.label || '고객만족도'
+            }
+          };
+          
+          i18nData.ko.home.group = {
+            title: data.groupOverview?.title || '',
+            description: data.groupOverview?.description || '',
+            content: {
+              para1: data.groupOverview?.description || '',
+              para2: data.groupOverview?.vision || '',
+              para3: data.groupOverview?.additionalVision || ''
+            }
+          };
+          
+          i18nData.ko.home.subsidiaries = {
+            title: data.subsidiariesIntro?.title || '',
+            description: data.subsidiariesIntro?.description || ''
+          };
+          
+          // i18nTranslations 저장
+          localStorage.setItem('i18nTranslations', JSON.stringify(i18nData));
+          console.log('✅ i18nTranslations 한국어 섹션 동기화 완료');
+          
           // 홈화면에 저장된 데이터를 반영하기 위해 forceDefault를 false로 변경
           localStorage.setItem('forceDefault', 'false');
           
@@ -246,7 +302,7 @@ const UnifiedAdminPage = () => {
           const savedData = localStorage.getItem('homepage_content_ko');
           console.log('🔍 저장 후 확인:', savedData ? JSON.parse(savedData) : '저장 실패');
           
-          setSaveStatus('홈페이지 데이터가 저장되었습니다. 3초 후 홈화면으로 이동합니다.');
+          setSaveStatus('홈페이지 데이터가 저장되었습니다. i18n 한국어도 동기화되었습니다. 3초 후 홈화면으로 이동합니다.');
           
           // 3초 후 홈화면으로 자동 이동
           setTimeout(() => {
@@ -2007,6 +2063,31 @@ const I18nManagement = ({ data, onSave, isLoading }) => {
         ))}
       </div>
 
+      {/* 한국어 안내 메시지 */}
+      {activeLanguage === 'ko' && (
+        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-blue-800">
+                📌 한국어는 참고용입니다
+              </h3>
+              <div className="mt-2 text-sm text-blue-700">
+                <p>한국어 콘텐츠는 <strong>"홈페이지 관리"</strong> 탭에서 수정하세요.</p>
+                <p className="mt-1">여기서는 다른 언어로 번역할 때 <strong>참고할 원문</strong>을 보여줍니다.</p>
+                <p className="mt-2 text-xs text-blue-600">
+                  💡 홈페이지 관리에서 한국어를 수정하면 여기에도 자동으로 반영됩니다.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 번역 목록 */}
       <div className="space-y-4">
         {translationKeys.map((item) => (
@@ -2019,12 +2100,19 @@ const I18nManagement = ({ data, onSave, isLoading }) => {
                   {item.category}
                 </span>
               </div>
-              <button
-                onClick={() => handleEditTranslation(item.key)}
-                className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200"
-              >
-                편집
-              </button>
+              {activeLanguage !== 'ko' && (
+                <button
+                  onClick={() => handleEditTranslation(item.key)}
+                  className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200"
+                >
+                  편집
+                </button>
+              )}
+              {activeLanguage === 'ko' && (
+                <span className="px-3 py-1 bg-gray-100 text-gray-500 rounded text-sm cursor-not-allowed">
+                  읽기 전용
+                </span>
+              )}
             </div>
             
             {/* 현재 번역 표시 */}

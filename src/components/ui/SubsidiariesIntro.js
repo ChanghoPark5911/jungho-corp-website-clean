@@ -17,52 +17,60 @@ const SubsidiariesIntro = ({
   const navigate = useNavigate();
 
   // i18n에서 계열사 데이터 가져오기
-  const defaultSubsidiaries = React.useMemo(() => [
-    {
-      id: 'clarus',
-      title: t('home.subsidiaries.clarus.title', { fallback: '클라루스' }),
-      subtitle: t('home.subsidiaries.clarus.subtitle', { fallback: 'AI 기반 스마트 조명/전력제어' }),
-      description: t('home.subsidiaries.clarus.description', { fallback: '스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문 업체' }),
-      color: 'bg-gray-100',
-      iconColor: 'bg-gray-200',
-      textColor: 'text-green-800',
-      buttonColor: 'bg-green-700',
-      path: '/clarus'
-    },
-    {
-      id: 'tlc',
-      title: t('home.subsidiaries.tlc.title', { fallback: '정호티엘씨' }),
-      subtitle: t('home.subsidiaries.tlc.subtitle', { fallback: '조명/전력제어의 설계/시공/사후관리' }),
-      description: t('home.subsidiaries.tlc.description', { fallback: '공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축하고, 사후관리를 담당하는 전문업체' }),
-      color: 'bg-gray-100',
-      iconColor: 'bg-gray-200',
-      textColor: 'text-green-800',
-      buttonColor: 'bg-green-700',
-      path: '/tlc'
-    },
-    {
-      id: 'illutech',
-      title: t('home.subsidiaries.illutech.title', { fallback: '일루텍' }),
-      subtitle: t('home.subsidiaries.illutech.subtitle', { fallback: '유.무선 스마트조명제품 쇼핑몰 공급' }),
-      description: t('home.subsidiaries.illutech.description', { fallback: '유.무선 조명제어 제품을 국내의 유명 쇼핑몰에 전문 판매, 편리한 시공기술지원 업체' }),
-      color: 'bg-gray-100',
-      iconColor: 'bg-gray-200',
-      textColor: 'text-green-800',
-      buttonColor: 'bg-green-700',
-      path: '/illutech'
-    },
-    {
-      id: 'texcom',
-      title: t('home.subsidiaries.texcom.title', { fallback: '정호텍스컴' }),
-      subtitle: t('home.subsidiaries.texcom.subtitle', { fallback: '섬유기계 도염, 운영을 통해 국내 섬유산업 지원과 자체 패션브랜드 운영' }),
-      description: t('home.subsidiaries.texcom.description', { fallback: '40년간 축적된 섬유기계 전문성과 패션브랜드 운영을 통해 새로운 가치를 창출하는 전문업체' }),
-      color: 'bg-gray-100',
-      iconColor: 'bg-gray-200',
-      textColor: 'text-green-800',
-      buttonColor: 'bg-green-700',
-      path: '/texcom'
-    }
-  ], [t]);
+  // t() 함수가 번역을 찾지 못하면 키를 반환하므로, || 연산자로 기본값 사용
+  const defaultSubsidiaries = React.useMemo(() => {
+    const getTrans = (key, fallback) => {
+      const result = t(key);
+      return (result === key) ? fallback : result;
+    };
+    
+    return [
+      {
+        id: 'clarus',
+        title: getTrans('home.subsidiaries.clarus.title', '클라루스'),
+        subtitle: getTrans('home.subsidiaries.clarus.subtitle', 'AI 기반 스마트 조명/전력제어'),
+        description: getTrans('home.subsidiaries.clarus.description', '스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문 업체'),
+        color: 'bg-gray-100',
+        iconColor: 'bg-gray-200',
+        textColor: 'text-green-800',
+        buttonColor: 'bg-green-700',
+        path: '/clarus'
+      },
+      {
+        id: 'tlc',
+        title: getTrans('home.subsidiaries.tlc.title', '정호티엘씨'),
+        subtitle: getTrans('home.subsidiaries.tlc.subtitle', '조명/전력제어의 설계/시공/사후관리'),
+        description: getTrans('home.subsidiaries.tlc.description', '공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축하고, 사후관리를 담당하는 전문업체'),
+        color: 'bg-gray-100',
+        iconColor: 'bg-gray-200',
+        textColor: 'text-green-800',
+        buttonColor: 'bg-green-700',
+        path: '/tlc'
+      },
+      {
+        id: 'illutech',
+        title: getTrans('home.subsidiaries.illutech.title', '일루텍'),
+        subtitle: getTrans('home.subsidiaries.illutech.subtitle', '유.무선 스마트조명제품 쇼핑몰 공급'),
+        description: getTrans('home.subsidiaries.illutech.description', '유.무선 조명제어 제품을 국내의 유명 쇼핑몰에 전문 판매, 편리한 시공기술지원 업체'),
+        color: 'bg-gray-100',
+        iconColor: 'bg-gray-200',
+        textColor: 'text-green-800',
+        buttonColor: 'bg-green-700',
+        path: '/illutech'
+      },
+      {
+        id: 'texcom',
+        title: getTrans('home.subsidiaries.texcom.title', '정호텍스컴'),
+        subtitle: getTrans('home.subsidiaries.texcom.subtitle', '섬유기계 도염, 운영을 통해 국내 섬유산업 지원과 자체 패션브랜드 운영'),
+        description: getTrans('home.subsidiaries.texcom.description', '40년간 축적된 섬유기계 전문성과 패션브랜드 운영을 통해 새로운 가치를 창출하는 전문업체'),
+        color: 'bg-gray-100',
+        iconColor: 'bg-gray-200',
+        textColor: 'text-green-800',
+        buttonColor: 'bg-green-700',
+        path: '/texcom'
+      }
+    ];
+  }, [t]);
 
   // 계열사 이름을 경로로 매핑하는 함수
   const getPathFromName = (name) => {
@@ -176,7 +184,8 @@ const SubsidiariesIntro = ({
               if (currentLanguage === 'ko' && subsidiariesIntro?.title) {
                 sectionTitle = subsidiariesIntro.title;
               } else {
-                sectionTitle = t('home.subsidiaries.title') || title;
+                const translated = t('home.subsidiaries.title');
+                sectionTitle = (translated === 'home.subsidiaries.title') ? title : translated;
               }
               // \n을 실제 줄바꿈으로 변환
               const processedTitle = sectionTitle.replace(/\\n/g, '\n');
@@ -194,7 +203,8 @@ const SubsidiariesIntro = ({
               if (currentLanguage === 'ko' && subsidiariesIntro?.description) {
                 sectionDescription = subsidiariesIntro.description;
               } else {
-                sectionDescription = t('home.subsidiaries.description') || subtitle;
+                const translated = t('home.subsidiaries.description');
+                sectionDescription = (translated === 'home.subsidiaries.description') ? subtitle : translated;
               }
               // \n을 실제 줄바꿈으로 변환
               const processedDescription = sectionDescription.replace(/\\n/g, '\n');

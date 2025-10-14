@@ -89,7 +89,22 @@ class I18nAdvanced {
       const storedTranslations = localStorage.getItem('i18nTranslations');
       console.log('🔍 i18nTranslations 로드 시도:', storedTranslations ? '데이터 있음' : '데이터 없음');
       
+      // 버전 체크 - customerSupport 섹션이 없으면 재생성
+      let needsRegen = false;
       if (storedTranslations) {
+        try {
+          const parsed = JSON.parse(storedTranslations);
+          // customerSupport 섹션 체크
+          if (!parsed.ko?.home?.customerSupport?.channels) {
+            console.log('⚠️ customerSupport 섹션 없음 - 재생성 필요');
+            needsRegen = true;
+          }
+        } catch (e) {
+          needsRegen = true;
+        }
+      }
+      
+      if (storedTranslations && !needsRegen) {
         this.translations = JSON.parse(storedTranslations);
         console.log('✅ 번역 데이터 로드 완료:', Object.keys(this.translations));
         console.log('📝 현재 언어:', this.currentLanguage);
@@ -97,14 +112,15 @@ class I18nAdvanced {
         
         // 샘플 번역 확인
         if (this.translations[this.currentLanguage]) {
-          console.log('🔍 home.hero.title 번역:', this.translations[this.currentLanguage]['home.hero.title']);
+          console.log('🔍 home.customerSupport.title 번역:', this.translations[this.currentLanguage]?.home?.customerSupport?.title);
         }
       } else {
         // 기본 번역 데이터 생성
-        console.log('📝 기본 번역 데이터 생성');
+        console.log('📝 기본 번역 데이터 생성 (또는 재생성)');
         this.translations = this.getDefaultTranslations();
         this.saveTranslations();
         console.log('✅ 기본 번역 데이터 생성 완료');
+        console.log('🔍 생성된 customerSupport:', this.translations.ko?.home?.customerSupport?.title);
       }
     } catch (error) {
       console.error('❌ 번역 데이터 로드 오류:', error);

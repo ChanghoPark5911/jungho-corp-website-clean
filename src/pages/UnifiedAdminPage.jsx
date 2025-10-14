@@ -2034,9 +2034,23 @@ const I18nManagement = ({ data, onSave, isLoading }) => {
     { key: 'home.hero.primaryAction', label: '주요 버튼', category: '홈페이지' },
     { key: 'home.hero.secondaryAction', label: '보조 버튼', category: '홈페이지' },
     { key: 'home.group.title', label: '그룹소개 제목', category: '홈페이지' },
-    { key: 'home.group.description', label: '그룹소개 설명', category: '홈페이지' },
-    { key: 'home.subsidiaries.title', label: '계열사 제목', category: '홈페이지' },
-    { key: 'home.subsidiaries.description', label: '계열사 설명', category: '홈페이지' }
+    { key: 'home.group.para1', label: '그룹소개 단락 1', category: '홈페이지' },
+    { key: 'home.group.para2', label: '그룹소개 단락 2', category: '홈페이지' },
+    { key: 'home.group.para3', label: '그룹소개 단락 3', category: '홈페이지' },
+    { key: 'home.subsidiaries.title', label: '계열사 섹션 제목', category: '홈페이지' },
+    { key: 'home.subsidiaries.description', label: '계열사 섹션 설명', category: '홈페이지' },
+    { key: 'home.subsidiaries.clarus.title', label: '클라루스 - 제목', category: '계열사' },
+    { key: 'home.subsidiaries.clarus.subtitle', label: '클라루스 - 부제목', category: '계열사' },
+    { key: 'home.subsidiaries.clarus.description', label: '클라루스 - 설명', category: '계열사' },
+    { key: 'home.subsidiaries.tlc.title', label: '정호티엘씨 - 제목', category: '계열사' },
+    { key: 'home.subsidiaries.tlc.subtitle', label: '정호티엘씨 - 부제목', category: '계열사' },
+    { key: 'home.subsidiaries.tlc.description', label: '정호티엘씨 - 설명', category: '계열사' },
+    { key: 'home.subsidiaries.illutech.title', label: '일루텍 - 제목', category: '계열사' },
+    { key: 'home.subsidiaries.illutech.subtitle', label: '일루텍 - 부제목', category: '계열사' },
+    { key: 'home.subsidiaries.illutech.description', label: '일루텍 - 설명', category: '계열사' },
+    { key: 'home.subsidiaries.texcom.title', label: '정호텍스컴 - 제목', category: '계열사' },
+    { key: 'home.subsidiaries.texcom.subtitle', label: '정호텍스컴 - 부제목', category: '계열사' },
+    { key: 'home.subsidiaries.texcom.description', label: '정호텍스컴 - 설명', category: '계열사' }
   ];
 
   // 번역 편집 시작

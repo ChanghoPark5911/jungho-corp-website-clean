@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useI18n } from '../../hooks/useI18n';
 
 const ProjectGallery = ({
   title = "검증된 성과와 신뢰",
@@ -7,6 +8,7 @@ const ProjectGallery = ({
   className = '',
   ...props
 }) => {
+  const { t, currentLanguage } = useI18n(); // 다국어 지원
   const [projectGalleryImages, setProjectGalleryImages] = useState({});
 
   // 프로젝트 데이터 로드
@@ -221,16 +223,19 @@ const ProjectGallery = ({
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            {title}
+            {t('home.projects.title') || title}
           </h2>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            {t('home.projects.description') || '국내외 주요 기업들과 함께한 1,000개 이상의 성공적인 프로젝트'}
+          </p>
           
           {/* 갤러리 이미지 정보 */}
           {galleryImageCount > 0 && (
-            <div className={`text-sm text-gray-600 transition-all duration-1000 ${
+            <div className={`text-sm text-gray-600 transition-all duration-1000 mt-4 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`} style={{ transitionDelay: '0.3s' }}>
               <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full">
-                📸 갤러리 이미지 {galleryImageCount}장 적용됨
+                📸 {t('home.projects.galleryImages') || '갤러리 이미지'} {galleryImageCount}{t('home.projects.imagesUnit') || '장 적용됨'}
               </span>
             </div>
           )}
@@ -315,20 +320,20 @@ const ProjectGallery = ({
           style={{ transitionDelay: '0.8s' }}
         >
           <p className="text-lg text-gray-600 mb-6">
-            국내외 주요 기업들과 함께한 1,000개 이상의 성공적인 프로젝트
+            {t('home.projects.subtitle') || '국내외 주요 기업들과 함께한 1,000개 이상의 성공적인 프로젝트'}
           </p>
           <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-500">
             <div className="flex items-center">
               <div className="w-2 h-2 bg-secondary rounded-full mr-2"></div>
-              <span>40년간 축적된 노하우</span>
+              <span>{t('home.projects.experience') || '40년간 축적된 노하우'}</span>
             </div>
             <div className="flex items-center">
               <div className="w-2 h-2 bg-secondary rounded-full mr-2"></div>
-              <span>전국 네트워크</span>
+              <span>{t('home.projects.network') || '전국 네트워크'}</span>
             </div>
             <div className="flex items-center">
               <div className="w-2 h-2 bg-secondary rounded-full mr-2"></div>
-              <span>글로벌 파트너십</span>
+              <span>{t('home.projects.partnership') || '글로벌 파트너십'}</span>
             </div>
           </div>
         </div>

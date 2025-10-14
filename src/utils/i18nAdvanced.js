@@ -389,6 +389,17 @@ class I18nAdvanced {
             readMore: '더 보기',
             moreLabel: '더 많은 소식 보기',
             featured: '주요'
+          },
+          // 프로젝트 갤러리
+          projects: {
+            title: '검증된 성과와 신뢰',
+            description: '국내외 주요 기업들과 함께한 1,000개 이상의 성공적인 프로젝트',
+            subtitle: '국내외 주요 기업들과 함께한 1,000개 이상의 성공적인 프로젝트',
+            experience: '40년간 축적된 노하우',
+            network: '전국 네트워크',
+            partnership: '글로벌 파트너십',
+            galleryImages: '갤러리 이미지',
+            imagesUnit: '장 적용됨'
           }
         },
         // 프로젝트
@@ -711,6 +722,17 @@ class I18nAdvanced {
             readMore: 'Read More',
             moreLabel: 'View More News',
             featured: 'Featured'
+          },
+          // Project Gallery
+          projects: {
+            title: 'Proven Results and Trust',
+            description: 'Over 1,000 successful projects with major domestic and international companies',
+            subtitle: 'Over 1,000 successful projects with major domestic and international companies',
+            experience: '40 Years of Accumulated Expertise',
+            network: 'Nationwide Network',
+            partnership: 'Global Partnership',
+            galleryImages: 'Gallery Images',
+            imagesUnit: ' Applied'
           }
         },
         // Business
@@ -940,6 +962,17 @@ class I18nAdvanced {
             readMore: '阅读更多',
             moreLabel: '查看更多消息',
             featured: '重要'
+          },
+          // Project Gallery
+          projects: {
+            title: '经过验证的成果与信任',
+            description: '与国内外主要企业合作的1,000多个成功项目',
+            subtitle: '与国内外主要企业合作的1,000多个成功项目',
+            experience: '40年积累的专业知识',
+            network: '全国网络',
+            partnership: '全球合作伙伴关系',
+            galleryImages: '图库图片',
+            imagesUnit: '张已应用'
           }
         },
         // Projects
@@ -1169,6 +1202,17 @@ class I18nAdvanced {
             readMore: '続きを読む',
             moreLabel: 'もっと見る',
             featured: '注目'
+          },
+          // Project Gallery
+          projects: {
+            title: '実証された成果と信頼',
+            description: '国内外の主要企業との1,000以上の成功プロジェクト',
+            subtitle: '国内外の主要企業との1,000以上の成功プロジェクト',
+            experience: '40年間蓄積されたノウハウ',
+            network: '全国ネットワーク',
+            partnership: 'グローバルパートナーシップ',
+            galleryImages: 'ギャラリー画像',
+            imagesUnit: '枚適用'
           }
         },
         // Projects

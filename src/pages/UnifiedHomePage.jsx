@@ -31,7 +31,7 @@ const optimizedImages = {
 };
 
 const UnifiedHomePage = () => {
-  const { t } = useI18n();
+  const { t, currentLanguage } = useI18n();
   
   // 통합 콘텐츠 로드
   const { content: unifiedContent, loading: contentLoading, error: contentError } = useUnifiedContent();
@@ -164,12 +164,28 @@ const UnifiedHomePage = () => {
 
   // Hero 컴포넌트에 전달할 데이터
   const heroData = useMemo(() => {
+    // 성과지표 다국어 변환
+    const translatedStats = homeData.achievements?.map((stat, index) => {
+      // 각 성과지표의 label을 다국어로 변환
+      let translatedLabel = stat.label;
+      
+      if (index === 0) translatedLabel = t('home.stats.years.label') || stat.label;
+      else if (index === 1) translatedLabel = t('home.stats.projects.label') || stat.label;
+      else if (index === 2) translatedLabel = t('home.stats.countries.label') || stat.label;
+      else if (index === 3) translatedLabel = t('home.stats.satisfaction.label') || stat.label;
+      
+      return {
+        ...stat,
+        label: translatedLabel
+      };
+    }) || [];
+    
     const data = {
       backgroundImage: optimizedImages.hero.src,
       mainCopy: homeData.hero?.title,
       subCopy: homeData.hero?.subtitle,
       description: homeData.hero?.description,
-      stats: homeData.achievements,
+      stats: translatedStats,
       primaryAction: { 
         label: t('home.hero.primaryAction') || '사업영역 보기', 
         onClick: () => {} 
@@ -180,7 +196,7 @@ const UnifiedHomePage = () => {
       }
     };
     return data;
-  }, [homeData.hero, homeData.achievements, t]);
+  }, [homeData.hero, homeData.achievements, t, currentLanguage]);
 
   // 그룹 소개 섹션 데이터 - 홈페이지 관리 데이터 우선
   const groupIntroData = useMemo(() => {

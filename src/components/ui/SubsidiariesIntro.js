@@ -10,7 +10,7 @@ const SubsidiariesIntro = ({
   className = '',
   ...props
 }) => {
-  const { t } = useI18n(); // 다국어 지원
+  const { t, currentLanguage } = useI18n(); // 다국어 지원
   const [isVisible, setIsVisible] = useState(false);
   const [companyLogos, setCompanyLogos] = useState({});
   const sectionRef = useRef(null);
@@ -75,10 +75,15 @@ const SubsidiariesIntro = ({
     return nameMapping[name] || `/${name}`;
   };
 
-  // props의 subsidiaries가 있으면 우선 사용 (홈페이지 관리에서 저장한 데이터)
-  // 없으면 i18n 데이터 사용
+  // 한국어일 때만 props 우선, 다른 언어는 i18n 사용
   const safeSubsidiaries = React.useMemo(() => {
-    if (subsidiaries && Array.isArray(subsidiaries) && subsidiaries.length > 0) {
+    // 한국어가 아니거나, props subsidiaries가 없으면 i18n 사용
+    if (currentLanguage !== 'ko' || !subsidiaries || subsidiaries.length === 0) {
+      return defaultSubsidiaries;
+    }
+    
+    // 한국어이고 props subsidiaries가 있으면 사용
+    if (currentLanguage === 'ko' && subsidiaries && Array.isArray(subsidiaries) && subsidiaries.length > 0) {
       return subsidiaries.map(item => ({
         id: item.id || item.name || 'unknown',
         title: item.title || item.name || '제목 없음',
@@ -91,8 +96,9 @@ const SubsidiariesIntro = ({
         path: item.path || getPathFromName(item.name || item.title)
       }));
     }
+    
     return defaultSubsidiaries;
-  }, [subsidiaries, defaultSubsidiaries]);
+  }, [currentLanguage, subsidiaries, defaultSubsidiaries]);
 
   // 회사 로고 데이터 로드
   useEffect(() => {
@@ -165,8 +171,13 @@ const SubsidiariesIntro = ({
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-green-600 dark:text-green-400 mb-6 leading-tight">
             {(() => {
-              // props 우선, 없으면 i18n
-              const sectionTitle = subsidiariesIntro?.title || t('home.subsidiaries.title', { fallback: title });
+              // 한국어일 때만 props 우선, 다른 언어는 i18n
+              let sectionTitle;
+              if (currentLanguage === 'ko' && subsidiariesIntro?.title) {
+                sectionTitle = subsidiariesIntro.title;
+              } else {
+                sectionTitle = t('home.subsidiaries.title') || title;
+              }
               // \n을 실제 줄바꿈으로 변환
               const processedTitle = sectionTitle.replace(/\\n/g, '\n');
               return processedTitle.split('\n').map((line, index) => (
@@ -178,8 +189,13 @@ const SubsidiariesIntro = ({
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
             {(() => {
-              // props 우선, 없으면 i18n
-              const sectionDescription = subsidiariesIntro?.description || t('home.subsidiaries.description', { fallback: subtitle });
+              // 한국어일 때만 props 우선, 다른 언어는 i18n
+              let sectionDescription;
+              if (currentLanguage === 'ko' && subsidiariesIntro?.description) {
+                sectionDescription = subsidiariesIntro.description;
+              } else {
+                sectionDescription = t('home.subsidiaries.description') || subtitle;
+              }
               // \n을 실제 줄바꿈으로 변환
               const processedDescription = sectionDescription.replace(/\\n/g, '\n');
               return processedDescription.split('\n').map((line, index) => (

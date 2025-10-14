@@ -543,10 +543,43 @@ const HomepageManagement = ({ data, onSave, isLoading }) => {
   useEffect(() => {
     if (data) {
       console.log('홈화면 데이터를 폼에 로드:', data);
+      
+      // groupOverview 마이그레이션: description에 모든 내용이 있으면 3개로 분리
+      let migratedGroupOverview = data.groupOverview || formData.groupOverview;
+      if (migratedGroupOverview.description && 
+          !migratedGroupOverview.vision && 
+          !migratedGroupOverview.additionalVision) {
+        // \n\n 또는 긴 텍스트를 기준으로 분리 시도
+        const fullText = migratedGroupOverview.description;
+        const paragraphs = fullText.split(/\n\n+/).filter(p => p.trim().length > 0);
+        
+        if (paragraphs.length === 1 && fullText.length > 200) {
+          // 긴 단일 텍스트를 문장 기준으로 분리 (기본 3개 단락)
+          const sentences = fullText.match(/[^.!?]+[.!?]+/g) || [fullText];
+          const third = Math.ceil(sentences.length / 3);
+          migratedGroupOverview = {
+            ...migratedGroupOverview,
+            description: sentences.slice(0, third).join(' ').trim(),
+            vision: sentences.slice(third, third * 2).join(' ').trim(),
+            additionalVision: sentences.slice(third * 2).join(' ').trim()
+          };
+          console.log('📝 그룹 소개 데이터 자동 분리:', migratedGroupOverview);
+        } else if (paragraphs.length >= 3) {
+          // 이미 3개 이상의 단락이 있으면 그대로 사용
+          migratedGroupOverview = {
+            ...migratedGroupOverview,
+            description: paragraphs[0] || '',
+            vision: paragraphs[1] || '',
+            additionalVision: paragraphs[2] || ''
+          };
+          console.log('📝 그룹 소개 데이터 단락 분리:', migratedGroupOverview);
+        }
+      }
+      
       setFormData({
         hero: data.hero || formData.hero,
         achievements: data.achievements || formData.achievements,
-        groupOverview: data.groupOverview || formData.groupOverview,
+        groupOverview: migratedGroupOverview,
         subsidiaries: data.subsidiaries || formData.subsidiaries,
         subsidiariesIntro: data.subsidiariesIntro || formData.subsidiariesIntro
       });
@@ -708,7 +741,7 @@ const HomepageManagement = ({ data, onSave, isLoading }) => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              설명
+              설명 (단락 1)
             </label>
             <textarea
               value={formData.groupOverview.description}
@@ -717,8 +750,38 @@ const HomepageManagement = ({ data, onSave, isLoading }) => {
                 groupOverview: { ...prev.groupOverview, description: e.target.value }
               }))}
               className="w-full p-4 border border-gray-300 rounded-lg text-base"
-              rows={8}
+              rows={3}
               placeholder="1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              설명 (단락 2)
+            </label>
+            <textarea
+              value={formData.groupOverview.vision}
+              onChange={(e) => setFormData(prev => ({
+                ...prev,
+                groupOverview: { ...prev.groupOverview, vision: e.target.value }
+              }))}
+              className="w-full p-4 border border-gray-300 rounded-lg text-base"
+              rows={3}
+              placeholder="B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              설명 (단락 3)
+            </label>
+            <textarea
+              value={formData.groupOverview.additionalVision}
+              onChange={(e) => setFormData(prev => ({
+                ...prev,
+                groupOverview: { ...prev.groupOverview, additionalVision: e.target.value }
+              }))}
+              className="w-full p-4 border border-gray-300 rounded-lg text-base"
+              rows={3}
+              placeholder="혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다."
             />
           </div>
         </div>

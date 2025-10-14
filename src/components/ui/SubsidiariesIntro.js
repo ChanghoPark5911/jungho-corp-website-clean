@@ -19,9 +19,13 @@ const SubsidiariesIntro = ({
   // i18n에서 계열사 데이터 가져오기
   // t() 함수가 번역을 찾지 못하면 키를 반환하므로, || 연산자로 기본값 사용
   const defaultSubsidiaries = React.useMemo(() => {
+    console.log('🔍 SubsidiariesIntro - 현재 언어:', currentLanguage);
+    
     const getTrans = (key, fallback) => {
       const result = t(key);
-      return (result === key) ? fallback : result;
+      const finalValue = (result === key) ? fallback : result;
+      console.log(`📝 번역: ${key} -> ${finalValue}`);
+      return finalValue;
     };
     
     return [
@@ -85,13 +89,18 @@ const SubsidiariesIntro = ({
 
   // 한국어일 때만 props 우선, 다른 언어는 i18n 사용
   const safeSubsidiaries = React.useMemo(() => {
+    console.log('🔍 safeSubsidiaries - 현재 언어:', currentLanguage);
+    console.log('🔍 props subsidiaries:', subsidiaries);
+    
     // 한국어가 아니거나, props subsidiaries가 없으면 i18n 사용
     if (currentLanguage !== 'ko' || !subsidiaries || subsidiaries.length === 0) {
+      console.log('✅ i18n 데이터 사용 (defaultSubsidiaries)');
       return defaultSubsidiaries;
     }
     
     // 한국어이고 props subsidiaries가 있으면 사용
     if (currentLanguage === 'ko' && subsidiaries && Array.isArray(subsidiaries) && subsidiaries.length > 0) {
+      console.log('✅ props 데이터 사용 (한국어)');
       return subsidiaries.map(item => ({
         id: item.id || item.name || 'unknown',
         title: item.title || item.name || '제목 없음',

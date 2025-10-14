@@ -186,14 +186,14 @@ const UnifiedHomePage = () => {
   const groupIntroData = useMemo(() => {
     const safeGroupOverview = homeData.groupOverview || {};
     
-    // description을 \n\n으로 분리하여 여러 단락으로 만들기
+    // 3개 필드(description, vision, additionalVision)를 배열로 만들기
     let contentArray = undefined;
-    if (safeGroupOverview.description) {
-      // \n\n (두 개의 줄바꿈)으로 단락 구분
-      contentArray = safeGroupOverview.description
-        .split(/\n\n+/)  // 두 개 이상의 연속된 줄바꿈으로 분리
-        .map(para => para.trim())  // 각 단락의 앞뒤 공백 제거
-        .filter(para => para.length > 0);  // 빈 단락 제거
+    if (safeGroupOverview.description || safeGroupOverview.vision || safeGroupOverview.additionalVision) {
+      contentArray = [
+        safeGroupOverview.description,
+        safeGroupOverview.vision,
+        safeGroupOverview.additionalVision
+      ].filter(para => para && para.trim().length > 0);  // 빈 단락 제거
     }
     
     return {
@@ -203,7 +203,7 @@ const UnifiedHomePage = () => {
       webpImage: optimizedImages.groupIntro.webpSrc,
       stats: homeData.achievements || []
     };
-  }, [homeData?.groupOverview?.title, homeData?.groupOverview?.description, homeData?.achievements]);
+  }, [homeData?.groupOverview?.title, homeData?.groupOverview?.description, homeData?.groupOverview?.vision, homeData?.groupOverview?.additionalVision, homeData?.achievements]);
 
   // 계열사 소개 섹션 - 홈페이지 관리 데이터 우선
   const subsidiariesData = useMemo(() => {

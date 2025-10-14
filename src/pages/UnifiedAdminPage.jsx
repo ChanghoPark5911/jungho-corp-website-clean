@@ -298,12 +298,44 @@ const UnifiedAdminPage = () => {
         console.log('📦 저장할 데이터:', data);
         console.log('📦 데이터 구조:', Object.keys(data));
         
-        localStorage.setItem('i18n_data', JSON.stringify(data));
-        console.log('✅ i18n_data 저장 완료');
+        // flat key를 nested 구조로 변환
+        const convertFlatToNested = (flatData) => {
+          const nested = {};
+          
+          Object.keys(flatData).forEach(lang => {
+            nested[lang] = {};
+            const langData = flatData[lang];
+            
+            Object.keys(langData).forEach(key => {
+              const value = langData[key];
+              const keys = key.split('.');
+              let target = nested[lang];
+              
+              // 중첩 객체 생성
+              for (let i = 0; i < keys.length - 1; i++) {
+                if (!target[keys[i]]) {
+                  target[keys[i]] = {};
+                }
+                target = target[keys[i]];
+              }
+              
+              // 마지막 키에 값 설정
+              target[keys[keys.length - 1]] = value;
+            });
+          });
+          
+          return nested;
+        };
         
-        // 중요: i18nTranslations에도 복사 (홈페이지에서 사용)
-        localStorage.setItem('i18nTranslations', JSON.stringify(data));
-        console.log('✅ i18nTranslations 저장 완료');
+        const nestedData = convertFlatToNested(data);
+        console.log('🔄 flat -> nested 변환 완료:', nestedData);
+        
+        localStorage.setItem('i18n_data', JSON.stringify(data));
+        console.log('✅ i18n_data 저장 완료 (flat)');
+        
+        // 중요: i18nTranslations에는 nested 구조로 저장
+        localStorage.setItem('i18nTranslations', JSON.stringify(nestedData));
+        console.log('✅ i18nTranslations 저장 완료 (nested)');
         
         // 저장된 데이터 확인
         const saved = localStorage.getItem('i18nTranslations');

@@ -142,8 +142,10 @@ const UnifiedAdminPage = () => {
           'home.hero.description': '基于150多个项目和85,000多个控制点的运营经验，提供最佳解决方案。',
           'home.hero.primaryAction': '查看业务领域',
           'home.hero.secondaryAction': '联系我们',
-          'home.group.title': '正浩集团介绍',
-          'home.group.description': '正浩集团以40年积累的技术力和专业知识，成长为照明控制领域的领先企业。',
+          'home.group.title': '具有40年传统的\n照明控制专业企业',
+          'home.group.para1': '自1983年创立以来，正浩集团在照明控制领域积累了40年的专业知识，并通过自主开发韩国首个E/F2-BUS协议，提出了照明控制技术的新范式。',
+          'home.group.para2': '从B2B到B2C构建完整的生态系统，满足客户的所有需求，并通过4家子公司之间的协同效应提供整体解决方案。',
+          'home.group.para3': '基于创新技术和40年积累的专业知识，我们支持客户的成功，并正在成长为照明控制领域的全球领导者。',
           'home.subsidiaries.title': '4个子公司打造的完美照明/电力控制及纺织机械生态系统',
           'home.subsidiaries.description': '从技术开发到客户服务，通过各领域专业性创造协同效应'
         },
@@ -158,8 +160,10 @@ const UnifiedAdminPage = () => {
           'home.hero.description': '150以上のプロジェクトと85,000以上の制御ポイント運営経験を基に最高のソリューションを提供します。',
           'home.hero.primaryAction': '事業領域を見る',
           'home.hero.secondaryAction': 'お問い合わせ',
-          'home.group.title': '正浩グループ紹介',
-          'home.group.description': '40年間蓄積された技術力とノウハウで照明制御分野の先導企業として成長してきた正浩グループです。',
+          'home.group.title': '40年の伝統を持つ\n照明制御専門企業',
+          'home.group.para1': '1983年の創立以来、40年間照明制御分野で専門性を積み重ねてきた正浩グループは、韓国初のE/F2-BUSプロトコルを自主開発し、照明制御技術の新しいパラダイムを提示しました。',
+          'home.group.para2': 'B2BからB2Cまで完全なエコシステムを構築してお客様のすべての要求事項を満たし、4つの系列会社間のシナジーを通じてトータルソリューションを提供します。',
+          'home.group.para3': '革新的な技術と40年間蓄積されたノウハウを基にお客様の成功を支援し、照明制御分野のグローバルリーダーとして成長しています。',
           'home.subsidiaries.title': '4つの系列会社が作る完璧な照明/電力制御及び繊維機械エコシステム',
           'home.subsidiaries.description': '技術開発から顧客サービスまで、各分野専門性によるシナジー創出'
         }
@@ -1938,8 +1942,10 @@ const I18nManagement = ({ data, onSave, isLoading }) => {
           'home.hero.description': '基于150多个项目和85,000多个控制点的运营经验，提供最佳解决方案。',
           'home.hero.primaryAction': '查看业务领域',
           'home.hero.secondaryAction': '联系我们',
-          'home.group.title': '正浩集团介绍',
-          'home.group.description': '正浩集团以40年积累的技术力和专业知识，成长为照明控制领域的领先企业。',
+          'home.group.title': '具有40年传统的\n照明控制专业企业',
+          'home.group.para1': '自1983年创立以来，正浩集团在照明控制领域积累了40年的专业知识，并通过自主开发韩国首个E/F2-BUS协议，提出了照明控制技术的新范式。',
+          'home.group.para2': '从B2B到B2C构建完整的生态系统，满足客户的所有需求，并通过4家子公司之间的协同效应提供整体解决方案。',
+          'home.group.para3': '基于创新技术和40年积累的专业知识，我们支持客户的成功，并正在成长为照明控制领域的全球领导者。',
           'home.subsidiaries.title': '4个子公司打造的完美照明/电力控制及纺织机械生态系统',
           'home.subsidiaries.description': '从技术开发到客户服务，通过各领域专业性创造协同效应'
         },
@@ -1954,8 +1960,10 @@ const I18nManagement = ({ data, onSave, isLoading }) => {
           'home.hero.description': '150以上のプロジェクトと85,000以上の制御ポイント運営経験を基に最高のソリューションを提供します。',
           'home.hero.primaryAction': '事業領域を見る',
           'home.hero.secondaryAction': 'お問い合わせ',
-          'home.group.title': '正浩グループ紹介',
-          'home.group.description': '40年間蓄積された技術力とノウハウで照明制御分野の先導企業として成長してきた正浩グループです。',
+          'home.group.title': '40年の伝統を持つ\n照明制御専門企業',
+          'home.group.para1': '1983年の創立以来、40年間照明制御分野で専門性を積み重ねてきた正浩グループは、韓国初のE/F2-BUSプロトコルを自主開発し、照明制御技術の新しいパラダイムを提示しました。',
+          'home.group.para2': 'B2BからB2Cまで完全なエコシステムを構築してお客様のすべての要求事項を満たし、4つの系列会社間のシナジーを通じてトータルソリューションを提供します。',
+          'home.group.para3': '革新的な技術と40年間蓄積されたノウハウを基にお客様の成功を支援し、照明制御分野のグローバルリーダーとして成長しています。',
           'home.subsidiaries.title': '4つの系列会社が作る完璧な照明/電力制御及び繊維機械エコシステム',
           'home.subsidiaries.description': '技術開発から顧客サービスまで、各分野専門性によるシナジー創出'
         }

@@ -544,44 +544,27 @@ const HomepageManagement = ({ data, onSave, isLoading }) => {
     if (data) {
       console.log('홈화면 데이터를 폼에 로드:', data);
       
-      // groupOverview 마이그레이션: description에 모든 내용이 있으면 3개로 분리
-      let migratedGroupOverview = data.groupOverview || formData.groupOverview;
-      if (migratedGroupOverview.description && 
-          !migratedGroupOverview.vision && 
-          !migratedGroupOverview.additionalVision) {
-        // \n\n 또는 긴 텍스트를 기준으로 분리 시도
-        const fullText = migratedGroupOverview.description;
-        const paragraphs = fullText.split(/\n\n+/).filter(p => p.trim().length > 0);
-        
-        if (paragraphs.length === 1 && fullText.length > 200) {
-          // 긴 단일 텍스트를 문장 기준으로 분리 (기본 3개 단락)
-          const sentences = fullText.match(/[^.!?]+[.!?]+/g) || [fullText];
-          const third = Math.ceil(sentences.length / 3);
-          migratedGroupOverview = {
-            ...migratedGroupOverview,
-            description: sentences.slice(0, third).join(' ').trim(),
-            vision: sentences.slice(third, third * 2).join(' ').trim(),
-            additionalVision: sentences.slice(third * 2).join(' ').trim()
-          };
-          console.log('📝 그룹 소개 데이터 자동 분리:', migratedGroupOverview);
-        } else if (paragraphs.length >= 3) {
-          // 이미 3개 이상의 단락이 있으면 그대로 사용
-          migratedGroupOverview = {
-            ...migratedGroupOverview,
-            description: paragraphs[0] || '',
-            vision: paragraphs[1] || '',
-            additionalVision: paragraphs[2] || ''
-          };
-          console.log('📝 그룹 소개 데이터 단락 분리:', migratedGroupOverview);
-        }
-      }
+      // groupOverview 안전하게 로드
+      const safeGroupOverview = data.groupOverview || {
+        title: '',
+        description: '',
+        vision: '',
+        additionalVision: ''
+      };
       
       setFormData({
-        hero: data.hero || formData.hero,
-        achievements: data.achievements || formData.achievements,
-        groupOverview: migratedGroupOverview,
-        subsidiaries: data.subsidiaries || formData.subsidiaries,
-        subsidiariesIntro: data.subsidiariesIntro || formData.subsidiariesIntro
+        hero: data.hero || {
+          title: '',
+          subtitle: '',
+          description: ''
+        },
+        achievements: data.achievements || [],
+        groupOverview: safeGroupOverview,
+        subsidiaries: data.subsidiaries || [],
+        subsidiariesIntro: data.subsidiariesIntro || {
+          title: '',
+          description: ''
+        }
       });
     }
   }, [data]);

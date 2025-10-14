@@ -94,8 +94,8 @@ function App() {
               <Route path="/illutech" element={<IllutechDetailPage />} />
               <Route path="/texcom" element={<TexcomDetailPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/admin-unified" element={<UnifiedAdminPage />} /> {/* Added */}
+              <Route path="/admin" element={<UnifiedAdminPage />} />
+              <Route path="/admin-old" element={<AdminPage />} /> {/* Backup */}
               <Route path="/design-system" element={<DesignSystem />} />
             </Routes>
           </Suspense>

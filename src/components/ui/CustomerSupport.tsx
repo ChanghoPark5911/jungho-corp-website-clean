@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Button from './Button';
+import { useI18n } from '../../hooks/useI18n';
 
 // 타입 정의
 interface Channel {
@@ -37,25 +38,83 @@ interface CustomerSupportProps {
 }
 
 const CustomerSupport = React.memo(({
-  title = "언제나 함께하는 든든한 파트너",
+  title = "",
   channels = [],
   features = [],
   ctaButton = {},
   className = '',
   ...props
 }: CustomerSupportProps) => {
+  const { t, currentLanguage } = useI18n();
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [customerSupportData, setCustomerSupportData] = useState<any>({});
   const sectionRef = useRef<HTMLElement>(null);
+
+  // i18n 데이터 로드
+  useEffect(() => {
+    const loadContent = () => {
+      const data = {
+        title: t('home.customerSupport.title') || "언제나 함께하는 든든한 파트너",
+        channels: {
+          phone: {
+            title: t('home.customerSupport.channels.phone.title') || "전화 상담",
+            description: t('home.customerSupport.channels.phone.description') || "전문 엔지니어가 직접 답변드립니다",
+            actionLabel: t('home.customerSupport.channels.phone.actionLabel') || "전화하기",
+            hours: t('home.customerSupport.channels.phone.hours') || "평일 09:00-18:00"
+          },
+          email: {
+            title: t('home.customerSupport.channels.email.title') || "이메일 문의",
+            description: t('home.customerSupport.channels.email.description') || "상세한 기술 문의사항을 보내주세요",
+            actionLabel: t('home.customerSupport.channels.email.actionLabel') || "이메일 보내기",
+            hours: t('home.customerSupport.channels.email.hours') || "24시간 접수 가능"
+          },
+          chat: {
+            title: t('home.customerSupport.channels.chat.title') || "카카오톡",
+            description: t('home.customerSupport.channels.chat.description') || "실시간 채팅으로 빠른 답변을 받으세요",
+            actionLabel: t('home.customerSupport.channels.chat.actionLabel') || "채팅 시작",
+            hours: t('home.customerSupport.channels.chat.hours') || "평일 09:00-18:00"
+          }
+        },
+        features: {
+          support247: {
+            title: t('home.customerSupport.features.support247.title') || "24/7 지원",
+            description: t('home.customerSupport.features.support247.description') || "언제든지 전문가의 도움을 받으실 수 있습니다"
+          },
+          network: {
+            title: t('home.customerSupport.features.network.title') || "전국 네트워크",
+            description: t('home.customerSupport.features.network.description') || "50개 지점에서 현장 지원을 제공합니다"
+          },
+          engineers: {
+            title: t('home.customerSupport.features.engineers.title') || "전문 엔지니어",
+            description: t('home.customerSupport.features.engineers.description') || "200명의 전문 엔지니어가 상담해드립니다"
+          }
+        },
+        cta: {
+          title: t('home.customerSupport.cta.title') || "지금 바로 문의하세요",
+          description: t('home.customerSupport.cta.description') || "전문 엔지니어가 24시간 내에 답변드립니다. 프로젝트 규모와 상관없이 최적의 솔루션을 제안해드립니다.",
+          buttonLabel: t('home.customerSupport.cta.buttonLabel') || "지금 문의하기"
+        },
+        footer: {
+          locations: t('home.customerSupport.footer.locations') || "전국 50개 지점",
+          engineers: t('home.customerSupport.footer.engineers') || "전문 엔지니어 200명+",
+          responseTime: t('home.customerSupport.footer.responseTime') || "평균 응답시간 2시간"
+        }
+      };
+      setCustomerSupportData(data);
+    };
+
+    loadContent();
+  }, [currentLanguage, t]);
 
   // 기본 채널 데이터 (channels가 전달되지 않았을 때 사용)
   const defaultChannels: Channel[] = useMemo(() => [
     {
-      title: "전화 상담",
-      description: "전문 엔지니어가 직접 답변드립니다",
+      title: customerSupportData.channels?.phone?.title || "전화 상담",
+      description: customerSupportData.channels?.phone?.description || "전문 엔지니어가 직접 답변드립니다",
       contact: "1588-1234",
-      hours: "평일 09:00-18:00",
+      hours: customerSupportData.channels?.phone?.hours || "평일 09:00-18:00",
       action: {
-        label: "전화하기",
+        label: customerSupportData.channels?.phone?.actionLabel || "전화하기",
         onClick: () => window.location.href = "tel:1588-1234"
       },
       icon: (
@@ -65,12 +124,12 @@ const CustomerSupport = React.memo(({
       )
     },
     {
-      title: "이메일 문의",
-      description: "상세한 기술 문의사항을 보내주세요",
+      title: customerSupportData.channels?.email?.title || "이메일 문의",
+      description: customerSupportData.channels?.email?.description || "상세한 기술 문의사항을 보내주세요",
       contact: "support@jungho.com",
-      hours: "24시간 접수 가능",
+      hours: customerSupportData.channels?.email?.hours || "24시간 접수 가능",
       action: {
-        label: "이메일 보내기",
+        label: customerSupportData.channels?.email?.actionLabel || "이메일 보내기",
         onClick: () => window.location.href = "mailto:support@jungho.com"
       },
       icon: (
@@ -80,12 +139,12 @@ const CustomerSupport = React.memo(({
       )
     },
     {
-      title: "카카오톡",
-      description: "실시간 채팅으로 빠른 답변을 받으세요",
+      title: customerSupportData.channels?.chat?.title || "카카오톡",
+      description: customerSupportData.channels?.chat?.description || "실시간 채팅으로 빠른 답변을 받으세요",
       contact: "@정호그룹",
-      hours: "평일 09:00-18:00",
+      hours: customerSupportData.channels?.chat?.hours || "평일 09:00-18:00",
       action: {
-        label: "채팅 시작",
+        label: customerSupportData.channels?.chat?.actionLabel || "채팅 시작",
         path: "https://open.kakao.com/정호그룹"
       },
       icon: (
@@ -94,13 +153,13 @@ const CustomerSupport = React.memo(({
         </svg>
       )
     }
-  ], []);
+  ], [customerSupportData]);
 
   // 기본 특징 데이터 (features가 전달되지 않았을 때 사용)
   const defaultFeatures: Feature[] = useMemo(() => [
     {
-      title: "24/7 지원",
-      description: "언제든지 전문가의 도움을 받으실 수 있습니다",
+      title: customerSupportData.features?.support247?.title || "24/7 지원",
+      description: customerSupportData.features?.support247?.description || "언제든지 전문가의 도움을 받으실 수 있습니다",
       icon: (
         <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -108,8 +167,8 @@ const CustomerSupport = React.memo(({
       )
     },
     {
-      title: "전국 네트워크",
-      description: "50개 지점에서 현장 지원을 제공합니다",
+      title: customerSupportData.features?.network?.title || "전국 네트워크",
+      description: customerSupportData.features?.network?.description || "50개 지점에서 현장 지원을 제공합니다",
       icon: (
         <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -118,15 +177,15 @@ const CustomerSupport = React.memo(({
       )
     },
     {
-      title: "전문 엔지니어",
-      description: "200명의 전문 엔지니어가 상담해드립니다",
+      title: customerSupportData.features?.engineers?.title || "전문 엔지니어",
+      description: customerSupportData.features?.engineers?.description || "200명의 전문 엔지니어가 상담해드립니다",
       icon: (
         <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
       )
     }
-  ], []);
+  ], [customerSupportData]);
 
   // channels와 features가 없으면 기본값 사용
   const channelsToRender: Channel[] = useMemo(() => 
@@ -202,7 +261,7 @@ const CustomerSupport = React.memo(({
               isVisible ? animationClasses.visible : animationClasses.hidden
             }`}
           >
-            {title}
+            {customerSupportData.title || title || "언제나 함께하는 든든한 파트너"}
           </h2>
         </div>
 
@@ -298,10 +357,9 @@ const CustomerSupport = React.memo(({
           style={{ transitionDelay: '1s' }}
         >
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold mb-4">지금 바로 문의하세요</h3>
+            <h3 className="text-2xl font-bold mb-4">{customerSupportData.cta?.title || "지금 바로 문의하세요"}</h3>
             <p className="text-gray-200 mb-6">
-              전문 엔지니어가 24시간 내에 답변드립니다. 
-              프로젝트 규모와 상관없이 최적의 솔루션을 제안해드립니다.
+              {customerSupportData.cta?.description || "전문 엔지니어가 24시간 내에 답변드립니다. 프로젝트 규모와 상관없이 최적의 솔루션을 제안해드립니다."}
             </p>
             <Button
               variant="secondary"
@@ -310,7 +368,7 @@ const CustomerSupport = React.memo(({
               className="text-lg px-8 py-4"
               aria-label="고객 지원 문의하기"
             >
-              {ctaButton?.label || "지금 문의하기"}
+              {ctaButton?.label || customerSupportData.cta?.buttonLabel || "지금 문의하기"}
             </Button>
           </div>
         </div>
@@ -327,15 +385,15 @@ const CustomerSupport = React.memo(({
           <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-300">
             <div className="flex items-center">
               <div className="w-2 h-2 bg-secondary rounded-full mr-2" aria-hidden="true"></div>
-              <span>전국 50개 지점</span>
+              <span>{customerSupportData.footer?.locations || "전국 50개 지점"}</span>
             </div>
             <div className="flex items-center">
               <div className="w-2 h-2 bg-secondary rounded-full mr-2" aria-hidden="true"></div>
-              <span>전문 엔지니어 200명+</span>
+              <span>{customerSupportData.footer?.engineers || "전문 엔지니어 200명+"}</span>
             </div>
             <div className="flex items-center">
               <div className="w-2 h-2 bg-secondary rounded-full mr-2" aria-hidden="true"></div>
-              <span>평균 응답시간 2시간</span>
+              <span>{customerSupportData.footer?.responseTime || "평균 응답시간 2시간"}</span>
             </div>
           </div>
         </div>

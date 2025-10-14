@@ -314,10 +314,54 @@ class I18nAdvanced {
           },
           // 고객 지원
           customerSupport: {
-            title: '고객 지원',
+            title: '언제나 함께하는 든든한 파트너',
             description: '전문적인 기술 지원과 서비스를 제공합니다',
             contact: '문의하기',
-            download: '자료 다운로드'
+            download: '자료 다운로드',
+            channels: {
+              phone: {
+                title: '전화 상담',
+                description: '전문 엔지니어가 직접 답변드립니다',
+                actionLabel: '전화하기',
+                hours: '평일 09:00-18:00'
+              },
+              email: {
+                title: '이메일 문의',
+                description: '상세한 기술 문의사항을 보내주세요',
+                actionLabel: '이메일 보내기',
+                hours: '24시간 접수 가능'
+              },
+              chat: {
+                title: '카카오톡',
+                description: '실시간 채팅으로 빠른 답변을 받으세요',
+                actionLabel: '채팅 시작',
+                hours: '평일 09:00-18:00'
+              }
+            },
+            features: {
+              support247: {
+                title: '24/7 지원',
+                description: '언제든지 전문가의 도움을 받으실 수 있습니다'
+              },
+              network: {
+                title: '전국 네트워크',
+                description: '50개 지점에서 현장 지원을 제공합니다'
+              },
+              engineers: {
+                title: '전문 엔지니어',
+                description: '200명의 전문 엔지니어가 상담해드립니다'
+              }
+            },
+            cta: {
+              title: '지금 바로 문의하세요',
+              description: '전문 엔지니어가 24시간 내에 답변드립니다. 프로젝트 규모와 상관없이 최적의 솔루션을 제안해드립니다.',
+              buttonLabel: '지금 문의하기'
+            },
+            footer: {
+              locations: '전국 50개 지점',
+              engineers: '전문 엔지니어 200명+',
+              responseTime: '평균 응답시간 2시간'
+            }
           },
           // 최신 뉴스
           latestNews: {
@@ -592,10 +636,54 @@ class I18nAdvanced {
           },
           // Customer Support
           customerSupport: {
-            title: 'Customer Support',
+            title: 'Your Reliable Partner, Always There',
             description: 'We provide professional technical support and services',
             contact: 'Contact',
-            download: 'Download Materials'
+            download: 'Download Materials',
+            channels: {
+              phone: {
+                title: 'Phone Consultation',
+                description: 'Professional engineers answer directly',
+                actionLabel: 'Call Now',
+                hours: 'Weekdays 09:00-18:00'
+              },
+              email: {
+                title: 'Email Inquiry',
+                description: 'Send us your detailed technical inquiries',
+                actionLabel: 'Send Email',
+                hours: '24/7 Submission Available'
+              },
+              chat: {
+                title: 'KakaoTalk',
+                description: 'Get quick responses via real-time chat',
+                actionLabel: 'Start Chat',
+                hours: 'Weekdays 09:00-18:00'
+              }
+            },
+            features: {
+              support247: {
+                title: '24/7 Support',
+                description: 'Expert assistance available anytime'
+              },
+              network: {
+                title: 'Nationwide Network',
+                description: 'On-site support from 50 locations'
+              },
+              engineers: {
+                title: 'Professional Engineers',
+                description: '200+ professional engineers ready to help'
+              }
+            },
+            cta: {
+              title: 'Contact Us Now',
+              description: 'Professional engineers will respond within 24 hours. We offer optimal solutions regardless of project size.',
+              buttonLabel: 'Contact Now'
+            },
+            footer: {
+              locations: '50 Locations Nationwide',
+              engineers: '200+ Professional Engineers',
+              responseTime: 'Average Response Time: 2 Hours'
+            }
           },
           // Latest News
           latestNews: {
@@ -768,6 +856,69 @@ class I18nAdvanced {
               description: '通过40年积累的纺织机械专业知识和时尚品牌推出创造新价值的专业企业',
               feature: '纺织机械及时尚品牌'
             }
+          },
+          // Project Gallery
+          projectGallery: {
+            title: '主要项目',
+            description: '查看正浩集团的代表性项目案例',
+            viewAll: '查看全部'
+          },
+          // Customer Support
+          customerSupport: {
+            title: '始终与您同在的可靠伙伴',
+            description: '提供专业的技术支持和服务',
+            contact: '联系我们',
+            download: '下载资料',
+            channels: {
+              phone: {
+                title: '电话咨询',
+                description: '专业工程师直接回答',
+                actionLabel: '立即致电',
+                hours: '工作日 09:00-18:00'
+              },
+              email: {
+                title: '邮件咨询',
+                description: '请发送详细的技术咨询',
+                actionLabel: '发送邮件',
+                hours: '24小时可提交'
+              },
+              chat: {
+                title: 'KakaoTalk',
+                description: '通过实时聊天获得快速回答',
+                actionLabel: '开始聊天',
+                hours: '工作日 09:00-18:00'
+              }
+            },
+            features: {
+              support247: {
+                title: '24/7支持',
+                description: '随时获得专家帮助'
+              },
+              network: {
+                title: '全国网络',
+                description: '50个据点提供现场支持'
+              },
+              engineers: {
+                title: '专业工程师',
+                description: '200多名专业工程师为您服务'
+              }
+            },
+            cta: {
+              title: '立即联系我们',
+              description: '专业工程师将在24小时内回复。无论项目规模如何，我们都会提供最佳解决方案。',
+              buttonLabel: '立即咨询'
+            },
+            footer: {
+              locations: '全国50个据点',
+              engineers: '200多名专业工程师',
+              responseTime: '平均响应时间：2小时'
+            }
+          },
+          // Latest News
+          latestNews: {
+            title: '最新新闻',
+            description: '查看正浩集团的最新消息和行业动态',
+            readMore: '阅读更多'
           }
         },
         // Projects
@@ -934,6 +1085,69 @@ class I18nAdvanced {
               description: '40年間蓄積された繊維機械の専門性とファッションブランドのローンチを通じて新しい価値を創出する専門企業',
               feature: '繊維機械及びファッションブランド'
             }
+          },
+          // Project Gallery
+          projectGallery: {
+            title: '主要プロジェクト',
+            description: '正浩グループの代表的なプロジェクト事例をご確認ください',
+            viewAll: 'すべて見る'
+          },
+          // Customer Support
+          customerSupport: {
+            title: 'いつも一緒にいる頼れるパートナー',
+            description: '専門的な技術サポートとサービスを提供します',
+            contact: 'お問い合わせ',
+            download: '資料ダウンロード',
+            channels: {
+              phone: {
+                title: '電話相談',
+                description: '専門エンジニアが直接お答えします',
+                actionLabel: '電話する',
+                hours: '平日 09:00-18:00'
+              },
+              email: {
+                title: 'メールお問い合わせ',
+                description: '詳細な技術お問い合わせをお送りください',
+                actionLabel: 'メールを送る',
+                hours: '24時間受付可能'
+              },
+              chat: {
+                title: 'KakaoTalk',
+                description: 'リアルタイムチャットで迅速な回答を受け取る',
+                actionLabel: 'チャット開始',
+                hours: '平日 09:00-18:00'
+              }
+            },
+            features: {
+              support247: {
+                title: '24/7サポート',
+                description: 'いつでも専門家のサポートを受けられます'
+              },
+              network: {
+                title: '全国ネットワーク',
+                description: '50拠点で現場サポートを提供します'
+              },
+              engineers: {
+                title: '専門エンジニア',
+                description: '200名以上の専門エンジニアがサポートします'
+              }
+            },
+            cta: {
+              title: '今すぐお問い合わせください',
+              description: '専門エンジニアが24時間以内に回答いたします。プロジェクト規模に関わらず最適なソリューションをご提案します。',
+              buttonLabel: '今すぐ問い合わせ'
+            },
+            footer: {
+              locations: '全国50拠点',
+              engineers: '専門エンジニア200名以上',
+              responseTime: '平均応答時間：2時間'
+            }
+          },
+          // Latest News
+          latestNews: {
+            title: '最新ニュース',
+            description: '正浩グループの最新ニュースと業界動向をご確認ください',
+            readMore: '続きを読む'
           }
         },
         // Projects

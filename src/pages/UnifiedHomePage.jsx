@@ -81,15 +81,31 @@ const UnifiedHomePage = () => {
   if (!homeData || Object.keys(homeData).length === 0) {
     homeData = {
       hero: {
-        title: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
-        subtitle: "정호그룹은 조명제어 전문 기업으로서,\n혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다",
-        description: "150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다."
+        title: t('home.hero.title') || "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
+        subtitle: t('home.hero.subtitle') || "정호그룹은 조명제어 전문 기업으로서,\n혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다",
+        description: t('home.hero.description') || "150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다."
       },
       achievements: [
-        { value: '40', suffix: '년', label: '조명제어 전문 경험' },
-        { value: '800', suffix: '+', label: '프로젝트 완료' },
-        { value: '7', suffix: '+', label: '해외진출국' },
-        { value: '99', suffix: '%', label: '고객만족도' }
+        { 
+          value: '40', 
+          suffix: t('home.stats.years.suffix') || '년', 
+          label: t('home.stats.years.label') || '조명제어 전문 경험' 
+        },
+        { 
+          value: '800', 
+          suffix: '+', 
+          label: t('home.stats.projects.label') || '프로젝트 완료' 
+        },
+        { 
+          value: '7', 
+          suffix: '+', 
+          label: t('home.stats.countries.label') || '해외진출국' 
+        },
+        { 
+          value: '99', 
+          suffix: '%', 
+          label: t('home.stats.satisfaction.label') || '고객만족도' 
+        }
       ],
       groupOverview: {
         title: '40년 전통의 조명제어 전문기업',
@@ -154,8 +170,14 @@ const UnifiedHomePage = () => {
       subCopy: homeData.hero?.subtitle,
       description: homeData.hero?.description,
       stats: homeData.achievements,
-      primaryAction: { label: '사업영역 보기', onClick: () => {} },
-      secondaryAction: { label: '문의하기', onClick: () => {} }
+      primaryAction: { 
+        label: t('home.hero.primaryAction') || '사업영역 보기', 
+        onClick: () => {} 
+      },
+      secondaryAction: { 
+        label: t('home.hero.secondaryAction') || '문의하기', 
+        onClick: () => {} 
+      }
     };
     return data;
   }, [homeData.hero, homeData.achievements, t]);

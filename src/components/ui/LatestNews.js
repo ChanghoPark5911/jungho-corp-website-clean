@@ -1,15 +1,32 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useI18n } from '../../hooks/useI18n';
 
 const LatestNews = ({
-  title = "정호그룹 소식",
+  title = "",
   news = [],
   moreLink = {},
   className = '',
   ...props
 }) => {
+  const { t, currentLanguage } = useI18n();
   const [isVisible, setIsVisible] = useState(false);
   const [newsData, setNewsData] = useState([]);
+  const [latestNewsData, setLatestNewsData] = useState({});
   const sectionRef = useRef(null);
+
+  // i18n 데이터 로드
+  useEffect(() => {
+    const loadContent = () => {
+      const data = {
+        title: t('home.latestNews.title') || "정호그룹 소식",
+        moreLabel: t('home.latestNews.moreLabel') || "더 많은 소식 보기",
+        featured: t('home.latestNews.featured') || "주요"
+      };
+      setLatestNewsData(data);
+    };
+
+    loadContent();
+  }, [currentLanguage, t]);
 
   // localStorage에서 뉴스 데이터 로드 및 실시간 업데이트
   useEffect(() => {
@@ -165,7 +182,7 @@ const LatestNews = ({
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            {title}
+            {latestNewsData.title || title || "정호그룹 소식"}
           </h2>
         </div>
 
@@ -198,7 +215,7 @@ const LatestNews = ({
                 {/* 주요 뉴스 배지 */}
                 {newsItem.featured && (
                   <div className="absolute top-4 right-4 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    주요
+                    {latestNewsData.featured || "주요"}
                   </div>
                 )}
                 
@@ -246,7 +263,7 @@ const LatestNews = ({
             onClick={handleMoreClick}
             className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors duration-300"
           >
-            <span>{moreLink?.label || "더 많은 소식 보기"}</span>
+            <span>{moreLink?.label || latestNewsData.moreLabel || "더 많은 소식 보기"}</span>
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>

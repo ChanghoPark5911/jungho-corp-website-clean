@@ -89,7 +89,7 @@ class I18nAdvanced {
       const storedTranslations = localStorage.getItem('i18nTranslations');
       console.log('🔍 i18nTranslations 로드 시도:', storedTranslations ? '데이터 있음' : '데이터 없음');
       
-      // 버전 체크 - customerSupport 섹션이 없으면 재생성
+      // 버전 체크 - customerSupport, latestNews 섹션이 없으면 재생성
       let needsRegen = false;
       if (storedTranslations) {
         try {
@@ -97,6 +97,11 @@ class I18nAdvanced {
           // customerSupport 섹션 체크
           if (!parsed.ko?.home?.customerSupport?.channels) {
             console.log('⚠️ customerSupport 섹션 없음 - 재생성 필요');
+            needsRegen = true;
+          }
+          // latestNews 섹션 체크
+          if (!parsed.ko?.home?.latestNews?.moreLabel) {
+            console.log('⚠️ latestNews 섹션 업데이트 필요 - 재생성');
             needsRegen = true;
           }
         } catch (e) {
@@ -381,9 +386,11 @@ class I18nAdvanced {
           },
           // 최신 뉴스
           latestNews: {
-            title: '최신 뉴스',
+            title: '정호그룹 소식',
             description: '정호그룹의 최신 소식과 업계 동향을 확인하세요',
-            readMore: '더 보기'
+            readMore: '더 보기',
+            moreLabel: '더 많은 소식 보기',
+            featured: '주요'
           }
         },
         // 프로젝트
@@ -703,9 +710,11 @@ class I18nAdvanced {
           },
           // Latest News
           latestNews: {
-            title: 'Latest News',
+            title: 'Jungho Group News',
             description: 'Check out the latest news from Jungho Group and industry trends',
-            readMore: 'Read More'
+            readMore: 'Read More',
+            moreLabel: 'View More News',
+            featured: 'Featured'
           }
         },
         // Business
@@ -932,9 +941,11 @@ class I18nAdvanced {
           },
           // Latest News
           latestNews: {
-            title: '最新新闻',
+            title: '正浩集团消息',
             description: '查看正浩集团的最新消息和行业动态',
-            readMore: '阅读更多'
+            readMore: '阅读更多',
+            moreLabel: '查看更多消息',
+            featured: '重要'
           }
         },
         // Projects
@@ -1161,9 +1172,11 @@ class I18nAdvanced {
           },
           // Latest News
           latestNews: {
-            title: '最新ニュース',
+            title: '正浩グループニュース',
             description: '正浩グループの最新ニュースと業界動向をご確認ください',
-            readMore: '続きを読む'
+            readMore: '続きを読む',
+            moreLabel: 'もっと見る',
+            featured: '注目'
           }
         },
         // Projects

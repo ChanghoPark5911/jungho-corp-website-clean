@@ -126,8 +126,6 @@ const LatestNews = ({
 
   // localStorage 데이터가 있으면 사용, 없으면 기본값 사용
   const newsToRender = newsData.length > 0 ? newsData : (news && news.length > 0 ? news : defaultNews);
-  
-  console.log('🔍 뉴스 렌더링 데이터:', newsToRender);
 
   // Intersection Observer 설정
   useEffect(() => {

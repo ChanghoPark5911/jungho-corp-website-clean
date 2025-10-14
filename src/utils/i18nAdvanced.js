@@ -296,7 +296,27 @@ class I18nAdvanced {
           },
           subsidiaries: {
             title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
-            description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'
+            description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출',
+            clarus: {
+              title: '클라루스',
+              subtitle: 'AI 기반 스마트 조명/전력제어',
+              description: '스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문 업체'
+            },
+            tlc: {
+              title: '정호티엘씨',
+              subtitle: '조명/전력제어의 설계/시공/사후관리',
+              description: '공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축하고, 사후관리를 담당하는 전문업체'
+            },
+            illutech: {
+              title: '일루텍',
+              subtitle: '유.무선 스마트조명제품 쇼핑몰 공급',
+              description: '유.무선 조명제어 제품을 국내의 유명 쇼핑몰에 전문 판매, 편리한 시공기술지원 업체'
+            },
+            texcom: {
+              title: '정호텍스컴',
+              subtitle: '섬유기계 도염, 운영을 통해 국내 섬유산업 지원과 자체 패션브랜드 운영',
+              description: '40년간 축적된 섬유기계 전문성과 패션브랜드 운영을 통해 새로운 가치를 창출하는 전문업체'
+            }
           },
           // 계열사 소개
           companyCards: {
@@ -629,7 +649,27 @@ class I18nAdvanced {
           },
           subsidiaries: {
             title: '4 Subsidiaries Creating\nPerfect Lighting/Power Control and Textile Machinery Ecosystem',
-            description: 'From technology development to customer service, creating synergy through expertise in each field'
+            description: 'From technology development to customer service, creating synergy through expertise in each field',
+            clarus: {
+              title: 'Clarus',
+              subtitle: 'AI-based Smart Lighting/Power Control',
+              description: 'Develops smart lighting/power control systems, produces core devices, and supplies them domestically and internationally'
+            },
+            tlc: {
+              title: 'Jungho TLC',
+              subtitle: 'Design/Construction/After-sales of Lighting/Power Control',
+              description: 'Designs and builds optimal smart lighting environments for public institutions, office buildings, logistics and data centers, and provides after-sales service'
+            },
+            illutech: {
+              title: 'Illutech',
+              subtitle: 'Wired/Wireless Smart Lighting Products Shopping Mall Supply',
+              description: 'Professionally sells wired/wireless lighting control products to famous domestic shopping malls and provides convenient construction technical support'
+            },
+            texcom: {
+              title: 'Jungho Texcom',
+              subtitle: 'Supporting Domestic Textile Industry and Operating Fashion Brands',
+              description: 'Creates new value through 40 years of accumulated textile machinery expertise and fashion brand operation'
+            }
           },
           // Company Cards
           companyCards: {
@@ -870,7 +910,27 @@ class I18nAdvanced {
           },
           subsidiaries: {
             title: '4个子公司打造\n完美的照明/电力控制及纺织机械生态系统',
-            description: '从技术开发到客户服务，通过各领域专业性创造协同效应'
+            description: '从技术开发到客户服务，通过各领域专业性创造协同效应',
+            clarus: {
+              title: 'Clarus',
+              subtitle: '基于AI的智能照明/电力控制',
+              description: '开发智能照明/电力控制系统，生产核心设备，向国内外供应的专业企业'
+            },
+            tlc: {
+              title: '正浩TLC',
+              subtitle: '照明/电力控制的设计/施工/售后管理',
+              description: '为公共机构、办公楼、物流和数据中心设计和构建最佳的智能照明环境，并提供售后服务的专业企业'
+            },
+            illutech: {
+              title: 'Illutech',
+              subtitle: '有线/无线智能照明产品商城供应',
+              description: '向国内外知名购物商城专业销售有线/无线照明控制产品，并提供便捷的施工技术支持'
+            },
+            texcom: {
+              title: '正浩Texcom',
+              subtitle: '通过纺织机械染色、运营支持国内纺织产业并运营自有时尚品牌',
+              description: '通过40年积累的纺织机械专业知识和时尚品牌运营创造新价值的专业企业'
+            }
           },
           companyCards: {
             clarus: {
@@ -1110,7 +1170,27 @@ class I18nAdvanced {
           },
           subsidiaries: {
             title: '4つの子会社が作る\n完璧な照明/電力制御及び繊維機械エコシステム',
-            description: '技術開発から顧客サービスまで、各分野の専門性によるシナジー創出'
+            description: '技術開発から顧客サービスまで、各分野の専門性によるシナジー創出',
+            clarus: {
+              title: 'Clarus',
+              subtitle: 'AIベースのスマート照明/電力制御',
+              description: 'スマート照明/電力制御システム開発、コアデバイス生産、国内外に供給する専門企業'
+            },
+            tlc: {
+              title: '正浩TLC',
+              subtitle: '照明/電力制御の設計/施工/アフターサービス',
+              description: '公共機関、オフィスビル、物流及びデータセンターに最適なスマート照明環境を設計・構築し、アフターサービスを担当する専門企業'
+            },
+            illutech: {
+              title: 'Illutech',
+              subtitle: '有線/無線スマート照明製品ショッピングモール供給',
+              description: '有線/無線照明制御製品を国内有名ショッピングモールに専門販売、便利な施工技術支援企業'
+            },
+            texcom: {
+              title: '正浩Texcom',
+              subtitle: '繊維機械染色、運営を通じて国内繊維産業支援と自社ファッションブランド運営',
+              description: '40年間蓄積された繊維機械の専門性とファッションブランド運営を通じて新しい価値を創出する専門企業'
+            }
           },
           companyCards: {
             clarus: {

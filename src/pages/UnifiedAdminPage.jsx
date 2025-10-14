@@ -62,14 +62,56 @@ const UnifiedAdminPage = () => {
     if (savedI18n) {
       try {
         const parsedI18n = JSON.parse(savedI18n);
-        console.log('✅ 다국어 데이터 로드:', parsedI18n);
+        console.log('✅ 다국어 데이터 로드 (flat):', parsedI18n);
         setI18nData(parsedI18n);
       } catch (error) {
         console.error('❌ 다국어 데이터 파싱 오류:', error);
       }
     } else {
-      // localStorage에 없으면 기본 데이터 생성
-      console.log('📝 기본 다국어 데이터 생성');
+      // i18n_data가 없으면 i18nTranslations에서 로드 시도 (nested -> flat 변환)
+      const savedTranslations = localStorage.getItem('i18nTranslations');
+      if (savedTranslations) {
+        try {
+          const parsedTrans = JSON.parse(savedTranslations);
+          console.log('🔄 i18nTranslations에서 로드 (nested -> flat 변환)');
+          
+          // nested를 flat으로 변환
+          const convertNestedToFlat = (nested) => {
+            const flat = {};
+            
+            const flatten = (obj, prefix = '', langKey) => {
+              Object.keys(obj).forEach(key => {
+                const value = obj[key];
+                const newKey = prefix ? `${prefix}.${key}` : key;
+                
+                if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                  flatten(value, newKey, langKey);
+                } else {
+                  if (!flat[langKey]) flat[langKey] = {};
+                  flat[langKey][newKey] = value;
+                }
+              });
+            };
+            
+            Object.keys(nested).forEach(lang => {
+              flatten(nested[lang], '', lang);
+            });
+            
+            return flat;
+          };
+          
+          const flatData = convertNestedToFlat(parsedTrans);
+          console.log('✅ nested -> flat 변환 완료:', flatData);
+          setI18nData(flatData);
+          
+          // flat 데이터도 i18n_data로 저장
+          localStorage.setItem('i18n_data', JSON.stringify(flatData));
+        } catch (error) {
+          console.error('❌ i18nTranslations 파싱 오류:', error);
+        }
+      } else {
+        // localStorage에 없으면 기본 데이터 생성
+        console.log('📝 기본 다국어 데이터 생성');
       const defaultI18nData = {
         ko: {
           'header.navigation.home': 'HOME',
@@ -169,9 +211,42 @@ const UnifiedAdminPage = () => {
         }
       };
       setI18nData(defaultI18nData);
+      
+      // flat을 nested로 변환
+      const convertFlatToNested = (flatData) => {
+        const nested = {};
+        
+        Object.keys(flatData).forEach(lang => {
+          nested[lang] = {};
+          const langData = flatData[lang];
+          
+          Object.keys(langData).forEach(key => {
+            const value = langData[key];
+            const keys = key.split('.');
+            let target = nested[lang];
+            
+            // 중첩 객체 생성
+            for (let i = 0; i < keys.length - 1; i++) {
+              if (!target[keys[i]]) {
+                target[keys[i]] = {};
+              }
+              target = target[keys[i]];
+            }
+            
+            // 마지막 키에 값 설정
+            target[keys[keys.length - 1]] = value;
+          });
+        });
+        
+        return nested;
+      };
+      
       // 자동으로 localStorage에 저장
       localStorage.setItem('i18n_data', JSON.stringify(defaultI18nData));
-      localStorage.setItem('i18nTranslations', JSON.stringify(defaultI18nData));
+      const nestedDefaultData = convertFlatToNested(defaultI18nData);
+      localStorage.setItem('i18nTranslations', JSON.stringify(nestedDefaultData));
+      console.log('✅ 기본 데이터 저장 완료 (flat + nested)');
+      }
     }
     
     // 1. localStorage에서 관리자가 저장한 데이터 우선 확인

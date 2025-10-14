@@ -276,10 +276,10 @@ const Header = ({ imageData = {} }) => {
                 className="px-3 py-2 text-xs sm:text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-1 sm:space-x-2"
                 onClick={() => {
                   // 통합 관리자 페이지로 이동
-                  window.open('/admin-unified', '_blank');
+                  window.open('/admin', '_blank');
                 }}
                 onKeyPress={(e) => handleKeyPress(e, () => {
-                  window.open('/admin-unified', '_blank');
+                  window.open('/admin', '_blank');
                 })}
                 aria-label="통합 관리자 메뉴"
               >

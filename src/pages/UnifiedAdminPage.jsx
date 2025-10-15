@@ -10,12 +10,100 @@ const UnifiedAdminPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [saveStatus, setSaveStatus] = useState('');
   
+  // 🔐 비밀번호 보호
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [authError, setAuthError] = useState('');
+  
   // 관리할 데이터 상태
   const [homepageData, setHomepageData] = useState(null);
   const [newsData, setNewsData] = useState([]);
   const [projectData, setProjectData] = useState([]);
   const [staticPageData, setStaticPageData] = useState({});
   const [i18nData, setI18nData] = useState({});
+
+  // 🔐 세션에서 인증 상태 확인
+  useEffect(() => {
+    const authStatus = sessionStorage.getItem('admin_authenticated');
+    if (authStatus === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  // 🔐 비밀번호 확인
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (password === 'admin123') {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('admin_authenticated', 'true');
+      setAuthError('');
+    } else {
+      setAuthError('비밀번호가 올바르지 않습니다.');
+      setPassword('');
+    }
+  };
+
+  // 🔐 로그아웃
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('admin_authenticated');
+    setPassword('');
+  };
+
+  // 🔐 인증되지 않은 경우 로그인 화면 표시
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mb-4">
+              <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">관리자 페이지</h2>
+            <p className="text-gray-600">정호그룹 홈페이지 관리</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                비밀번호
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                placeholder="비밀번호를 입력하세요"
+                autoFocus
+              />
+              {authError && (
+                <p className="mt-2 text-sm text-red-600 flex items-center">
+                  <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  {authError}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transform transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              로그인
+            </button>
+          </form>
+
+          <div className="mt-6 text-center text-sm text-gray-500">
+            <p>관리자 전용 페이지입니다</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // 현재 홈화면 데이터를 관리자 페이지에 로드
   useEffect(() => {
@@ -422,6 +510,13 @@ const UnifiedAdminPage = () => {
         console.log('📡 i18nDataUpdated 이벤트 발생');
         window.dispatchEvent(new CustomEvent('i18nDataUpdated'));
         
+        // 강제 리렌더링을 위해 languageChanged 이벤트도 발생
+        console.log('📡 languageChanged 이벤트 발생 (강제 리렌더링)');
+        const currentLang = localStorage.getItem('preferredLanguage') || 'ko';
+        window.dispatchEvent(new CustomEvent('languageChanged', { 
+          detail: { language: currentLang }
+        }));
+        
         setSaveStatus('✅ 다국어 번역이 저장되었습니다!');
         setTimeout(() => setSaveStatus(''), 3000);
         
@@ -494,6 +589,16 @@ const UnifiedAdminPage = () => {
                 title="홈페이지 관리의 오래된 텍스트 데이터를 삭제하고 i18n만 사용"
               >
                 🗑️ 오래된 데이터 삭제
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm flex items-center space-x-2"
+                title="로그아웃"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                <span>로그아웃</span>
               </button>
               <button
                 onClick={() => {
@@ -1013,6 +1118,7 @@ const NewsManagement = ({ data, onSave, isLoading }) => {
   const [newsData, setNewsData] = useState(data || []);
   const [editingNews, setEditingNews] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [activeLanguage, setActiveLanguage] = useState('ko'); // 다국어 탭
 
   // 뉴스 데이터 초기화
   useEffect(() => {
@@ -1025,12 +1131,16 @@ const NewsManagement = ({ data, onSave, isLoading }) => {
   const handleAddNews = () => {
     const newNews = {
       id: Date.now().toString(),
-      title: '',
-      content: '',
       date: new Date().toISOString().split('T')[0],
       category: '일반',
       featured: false,
-      image: ''
+      image: '',
+      translations: {
+        ko: { title: '', content: '' },
+        en: { title: '', content: '' },
+        zh: { title: '', content: '' },
+        ja: { title: '', content: '' }
+      }
     };
     setEditingNews(newNews);
     setShowAddForm(true);
@@ -1053,8 +1163,9 @@ const NewsManagement = ({ data, onSave, isLoading }) => {
 
   // 뉴스 저장
   const handleSaveNews = () => {
-    if (!editingNews.title.trim() || !editingNews.content.trim()) {
-      alert('제목과 내용을 입력해주세요.');
+    // 한국어 필수 체크
+    if (!editingNews.translations?.ko?.title?.trim() || !editingNews.translations?.ko?.content?.trim()) {
+      alert('한국어 제목과 내용을 입력해주세요.');
       return;
     }
 
@@ -1106,7 +1217,9 @@ const NewsManagement = ({ data, onSave, isLoading }) => {
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-2">
-                    <h3 className="font-semibold text-lg">{news.title}</h3>
+                    <h3 className="font-semibold text-lg">
+                      {news.translations?.ko?.title || news.title || '제목 없음'}
+                    </h3>
                     {news.featured && (
                       <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">
                         주요
@@ -1117,7 +1230,9 @@ const NewsManagement = ({ data, onSave, isLoading }) => {
                     </span>
                   </div>
                   <p className="text-gray-600 text-sm mb-2">{news.date}</p>
-                  <p className="text-gray-700 line-clamp-2">{news.content}</p>
+                  <p className="text-gray-700 line-clamp-2">
+                    {news.translations?.ko?.content || news.content || '내용 없음'}
+                  </p>
                 </div>
                 <div className="flex space-x-2 ml-4">
                   <button
@@ -1142,35 +1257,77 @@ const NewsManagement = ({ data, onSave, isLoading }) => {
       {/* 뉴스 편집/추가 폼 */}
       {showAddForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-semibold mb-4">
               {editingNews?.id && newsData.find(news => news.id === editingNews.id) ? '뉴스 수정' : '새 뉴스 추가'}
             </h3>
             
+            {/* 언어 탭 */}
+            <div className="flex space-x-2 mb-6 border-b">
+              {[
+                { code: 'ko', name: '한국어' },
+                { code: 'en', name: 'English' },
+                { code: 'zh', name: '中文' },
+                { code: 'ja', name: '日本語' }
+              ].map(lang => (
+                <button
+                  key={lang.code}
+                  onClick={() => setActiveLanguage(lang.code)}
+                  className={`px-4 py-2 font-medium ${
+                    activeLanguage === lang.code
+                      ? 'text-blue-600 border-b-2 border-blue-600'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  {lang.name}
+                  {lang.code === 'ko' && ' *'}
+                </button>
+              ))}
+            </div>
+
             <div className="space-y-4">
+              {/* 언어별 제목/내용 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  제목 *
+                  제목 {activeLanguage === 'ko' && '*'}
                 </label>
                 <input
                   type="text"
-                  value={editingNews?.title || ''}
-                  onChange={(e) => setEditingNews(prev => ({ ...prev, title: e.target.value }))}
+                  value={editingNews?.translations?.[activeLanguage]?.title || ''}
+                  onChange={(e) => setEditingNews(prev => ({
+                    ...prev,
+                    translations: {
+                      ...prev.translations,
+                      [activeLanguage]: {
+                        ...prev.translations?.[activeLanguage],
+                        title: e.target.value
+                      }
+                    }
+                  }))}
                   className="w-full p-3 border border-gray-300 rounded-lg"
-                  placeholder="뉴스 제목을 입력하세요"
+                  placeholder={`뉴스 제목을 ${activeLanguage === 'ko' ? '입력' : '번역'}하세요`}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  내용 *
+                  내용 {activeLanguage === 'ko' && '*'}
                 </label>
                 <textarea
-                  value={editingNews?.content || ''}
-                  onChange={(e) => setEditingNews(prev => ({ ...prev, content: e.target.value }))}
+                  value={editingNews?.translations?.[activeLanguage]?.content || ''}
+                  onChange={(e) => setEditingNews(prev => ({
+                    ...prev,
+                    translations: {
+                      ...prev.translations,
+                      [activeLanguage]: {
+                        ...prev.translations?.[activeLanguage],
+                        content: e.target.value
+                      }
+                    }
+                  }))}
                   className="w-full p-3 border border-gray-300 rounded-lg"
-                  rows={4}
-                  placeholder="뉴스 내용을 입력하세요"
+                  rows={6}
+                  placeholder={`뉴스 내용을 ${activeLanguage === 'ko' ? '입력' : '번역'}하세요`}
                 />
               </div>
 
@@ -1257,6 +1414,7 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
   const [projectData, setProjectData] = useState(data || []);
   const [editingProject, setEditingProject] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [activeLanguage, setActiveLanguage] = useState('ko'); // 다국어 탭
 
   // 프로젝트 데이터 초기화
   useEffect(() => {
@@ -1269,16 +1427,18 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
   const handleAddProject = () => {
     const newProject = {
       id: Date.now().toString(),
-      title: '',
-      description: '',
       client: '',
       year: new Date().getFullYear().toString(),
       category: '조명제어',
       status: '완료',
       image: '',
-      technologies: [],
-      features: [],
-      link: ''
+      link: '',
+      translations: {
+        ko: { title: '', description: '', technologies: [], features: [] },
+        en: { title: '', description: '', technologies: [], features: [] },
+        zh: { title: '', description: '', technologies: [], features: [] },
+        ja: { title: '', description: '', technologies: [], features: [] }
+      }
     };
     setEditingProject(newProject);
     setShowAddForm(true);
@@ -1301,8 +1461,9 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
 
   // 프로젝트 저장
   const handleSaveProject = () => {
-    if (!editingProject.title.trim() || !editingProject.description.trim()) {
-      alert('제목과 설명을 입력해주세요.');
+    // 한국어 필수 체크
+    if (!editingProject.translations?.ko?.title?.trim() || !editingProject.translations?.ko?.description?.trim()) {
+      alert('한국어 제목과 설명을 입력해주세요.');
       return;
     }
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useI18n } from '../../hooks/useI18n';
 
 const HeroSection = () => {
+  const { t } = useI18n();
   const [fileData, setFileData] = useState({
     technicalDocs: null,
     productCatalog: null
@@ -36,9 +38,18 @@ const HeroSection = () => {
   }, []);
 
   const stats = [
-    { label: '15년+', value: 'R&D 투자' },
-    { label: '50+', value: '특허 보유' },
-    { label: '30+', value: '해외 진출국' }
+    { 
+      label: t('pages.clarus.hero.stats.years.label'), 
+      value: t('pages.clarus.hero.stats.years.value') 
+    },
+    { 
+      label: t('pages.clarus.hero.stats.patents.label'), 
+      value: t('pages.clarus.hero.stats.patents.value') 
+    },
+    { 
+      label: t('pages.clarus.hero.stats.countries.label'), 
+      value: t('pages.clarus.hero.stats.countries.value') 
+    }
   ];
 
   // 기술 자료 다운로드
@@ -52,7 +63,7 @@ const HeroSection = () => {
       link.click();
       document.body.removeChild(link);
     } else {
-      alert('기술 자료 파일이 아직 업로드되지 않았습니다.');
+      alert(t('pages.clarus.hero.buttons.technicalDocsPending'));
     }
   };
 
@@ -62,7 +73,7 @@ const HeroSection = () => {
       // 새 창에서 카탈로그 열기
       window.open(fileData.productCatalog.url, '_blank');
     } else {
-      alert('제품 카탈로그 파일이 아직 업로드되지 않았습니다.');
+      alert(t('pages.clarus.hero.buttons.catalogPending'));
     }
   };
 
@@ -82,11 +93,11 @@ const HeroSection = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
         <div className="mb-8">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            기술로 미래를
-            <span className="block text-blue-300">밝히다</span>
+            {t('pages.clarus.hero.title')}
+            <span className="block text-blue-300">{t('pages.clarus.hero.titleHighlight')}</span>
           </h1>
           <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
-            E/F2-BUS 자체 개발 프로토콜로 조명제어의 새로운 표준을 제시합니다
+            {t('pages.clarus.hero.description')}
           </p>
         </div>
 
@@ -115,7 +126,9 @@ const HeroSection = () => {
             }`}
             disabled={!fileData.technicalDocs}
           >
-            {fileData.technicalDocs ? '기술 자료 다운로드' : '기술 자료 준비 중'}
+            {fileData.technicalDocs 
+              ? t('pages.clarus.hero.buttons.technicalDocs')
+              : t('pages.clarus.hero.buttons.technicalDocsPending')}
           </button>
           <button 
             onClick={handleProductCatalogView}
@@ -126,14 +139,16 @@ const HeroSection = () => {
             }`}
             disabled={!fileData.productCatalog}
           >
-            {fileData.productCatalog ? '제품 카탈로그 보기' : '카탈로그 준비 중'}
+            {fileData.productCatalog 
+              ? t('pages.clarus.hero.buttons.productCatalog')
+              : t('pages.clarus.hero.buttons.catalogPending')}
           </button>
         </div>
 
         {/* 파일 상태 표시 */}
         {(!fileData.technicalDocs || !fileData.productCatalog) && (
           <div className="mt-6 text-blue-200 text-sm">
-            <p>관리자 페이지에서 관련 파일을 업로드해주세요.</p>
+            <p>{t('pages.clarus.hero.uploadMessage')}</p>
           </div>
         )}
       </div>
@@ -148,4 +163,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection; 
+export default HeroSection;

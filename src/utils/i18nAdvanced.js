@@ -89,48 +89,75 @@ class I18nAdvanced {
       const storedTranslations = localStorage.getItem('i18nTranslations');
       console.log('🔍 i18nTranslations 로드 시도:', storedTranslations ? '데이터 있음' : '데이터 없음');
       
-      // 버전 체크 - customerSupport, latestNews 섹션이 없으면 재생성
-      let needsRegen = false;
       if (storedTranslations) {
         try {
           const parsed = JSON.parse(storedTranslations);
-          // customerSupport 섹션 체크
-          if (!parsed.ko?.home?.customerSupport?.channels) {
-            console.log('⚠️ customerSupport 섹션 없음 - 재생성 필요');
-            needsRegen = true;
+          this.translations = parsed;
+          console.log('✅ 번역 데이터 로드 완료:', Object.keys(this.translations));
+          
+          // 누락된 키 체크 및 병합 (기존 데이터 보존!)
+          const defaultTranslations = this.getDefaultTranslations();
+          let needsUpdate = false;
+          
+          // 각 언어별로 누락된 키만 추가
+          this.supportedLanguages.forEach(lang => {
+            if (!this.translations[lang]) {
+              console.log(`⚠️ ${lang} 언어 데이터 없음 - 기본값 추가`);
+              this.translations[lang] = defaultTranslations[lang];
+              needsUpdate = true;
+            } else {
+              // 누락된 섹션만 추가 (deep merge)
+              const merged = this.deepMerge(defaultTranslations[lang], this.translations[lang]);
+              if (JSON.stringify(merged) !== JSON.stringify(this.translations[lang])) {
+                console.log(`🔄 ${lang} 언어 데이터에 누락된 키 추가`);
+                this.translations[lang] = merged;
+                needsUpdate = true;
+              }
+            }
+          });
+          
+          // 누락된 키가 추가되었으면 저장
+          if (needsUpdate) {
+            console.log('💾 누락된 키 추가 후 저장');
+            this.saveTranslations();
           }
-          // latestNews 섹션 체크
-          if (!parsed.ko?.home?.latestNews?.moreLabel) {
-            console.log('⚠️ latestNews 섹션 업데이트 필요 - 재생성');
-            needsRegen = true;
-          }
+          
+          console.log('📝 현재 언어:', this.currentLanguage);
+          console.log('📝 현재 언어 데이터:', this.translations[this.currentLanguage] ? '있음' : '없음');
         } catch (e) {
-          needsRegen = true;
-        }
-      }
-      
-      if (storedTranslations && !needsRegen) {
-        this.translations = JSON.parse(storedTranslations);
-        console.log('✅ 번역 데이터 로드 완료:', Object.keys(this.translations));
-        console.log('📝 현재 언어:', this.currentLanguage);
-        console.log('📝 현재 언어 데이터:', this.translations[this.currentLanguage] ? '있음' : '없음');
-        
-        // 샘플 번역 확인
-        if (this.translations[this.currentLanguage]) {
-          console.log('🔍 home.customerSupport.title 번역:', this.translations[this.currentLanguage]?.home?.customerSupport?.title);
+          console.error('❌ 번역 데이터 파싱 오류:', e);
+          // 파싱 오류 시에만 기본값 사용
+          this.translations = this.getDefaultTranslations();
+          this.saveTranslations();
         }
       } else {
-        // 기본 번역 데이터 생성
-        console.log('📝 기본 번역 데이터 생성 (또는 재생성)');
+        // localStorage에 데이터가 없을 때만 기본값 생성
+        console.log('📝 기본 번역 데이터 생성 (최초 실행)');
         this.translations = this.getDefaultTranslations();
         this.saveTranslations();
         console.log('✅ 기본 번역 데이터 생성 완료');
-        console.log('🔍 생성된 customerSupport:', this.translations.ko?.home?.customerSupport?.title);
       }
     } catch (error) {
       console.error('❌ 번역 데이터 로드 오류:', error);
       this.translations = this.getDefaultTranslations();
     }
+  }
+
+  // Deep merge: 기본값을 먼저, 사용자 데이터로 덮어쓰기 (사용자 데이터 우선!)
+  deepMerge(defaultObj, userObj) {
+    const result = { ...defaultObj };
+    
+    Object.keys(userObj).forEach(key => {
+      if (userObj[key] && typeof userObj[key] === 'object' && !Array.isArray(userObj[key])) {
+        // 객체인 경우 재귀적으로 병합
+        result[key] = this.deepMerge(defaultObj[key] || {}, userObj[key]);
+      } else {
+        // 기본 값이거나 사용자가 수정한 값 우선
+        result[key] = userObj[key];
+      }
+    });
+    
+    return result;
   }
 
   // 기본 번역 데이터
@@ -228,6 +255,129 @@ class I18nAdvanced {
           confirm: '확인',
           yes: '예',
           no: '아니오'
+        },
+        // Footer
+        footer: {
+          subsidiaries: '계열사',
+          support: '고객지원',
+          contactPhone: '문의전화',
+          email: '이메일',
+          kakaoTalk: '카카오톡',
+          privacy: '개인정보처리지침',
+          terms: '이용약관',
+          followUs: 'Follow us',
+          copyright: '모든 권리 보유'
+        },
+        // 고객지원 페이지
+        support: {
+          loading: '고객지원 페이지를 불러오는 중...',
+          error: '콘텐츠를 불러오는데 실패했습니다.',
+          retry: '다시 시도',
+          noContent: '콘텐츠를 불러올 수 없습니다.',
+          channels: {
+            title: '지원 채널',
+            description: '다양한 방법으로 정호그룹의 전문가들과 연락하실 수 있습니다'
+          },
+          services: {
+            title: '지원 서비스',
+            description: '시스템 도입부터 운영까지 전 과정을 지원합니다'
+          },
+          faq: {
+            title: '자주 묻는 질문',
+            description: '고객님들이 자주 문의하시는 내용들을 정리했습니다'
+          },
+          contactForm: {
+            title: '문의하기',
+            description: '프로젝트에 대한 상세한 문의사항을 남겨주시면 전문가가 빠른 시일 내에 답변드립니다',
+            fields: {
+              name: '이름',
+              company: '회사명',
+              email: '이메일',
+              phone: '연락처',
+              category: '문의 분야',
+              message: '문의 내용'
+            },
+            placeholders: {
+              name: '이름을 입력하세요',
+              company: '회사명을 입력하세요',
+              email: '이메일을 입력하세요',
+              phone: '연락처를 입력하세요',
+              category: '문의 분야를 선택하세요',
+              message: '상세한 문의 내용을 입력하세요'
+            },
+            categories: {
+              smartBuilding: '스마트 빌딩 조명제어',
+              cityInfra: '도시 조명 인프라',
+              industrial: '산업용 조명시스템',
+              cultural: '문화시설 조명예술',
+              technical: '기술 상담',
+              other: '기타'
+            },
+            submit: '문의하기',
+            successMessage: '문의가 접수되었습니다. 빠른 시일 내에 답변드리겠습니다.'
+          }
+        },
+        // 계열사 페이지
+        pages: {
+          clarus: {
+            hero: {
+              title: '기술로 미래를',
+              titleHighlight: '밝히다',
+              description: 'E/F2-BUS 자체 개발 프로토콜로 조명제어의 새로운 표준을 제시합니다',
+              stats: {
+                years: { label: '15년+', value: 'R&D 투자' },
+                patents: { label: '50+', value: '특허 보유' },
+                countries: { label: '30+', value: '해외 진출국' }
+              },
+              buttons: {
+                technicalDocs: '기술 자료 다운로드',
+                technicalDocsPending: '기술 자료 준비 중',
+                productCatalog: '제품 카탈로그 보기',
+                catalogPending: '카탈로그 준비 중'
+              },
+              uploadMessage: '관리자 페이지에서 관련 파일을 업로드해주세요.'
+            }
+          },
+          tlc: {
+            hero: {
+              title: '언제나 함께합니다',
+              description: '영업부터 A/S까지, 고객 성공을 위한 완벽한 파트너십을 제공합니다',
+              stats: {
+                network: { label: '전국 50+', value: '대리점' },
+                support: { label: '24시간', value: 'A/S' },
+                satisfaction: { label: '95%', value: '고객 만족도' }
+              },
+              buttons: {
+                consultation: '빠른 상담 신청',
+                findDealer: '가까운 대리점 찾기'
+              }
+            }
+          },
+          illutech: {
+            hero: {
+              title: '당신의 공간을 빛냅니다',
+              description: '40년 조명 전문성이 선별한 프리미엄 조명을 온라인에서 만나보세요',
+              stats: {
+                products: { label: '', value: '프리미엄 제품', suffix: '+' },
+                delivery: { label: '', value: '당일배송', suffix: '%' },
+                exchange: { label: '', value: '무료 교환', suffix: '일' }
+              },
+              buttons: {
+                shop: '온라인몰 바로가기',
+                consultation: '무료 상담 신청'
+              }
+            }
+          },
+          texcom: {
+            hero: {
+              title: '섬유의 전통, 패션의 미래',
+              description: '40년간 축적된 섬유기계 전문성과 트렌드를 선도하는 패션 브랜드가 만나 새로운 가치를 창조합니다',
+              buttons: {
+                b2b: '섬유기계 사업부',
+                b2c: '패션 브랜드 사업부'
+              }
+            }
+          }
         },
         // SEO
         seo: {
@@ -468,14 +618,6 @@ class I18nAdvanced {
             textile: '섬유기계'
           }
         },
-        // 지원 페이지
-        support: {
-          title: '고객지원',
-          description: '전문적인 기술 지원과 서비스를 제공합니다',
-          contact: '문의하기',
-          download: '자료 다운로드',
-          faq: '자주 묻는 질문'
-        },
         // 뉴스 페이지
         news: {
           title: '뉴스',
@@ -581,6 +723,129 @@ class I18nAdvanced {
           confirm: 'Confirm',
           yes: 'Yes',
           no: 'No'
+        },
+        // Footer
+        footer: {
+          subsidiaries: 'Subsidiaries',
+          support: 'Customer Support',
+          contactPhone: 'Contact Phone',
+          email: 'Email',
+          kakaoTalk: 'KakaoTalk',
+          privacy: 'Privacy Policy',
+          terms: 'Terms of Service',
+          followUs: 'Follow us',
+          copyright: 'All Rights Reserved'
+        },
+        // Support Page
+        support: {
+          loading: 'Loading support page...',
+          error: 'Failed to load content.',
+          retry: 'Retry',
+          noContent: 'Unable to load content.',
+          channels: {
+            title: 'Support Channels',
+            description: 'Connect with Jungho Group experts through various channels'
+          },
+          services: {
+            title: 'Support Services',
+            description: 'We support the entire process from system introduction to operation'
+          },
+          faq: {
+            title: 'Frequently Asked Questions',
+            description: 'Common questions from our customers'
+          },
+          contactForm: {
+            title: 'Contact Us',
+            description: 'Leave your detailed inquiry about the project and our experts will respond promptly',
+            fields: {
+              name: 'Name',
+              company: 'Company',
+              email: 'Email',
+              phone: 'Phone',
+              category: 'Inquiry Category',
+              message: 'Message'
+            },
+            placeholders: {
+              name: 'Enter your name',
+              company: 'Enter company name',
+              email: 'Enter email address',
+              phone: 'Enter phone number',
+              category: 'Select inquiry category',
+              message: 'Enter detailed inquiry'
+            },
+            categories: {
+              smartBuilding: 'Smart Building Lighting Control',
+              cityInfra: 'City Lighting Infrastructure',
+              industrial: 'Industrial Lighting System',
+              cultural: 'Cultural Facility Lighting Art',
+              technical: 'Technical Consultation',
+              other: 'Other'
+            },
+            submit: 'Submit Inquiry',
+            successMessage: 'Your inquiry has been received. We will respond as soon as possible.'
+          }
+        },
+        // Subsidiary Pages
+        pages: {
+          clarus: {
+            hero: {
+              title: 'Illuminating the Future',
+              titleHighlight: 'with Technology',
+              description: 'Setting new standards in lighting control with our proprietary E/F2-BUS protocol',
+              stats: {
+                years: { label: '15+ Years', value: 'R&D Investment' },
+                patents: { label: '50+', value: 'Patents' },
+                countries: { label: '30+', value: 'Global Markets' }
+              },
+              buttons: {
+                technicalDocs: 'Download Technical Docs',
+                technicalDocsPending: 'Docs Coming Soon',
+                productCatalog: 'View Product Catalog',
+                catalogPending: 'Catalog Coming Soon'
+              },
+              uploadMessage: 'Please upload relevant files from the admin page.'
+            }
+          },
+          tlc: {
+            hero: {
+              title: 'Always by Your Side',
+              description: 'From sales to after-sales service, providing perfect partnership for customer success',
+              stats: {
+                network: { label: 'Nationwide 50+', value: 'Dealers' },
+                support: { label: '24 Hours', value: 'A/S' },
+                satisfaction: { label: '95%', value: 'Customer Satisfaction' }
+              },
+              buttons: {
+                consultation: 'Quick Consultation',
+                findDealer: 'Find Nearest Dealer'
+              }
+            }
+          },
+          illutech: {
+            hero: {
+              title: 'Brightening Your Space',
+              description: 'Experience premium lighting selected by 40 years of lighting expertise online',
+              stats: {
+                products: { label: '', value: 'Premium Products', suffix: '+' },
+                delivery: { label: '', value: 'Same-Day Delivery', suffix: '%' },
+                exchange: { label: '', value: 'Free Exchange', suffix: ' Days' }
+              },
+              buttons: {
+                shop: 'Visit Online Store',
+                consultation: 'Free Consultation'
+              }
+            }
+          },
+          texcom: {
+            hero: {
+              title: 'Textile Tradition, Fashion Future',
+              description: '40 years of textile machinery expertise meets trend-leading fashion brands to create new value',
+              buttons: {
+                b2b: 'Textile Machinery Division',
+                b2c: 'Fashion Brand Division'
+              }
+            }
+          }
         },
         // SEO
         seo: {
@@ -829,6 +1094,129 @@ class I18nAdvanced {
           loading: '加载中...',
           error: '发生错误',
           success: '处理成功'
+        },
+        // Footer
+        footer: {
+          subsidiaries: '子公司',
+          support: '客户支持',
+          contactPhone: '咨询电话',
+          email: '电子邮件',
+          kakaoTalk: 'KakaoTalk',
+          privacy: '隐私政策',
+          terms: '使用条款',
+          followUs: 'Follow us',
+          copyright: '版权所有'
+        },
+        // Support Page
+        support: {
+          loading: '正在加载客户支持页面...',
+          error: '无法加载内容。',
+          retry: '重试',
+          noContent: '无法加载内容。',
+          channels: {
+            title: '支持渠道',
+            description: '通过各种渠道联系正浩集团的专家'
+          },
+          services: {
+            title: '支持服务',
+            description: '我们支持从系统引进到运营的整个过程'
+          },
+          faq: {
+            title: '常见问题',
+            description: '客户经常咨询的内容'
+          },
+          contactForm: {
+            title: '联系我们',
+            description: '留下您对项目的详细咨询，我们的专家将尽快回复',
+            fields: {
+              name: '姓名',
+              company: '公司名称',
+              email: '电子邮件',
+              phone: '电话',
+              category: '咨询类别',
+              message: '咨询内容'
+            },
+            placeholders: {
+              name: '请输入姓名',
+              company: '请输入公司名称',
+              email: '请输入电子邮件',
+              phone: '请输入电话号码',
+              category: '请选择咨询类别',
+              message: '请输入详细咨询内容'
+            },
+            categories: {
+              smartBuilding: '智能建筑照明控制',
+              cityInfra: '城市照明基础设施',
+              industrial: '工业照明系统',
+              cultural: '文化设施照明艺术',
+              technical: '技术咨询',
+              other: '其他'
+            },
+            submit: '提交咨询',
+            successMessage: '您的咨询已收到。我们将尽快回复。'
+          }
+        },
+        // Subsidiary Pages
+        pages: {
+          clarus: {
+            hero: {
+              title: '用技术',
+              titleHighlight: '点亮未来',
+              description: '通过自主开发的E/F2-BUS协议为照明控制设定新标准',
+              stats: {
+                years: { label: '15年+', value: '研发投资' },
+                patents: { label: '50+', value: '专利' },
+                countries: { label: '30+', value: '全球市场' }
+              },
+              buttons: {
+                technicalDocs: '下载技术资料',
+                technicalDocsPending: '资料准备中',
+                productCatalog: '查看产品目录',
+                catalogPending: '目录准备中'
+              },
+              uploadMessage: '请从管理页面上传相关文件。'
+            }
+          },
+          tlc: {
+            hero: {
+              title: '始终与您同在',
+              description: '从销售到售后服务，为客户成功提供完美的合作伙伴关系',
+              stats: {
+                network: { label: '全国50+', value: '经销商' },
+                support: { label: '24小时', value: '售后服务' },
+                satisfaction: { label: '95%', value: '客户满意度' }
+              },
+              buttons: {
+                consultation: '快速咨询申请',
+                findDealer: '查找最近的经销商'
+              }
+            }
+          },
+          illutech: {
+            hero: {
+              title: '点亮您的空间',
+              description: '在线体验40年照明专业知识精选的高端照明',
+              stats: {
+                products: { label: '', value: '高端产品', suffix: '+' },
+                delivery: { label: '', value: '当日配送', suffix: '%' },
+                exchange: { label: '', value: '免费换货', suffix: '天' }
+              },
+              buttons: {
+                shop: '访问在线商城',
+                consultation: '免费咨询'
+              }
+            }
+          },
+          texcom: {
+            hero: {
+              title: '纺织传统，时尚未来',
+              description: '40年积累的纺织机械专业知识与引领潮流的时尚品牌相遇，创造新价值',
+              buttons: {
+                b2b: '纺织机械部门',
+                b2c: '时尚品牌部门'
+              }
+            }
+          }
         },
         // Header
         header: {
@@ -1089,6 +1477,129 @@ class I18nAdvanced {
           loading: '読み込み中...',
           error: 'エラーが発生しました',
           success: '正常に処理されました'
+        },
+        // Footer
+        footer: {
+          subsidiaries: '関連会社',
+          support: 'カスタマーサポート',
+          contactPhone: 'お問い合わせ電話',
+          email: 'メール',
+          kakaoTalk: 'KakaoTalk',
+          privacy: 'プライバシーポリシー',
+          terms: '利用規約',
+          followUs: 'Follow us',
+          copyright: '全著作権所有'
+        },
+        // Support Page
+        support: {
+          loading: 'サポートページを読み込んでいます...',
+          error: 'コンテンツの読み込みに失敗しました。',
+          retry: '再試行',
+          noContent: 'コンテンツを読み込めません。',
+          channels: {
+            title: 'サポートチャネル',
+            description: '様々な方法でジョンホグループの専門家にお問い合わせいただけます'
+          },
+          services: {
+            title: 'サポートサービス',
+            description: 'システム導入から運用まで全プロセスをサポートします'
+          },
+          faq: {
+            title: 'よくある質問',
+            description: 'お客様からよくいただくご質問をまとめました'
+          },
+          contactForm: {
+            title: 'お問い合わせ',
+            description: 'プロジェクトに関する詳細なお問い合わせをお寄せください。専門家が迅速に対応いたします',
+            fields: {
+              name: '氏名',
+              company: '会社名',
+              email: 'メール',
+              phone: '電話番号',
+              category: 'お問い合わせ分野',
+              message: 'お問い合わせ内容'
+            },
+            placeholders: {
+              name: '氏名を入力してください',
+              company: '会社名を入力してください',
+              email: 'メールアドレスを入力してください',
+              phone: '電話番号を入力してください',
+              category: 'お問い合わせ分野を選択してください',
+              message: '詳細なお問い合わせ内容を入力してください'
+            },
+            categories: {
+              smartBuilding: 'スマートビルディング照明制御',
+              cityInfra: '都市照明インフラ',
+              industrial: '産業用照明システム',
+              cultural: '文化施設照明アート',
+              technical: '技術相談',
+              other: 'その他'
+            },
+            submit: 'お問い合わせ',
+            successMessage: 'お問い合わせを受け付けました。迅速に対応いたします。'
+          }
+        },
+        // Subsidiary Pages
+        pages: {
+          clarus: {
+            hero: {
+              title: '技術で未来を',
+              titleHighlight: '照らす',
+              description: '自社開発のE/F2-BUSプロトコルで照明制御の新しい基準を提示します',
+              stats: {
+                years: { label: '15年以上', value: 'R&D投資' },
+                patents: { label: '50以上', value: '特許' },
+                countries: { label: '30以上', value: 'グローバル市場' }
+              },
+              buttons: {
+                technicalDocs: '技術資料ダウンロード',
+                technicalDocsPending: '資料準備中',
+                productCatalog: '製品カタログを見る',
+                catalogPending: 'カタログ準備中'
+              },
+              uploadMessage: '管理ページから関連ファイルをアップロードしてください。'
+            }
+          },
+          tlc: {
+            hero: {
+              title: 'いつもそばに',
+              description: '営業からアフターサービスまで、お客様の成功のための完璧なパートナーシップを提供します',
+              stats: {
+                network: { label: '全国50以上', value: '販売店' },
+                support: { label: '24時間', value: 'アフターサービス' },
+                satisfaction: { label: '95%', value: '顧客満足度' }
+              },
+              buttons: {
+                consultation: 'クイック相談申請',
+                findDealer: '最寄りの販売店を探す'
+              }
+            }
+          },
+          illutech: {
+            hero: {
+              title: 'あなたの空間を照らします',
+              description: '40年の照明専門知識が厳選したプレミアム照明をオンラインで体験してください',
+              stats: {
+                products: { label: '', value: 'プレミアム製品', suffix: '以上' },
+                delivery: { label: '', value: '当日配送', suffix: '%' },
+                exchange: { label: '', value: '無料交換', suffix: '日' }
+              },
+              buttons: {
+                shop: 'オンラインストアへ',
+                consultation: '無料相談'
+              }
+            }
+          },
+          texcom: {
+            hero: {
+              title: '繊維の伝統、ファッションの未来',
+              description: '40年間蓄積された繊維機械の専門知識とトレンドをリードするファッションブランドが出会い、新しい価値を創造します',
+              buttons: {
+                b2b: '繊維機械事業部',
+                b2c: 'ファッションブランド事業部'
+              }
+            }
+          }
         },
         // Header
         header: {

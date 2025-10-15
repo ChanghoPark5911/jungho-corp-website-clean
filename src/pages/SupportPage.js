@@ -38,7 +38,7 @@ const SupportPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">고객지원 페이지를 불러오는 중...</p>
+          <p className="text-gray-600">{t('support.loading')}</p>
         </div>
       </div>
     );
@@ -48,12 +48,12 @@ const SupportPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 mb-4">{error}</p>
+          <p className="text-red-600 mb-4">{t('support.error')}</p>
           <button 
             onClick={loadSupportContent}
             className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
           >
-            다시 시도
+            {t('support.retry')}
           </button>
         </div>
       </div>
@@ -64,7 +64,7 @@ const SupportPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600">콘텐츠를 불러올 수 없습니다.</p>
+          <p className="text-gray-600">{t('support.noContent')}</p>
         </div>
       </div>
     );
@@ -95,10 +95,10 @@ const SupportPage = () => {
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-              지원 채널
+              {t('support.channels.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              다양한 방법으로 정호그룹의 전문가들과 연락하실 수 있습니다
+              {t('support.channels.description')}
             </p>
           </div>
 
@@ -131,10 +131,10 @@ const SupportPage = () => {
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-              지원 서비스
+              {t('support.services.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              시스템 도입부터 운영까지 전 과정을 지원합니다
+              {t('support.services.description')}
             </p>
           </div>
 
@@ -163,10 +163,10 @@ const SupportPage = () => {
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-              자주 묻는 질문
+              {t('support.faq.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              고객님들이 자주 문의하시는 내용들을 정리했습니다
+              {t('support.faq.description')}
             </p>
           </div>
 
@@ -190,10 +190,10 @@ const SupportPage = () => {
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              {contactForm.title || "문의하기"}
+              {contactForm.title || t('support.contactForm.title')}
             </h2>
             <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-              {contactForm.description || "프로젝트에 대한 상세한 문의사항을 남겨주시면 전문가가 빠른 시일 내에 답변드립니다"}
+              {contactForm.description || t('support.contactForm.description')}
             </p>
           </div>
 
@@ -203,23 +203,23 @@ const SupportPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {contactForm.fields?.name?.label || "이름"} *
+                      {contactForm.fields?.name?.label || t('support.contactForm.fields.name')} *
                     </label>
                     <input
                       type="text"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                      placeholder="이름을 입력하세요"
+                      placeholder={t('support.contactForm.placeholders.name')}
                       required
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {contactForm.fields?.company?.label || "회사명"}
+                      {contactForm.fields?.company?.label || t('support.contactForm.fields.company')}
                     </label>
                     <input
                       type="text"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                      placeholder="회사명을 입력하세요"
+                      placeholder={t('support.contactForm.placeholders.company')}
                     />
                   </div>
                 </div>
@@ -227,23 +227,23 @@ const SupportPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {contactForm.fields?.email?.label || "이메일"} *
+                      {contactForm.fields?.email?.label || t('support.contactForm.fields.email')} *
                     </label>
                     <input
                       type="email"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                      placeholder="이메일을 입력하세요"
+                      placeholder={t('support.contactForm.placeholders.email')}
                       required
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {contactForm.fields?.phone?.label || "연락처"} *
+                      {contactForm.fields?.phone?.label || t('support.contactForm.fields.phone')} *
                     </label>
                     <input
                       type="tel"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                      placeholder="연락처를 입력하세요"
+                      placeholder={t('support.contactForm.placeholders.phone')}
                       required
                     />
                   </div>
@@ -251,20 +251,20 @@ const SupportPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {contactForm.fields?.category?.label || "문의 분야"}
+                    {contactForm.fields?.category?.label || t('support.contactForm.fields.category')}
                   </label>
                   <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                     {contactForm.fields?.category?.options?.map((option, index) => (
                       <option key={index} value={option}>{option}</option>
                     )) || (
                       <>
-                        <option>문의 분야를 선택하세요</option>
-                        <option>스마트 빌딩 조명제어</option>
-                        <option>도시 조명 인프라</option>
-                        <option>산업용 조명시스템</option>
-                        <option>문화시설 조명예술</option>
-                        <option>기술 상담</option>
-                        <option>기타</option>
+                        <option>{t('support.contactForm.placeholders.category')}</option>
+                        <option>{t('support.contactForm.categories.smartBuilding')}</option>
+                        <option>{t('support.contactForm.categories.cityInfra')}</option>
+                        <option>{t('support.contactForm.categories.industrial')}</option>
+                        <option>{t('support.contactForm.categories.cultural')}</option>
+                        <option>{t('support.contactForm.categories.technical')}</option>
+                        <option>{t('support.contactForm.categories.other')}</option>
                       </>
                     )}
                   </select>
@@ -272,12 +272,12 @@ const SupportPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {contactForm.fields?.message?.label || "문의 내용"} *
+                    {contactForm.fields?.message?.label || t('support.contactForm.fields.message')} *
                   </label>
                   <textarea
                     rows="6"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    placeholder="상세한 문의 내용을 입력하세요"
+                    placeholder={t('support.contactForm.placeholders.message')}
                     required
                   ></textarea>
                 </div>
@@ -289,10 +289,10 @@ const SupportPage = () => {
                     className="text-lg px-8 py-4"
                     onClick={(e) => {
                       e.preventDefault();
-                      alert('문의가 접수되었습니다. 빠른 시일 내에 답변드리겠습니다.');
+                      alert(t('support.contactForm.successMessage'));
                     }}
                   >
-                    문의하기
+                    {t('support.contactForm.submit')}
                   </Button>
                 </div>
               </form>

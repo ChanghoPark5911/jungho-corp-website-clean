@@ -1,8 +1,10 @@
 import React from 'react';
 import { COMPANY_INFO, SUBSIDIARIES, SOCIAL_LINKS } from '../utils/constants';
 import { Typography } from './ui';
+import { useI18n } from '../hooks/useI18n';
 
 const Footer = () => {
+  const { t } = useI18n();
   // SNS 링크
   const socialLinks = [
     {
@@ -81,7 +83,7 @@ const Footer = () => {
           {/* 계열사 링크 */}
           <div className="lg:col-span-2">
             <Typography variant="h4" className="mb-4 md:mb-6 text-white">
-              계열사
+              {t('footer.subsidiaries')}
             </Typography>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {Object.entries(SUBSIDIARIES).map(([key, subsidiary]) => (
@@ -110,7 +112,7 @@ const Footer = () => {
           {/* 고객지원 */}
           <div className="lg:col-span-1">
             <Typography variant="h4" className="mb-4 md:mb-6 text-white">
-              고객지원
+              {t('footer.support')}
             </Typography>
             <div className="space-y-3 md:space-y-4">
               <div className="bg-white/10 rounded-lg p-3 md:p-4">
@@ -118,7 +120,7 @@ const Footer = () => {
                   <svg className="w-4 h-4 md:w-5 md:h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
-                  <span className="font-medium text-sm md:text-base">문의전화</span>
+                  <span className="font-medium text-sm md:text-base">{t('footer.contactPhone')}</span>
                 </div>
                 <p className="text-base md:text-lg font-bold text-secondary">{COMPANY_INFO.support.phone.number}</p>
                                     <p className="text-xs text-white mt-1">{COMPANY_INFO.support.phone.hours}</p>
@@ -129,7 +131,7 @@ const Footer = () => {
                   <svg className="w-4 h-4 md:w-5 md:h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
-                  <span className="font-medium text-sm md:text-base">이메일</span>
+                  <span className="font-medium text-sm md:text-base">{t('footer.email')}</span>
                 </div>
                 <p className="text-secondary font-medium text-sm md:text-base">{COMPANY_INFO.support.email.address}</p>
                                     <p className="text-xs text-white mt-1">{COMPANY_INFO.support.email.hours}</p>
@@ -140,7 +142,7 @@ const Footer = () => {
                   <svg className="w-4 h-4 md:w-5 md:h-5 text-secondary mr-2" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                   </svg>
-                  <span className="font-medium text-sm md:text-base">카카오톡</span>
+                  <span className="font-medium text-sm md:text-base">{t('footer.kakaoTalk')}</span>
                 </div>
                 <p className="text-secondary font-medium text-sm md:text-base">{COMPANY_INFO.support.kakaoTalk.id}</p>
                                     <p className="text-xs text-white mt-1">{COMPANY_INFO.support.kakaoTalk.hours}</p>
@@ -159,14 +161,14 @@ const Footer = () => {
           
           {/* 저작권 및 약관 */}
                       <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 md:space-x-6 text-xs md:text-sm text-white">
-            <p>Copyright (C) 2019 Jungho All Right Reserved.</p>
+            <p>Copyright (C) 2019 Jungho {t('footer.copyright')}.</p>
             <div className="flex items-center space-x-3 md:space-x-4">
               <a
                 href="/privacy"
                 onClick={() => handleLinkClick('/privacy')}
                 className="bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700 transition-colors duration-200"
               >
-                개인정보처리지침
+                {t('footer.privacy')}
               </a>
                               <span className="text-white">|</span>
               <a
@@ -174,14 +176,14 @@ const Footer = () => {
                 onClick={() => handleLinkClick('/terms')}
                 className="hover:text-secondary transition-colors duration-200"
               >
-                이용약관
+                {t('footer.terms')}
               </a>
             </div>
           </div>
 
           {/* SNS 아이콘 */}
           <div className="flex items-center space-x-3 md:space-x-4">
-                            <span className="text-xs md:text-sm text-white mr-2">Follow us</span>
+                            <span className="text-xs md:text-sm text-white mr-2">{t('footer.followUs')}</span>
             {socialLinks.map((social) => (
               <a
                 key={social.name}

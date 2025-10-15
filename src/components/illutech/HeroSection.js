@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useI18n } from '../../hooks/useI18n';
 
 const HeroSection = () => {
+  const { t } = useI18n();
   const [isVisible, setIsVisible] = useState(false);
   const [counters, setCounters] = useState({});
   const heroRef = useRef(null);
@@ -17,9 +19,9 @@ const HeroSection = () => {
     if (!isVisible) return;
 
     const stats = [
-      { value: 1000, suffix: '+', label: '프리미엄 제품' },
-      { value: 100, suffix: '%', label: '당일배송' },
-      { value: 30, suffix: '일', label: '무료 교환' }
+      { value: 1000, suffix: '+', label: t('pages.illutech.hero.stats.products.value') },
+      { value: 100, suffix: '%', label: t('pages.illutech.hero.stats.delivery.value') },
+      { value: 30, suffix: t('pages.illutech.hero.stats.exchange.suffix'), label: t('pages.illutech.hero.stats.exchange.value') }
     ];
 
     const animateCounters = () => {
@@ -49,7 +51,7 @@ const HeroSection = () => {
 
     const timer = setTimeout(animateCounters, 1500);
     return () => clearTimeout(timer);
-  }, [isVisible]);
+  }, [isVisible, t]);
 
   return (
     <section 
@@ -76,7 +78,7 @@ const HeroSection = () => {
           }`}
           style={{ transitionDelay: '0.3s' }}
         >
-          당신의 공간을 빛냅니다
+          {t('pages.illutech.hero.title')}
         </h1>
         
         {/* 서브 카피 */}
@@ -86,7 +88,7 @@ const HeroSection = () => {
           }`}
           style={{ transitionDelay: '0.6s' }}
         >
-          40년 조명 전문성이 선별한 프리미엄 조명을 온라인에서 만나보세요
+          {t('pages.illutech.hero.description')}
         </p>
         
         {/* 핵심 수치 */}
@@ -101,7 +103,7 @@ const HeroSection = () => {
               {counters[0] || 0}+
             </div>
             <div className="text-sm sm:text-base text-orange-100">
-              프리미엄 제품
+              {t('pages.illutech.hero.stats.products.value')}
             </div>
           </div>
           <div className="text-center">
@@ -109,15 +111,15 @@ const HeroSection = () => {
               {counters[1] || 0}%
             </div>
             <div className="text-sm sm:text-base text-orange-100">
-              당일배송
+              {t('pages.illutech.hero.stats.delivery.value')}
             </div>
           </div>
           <div className="text-center">
             <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">
-              {counters[2] || 0}일
+              {counters[2] || 0}{t('pages.illutech.hero.stats.exchange.suffix')}
             </div>
             <div className="text-sm sm:text-base text-orange-100">
-              무료 교환
+              {t('pages.illutech.hero.stats.exchange.value')}
             </div>
           </div>
         </div>
@@ -133,14 +135,14 @@ const HeroSection = () => {
             onClick={() => window.open('https://www.illutech.co.kr', '_blank')}
             className="bg-white text-orange-600 font-semibold py-4 px-8 rounded-lg hover:bg-orange-50 transition-colors duration-200 text-lg shadow-lg"
           >
-            온라인몰 바로가기
+            {t('pages.illutech.hero.buttons.shop')}
           </button>
           
           <button
             onClick={() => window.location.href = '#consultation'}
             className="bg-transparent border-2 border-white hover:bg-white hover:text-orange-600 font-semibold py-4 px-8 rounded-lg transition-colors duration-200 text-lg"
           >
-            무료 상담 신청
+            {t('pages.illutech.hero.buttons.consultation')}
           </button>
         </div>
       </div>
@@ -148,4 +150,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection; 
+export default HeroSection;

@@ -216,10 +216,10 @@ const UnifiedHomePage = () => {
       title: safeGroupOverview.title,
       content: contentArray,
       image: optimizedImages.groupIntro.src,
-      webpImage: optimizedImages.groupIntro.webpSrc,
-      stats: homeData.achievements || []
+      webpImage: optimizedImages.groupIntro.webpSrc
+      // stats 제거: 히어로 섹션과 중복되어 혼란스러움
     };
-  }, [homeData?.groupOverview?.title, homeData?.groupOverview?.description, homeData?.groupOverview?.vision, homeData?.groupOverview?.additionalVision, homeData?.achievements]);
+  }, [homeData?.groupOverview?.title, homeData?.groupOverview?.description, homeData?.groupOverview?.vision, homeData?.groupOverview?.additionalVision]);
 
   // 계열사 소개 섹션 - 홈페이지 관리 데이터 우선
   const subsidiariesData = useMemo(() => {

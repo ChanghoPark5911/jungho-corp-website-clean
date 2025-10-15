@@ -7,24 +7,12 @@ const GroupIntro = ({
   content = [],
   image,
   webpImage,
-  stats = [],
   actionButton,
   className = '',
   ...props
 }) => {
   const { t, currentLanguage } = useI18n(); // 다국어 지원
   const [isVisible, setIsVisible] = useState(false);
-  const [counters, setCounters] = useState({});
-  const [statsData, setStatsData] = useState({
-    years: '40',
-    projects: '800',
-    countries: '7',
-    support: '99',
-    yearsLabel: '조명제어 전문 경험',
-    projectsLabel: '프로젝트 완료',
-    countriesLabel: '해외진출국',
-    supportLabel: '고객만족도'
-  });
   const sectionRef = useRef(null);
 
   // 제목: 한국어일 때만 props 우선, 다른 언어는 i18n 사용
@@ -61,60 +49,6 @@ const GroupIntro = ({
       '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
     ];
   }, [currentLanguage, content, t]);
-  const displayStats = stats && Array.isArray(stats) && stats.length > 0 ? stats : [
-    { value: '40', suffix: '년', label: '조명제어 전문 경험' },
-    { value: '800', suffix: '+', label: '프로젝트 완료' },
-    { value: '7', suffix: '+', label: '해외 진출국' },
-    { value: '99', suffix: '%', label: '고객 만족도' }
-  ];
-
-  // localStorage에서 성과지표 데이터 로드 (기존 호환성 유지)
-  useEffect(() => {
-    const loadStatsData = () => {
-      // 통합 데이터 구조에서 먼저 로드 시도
-      const homePageData = localStorage.getItem('homePageData');
-      if (homePageData) {
-        try {
-          const parsedData = JSON.parse(homePageData);
-          if (parsedData.stats) {
-            setStatsData(parsedData.stats);
-            console.log('통합 데이터에서 성과지표 데이터 로드됨:', parsedData.stats);
-            return;
-          }
-        } catch (error) {
-          console.error('통합 데이터 파싱 오류:', error);
-        }
-      }
-      
-      // 기존 개별 키에서 로드 (호환성 유지)
-      const saved = localStorage.getItem('stats_content');
-      if (saved) {
-        try {
-          const parsedData = JSON.parse(saved);
-          setStatsData(parsedData);
-          console.log('개별 키에서 성과지표 데이터 로드됨:', parsedData);
-        } catch (error) {
-          console.error('성과지표 데이터 파싱 오류:', error);
-        }
-      }
-    };
-    
-    // 초기 로드
-    loadStatsData();
-    
-    // 실시간 업데이트 리스너
-    const handleStatsUpdate = () => {
-      loadStatsData();
-    };
-    
-    window.addEventListener('statsContentUpdated', handleStatsUpdate);
-    window.addEventListener('homePageDataUpdated', handleStatsUpdate);
-    
-    return () => {
-      window.removeEventListener('statsContentUpdated', handleStatsUpdate);
-      window.removeEventListener('homePageDataUpdated', handleStatsUpdate);
-    };
-  }, []);
 
   // Intersection Observer 설정
   useEffect(() => {
@@ -202,7 +136,7 @@ const GroupIntro = ({
             )}
           </div>
           
-          {/* 우측: 이미지 및 통계 */}
+          {/* 우측: 이미지 */}
           <div 
             className={`relative transition-all duration-1000 ${
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
@@ -216,24 +150,6 @@ const GroupIntro = ({
                 alt="정호그룹 회사 건물" 
                 className="w-full h-80 lg:h-96 object-cover"
               />
-              
-              {/* 통계 오버레이 */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-                <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-                    {displayStats.map((stat, index) => (
-                      <div key={index} className="text-center">
-                        <div className="text-2xl lg:text-3xl font-bold text-white mb-1">
-                          {stat.value}{stat.suffix}
-                        </div>
-                        <div className="text-sm lg:text-base text-gray-200">
-                          {stat.label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -242,4 +158,4 @@ const GroupIntro = ({
   );
 };
 
-export default GroupIntro; 
+export default GroupIntro;

@@ -179,6 +179,10 @@ const UnifiedAdminPage = () => {
           localStorage.setItem('homepage_content_ko', JSON.stringify(data));
           console.log('💾 localStorage 저장 완료:', data);
           
+          // 🔧 커스텀 이벤트 발생 - 홈페이지에 즉시 반영
+          window.dispatchEvent(new Event('homepageContentUpdated'));
+          console.log('📡 homepageContentUpdated 이벤트 발생!');
+          
           // 홈화면에 저장된 데이터를 반영하기 위해 forceDefault를 false로 변경
           localStorage.setItem('forceDefault', 'false');
           
@@ -501,10 +505,10 @@ const HomepageManagement = ({ data, onSave, isLoading }) => {
       description: ''
     },
     achievements: [
-      { value: '', suffix: '', label: '' },
-      { value: '', suffix: '', label: '' },
-      { value: '', suffix: '', label: '' },
-      { value: '', suffix: '', label: '' }
+      { number: '', suffix: '', label: '' },
+      { number: '', suffix: '', label: '' },
+      { number: '', suffix: '', label: '' },
+      { number: '', suffix: '', label: '' }
     ],
     groupOverview: {
       title: '',
@@ -645,10 +649,10 @@ const HomepageManagement = ({ data, onSave, isLoading }) => {
               <div className="flex space-x-2 mb-2">
                 <input
                   type="text"
-                  value={achievement.value}
+                  value={achievement.number}
                   onChange={(e) => {
                     const newAchievements = [...formData.achievements];
-                    newAchievements[index].value = e.target.value;
+                    newAchievements[index].number = e.target.value;
                     setFormData(prev => ({ ...prev, achievements: newAchievements }));
                   }}
                   className="flex-1 p-2 border border-gray-300 rounded"
@@ -1057,7 +1061,7 @@ const NewsManagement = ({ data, onSave, isLoading }) => {
                 </button>
               ))}
             </div>
-
+            
             <div className="space-y-4">
               {/* 언어별 제목/내용 */}
               <div>

@@ -179,6 +179,22 @@ const HomePage = () => {
         
         // 2. Firebase 실패 시 LocalStorage에서 로드 시도
         console.log('Firebase 실패, LocalStorage에서 로드 시도...');
+        
+        // 🔧 관리자 페이지에서 저장한 데이터 우선 확인
+        const adminSavedData = localStorage.getItem('homepage_content_ko');
+        if (adminSavedData) {
+          try {
+            const parsedAdminData = JSON.parse(adminSavedData);
+            console.log('✅ 관리자 페이지에서 저장한 데이터 로드:', parsedAdminData);
+            setHomeData(parsedAdminData);
+            setDebugInfo('관리자 페이지 데이터 로드됨');
+            return;
+          } catch (error) {
+            console.error('❌ 관리자 데이터 파싱 오류:', error);
+          }
+        }
+        
+        // 기존 homeData 키도 확인 (하위 호환성)
         const storedData = localStorage.getItem('homeData');
         if (storedData) {
           try {
@@ -213,6 +229,30 @@ const HomePage = () => {
     };
     
     loadContent();
+    
+    // 🔧 관리자 페이지에서 데이터 업데이트 시 실시간 반영
+    const handleStorageChange = (e) => {
+      if (e.key === 'homepage_content_ko' || e.key === 'homeData') {
+        console.log('🔔 홈페이지 데이터 업데이트 감지!');
+        loadContent();
+      }
+    };
+    
+    // storage 이벤트 리스너 (다른 탭/창에서 변경 시)
+    window.addEventListener('storage', handleStorageChange);
+    
+    // 같은 탭에서 변경 시를 위한 커스텀 이벤트
+    const handleCustomUpdate = () => {
+      console.log('🔔 커스텀 홈페이지 업데이트 이벤트 감지!');
+      loadContent();
+    };
+    
+    window.addEventListener('homepageContentUpdated', handleCustomUpdate);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('homepageContentUpdated', handleCustomUpdate);
+    };
   }, []);
 
   // 이미지 데이터 변경 감지 및 홈페이지 업데이트
@@ -250,12 +290,18 @@ const HomePage = () => {
     console.log('Firebase Hero 데이터:', safeHero);
     console.log('Firebase Achievements 데이터:', safeAchievements);
     
+    // 🔧 줄바꿈 처리: \n을 실제 줄바꿈으로 변환
+    const processLineBreaks = (text) => {
+      if (!text) return '';
+      return text.replace(/\\n/g, '\n');
+    };
+    
     return {
       backgroundImage: heroBackgroundImage,
       webpBackgroundImage: heroBackgroundImage,
-      mainCopy: safeHero.title || t('home.hero.title', { fallback: '정호그룹\n조명의 미래를\n만들어갑니다' }),
-      subCopy: safeHero.subtitle || t('home.hero.subtitle', { fallback: '40년 전통의 조명제어 전문기업' }),
-      description: safeHero.description || t('home.hero.description', { fallback: '혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다' }),
+      mainCopy: processLineBreaks(safeHero.title || t('home.hero.title', { fallback: '정호그룹\n조명의 미래를\n만들어갑니다' })),
+      subCopy: processLineBreaks(safeHero.subtitle || t('home.hero.subtitle', { fallback: '40년 전통의 조명제어 전문기업' })),
+      description: processLineBreaks(safeHero.description || t('home.hero.description', { fallback: '혁신적인 기술과 품질로 더 나은 미래를 만들어갑니다' })),
       stats: [
         {
           value: safeAchievements[0]?.number || '40',

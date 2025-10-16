@@ -30,6 +30,61 @@ const UnifiedAdminPage = () => {
     }
   }, []);
 
+  // 현재 홈화면 데이터를 관리자 페이지에 로드 (인증 후에만)
+  useEffect(() => {
+    if (!isAuthenticated) return; // 인증 안되면 실행 안함
+    
+    console.log('🔍 관리자 페이지 데이터 로드 시작');
+    
+    // 뉴스 데이터 로드
+    const savedNews = localStorage.getItem('news_data');
+    if (savedNews) {
+      try {
+        const parsedNews = JSON.parse(savedNews);
+        console.log('✅ 뉴스 데이터 로드:', parsedNews);
+        setNewsData(parsedNews);
+      } catch (error) {
+        console.error('❌ 뉴스 데이터 파싱 오류:', error);
+      }
+    }
+    
+    // 프로젝트 데이터 로드
+    const savedProjects = localStorage.getItem('projects_data');
+    if (savedProjects) {
+      try {
+        const parsedProjects = JSON.parse(savedProjects);
+        console.log('✅ 프로젝트 데이터 로드:', parsedProjects);
+        setProjectData(parsedProjects);
+      } catch (error) {
+        console.error('❌ 프로젝트 데이터 파싱 오류:', error);
+      }
+    }
+    
+    // 다국어 데이터 로드
+    const savedI18n = localStorage.getItem('i18n_data');
+    if (savedI18n) {
+      try {
+        const parsedI18n = JSON.parse(savedI18n);
+        setI18nData(parsedI18n);
+      } catch (error) {
+        console.error('❌ 다국어 데이터 파싱 오류:', error);
+      }
+    }
+    
+    // localStorage에서 홈페이지 데이터 로드
+    const localContent = localStorage.getItem('homepage_content_ko');
+    if (localContent) {
+      try {
+        const parsedContent = JSON.parse(localContent);
+        setHomepageData(parsedContent);
+      } catch (error) {
+        console.error('❌ localStorage 데이터 파싱 오류:', error);
+      }
+    } else if (currentHomeData) {
+      setHomepageData(currentHomeData);
+    }
+  }, [isAuthenticated, currentHomeData]);
+
   // 🔐 비밀번호 확인
   const handleLogin = (e) => {
     e.preventDefault();
@@ -105,288 +160,6 @@ const UnifiedAdminPage = () => {
     );
   }
 
-  // 현재 홈화면 데이터를 관리자 페이지에 로드
-  useEffect(() => {
-    console.log('🔍 관리자 페이지 데이터 로드 시작');
-    
-    // 뉴스 데이터 로드
-    const savedNews = localStorage.getItem('news_data');
-    if (savedNews) {
-      try {
-        const parsedNews = JSON.parse(savedNews);
-        console.log('✅ 뉴스 데이터 로드:', parsedNews);
-        setNewsData(parsedNews);
-      } catch (error) {
-        console.error('❌ 뉴스 데이터 파싱 오류:', error);
-      }
-    }
-    
-    // 프로젝트 데이터 로드
-    const savedProjects = localStorage.getItem('projects_data');
-    if (savedProjects) {
-      try {
-        const parsedProjects = JSON.parse(savedProjects);
-        console.log('✅ 프로젝트 데이터 로드:', parsedProjects);
-        setProjectData(parsedProjects);
-      } catch (error) {
-        console.error('❌ 프로젝트 데이터 파싱 오류:', error);
-      }
-    }
-    
-    // 정적 페이지 데이터 로드
-    const savedStaticPages = localStorage.getItem('static_pages_data');
-    if (savedStaticPages) {
-      try {
-        const parsedStaticPages = JSON.parse(savedStaticPages);
-        console.log('✅ 정적 페이지 데이터 로드:', parsedStaticPages);
-        setStaticPageData(parsedStaticPages);
-      } catch (error) {
-        console.error('❌ 정적 페이지 데이터 파싱 오류:', error);
-      }
-    }
-    
-    // 다국어 데이터 로드
-    const savedI18n = localStorage.getItem('i18n_data');
-    if (savedI18n) {
-      try {
-        const parsedI18n = JSON.parse(savedI18n);
-        console.log('✅ 다국어 데이터 로드 (flat):', parsedI18n);
-        setI18nData(parsedI18n);
-      } catch (error) {
-        console.error('❌ 다국어 데이터 파싱 오류:', error);
-      }
-    } else {
-      // i18n_data가 없으면 i18nTranslations에서 로드 시도 (nested -> flat 변환)
-      const savedTranslations = localStorage.getItem('i18nTranslations');
-      if (savedTranslations) {
-        try {
-          const parsedTrans = JSON.parse(savedTranslations);
-          console.log('🔄 i18nTranslations에서 로드 (nested -> flat 변환)');
-          
-          // nested를 flat으로 변환
-          const convertNestedToFlat = (nested) => {
-            const flat = {};
-            
-            const flatten = (obj, prefix = '', langKey) => {
-              Object.keys(obj).forEach(key => {
-                const value = obj[key];
-                const newKey = prefix ? `${prefix}.${key}` : key;
-                
-                if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-                  flatten(value, newKey, langKey);
-                } else {
-                  if (!flat[langKey]) flat[langKey] = {};
-                  flat[langKey][newKey] = value;
-                }
-              });
-            };
-            
-            Object.keys(nested).forEach(lang => {
-              flatten(nested[lang], '', lang);
-            });
-            
-            return flat;
-          };
-          
-          const flatData = convertNestedToFlat(parsedTrans);
-          console.log('✅ nested -> flat 변환 완료:', flatData);
-          setI18nData(flatData);
-          
-          // flat 데이터도 i18n_data로 저장
-          localStorage.setItem('i18n_data', JSON.stringify(flatData));
-        } catch (error) {
-          console.error('❌ i18nTranslations 파싱 오류:', error);
-        }
-      } else {
-        // localStorage에 없으면 기본 데이터 생성
-        console.log('📝 기본 다국어 데이터 생성');
-      const defaultI18nData = {
-        ko: {
-          'header.navigation.home': 'HOME',
-          'header.navigation.business': '사업영역',
-          'header.navigation.projects': '프로젝트',
-          'header.navigation.news': '뉴스',
-          'header.navigation.support': '고객지원',
-          'home.hero.title': '40년 축적된 기술력으로\n조명의 미래를 혁신합니다',
-          'home.hero.subtitle': '정호그룹은 조명제어 전문 기업으로서, 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다',
-          'home.hero.description': '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.',
-          'home.hero.primaryAction': '사업영역 보기',
-          'home.hero.secondaryAction': '문의하기',
-          'home.group.title': '40년 전통의\n조명제어 전문기업',
-          'home.group.para1': '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.',
-          'home.group.para2': 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.',
-          'home.group.para3': '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.',
-          'home.subsidiaries.title': '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
-          'home.subsidiaries.description': '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출',
-          'home.subsidiaries.clarus.title': '클라루스',
-          'home.subsidiaries.clarus.subtitle': 'AI 기반 스마트 조명/전력제어',
-          'home.subsidiaries.clarus.description': '스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문 업체',
-          'home.subsidiaries.tlc.title': '정호티엘씨',
-          'home.subsidiaries.tlc.subtitle': '조명/전력제어의 설계/시공/사후관리',
-          'home.subsidiaries.tlc.description': '공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축하고, 사후관리를 담당하는 전문업체',
-          'home.subsidiaries.illutech.title': '일루텍',
-          'home.subsidiaries.illutech.subtitle': '유.무선 스마트조명제품 쇼핑몰 공급',
-          'home.subsidiaries.illutech.description': '유.무선 조명제어 제품을 국내의 유명 쇼핑몰에 전문 판매, 편리한 시공기술지원 업체',
-          'home.subsidiaries.texcom.title': '정호텍스컴',
-          'home.subsidiaries.texcom.subtitle': '섬유기계 도염, 운영을 통해 국내 섬유산업 지원과 자체 패션브랜드 운영',
-          'home.subsidiaries.texcom.description': '40년간 축적된 섬유기계 전문성과 패션브랜드 운영을 통해 새로운 가치를 창출하는 전문업체'
-        },
-        en: {
-          'header.navigation.home': 'HOME',
-          'header.navigation.business': 'BUSINESS',
-          'header.navigation.projects': 'PROJECTS',
-          'header.navigation.news': 'NEWS',
-          'header.navigation.support': 'SUPPORT',
-          'home.hero.title': 'Innovating the Future of Lighting\nwith 40 Years of Accumulated Technology',
-          'home.hero.subtitle': 'Jungho Group is a professional lighting control company that supports customer success with innovative technology and perfect service',
-          'home.hero.description': 'We provide the best solutions based on experience in operating more than 150 projects and over 85,000 control points.',
-          'home.hero.primaryAction': 'View Business Areas',
-          'home.hero.secondaryAction': 'Contact Us',
-          'home.group.title': 'Professional Lighting Control Company\nwith 40 Years of Tradition',
-          'home.group.para1': 'Since its establishment in 1983, Jungho Group has built expertise in the lighting control field for 40 years and presented a new paradigm of lighting control technology by developing Korea\'s first E/F2-BUS protocol in-house.',
-          'home.group.para2': 'We build a complete ecosystem from B2B to B2C to meet all customer requirements, and provide Total Solution through synergy among 4 subsidiaries.',
-          'home.group.para3': 'Based on innovative technology and 40 years of accumulated know-how, we support customer success and are growing into a global leader in the lighting control field.',
-          'home.subsidiaries.title': 'Perfect Ecosystem of Lighting/Power Control\nand Textile Machinery by 4 Subsidiaries',
-          'home.subsidiaries.description': 'Creating synergy through expertise in each field, from technology development to customer service',
-          'home.subsidiaries.clarus.title': 'Clarus',
-          'home.subsidiaries.clarus.subtitle': 'AI-based Smart Lighting/Power Control',
-          'home.subsidiaries.clarus.description': 'Develops smart lighting/power control systems, produces core devices, and supplies them domestically and internationally',
-          'home.subsidiaries.tlc.title': 'Jungho TLC',
-          'home.subsidiaries.tlc.subtitle': 'Design/Construction/After-sales of Lighting/Power Control',
-          'home.subsidiaries.tlc.description': 'Designs and builds optimal smart lighting environments for public institutions, office buildings, logistics and data centers, and provides after-sales service',
-          'home.subsidiaries.illutech.title': 'Illutech',
-          'home.subsidiaries.illutech.subtitle': 'Wired/Wireless Smart Lighting Products Shopping Mall Supply',
-          'home.subsidiaries.illutech.description': 'Professionally sells wired/wireless lighting control products to famous domestic shopping malls and provides convenient construction technical support',
-          'home.subsidiaries.texcom.title': 'Jungho Texcom',
-          'home.subsidiaries.texcom.subtitle': 'Supporting Domestic Textile Industry and Operating Fashion Brands',
-          'home.subsidiaries.texcom.description': 'Creates new value through 40 years of accumulated textile machinery expertise and fashion brand operation'
-        },
-        zh: {
-          'header.navigation.home': 'HOME',
-          'header.navigation.business': '业务领域',
-          'header.navigation.projects': '项目',
-          'header.navigation.news': '新闻',
-          'header.navigation.support': '客户支持',
-          'home.hero.title': '以40年积累的技术力\n创新照明未来',
-          'home.hero.subtitle': '正浩集团是专业的照明控制企业，以创新技术和完美服务支持客户成功',
-          'home.hero.description': '基于150多个项目和85,000多个控制点的运营经验，提供最佳解决方案。',
-          'home.hero.primaryAction': '查看业务领域',
-          'home.hero.secondaryAction': '联系我们',
-          'home.group.title': '具有40年传统的\n照明控制专业企业',
-          'home.group.para1': '自1983年创立以来，正浩集团在照明控制领域积累了40年的专业知识，并通过自主开发韩国首个E/F2-BUS协议，提出了照明控制技术的新范式。',
-          'home.group.para2': '从B2B到B2C构建完整的生态系统，满足客户的所有需求，并通过4家子公司之间的协同效应提供整体解决方案。',
-          'home.group.para3': '基于创新技术和40年积累的专业知识，我们支持客户的成功，并正在成长为照明控制领域的全球领导者。',
-          'home.subsidiaries.title': '4个子公司打造的完美照明/电力控制及纺织机械生态系统',
-          'home.subsidiaries.description': '从技术开发到客户服务，通过各领域专业性创造协同效应'
-        },
-        ja: {
-          'header.navigation.home': 'HOME',
-          'header.navigation.business': '事業領域',
-          'header.navigation.projects': 'プロジェクト',
-          'header.navigation.news': 'ニュース',
-          'header.navigation.support': 'カスタマーサポート',
-          'home.hero.title': '40年蓄積された技術力で\n照明の未来を革新',
-          'home.hero.subtitle': '正浩グループは照明制御専門企業として、革新的な技術と完璧なサービスで顧客の成功を支援します',
-          'home.hero.description': '150以上のプロジェクトと85,000以上の制御ポイント運営経験を基に最高のソリューションを提供します。',
-          'home.hero.primaryAction': '事業領域を見る',
-          'home.hero.secondaryAction': 'お問い合わせ',
-          'home.group.title': '40年の伝統を持つ\n照明制御専門企業',
-          'home.group.para1': '1983年の創立以来、40年間照明制御分野で専門性を積み重ねてきた正浩グループは、韓国初のE/F2-BUSプロトコルを自主開発し、照明制御技術の新しいパラダイムを提示しました。',
-          'home.group.para2': 'B2BからB2Cまで完全なエコシステムを構築してお客様のすべての要求事項を満たし、4つの系列会社間のシナジーを通じてトータルソリューションを提供します。',
-          'home.group.para3': '革新的な技術と40年間蓄積されたノウハウを基にお客様の成功を支援し、照明制御分野のグローバルリーダーとして成長しています。',
-          'home.subsidiaries.title': '4つの系列会社が作る完璧な照明/電力制御及び繊維機械エコシステム',
-          'home.subsidiaries.description': '技術開発から顧客サービスまで、各分野専門性によるシナジー創出'
-        }
-      };
-      setI18nData(defaultI18nData);
-      
-      // flat을 nested로 변환
-      const convertFlatToNested = (flatData) => {
-        const nested = {};
-        
-        Object.keys(flatData).forEach(lang => {
-          nested[lang] = {};
-          const langData = flatData[lang];
-          
-          Object.keys(langData).forEach(key => {
-            const value = langData[key];
-            const keys = key.split('.');
-            let target = nested[lang];
-            
-            // 중첩 객체 생성
-            for (let i = 0; i < keys.length - 1; i++) {
-              if (!target[keys[i]]) {
-                target[keys[i]] = {};
-              }
-              target = target[keys[i]];
-            }
-            
-            // 마지막 키에 값 설정
-            target[keys[keys.length - 1]] = value;
-          });
-        });
-        
-        return nested;
-      };
-      
-      // 자동으로 localStorage에 저장
-      localStorage.setItem('i18n_data', JSON.stringify(defaultI18nData));
-      const nestedDefaultData = convertFlatToNested(defaultI18nData);
-      localStorage.setItem('i18nTranslations', JSON.stringify(nestedDefaultData));
-      console.log('✅ 기본 데이터 저장 완료 (flat + nested)');
-      }
-    }
-    
-    // 1. localStorage에서 관리자가 저장한 데이터 우선 확인
-    const localContent = localStorage.getItem('homepage_content_ko');
-    if (localContent) {
-      try {
-        const parsedContent = JSON.parse(localContent);
-        console.log('✅ localStorage에서 관리자 데이터 로드:', parsedContent);
-        setHomepageData(parsedContent);
-        return;
-      } catch (error) {
-        console.error('❌ localStorage 데이터 파싱 오류:', error);
-      }
-    }
-    
-    // 2. useUnifiedContent에서 데이터 로드
-    if (currentHomeData) {
-      console.log('✅ useUnifiedContent에서 데이터 로드:', currentHomeData);
-      setHomepageData(currentHomeData);
-    } else {
-      // 3. 기본값 사용
-      console.log('⚠️ 기본값 사용');
-      const defaultData = {
-        hero: {
-          title: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
-          subtitle: "정호그룹은 조명제어 전문 기업으로서,\n혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다",
-          description: "150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다."
-        },
-        achievements: [
-          { value: '40', suffix: '년', label: '조명제어 전문 경험' },
-          { value: '800', suffix: '+', label: '프로젝트 완료' },
-          { value: '7', suffix: '+', label: '해외 진출국' },
-          { value: '99', suffix: '%', label: '고객 만족도' }
-        ],
-        groupOverview: {
-          title: "40년 전통의 조명제어 전문기업",
-          description: "1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다."
-        },
-        subsidiaries: [
-          { name: "클라루스", subtitle: "AI 기반 스마트 조명/전력제어", description: "스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문 업체" },
-          { name: "정호티엘씨", subtitle: "조명/전력제어의 설계/시공/사후관리", description: "공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축(시공)하고, 사후관리를 담당하는 전문업체" },
-          { name: "일루텍", subtitle: "유.무선 스마트조명제품 쇼핑몰 공급", description: "유.무선 조명제어 제품을 국내외 유명 쇼핑몰에 전시, 판매, 시공기술지원 업체" },
-          { name: "텍스콤", subtitle: "조명제어 시스템 개발 및 제조", description: "조명제어 시스템 개발 및 제조 전문업체" }
-        ],
-        subsidiariesIntro: {
-          title: "4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계",
-          description: "기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출"
-        }
-      };
-      setHomepageData(defaultData);
-    }
-  }, [currentHomeData]);
 
   // 데이터 저장 함수
   const saveData = async (section, data) => {

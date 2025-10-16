@@ -61,6 +61,20 @@ const Hero = ({
   // localStorage에서 히어로 데이터 로드 및 실시간 업데이트
   useEffect(() => {
     const loadHeroContent = () => {
+      // 🔧 props가 제공되면 props 우선 사용
+      if (mainCopy || subCopy || description) {
+        console.log('✅ Hero: props에서 데이터 사용', { mainCopy, subCopy, description });
+        setHeroData({
+          mainTitle: mainCopy || '',
+          subtitle: subCopy || '',
+          description: description || ''
+        });
+        return;
+      }
+      
+      // props가 없으면 i18n/localStorage 사용
+      console.log('📚 Hero: i18n에서 데이터 사용');
+      
       // preferredLanguage 직접 확인
       const storedLang = localStorage.getItem('preferredLanguage');
       

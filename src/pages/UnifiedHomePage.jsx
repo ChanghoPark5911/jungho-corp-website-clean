@@ -36,131 +36,163 @@ const UnifiedHomePage = () => {
   // 통합 콘텐츠 로드
   const { content: unifiedContent, loading: contentLoading, error: contentError } = useUnifiedContent();
   
+  // 🔧 실시간 업데이트 감지
+  const [refreshKey, setRefreshKey] = React.useState(0);
+  
+  useEffect(() => {
+    // 관리자 페이지에서 저장 시 발생하는 커스텀 이벤트 감지
+    const handleContentUpdate = () => {
+      console.log('🔔 홈페이지 업데이트 이벤트 감지!');
+      setRefreshKey(prev => prev + 1); // 강제 리렌더링
+    };
+    
+    window.addEventListener('homepageContentUpdated', handleContentUpdate);
+    
+    return () => {
+      window.removeEventListener('homepageContentUpdated', handleContentUpdate);
+    };
+  }, []);
+  
   // 이벤트 기반 새로고침 제거 - 무한 루프 방지
 
-  // localStorage에서 직접 확인
-  const localData = localStorage.getItem('homepage_content_ko');
-  
-  // 강제로 localStorage 무시하고 기본값 사용 (개발용)
-  const forceDefault = localStorage.getItem('forceDefault') !== 'false'; // localStorage에서 설정 확인
-  
-  // 기본값 복원 확인 (URL 파라미터로 확인)
-  const urlParams = new URLSearchParams(window.location.search);
-  const restoreDefault = urlParams.get('restore') === 'true';
-  
-  if (restoreDefault) {
-    localStorage.removeItem('homepage_content_ko');
-    localStorage.removeItem('homepage_preview');
-    window.history.replaceState({}, document.title, window.location.pathname);
-    window.location.reload();
-  }
-
-  // 데이터 로드 우선순위: localStorage → Firebase → 기본값
-  let homeData;
-  
-  // 강제 기본값 사용 또는 기본값 복원 모드
-  if (forceDefault || restoreDefault) {
-    homeData = null; // 강제로 기본값 사용
-  } else {
-    // 1. localStorage에서 관리자가 저장한 데이터 확인
-    const freshLocalData = localStorage.getItem('homepage_content_ko');
-    if (freshLocalData) {
-      try {
-        homeData = JSON.parse(freshLocalData);
-      } catch (error) {
-        console.error('❌ localStorage 데이터 파싱 오류:', error);
-        homeData = unifiedContent;
-      }
-    } else {
-      // 2. Firebase에서 데이터 로드
-      homeData = unifiedContent;
+  // 🔧 homeData를 useMemo로 변경하여 refreshKey 변경 시 다시 계산
+  const homeData = useMemo(() => {
+    console.log('🔄 홈페이지 데이터 로드/새로고침 (refreshKey:', refreshKey, ')');
+    
+    // localStorage에서 직접 확인
+    const localData = localStorage.getItem('homepage_content_ko');
+    
+    // 강제로 localStorage 무시하고 기본값 사용 (개발용)
+    const forceDefault = localStorage.getItem('forceDefault') !== 'false'; // localStorage에서 설정 확인
+    
+    // 기본값 복원 확인 (URL 파라미터로 확인)
+    const urlParams = new URLSearchParams(window.location.search);
+    const restoreDefault = urlParams.get('restore') === 'true';
+    
+    if (restoreDefault) {
+      localStorage.removeItem('homepage_content_ko');
+      localStorage.removeItem('homepage_preview');
+      window.history.replaceState({}, document.title, window.location.pathname);
+      window.location.reload();
+      return null;
     }
-  }
 
-  // 폴백: 기본값 사용 (homeData가 없거나 빈 객체인 경우)
-  if (!homeData || Object.keys(homeData).length === 0) {
-    homeData = {
-      hero: {
-        title: t('home.hero.title') || "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
-        subtitle: t('home.hero.subtitle') || "정호그룹은 조명제어 전문 기업으로서,\n혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다",
-        description: t('home.hero.description') || "150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다."
-      },
-      achievements: [
-        { 
-          value: '40', 
-          suffix: t('home.stats.years.suffix') || '년', 
-          label: t('home.stats.years.label') || '조명제어 전문 경험' 
-        },
-        { 
-          value: '800', 
-          suffix: '+', 
-          label: t('home.stats.projects.label') || '프로젝트 완료' 
-        },
-        { 
-          value: '7', 
-          suffix: '+', 
-          label: t('home.stats.countries.label') || '해외진출국' 
-        },
-        { 
-          value: '99', 
-          suffix: '%', 
-          label: t('home.stats.satisfaction.label') || '고객만족도' 
+    // 데이터 로드 우선순위: localStorage → Firebase → 기본값
+    let data;
+    
+    // 강제 기본값 사용 또는 기본값 복원 모드
+    if (forceDefault || restoreDefault) {
+      data = null; // 강제로 기본값 사용
+    } else {
+      // 1. localStorage에서 관리자가 저장한 데이터 확인
+      const freshLocalData = localStorage.getItem('homepage_content_ko');
+      if (freshLocalData) {
+        try {
+          data = JSON.parse(freshLocalData);
+          console.log('✅ localStorage에서 데이터 로드:', data);
+        } catch (error) {
+          console.error('❌ localStorage 데이터 파싱 오류:', error);
+          data = unifiedContent;
         }
-      ],
-      groupOverview: {
-        title: '40년 전통의 조명제어 전문기업',
-        description: '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.',
-        vision: 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.',
-        additionalVision: '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
-      },
-      subsidiaries: [
-        {
-          id: 'clarus',
-          title: '클라루스',
-          subtitle: 'AI 기반 스마트 조명/전력제어',
-          description: '스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문 업체',
-          feature: 'AI 기반 자동 제어 시스템',
-          color: '#0066CC',
-          path: '/clarus',
-          icon: '💡'
-        },
-        {
-          id: 'tlc',
-          title: '정호티엘씨',
-          subtitle: '조명/전력제어의 설계/시공/사후관리',
-          description: '공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축(시공)하고, 사후관리를 담당하는 전문업체',
-          feature: 'IoT 센서 네트워크',
-          color: '#28A745',
-          path: '/tlc',
-          icon: '📡'
-        },
-        {
-          id: 'illutech',
-          title: '일루텍',
-          subtitle: '유.무선 스마트조명제품 쇼핑몰 공급',
-          description: '유.무선 조명제어 제품을 국내외 유명 쇼핑몰에 전시, 판매, 시공기술지원 업체',
-          feature: '스마트 물류 자동화',
-          color: '#FF8C00',
-          path: '/illutech',
-          icon: '🚚'
-        },
-        {
-          id: 'texcom',
-          title: '정호텍스컴',
-          subtitle: '섬유기계의 전통과 첨단패션을 주도하는 온라인 사업',
-          description: '40년간 축적된 섬유기계 전문성과 패션브랜드 론칭을 통해 새로운 가치를 창출하는 전문업체',
-          feature: '텍스타일 제어 시스템',
-          color: '#FF6B9D',
-          path: '/texcom',
-          icon: '🧵'
-        }
-      ],
-      subsidiariesIntro: {
-        title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
-        description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'
+      } else {
+        // 2. Firebase에서 데이터 로드
+        data = unifiedContent;
       }
-    };
-  }
+    }
+
+    // 폴백: 기본값 사용 (data가 없거나 빈 객체인 경우)
+    if (!data || Object.keys(data).length === 0) {
+      data = {
+        hero: {
+          title: t('home.hero.title') || "40년 축적된 기술력으로\n조명의 미래를 혁신합니다",
+          subtitle: t('home.hero.subtitle') || "정호그룹은 조명제어 전문 기업으로서,\n혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다",
+          description: t('home.hero.description') || "150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다."
+        },
+        achievements: [
+          { 
+            number: '40', 
+            suffix: t('home.stats.years.suffix') || '년', 
+            label: t('home.stats.years.label') || '조명제어 전문 경험' 
+          },
+          { 
+            number: '800', 
+            suffix: '+', 
+            label: t('home.stats.projects.label') || '프로젝트 완료' 
+          },
+          { 
+            number: '7', 
+            suffix: '+', 
+            label: t('home.stats.countries.label') || '해외진출국' 
+          },
+          { 
+            number: '99', 
+            suffix: '%', 
+            label: t('home.stats.satisfaction.label') || '고객만족도' 
+          }
+        ],
+        groupOverview: {
+          title: '40년 전통의 조명제어 전문기업',
+          description: '1983년 창립 이래 40년간 조명제어 분야에서 전문성을 쌓아온 정호그룹은 국내 최초 E/F2-BUS 프로토콜을 자체 개발하여 조명제어 기술의 새로운 패러다임을 제시했습니다.',
+          vision: 'B2B부터 B2C까지 완전한 생태계를 구축하여 고객의 모든 요구사항을 충족시키며, 4개 계열사 간의 시너지를 통해 Total Solution을 제공합니다.',
+          additionalVision: '혁신적인 기술과 40년간 축적된 노하우를 바탕으로 고객의 성공을 지원하며, 조명제어 분야의 글로벌 리더로 성장하고 있습니다.'
+        },
+        subsidiaries: [
+          {
+            id: 'clarus',
+            title: '클라루스',
+            subtitle: 'AI 기반 스마트 조명/전력제어',
+            description: '스마트 조명/전력 제어시스템 개발, 핵심 디바이스 생산, 국내외에 공급하는 전문 업체',
+            feature: 'AI 기반 자동 제어 시스템',
+            color: '#0066CC',
+            path: '/clarus',
+            icon: '💡'
+          },
+          {
+            id: 'tlc',
+            title: '정호티엘씨',
+            subtitle: '조명/전력제어의 설계/시공/사후관리',
+            description: '공공기관, 오피스빌딩, 물류 및 데이터센터에 최적의 스마트 조명환경을 설계 구축(시공)하고, 사후관리를 담당하는 전문업체',
+            feature: 'IoT 센서 네트워크',
+            color: '#28A745',
+            path: '/tlc',
+            icon: '📡'
+          },
+          {
+            id: 'illutech',
+            title: '일루텍',
+            subtitle: '유.무선 스마트조명제품 쇼핑몰 공급',
+            description: '유.무선 조명제어 제품을 국내외 유명 쇼핑몰에 전시, 판매, 시공기술지원 업체',
+            feature: '스마트 물류 자동화',
+            color: '#FF8C00',
+            path: '/illutech',
+            icon: '🚚'
+          },
+          {
+            id: 'texcom',
+            title: '정호텍스컴',
+            subtitle: '섬유기계의 전통과 첨단패션을 주도하는 온라인 사업',
+            description: '40년간 축적된 섬유기계 전문성과 패션브랜드 론칭을 통해 새로운 가치를 창출하는 전문업체',
+            feature: '텍스타일 제어 시스템',
+            color: '#FF6B9D',
+            path: '/texcom',
+            icon: '🧵'
+          }
+        ],
+        subsidiariesIntro: {
+          title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
+          description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'
+        }
+      };
+    }
+    
+    return data;
+  }, [refreshKey, unifiedContent, t]);
+
+  // 🔧 줄바꿈 처리 함수
+  const processLineBreaks = (text) => {
+    if (!text) return '';
+    return text.replace(/\\n/g, '\n');
+  };
 
   // Hero 컴포넌트에 전달할 데이터
   const heroData = useMemo(() => {
@@ -182,9 +214,9 @@ const UnifiedHomePage = () => {
     
     const data = {
       backgroundImage: optimizedImages.hero.src,
-      mainCopy: homeData.hero?.title,
-      subCopy: homeData.hero?.subtitle,
-      description: homeData.hero?.description,
+      mainCopy: processLineBreaks(homeData.hero?.title),
+      subCopy: processLineBreaks(homeData.hero?.subtitle),
+      description: processLineBreaks(homeData.hero?.description),
       stats: translatedStats,
       primaryAction: { 
         label: t('home.hero.primaryAction') || '사업영역 보기', 
@@ -206,14 +238,14 @@ const UnifiedHomePage = () => {
     let contentArray = undefined;
     if (safeGroupOverview.description || safeGroupOverview.vision || safeGroupOverview.additionalVision) {
       contentArray = [
-        safeGroupOverview.description,
-        safeGroupOverview.vision,
-        safeGroupOverview.additionalVision
+        processLineBreaks(safeGroupOverview.description),
+        processLineBreaks(safeGroupOverview.vision),
+        processLineBreaks(safeGroupOverview.additionalVision)
       ].filter(para => para && para.trim().length > 0);  // 빈 단락 제거
     }
     
     return {
-      title: safeGroupOverview.title,
+      title: processLineBreaks(safeGroupOverview.title),
       content: contentArray,
       image: optimizedImages.groupIntro.src,
       webpImage: optimizedImages.groupIntro.webpSrc
@@ -223,11 +255,16 @@ const UnifiedHomePage = () => {
 
   // 계열사 소개 섹션 - 홈페이지 관리 데이터 우선
   const subsidiariesData = useMemo(() => {
+    const subsidiariesIntro = homeData.subsidiariesIntro || {
+      title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
+      description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'
+    };
+    
     return {
       subsidiaries: homeData.subsidiaries || [],
-      subsidiariesIntro: homeData.subsidiariesIntro || {
-        title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
-        description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'
+      subsidiariesIntro: {
+        title: processLineBreaks(subsidiariesIntro.title),
+        description: processLineBreaks(subsidiariesIntro.description)
       }
     };
   }, [homeData.subsidiaries, homeData.subsidiariesIntro]);

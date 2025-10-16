@@ -340,12 +340,18 @@ const HomePage = () => {
     // 안전한 데이터 접근을 위한 기본값 설정
     const safeGroupOverview = homeData?.groupOverview || defaultData.groupOverview;
     
+    // 🔧 줄바꿈 처리 함수
+    const processLineBreaks = (text) => {
+      if (!text) return '';
+      return text.replace(/\\n/g, '\n');
+    };
+    
     return {
-      title: safeGroupOverview.title, // undefined면 GroupIntro가 번역 사용
+      title: processLineBreaks(safeGroupOverview.title), // undefined면 GroupIntro가 번역 사용
       content: safeGroupOverview.description && safeGroupOverview.vision ? [
-        safeGroupOverview.description,
-        safeGroupOverview.vision,
-        safeGroupOverview.additionalVision
+        processLineBreaks(safeGroupOverview.description),
+        processLineBreaks(safeGroupOverview.vision),
+        processLineBreaks(safeGroupOverview.additionalVision)
       ] : undefined, // undefined면 GroupIntro가 번역 사용
       image: optimizedImages.groupIntro.src,
       webpImage: optimizedImages.groupIntro.webpSrc,
@@ -354,18 +360,31 @@ const HomePage = () => {
   }, [homeData?.groupOverview?.title, homeData?.groupOverview?.description, homeData?.groupOverview?.vision, homeData?.groupOverview?.additionalVision]);
 
   // 계열사 소개 섹션 데이터 (메모리 최적화)
-  const subsidiariesData = useMemo(() => ({
-    subsidiaries: homeData.subsidiaries || [
-      { id: 'clarus', title: '클라루스', subtitle: 'AI 기반 스마트 조명제어', description: '최신 AI 기술을 활용한 지능형 조명제어 시스템을 개발하고 제공합니다.', feature: 'AI 기반 자동 제어 시스템', color: 'clarus', icon: '💡', path: '/clarus' },
-      { id: 'tlc', title: '정호티엘씨', subtitle: 'IoT 센서 및 제어 장치', description: 'IoT 센서 네트워크와 제어 장치를 통해 실시간 모니터링을 제공합니다.', feature: 'IoT 센서 네트워크', color: 'tlc', icon: '📡', path: '/tlc' },
-      { id: 'illutech', title: '일루텍', subtitle: '스마트 물류 솔루션', description: '물류 분야의 자동화와 효율성을 극대화하는 스마트 솔루션을 제공합니다.', feature: '스마트 물류 자동화', color: 'illutech', icon: '🚚', path: '/illutech' },
-      { id: 'texcom', title: '정호텍스컴', subtitle: '텍스타일 제어 시스템', description: '텍스타일 산업의 생산성을 향상시키는 전문 제어 시스템을 개발합니다.', feature: '텍스타일 제어 시스템', color: 'texcom', icon: '🧵', path: '/texcom' }
-    ],
-    subsidiariesIntro: homeData.subsidiariesIntro || {
+  const subsidiariesData = useMemo(() => {
+    // 🔧 줄바꿈 처리 함수
+    const processLineBreaks = (text) => {
+      if (!text) return '';
+      return text.replace(/\\n/g, '\n');
+    };
+    
+    const subsidiariesIntro = homeData.subsidiariesIntro || {
       title: '4개 계열사가 만드는\n완벽한 조명/전력제어 및 섬유기계 생태계',
       description: '기술개발부터 고객서비스까지, 각 분야 전문성에 의한 시너지 창출'
-    }
-  }), [homeData.subsidiaries, homeData.subsidiariesIntro]);
+    };
+    
+    return {
+      subsidiaries: homeData.subsidiaries || [
+        { id: 'clarus', title: '클라루스', subtitle: 'AI 기반 스마트 조명제어', description: '최신 AI 기술을 활용한 지능형 조명제어 시스템을 개발하고 제공합니다.', feature: 'AI 기반 자동 제어 시스템', color: 'clarus', icon: '💡', path: '/clarus' },
+        { id: 'tlc', title: '정호티엘씨', subtitle: 'IoT 센서 및 제어 장치', description: 'IoT 센서 네트워크와 제어 장치를 통해 실시간 모니터링을 제공합니다.', feature: 'IoT 센서 네트워크', color: 'tlc', icon: '📡', path: '/tlc' },
+        { id: 'illutech', title: '일루텍', subtitle: '스마트 물류 솔루션', description: '물류 분야의 자동화와 효율성을 극대화하는 스마트 솔루션을 제공합니다.', feature: '스마트 물류 자동화', color: 'illutech', icon: '🚚', path: '/illutech' },
+        { id: 'texcom', title: '정호텍스컴', subtitle: '텍스타일 제어 시스템', description: '텍스타일 산업의 생산성을 향상시키는 전문 제어 시스템을 개발합니다.', feature: '텍스타일 제어 시스템', color: 'texcom', icon: '🧵', path: '/texcom' }
+      ],
+      subsidiariesIntro: {
+        title: processLineBreaks(subsidiariesIntro.title),
+        description: processLineBreaks(subsidiariesIntro.description)
+      }
+    };
+  }, [homeData.subsidiaries, homeData.subsidiariesIntro]);
 
   return (
     <>

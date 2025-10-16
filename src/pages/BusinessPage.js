@@ -71,12 +71,23 @@ const BusinessPage = () => {
   }
 
   // 콘텐츠에서 데이터 추출
-  const heroData = content.hero || {};
+  const rawHeroData = content.hero || {};
   const businessAreas = content.businessAreas || [];
   const subsidiaries = content.subsidiaries || [];
   const technology = content.technology || {};
   const cta = content.cta || {};
 
+  // 🔧 다국어 지원: 히어로 데이터를 다국어 키로 변환
+  const heroData = {
+    backgroundImage: rawHeroData.backgroundImage,
+    mainCopy: t('business.hero.title', { fallback: rawHeroData.mainCopy || '정호그룹의 사업영역' }),
+    subCopy: t('business.hero.subtitle', { fallback: rawHeroData.subCopy || '조명제어 전문기업으로서 40년간 축적된 기술력으로 다양한 분야에서 혁신적인 솔루션을 제공합니다' }),
+    description: t('business.hero.description', { fallback: rawHeroData.description || '' }),
+    primaryAction: rawHeroData.primaryAction ? {
+      ...rawHeroData.primaryAction,
+      label: t('buttons.contact', { fallback: rawHeroData.primaryAction.label })
+    } : undefined
+  };
 
   return (
     <>

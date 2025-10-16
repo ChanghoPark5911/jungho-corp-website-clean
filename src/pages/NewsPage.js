@@ -10,13 +10,14 @@ const NewsPage = () => {
   const { t } = useI18n(); // 다국어 지원
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // 히어로 섹션 데이터
+  // 🔧 히어로 섹션 데이터 (다국어 지원)
   const heroData = {
     backgroundImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    mainCopy: "정호그룹 뉴스",
-    subCopy: "40년 전통의 조명제어 전문기업 정호그룹의 최신 소식과 업계 동향을 확인하세요",
+    mainCopy: t('news.hero.title', { fallback: "정호그룹 뉴스" }),
+    subCopy: t('news.hero.subtitle', { fallback: "40년 전통의 조명제어 전문기업 정호그룹의 최신 소식과 업계 동향을 확인하세요" }),
+    description: t('news.hero.description', { fallback: "" }),
     primaryAction: {
-      label: "구독하기",
+      label: t('buttons.subscribe', { fallback: "구독하기" }),
       path: "#subscribe"
     }
   };

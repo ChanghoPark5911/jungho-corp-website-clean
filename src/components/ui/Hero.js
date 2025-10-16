@@ -61,9 +61,12 @@ const Hero = ({
   // localStorage에서 히어로 데이터 로드 및 실시간 업데이트
   useEffect(() => {
     const loadHeroContent = () => {
-      // 🔧 props가 제공되면 props 우선 사용
+      // 🔧 props가 제공되면 props를 사용하되, 다국어는 현재 언어 반영
       if (mainCopy || subCopy || description) {
-        console.log('✅ Hero: props에서 데이터 사용', { mainCopy, subCopy, description });
+        console.log('✅ Hero: props에서 데이터 사용 (다국어 적용)', { mainCopy, subCopy, description });
+        
+        // props는 그대로 사용 (페이지별로 고유한 텍스트)
+        // Hero 컴포넌트 내부에서 다국어 처리는 렌더링 시 수행
         setHeroData({
           mainTitle: mainCopy || '',
           subtitle: subCopy || '',
@@ -72,7 +75,7 @@ const Hero = ({
         return;
       }
       
-      // props가 없으면 i18n/localStorage 사용
+      // props가 없으면 i18n/localStorage 사용 (홈페이지용)
       console.log('📚 Hero: i18n에서 데이터 사용');
       
       // preferredLanguage 직접 확인

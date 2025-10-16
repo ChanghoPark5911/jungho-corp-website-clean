@@ -71,11 +71,23 @@ const SupportPage = () => {
   }
 
   // 콘텐츠에서 데이터 추출
-  const heroData = content.hero || {};
+  const rawHeroData = content.hero || {};
   const supportChannels = content.supportChannels || [];
   const supportServices = content.supportServices || [];
   const faqs = content.faqs || [];
   const contactForm = content.contactForm || {};
+
+  // 🔧 다국어 지원: 히어로 데이터를 다국어 키로 변환
+  const heroData = {
+    backgroundImage: rawHeroData.backgroundImage,
+    mainCopy: t('support.hero.title', { fallback: rawHeroData.mainCopy || '고객 지원' }),
+    subCopy: t('support.hero.subtitle', { fallback: rawHeroData.subCopy || '정호그룹의 전문가들이 24시간 내에 답변드립니다. 언제든지 문의해주세요.' }),
+    description: t('support.hero.description', { fallback: rawHeroData.description || '' }),
+    primaryAction: rawHeroData.primaryAction ? {
+      ...rawHeroData.primaryAction,
+      label: t(rawHeroData.primaryAction.label, { fallback: rawHeroData.primaryAction.label })
+    } : undefined
+  };
 
   return (
     <>

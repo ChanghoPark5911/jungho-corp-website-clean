@@ -168,7 +168,11 @@ const Hero = ({
           : 'linear-gradient(135deg, #166534 0%, #047857 100%)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
+        width: '100%',
+        minWidth: '100vw',
+        maxWidth: '100vw',
+        overflow: 'hidden'
       }}
       {...props}
     >
@@ -181,12 +185,22 @@ const Hero = ({
        )}
        
        {/* 메인 콘텐츠 컨테이너 */}
-       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center justify-center flex-1">
+       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center justify-center flex-1" style={{ 
+         maxWidth: '90rem',
+         width: '100%',
+         minWidth: '100%'
+       }}>
           {/* 메인 콘텐츠 */}
           <div className="mb-16">
                  <h1 
-                   className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white drop-shadow-2xl"
+                   className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white drop-shadow-2xl w-full"
                    data-i18n-key="home.hero.title"
+                   style={{ 
+                     width: '100%', 
+                     maxWidth: '100%',
+                     wordWrap: 'break-word',
+                     overflowWrap: 'break-word'
+                   }}
                  >
                    {(() => {
                     // heroData state 우선 사용!
@@ -201,13 +215,14 @@ const Hero = ({
                   })()}
                  </h1>
                  <p
-                   className="hero-subtitle"
+                   className="hero-subtitle w-full"
                    data-i18n-key="home.hero.subtitle"
                    style={{
-                     fontSize: 'clamp(1.25rem, 4vw, 1.875rem)',
+                     fontSize: 'clamp(1rem, 3.5vw, 1.875rem)',
                      lineHeight: '1.4',
                      marginBottom: '2.5rem',
-                     maxWidth: '64rem',
+                     maxWidth: '80rem',
+                     width: '100%',
                      marginLeft: 'auto',
                      marginRight: 'auto',
                      textAlign: 'center',
@@ -235,13 +250,14 @@ const Hero = ({
           
           {/* 설명 텍스트 추가 */}
                  <p
-                   className="hero-description"
+                   className="hero-description w-full"
                    data-i18n-key="home.hero.description"
                    style={{
-                     fontSize: 'clamp(1rem, 3vw, 1.25rem)',
+                     fontSize: 'clamp(0.875rem, 2.5vw, 1.25rem)',
                      lineHeight: '1.6',
                      marginBottom: '2rem',
-                     maxWidth: '56rem',
+                     maxWidth: '70rem',
+                     width: '100%',
                      marginLeft: 'auto',
                      marginRight: 'auto',
                      textAlign: 'center',

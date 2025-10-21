@@ -274,6 +274,11 @@ class I18nAdvanced {
           error: '콘텐츠를 불러오는데 실패했습니다.',
           retry: '다시 시도',
           noContent: '콘텐츠를 불러올 수 없습니다.',
+          hero: {
+            title: '고객 지원',
+            subtitle: '정호그룹의 전문가들이 24시간 내에 답변드립니다. 언제든지 문의해주세요.',
+            description: '전문적인 기술 지원과 서비스를 통해 고객의 성공을 지원합니다'
+          },
           channels: {
             title: '지원 채널',
             description: '다양한 방법으로 정호그룹의 전문가들과 연락하실 수 있습니다'
@@ -576,6 +581,11 @@ class I18nAdvanced {
         projects: {
           title: '프로젝트 갤러리',
           description: '정호그룹의 주요 프로젝트와 성과를 확인하세요',
+          hero: {
+            title: '정호그룹 프로젝트',
+            subtitle: '40년간 축적된 기술력으로 완성한 다양한 프로젝트들을 소개합니다',
+            description: '국내외 주요 기업들과 함께한 1,000개 이상의 성공적인 프로젝트 사례를 확인하세요'
+          },
           categories: {
             all: '전체',
             smartBuilding: '스마트빌딩',
@@ -602,6 +612,11 @@ class I18nAdvanced {
         business: {
           title: '사업영역',
           description: '정호그룹의 다양한 사업영역을 소개합니다',
+          hero: {
+            title: '정호그룹의 사업영역',
+            subtitle: '조명제어 전문기업으로서 40년간 축적된 기술력으로 다양한 분야에서 혁신적인 솔루션을 제공합니다',
+            description: '클라러스, TLC, 일루테크, 텍스컴 등 4개 계열사가 각각의 전문분야에서 최고의 솔루션을 제공합니다'
+          },
           coreAreas: {
             title: '핵심 사업영역',
             description: '40년간 축적된 조명제어 기술력을 바탕으로 다양한 분야에서 혁신적인 솔루션을 제공합니다'
@@ -742,6 +757,11 @@ class I18nAdvanced {
           error: 'Failed to load content.',
           retry: 'Retry',
           noContent: 'Unable to load content.',
+          hero: {
+            title: 'Customer Support',
+            subtitle: 'Jungho Group experts will respond within 24 hours. Please contact us anytime.',
+            description: 'We support customer success through professional technical support and services'
+          },
           channels: {
             title: 'Support Channels',
             description: 'Connect with Jungho Group experts through various channels'
@@ -1042,6 +1062,11 @@ class I18nAdvanced {
         },
         // Business
         business: {
+          hero: {
+            title: 'Jungho Group Business Areas',
+            subtitle: 'As a lighting control specialist, we provide innovative solutions in various fields with 40 years of accumulated technology',
+            description: 'Four subsidiaries including Clarus, TLC, Illutech, and Texcom provide the best solutions in their respective specialized fields'
+          },
           coreAreas: {
             title: 'Core Business Areas',
             description: 'We provide innovative solutions in various fields based on 40 years of accumulated lighting control technology'
@@ -1056,6 +1081,11 @@ class I18nAdvanced {
         projects: {
           title: 'Project Gallery',
           description: 'Check out Jungho Group\'s major projects and achievements',
+          hero: {
+            title: 'Jungho Group Projects',
+            subtitle: 'Introducing various projects completed with 40 years of accumulated technology',
+            description: 'Check out over 1,000 successful project cases with major domestic and international companies'
+          },
           categories: {
             all: 'All',
             smartBuilding: 'Smart Building',
@@ -1113,6 +1143,11 @@ class I18nAdvanced {
           error: '无法加载内容。',
           retry: '重试',
           noContent: '无法加载内容。',
+          hero: {
+            title: '客户支持',
+            subtitle: '正浩集团专家将在24小时内回复。请随时联系我们。',
+            description: '通过专业的技术支持和服务，我们支持客户成功'
+          },
           channels: {
             title: '支持渠道',
             description: '通过各种渠道联系正浩集团的专家'
@@ -1427,6 +1462,11 @@ class I18nAdvanced {
         projects: {
           title: '项目画廊',
           description: '查看正浩集团的主要项目和成就',
+          hero: {
+            title: '正浩集团项目',
+            subtitle: '介绍40年积累的技术力完成的各种项目',
+            description: '查看与国内外主要企业合作的1,000多个成功项目案例'
+          },
           categories: {
             all: '全部',
             smartBuilding: '智能建筑',
@@ -1451,6 +1491,11 @@ class I18nAdvanced {
         },
         // Business
         business: {
+          hero: {
+            title: '正浩集团业务领域',
+            subtitle: '作为照明控制专业企业，凭借40年积累的技术力，在各个领域提供创新解决方案',
+            description: '包括Clarus、TLC、Illutech、Texcom在内的4个子公司，在各自的专业领域提供最佳解决方案'
+          },
           coreAreas: {
             title: '核心业务领域',
             description: '基于40年积累的照明控制技术力，在各个领域提供创新解决方案'
@@ -1496,6 +1541,11 @@ class I18nAdvanced {
           error: 'コンテンツの読み込みに失敗しました。',
           retry: '再試行',
           noContent: 'コンテンツを読み込めません。',
+          hero: {
+            title: 'カスタマーサポート',
+            subtitle: '正浩グループの専門家が24時間以内に回答いたします。いつでもお問い合わせください。',
+            description: '専門的な技術サポートとサービスを通じて、お客様の成功をサポートします'
+          },
           channels: {
             title: 'サポートチャネル',
             description: '様々な方法でジョンホグループの専門家にお問い合わせいただけます'
@@ -1810,6 +1860,11 @@ class I18nAdvanced {
         projects: {
           title: 'プロジェクトギャラリー',
           description: '正浩グループの主要プロジェクトと成果をご確認ください',
+          hero: {
+            title: '正浩グループプロジェクト',
+            subtitle: '40年間蓄積された技術力で完成した様々なプロジェクトをご紹介します',
+            description: '国内外の主要企業との1,000以上の成功プロジェクト事例をご確認ください'
+          },
           categories: {
             all: 'すべて',
             smartBuilding: 'スマートビル',
@@ -1834,6 +1889,11 @@ class I18nAdvanced {
         },
         // Business
         business: {
+          hero: {
+            title: '正浩グループ事業領域',
+            subtitle: '照明制御専門企業として、40年間蓄積された技術力で様々な分野で革新的なソリューションを提供します',
+            description: 'Clarus、TLC、Illutech、Texcomを含む4つの子会社が、それぞれの専門分野で最高のソリューションを提供します'
+          },
           coreAreas: {
             title: 'コアビジネス領域',
             description: '40年間蓄積された照明制御技術力を基に、様々な分野で革新的なソリューションを提供します'

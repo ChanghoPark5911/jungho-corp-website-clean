@@ -168,12 +168,12 @@ const ProjectsPage = () => {
   };
 
 
-  // 프로젝트 통계
+  // 프로젝트 통계 (홈페이지와 동일한 숫자)
   const projectStats = [
-    { number: "1000+", label: "완료 프로젝트" },
-    { number: "50+", label: "해외 진출국" },
-    { number: "40", label: "년간 경험" },
-    { number: "24/7", label: "기술 지원" }
+    { number: "800+", label: "프로젝트 완료" },
+    { number: "7+", label: "해외 진출국" },
+    { number: "40년", label: "조명제어 전문 경험" },
+    { number: "99%", label: "고객 만족도" }
   ];
 
   return (
@@ -337,37 +337,37 @@ const ProjectsPage = () => {
             <Card className="text-center">
               <div className="text-4xl mb-4">🏢</div>
               <h3 className="text-xl font-bold text-primary mb-2">스마트빌딩</h3>
-              <div className="text-3xl font-bold text-primary mb-2">350+</div>
+              <div className="text-3xl font-bold text-primary mb-2">250+</div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
               <div className="text-4xl mb-4">🏛️</div>
               <h3 className="text-xl font-bold text-primary mb-2">공공시설</h3>
-              <div className="text-3xl font-bold text-primary mb-2">200+</div>
+              <div className="text-3xl font-bold text-primary mb-2">150+</div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
               <div className="text-4xl mb-4">🏭</div>
               <h3 className="text-xl font-bold text-primary mb-2">산업용시설</h3>
-              <div className="text-3xl font-bold text-primary mb-2">250+</div>
+              <div className="text-3xl font-bold text-primary mb-2">150+</div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
               <div className="text-4xl mb-4">📦</div>
               <h3 className="text-xl font-bold text-primary mb-2">물류 및 데이터센터</h3>
-              <div className="text-3xl font-bold text-primary mb-2">120+</div>
+              <div className="text-3xl font-bold text-primary mb-2">100+</div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
               <div className="text-4xl mb-4">🎭</div>
               <h3 className="text-xl font-bold text-primary mb-2">문화시설</h3>
-              <div className="text-3xl font-bold text-primary mb-2">150+</div>
+              <div className="text-3xl font-bold text-primary mb-2">100+</div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
               <div className="text-4xl mb-4">🏖️</div>
               <h3 className="text-xl font-bold text-primary mb-2">관광시설</h3>
-              <div className="text-3xl font-bold text-primary mb-2">80+</div>
+              <div className="text-3xl font-bold text-primary mb-2">50+</div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
           </div>

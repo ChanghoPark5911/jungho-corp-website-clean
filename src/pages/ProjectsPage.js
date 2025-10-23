@@ -14,7 +14,7 @@ import {
 } from '../services/projectService';
 
 const ProjectsPage = () => {
-  const { t } = useI18n(); // 다국어 지원
+  const { t, currentLanguage } = useI18n(); // 다국어 지원
   // 동적 프로젝트 상태
   const [dynamicProjects, setDynamicProjects] = useState([]);
   const [featuredProjects, setFeaturedProjects] = useState([]);
@@ -28,6 +28,38 @@ const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
+  // 🌐 다국어 텍스트 가져오기 헬퍼 함수
+  const getTranslatedText = (project, field) => {
+    if (!project) return '';
+    
+    // translations 구조에서 현재 언어의 텍스트 가져오기
+    const translated = project.translations?.[currentLanguage]?.[field];
+    if (translated) return translated;
+    
+    // 한국어 폴백
+    const korean = project.translations?.ko?.[field];
+    if (korean) return korean;
+    
+    // 기존 필드 폴백
+    return project[field] || '';
+  };
+
+  // 🌐 배열 필드 가져오기 (기술 스택, 특징 등)
+  const getTranslatedArray = (project, field) => {
+    if (!project) return [];
+    
+    // translations 구조에서 현재 언어의 배열 가져오기
+    const translated = project.translations?.[currentLanguage]?.[field];
+    if (translated && Array.isArray(translated)) return translated;
+    
+    // 한국어 폴백
+    const korean = project.translations?.ko?.[field];
+    if (korean && Array.isArray(korean)) return korean;
+    
+    // 기존 필드 폴백
+    return Array.isArray(project[field]) ? project[field] : [];
+  };
+
   // 🔧 히어로 섹션 데이터 (다국어 지원)
   const heroData = {
     backgroundImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
@@ -40,12 +72,12 @@ const ProjectsPage = () => {
     }
   };
 
-  // 동적 프로젝트 로드
+  // 동적 프로젝트 로드 (언어 변경 시에도 다시 로드)
   useEffect(() => {
     loadDynamicProjects();
     loadFeaturedProjects();
     loadGalleryProjects();
-  }, [selectedCategory, searchTerm]);
+  }, [selectedCategory, searchTerm, currentLanguage]);
 
   const loadGalleryProjects = () => {
     try {
@@ -230,8 +262,12 @@ const ProjectsPage = () => {
                 </div>
                 
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-primary mb-3">{project.title}</h3>
-                  <p className="text-gray-600 mb-4">{project.description}</p>
+                  <h3 className="text-xl font-bold text-primary mb-3">
+                    {getTranslatedText(project, 'title')}
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    {getTranslatedText(project, 'description')}
+                  </p>
                   
                   {/* 프로젝트 통계 */}
                     {project.projectOverview && (
@@ -437,8 +473,12 @@ const ProjectsPage = () => {
                             </div>
                           </div>
                           <div>
-                            <h3 className="text-sm font-medium text-gray-900 truncate">{project.title}</h3>
-                            <p className="text-xs text-gray-500 truncate">{project.description}</p>
+                            <h3 className="text-sm font-medium text-gray-900 truncate">
+                              {getTranslatedText(project, 'title')}
+                            </h3>
+                            <p className="text-xs text-gray-500 truncate">
+                              {getTranslatedText(project, 'description')}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -485,7 +525,7 @@ const ProjectsPage = () => {
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    {selectedProject.title}
+                    {getTranslatedText(selectedProject, 'title')}
                   </h3>
                   <div className="flex items-center space-x-4">
                     <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
@@ -570,22 +610,31 @@ const ProjectsPage = () => {
               {/* 프로젝트 설명 */}
               <div className="mb-6">
                 <h4 className="text-lg font-semibold text-gray-900 mb-3">프로젝트 설명</h4>
-                <p className="text-gray-700 leading-relaxed">{selectedProject.description}</p>
+                <p className="text-gray-700 leading-relaxed">
+                  {getTranslatedText(selectedProject, 'description')}
+                </p>
               </div>
 
-              {/* 주요 특징 */}
-              {selectedProject.projectOverview?.features && selectedProject.projectOverview.features.length > 0 && (
-                <div className="mb-6">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-3">주요 특징</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.projectOverview.features.map((feature, idx) => (
-                      <span key={idx} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-                        {feature}
-                      </span>
-                    ))}
+              {/* 주요 특징 (다국어 지원) */}
+              {(() => {
+                const features = getTranslatedArray(selectedProject, 'features');
+                // 구조: translations.{lang}.features 또는 projectOverview.features 폴백
+                const legacyFeatures = selectedProject.projectOverview?.features;
+                const displayFeatures = features.length > 0 ? features : legacyFeatures;
+                
+                return displayFeatures && displayFeatures.length > 0 && (
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-gray-900 mb-3">주요 특징</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {displayFeatures.map((feature, idx) => (
+                        <span key={idx} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* 하단 버튼 */}
               <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">

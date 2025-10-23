@@ -196,22 +196,52 @@ const UnifiedHomePage = () => {
 
   // Hero 컴포넌트에 전달할 데이터
   const heroData = useMemo(() => {
+    // 🔢 등록된 프로젝트 수 계산 (localStorage에서)
+    let registeredProjectsCount = 0;
+    try {
+      const localProjects = localStorage.getItem('projects_data');
+      if (localProjects) {
+        const projects = JSON.parse(localProjects);
+        registeredProjectsCount = Array.isArray(projects) ? projects.length : 0;
+      }
+    } catch (error) {
+      console.error('프로젝트 개수 계산 오류:', error);
+    }
+    
     // 성과지표 다국어 변환 및 데이터 구조 매핑
     const translatedStats = homeData.achievements?.map((stat, index) => {
       // 각 성과지표의 label을 다국어로 변환
       let translatedLabel = stat.label;
+      let sublabel = '';
       
-      if (index === 0) translatedLabel = t('home.stats.years.label') || stat.label;
-      else if (index === 1) translatedLabel = t('home.stats.projects.label') || stat.label;
-      else if (index === 2) translatedLabel = t('home.stats.countries.label') || stat.label;
-      else if (index === 3) translatedLabel = t('home.stats.satisfaction.label') || stat.label;
+      if (index === 0) {
+        translatedLabel = t('home.stats.years.label') || stat.label;
+      } else if (index === 1) {
+        translatedLabel = t('home.stats.projects.label') || stat.label;
+        sublabel = '(누적, 1983년~)';  // 800+ 에 대한 설명
+      } else if (index === 2) {
+        translatedLabel = t('home.stats.countries.label') || stat.label;
+      } else if (index === 3) {
+        translatedLabel = t('home.stats.satisfaction.label') || stat.label;
+      }
       
       return {
         value: stat.number,  // 'number'를 'value'로 매핑
         suffix: stat.suffix || '',  // suffix 추가
-        label: translatedLabel
+        label: translatedLabel,
+        sublabel: sublabel
       };
     }) || [];
+    
+    // 등록된 프로젝트 통계 추가 (800+ 다음에 삽입)
+    if (registeredProjectsCount > 0 && translatedStats.length >= 2) {
+      translatedStats.splice(2, 0, {
+        value: registeredProjectsCount.toString(),
+        suffix: '+',
+        label: '등록된 프로젝트',
+        sublabel: '(온라인 등록)'
+      });
+    }
     
     const data = {
       backgroundImage: optimizedImages.hero.src,
@@ -229,7 +259,7 @@ const UnifiedHomePage = () => {
       }
     };
     return data;
-  }, [homeData.hero, homeData.achievements, t, currentLanguage]);
+  }, [homeData.hero, homeData.achievements, t, currentLanguage, refreshKey]);
 
   // 그룹 소개 섹션 데이터 - 홈페이지 관리 데이터 우선
   const groupIntroData = useMemo(() => {
@@ -326,6 +356,15 @@ const UnifiedHomePage = () => {
             useLocalStorage={false}
             useMultilingual={false}
           />
+        </section>
+
+        {/* 프로젝트 통계 설명 */}
+        <section className="py-4 bg-gray-50 border-t border-gray-200">
+          <div className="container mx-auto px-4">
+            <p className="text-center text-sm text-gray-600">
+              * 완료 프로젝트는 1983년 창립 이래 누적 수치이며, 주요 프로젝트를 선별하여 순차적으로 등록하고 있습니다.
+            </p>
+          </div>
         </section>
 
         {/* 그룹 소개 섹션 */}

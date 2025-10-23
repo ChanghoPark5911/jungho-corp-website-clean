@@ -314,7 +314,7 @@ const Hero = ({
         </div>
       </div>
 
-      {/* 성과지표 - props의 stats 사용 (다국어 지원) */}
+      {/* 성과지표 - props의 stats 사용 (다국어 지원, sublabel 지원) */}
       {stats && stats.length > 0 && (
         <div className="w-full pb-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -327,6 +327,11 @@ const Hero = ({
                   <div className="text-lg md:text-xl text-white font-medium drop-shadow-md">
                     {stat.label}
                   </div>
+                  {stat.sublabel && (
+                    <div className="text-sm md:text-base text-white/80 mt-1 drop-shadow-md">
+                      {stat.sublabel}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

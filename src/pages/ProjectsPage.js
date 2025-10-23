@@ -105,6 +105,8 @@ const ProjectsPage = () => {
           stats[category] = count;
         }
       });
+      // 전체 등록된 프로젝트 수
+      stats.total = allProjects.length;
       setCategoryStats(stats);
       console.log('📊 분야별 통계:', stats);
       
@@ -185,7 +187,8 @@ const ProjectsPage = () => {
   // 프로젝트 통계 (홈페이지와 동일한 순서 및 숫자)
   const projectStats = [
     { number: "40년", label: "조명제어 전문 경험" },
-    { number: "800+", label: "프로젝트 완료" },
+    { number: "800+", label: "프로젝트 완료", sublabel: "(누적, 1983년~)" },
+    { number: `${categoryStats.total || 0}+`, label: "등록된 프로젝트", sublabel: "(온라인 등록)" },
     { number: "7+", label: "해외 진출국" },
     { number: "99%", label: "고객 만족도" }
   ];
@@ -219,15 +222,24 @@ const ProjectsPage = () => {
       {/* 프로젝트 통계 */}
       <Section className="py-16 bg-gray-50">
         <div className="container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
             {projectStats.map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
                   {stat.number}
                 </div>
-                <div className="text-gray-600">{stat.label}</div>
+                <div className="text-gray-600 font-medium">{stat.label}</div>
+                {stat.sublabel && (
+                  <div className="text-sm text-gray-500 mt-1">{stat.sublabel}</div>
+                )}
               </div>
             ))}
+          </div>
+          {/* 설명 문구 */}
+          <div className="mt-8 text-center">
+            <p className="text-sm text-gray-600">
+              * 완료 프로젝트는 1983년 창립 이래 누적 수치이며, 주요 프로젝트를 선별하여 순차적으로 등록하고 있습니다.
+            </p>
           </div>
         </div>
       </Section>

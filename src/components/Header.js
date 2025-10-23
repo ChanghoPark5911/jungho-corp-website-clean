@@ -174,8 +174,8 @@ const Header = ({ imageData = {} }) => {
             <button
               className={`px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm lg:px-4 font-medium transition-colors duration-200 whitespace-nowrap ${
                 currentPage === 'home' 
-                  ? 'text-primary-600 bg-primary-50 rounded-lg' 
-                  : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg'
+                  ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 rounded-lg' 
+                  : 'text-gray-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg'
               }`}
               aria-label="홈페이지로 이동"
               onClick={() => {
@@ -194,8 +194,8 @@ const Header = ({ imageData = {} }) => {
               <button
                 className={`px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm lg:px-4 font-medium transition-colors duration-200 flex items-center space-x-1 whitespace-nowrap ${
                   currentPage === 'clarus' || currentPage === 'tlc' || currentPage === 'illutech' || currentPage === 'texcom'
-                    ? 'text-primary-600 bg-primary-50 rounded-lg' 
-                    : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg'
+                    ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 rounded-lg' 
+                    : 'text-gray-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg'
                 }`}
                 onClick={() => toggleDropdown('group')}
                 onKeyPress={(e) => handleKeyPress(e, () => toggleDropdown('group'))}
@@ -243,8 +243,8 @@ const Header = ({ imageData = {} }) => {
                 key={item.key}
                 className={`px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm lg:px-4 font-medium transition-colors duration-200 whitespace-nowrap ${
                   currentPage === item.key 
-                    ? 'text-primary-600 bg-primary-50 rounded-lg' 
-                    : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg'
+                    ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 rounded-lg' 
+                    : 'text-gray-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg'
                 }`}
                 aria-label={item.ariaLabel}
                 onClick={() => {

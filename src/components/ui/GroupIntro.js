@@ -88,7 +88,7 @@ const GroupIntro = ({
           <div className="space-y-8">
             {/* 제목 */}
             <h2 
-              className={`text-3xl sm:text-4xl lg:text-5xl font-bold text-primary leading-tight transition-all duration-1000 ${
+              className={`text-3xl sm:text-4xl lg:text-5xl font-bold text-primary dark:text-primary-400 leading-tight transition-all duration-1000 ${
                 isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
               }`}
             >
@@ -106,7 +106,7 @@ const GroupIntro = ({
             
             {/* 내용 */}
             <div 
-              className={`space-y-6 text-lg text-gray-700 dark:text-gray-100 leading-relaxed transition-all duration-1000 ${
+              className={`space-y-6 text-lg text-gray-700 dark:text-white leading-relaxed transition-all duration-1000 ${
                 isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
               }`}
               style={{ transitionDelay: '0.2s' }}

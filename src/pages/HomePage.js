@@ -15,6 +15,7 @@ import ErrorBoundary from '../components/ui/ErrorBoundary';
 import SkipLink from '../components/ui/SkipLink';
 import ScrollProgress from '../components/ui/ScrollProgress';
 import contentLoader from '../utils/contentLoader';
+import { useI18n } from '../hooks/useI18n';
 
 // 최적화된 이미지 데이터
 const optimizedImages = {
@@ -38,6 +39,9 @@ const optimizedImages = {
 };
 
 const HomePage = () => {
+  // 다국어 지원
+  const { t, currentLanguage } = useI18n();
+  
   // 동적 데이터 상태
   const [homeData, setHomeData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -105,7 +109,7 @@ const HomePage = () => {
     }
   };
 
-  // 데이터 로딩
+  // 데이터 로딩 (언어 변경 시 재로드)
   useEffect(() => {
     const loadHomeData = async () => {
       try {
@@ -181,7 +185,7 @@ const HomePage = () => {
     };
     
     loadHomeData();
-  }, []);
+  }, [currentLanguage]); // 언어 변경 시 재로드
 
   // 로딩 상태 표시
   if (loading) {
@@ -262,22 +266,39 @@ const HomePage = () => {
     ]
   };
 
-  // 히어로 섹션 데이터
+  // 히어로 섹션 데이터 (다국어 지원을 위해 텍스트는 Hero 컴포넌트가 i18n에서 직접 가져옴)
   const heroData = {
     backgroundImage: optimizedImages.hero.src,
     webpBackgroundImage: optimizedImages.hero.webpSrc,
-    mainCopy: currentData.hero.title,
-    subCopy: currentData.hero.subtitle,
-    stats: currentData.achievements.map(achievement => ({
-      value: achievement.number,
-      label: achievement.label
-    })),
+    // mainCopy, subCopy, description는 제거 - Hero 컴포넌트가 i18n에서 가져옴
+    stats: [
+      {
+        value: "40",
+        suffix: t('home.stats.years.suffix'),
+        label: t('home.stats.years.label')
+      },
+      {
+        value: "800",
+        suffix: "+",
+        label: t('home.achievements.projects')
+      },
+      {
+        value: "7",
+        suffix: "+",
+        label: t('home.achievements.countries')
+      },
+      {
+        value: "99",
+        suffix: "%",
+        label: t('home.achievements.satisfaction')
+      }
+    ],
     primaryAction: {
-      label: "비즈니스 보기",
+      label: "home.hero.primaryAction", // i18n 키로 변경
       path: "/business"
     },
     secondaryAction: {
-      label: "문의하기",
+      label: "home.hero.secondaryAction", // i18n 키로 변경
       path: "/support"
     },
     useLocalStorage: false // localStorage 사용 비활성화

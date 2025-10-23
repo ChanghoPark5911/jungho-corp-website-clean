@@ -75,26 +75,15 @@ const Hero = ({
         return;
       }
       
-      // props가 없으면 i18n/localStorage 사용 (홈페이지용)
-      console.log('📚 Hero: i18n에서 데이터 사용');
+      // props가 없으면 i18n에서 현재 언어에 맞는 데이터 사용 (홈페이지용)
+      console.log('📚 Hero: i18n에서 데이터 사용, 현재 언어:', currentLanguage);
       
-      // preferredLanguage 직접 확인
-      const storedLang = localStorage.getItem('preferredLanguage');
-      
-      // 강제로 영어 사용 (테스트)
-      if (storedLang === 'en') {
-        setHeroData({
-          mainTitle: "Innovating the Future of Lighting\nwith 40 Years of Accumulated Technology",
-          subtitle: "Jungho Group is a professional lighting control company that supports customer success with innovative technology and perfect service",
-          description: "We provide the best solutions based on experience in operating more than 150 projects and over 85,000 control points."
-        });
-        return;
-      }
-      
-      // 한국어 기본값
+      // 현재 언어에 맞는 번역을 i18n에서 가져옴
       const i18nTitle = t('home.hero.title');
       const i18nSubtitle = t('home.hero.subtitle');
       const i18nDescription = t('home.hero.description');
+      
+      console.log('🌐 Hero 번역 데이터:', { i18nTitle, i18nSubtitle, i18nDescription });
       
       setHeroData({
         mainTitle: i18nTitle.replace(/\\n/g, '\n'),

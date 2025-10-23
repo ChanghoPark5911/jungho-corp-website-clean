@@ -1268,13 +1268,19 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
     setEditingProject(null);
   };
 
-  // 기술 스택 추가/제거
+  // 기술 스택 추가/제거 (다국어 지원)
   const handleAddTechnology = () => {
     const tech = prompt('기술명을 입력하세요:');
     if (tech && tech.trim()) {
       setEditingProject(prev => ({
         ...prev,
-        technologies: [...(prev.technologies || []), tech.trim()]
+        translations: {
+          ...prev.translations,
+          [activeLanguage]: {
+            ...prev.translations?.[activeLanguage],
+            technologies: [...(prev.translations?.[activeLanguage]?.technologies || []), tech.trim()]
+          }
+        }
       }));
     }
   };
@@ -1282,17 +1288,29 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
   const handleRemoveTechnology = (index) => {
     setEditingProject(prev => ({
       ...prev,
-      technologies: prev.technologies.filter((_, i) => i !== index)
+      translations: {
+        ...prev.translations,
+        [activeLanguage]: {
+          ...prev.translations?.[activeLanguage],
+          technologies: prev.translations?.[activeLanguage]?.technologies?.filter((_, i) => i !== index) || []
+        }
+      }
     }));
   };
 
-  // 특징 추가/제거
+  // 특징 추가/제거 (다국어 지원)
   const handleAddFeature = () => {
     const feature = prompt('특징을 입력하세요:');
     if (feature && feature.trim()) {
       setEditingProject(prev => ({
         ...prev,
-        features: [...(prev.features || []), feature.trim()]
+        translations: {
+          ...prev.translations,
+          [activeLanguage]: {
+            ...prev.translations?.[activeLanguage],
+            features: [...(prev.translations?.[activeLanguage]?.features || []), feature.trim()]
+          }
+        }
       }));
     }
   };
@@ -1300,7 +1318,13 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
   const handleRemoveFeature = (index) => {
     setEditingProject(prev => ({
       ...prev,
-      features: prev.features.filter((_, i) => i !== index)
+      translations: {
+        ...prev.translations,
+        [activeLanguage]: {
+          ...prev.translations?.[activeLanguage],
+          features: prev.translations?.[activeLanguage]?.features?.filter((_, i) => i !== index) || []
+        }
+      }
     }));
   };
 
@@ -1328,7 +1352,9 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-2">
-                    <h3 className="font-semibold text-lg">{project.title}</h3>
+                    <h3 className="font-semibold text-lg">
+                      {project.translations?.ko?.title || project.title || '제목 없음'}
+                    </h3>
                     <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
                       {project.category}
                     </span>
@@ -1341,10 +1367,12 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
                     </span>
                   </div>
                   <p className="text-gray-600 text-sm mb-2">{project.client} • {project.year}</p>
-                  <p className="text-gray-700 line-clamp-2">{project.description}</p>
-                  {project.technologies && project.technologies.length > 0 && (
+                  <p className="text-gray-700 line-clamp-2">
+                    {project.translations?.ko?.description || project.description || '설명 없음'}
+                  </p>
+                  {project.translations?.ko?.technologies && project.translations.ko.technologies.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-2">
-                      {project.technologies.map((tech, index) => (
+                      {project.translations.ko.technologies.map((tech, index) => (
                         <span key={index} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
                           {tech}
                         </span>
@@ -1380,20 +1408,54 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
               {editingProject?.id && projectData.find(project => project.id === editingProject.id) ? '프로젝트 수정' : '새 프로젝트 추가'}
             </h3>
             
+            {/* 언어 탭 */}
+            <div className="flex space-x-2 mb-6 border-b">
+              {[
+                { code: 'ko', name: '한국어' },
+                { code: 'en', name: 'English' },
+                { code: 'zh', name: '中文' },
+                { code: 'ja', name: '日本語' }
+              ].map(lang => (
+                <button
+                  key={lang.code}
+                  onClick={() => setActiveLanguage(lang.code)}
+                  className={`px-4 py-2 font-medium ${
+                    activeLanguage === lang.code
+                      ? 'text-blue-600 border-b-2 border-blue-600'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  {lang.name}
+                  {lang.code === 'ko' && ' *'}
+                </button>
+              ))}
+            </div>
+            
             <div className="space-y-4">
+              {/* 언어별 제목 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  프로젝트명 {activeLanguage === 'ko' && '*'}
+                </label>
+                <input
+                  type="text"
+                  value={editingProject?.translations?.[activeLanguage]?.title || ''}
+                  onChange={(e) => setEditingProject(prev => ({
+                    ...prev,
+                    translations: {
+                      ...prev.translations,
+                      [activeLanguage]: {
+                        ...prev.translations?.[activeLanguage],
+                        title: e.target.value
+                      }
+                    }
+                  }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg"
+                  placeholder={`프로젝트명을 ${activeLanguage === 'ko' ? '입력' : '번역'}하세요`}
+                />
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    프로젝트명 *
-                  </label>
-                  <input
-                    type="text"
-                    value={editingProject?.title || ''}
-                    onChange={(e) => setEditingProject(prev => ({ ...prev, title: e.target.value }))}
-                    className="w-full p-3 border border-gray-300 rounded-lg"
-                    placeholder="프로젝트명을 입력하세요"
-                  />
-                </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -1409,16 +1471,26 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
                 </div>
               </div>
 
+              {/* 언어별 설명 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  프로젝트 설명 *
+                  프로젝트 설명 {activeLanguage === 'ko' && '*'}
                 </label>
                 <textarea
-                  value={editingProject?.description || ''}
-                  onChange={(e) => setEditingProject(prev => ({ ...prev, description: e.target.value }))}
+                  value={editingProject?.translations?.[activeLanguage]?.description || ''}
+                  onChange={(e) => setEditingProject(prev => ({
+                    ...prev,
+                    translations: {
+                      ...prev.translations,
+                      [activeLanguage]: {
+                        ...prev.translations?.[activeLanguage],
+                        description: e.target.value
+                      }
+                    }
+                  }))}
                   className="w-full p-3 border border-gray-300 rounded-lg"
-                  rows={3}
-                  placeholder="프로젝트 설명을 입력하세요"
+                  rows={4}
+                  placeholder={`프로젝트 설명을 ${activeLanguage === 'ko' ? '입력' : '번역'}하세요`}
                 />
               </div>
 
@@ -1494,13 +1566,13 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
                 />
               </div>
 
-              {/* 기술 스택 */}
+              {/* 언어별 기술 스택 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  사용 기술
+                  사용 기술 ({activeLanguage === 'ko' ? '한국어' : activeLanguage === 'en' ? 'English' : activeLanguage === 'zh' ? '中文' : '日本語'})
                 </label>
                 <div className="flex flex-wrap gap-2 mb-2">
-                  {editingProject?.technologies?.map((tech, index) => (
+                  {editingProject?.translations?.[activeLanguage]?.technologies?.map((tech, index) => (
                     <span key={index} className="flex items-center bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
                       {tech}
                       <button
@@ -1522,13 +1594,13 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
                 </button>
               </div>
 
-              {/* 프로젝트 특징 */}
+              {/* 언어별 프로젝트 특징 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  프로젝트 특징
+                  프로젝트 특징 ({activeLanguage === 'ko' ? '한국어' : activeLanguage === 'en' ? 'English' : activeLanguage === 'zh' ? '中文' : '日本語'})
                 </label>
                 <div className="flex flex-wrap gap-2 mb-2">
-                  {editingProject?.features?.map((feature, index) => (
+                  {editingProject?.translations?.[activeLanguage]?.features?.map((feature, index) => (
                     <span key={index} className="flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
                       {feature}
                       <button

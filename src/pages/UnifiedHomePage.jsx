@@ -196,7 +196,7 @@ const UnifiedHomePage = () => {
 
   // Hero 컴포넌트에 전달할 데이터
   const heroData = useMemo(() => {
-    // 성과지표 다국어 변환
+    // 성과지표 다국어 변환 및 데이터 구조 매핑
     const translatedStats = homeData.achievements?.map((stat, index) => {
       // 각 성과지표의 label을 다국어로 변환
       let translatedLabel = stat.label;
@@ -207,7 +207,8 @@ const UnifiedHomePage = () => {
       else if (index === 3) translatedLabel = t('home.stats.satisfaction.label') || stat.label;
       
       return {
-        ...stat,
+        value: stat.number,  // 'number'를 'value'로 매핑
+        suffix: stat.suffix || '',  // suffix 추가
         label: translatedLabel
       };
     }) || [];

@@ -7,18 +7,22 @@
   "achievements": [
     {
       "number": "40",
-      "label": "년 전통"
+      "suffix": "년",
+      "label": "조명제어 전문 경험"
     },
     {
-      "number": "800+",
-      "label": "프로젝트"
+      "number": "800",
+      "suffix": "+",
+      "label": "프로젝트 완료"
     },
     {
-      "number": "7+",
-      "label": "국가 진출"
+      "number": "7",
+      "suffix": "+",
+      "label": "해외 진출국"
     },
     {
-      "number": "99%",
+      "number": "99",
+      "suffix": "%",
       "label": "고객 만족도"
     }
   ],

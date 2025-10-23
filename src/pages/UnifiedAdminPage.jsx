@@ -1206,9 +1206,10 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
       id: Date.now().toString(),
       client: '',
       year: new Date().getFullYear().toString(),
-      duration: '', // 구축(시공)기간 추가
-      category: '조명제어',
+      duration: '', // 구축(시공)기간
+      category: '스마트빌딩', // 기본 카테고리 변경
       status: '완료',
+      isFeatured: false, // 주요 프로젝트 여부
       image: '',
       link: '',
       translations: {
@@ -1501,16 +1502,19 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    카테고리
+                    카테고리 *
                   </label>
                   <select
-                    value={editingProject?.category || '조명제어'}
+                    value={editingProject?.category || '스마트빌딩'}
                     onChange={(e) => setEditingProject(prev => ({ ...prev, category: e.target.value }))}
                     className="w-full p-3 border border-gray-300 rounded-lg"
                   >
-                    <option value="조명제어">조명제어</option>
-                    <option value="전력제어">전력제어</option>
-                    <option value="섬유기계">섬유기계</option>
+                    <option value="스마트빌딩">스마트빌딩</option>
+                    <option value="공공시설">공공시설</option>
+                    <option value="산업용시설">산업용시설</option>
+                    <option value="물류 및 데이터센터">물류 및 데이터센터</option>
+                    <option value="문화시설">문화시설</option>
+                    <option value="관광시설">관광시설</option>
                     <option value="기타">기타</option>
                   </select>
                 </div>
@@ -1542,6 +1546,25 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
                     placeholder="2024"
                   />
                 </div>
+              </div>
+
+              {/* 주요 프로젝트 표시 */}
+              <div className="flex items-center p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <input
+                  type="checkbox"
+                  id="isFeatured"
+                  checked={editingProject?.isFeatured || false}
+                  onChange={(e) => setEditingProject(prev => ({ ...prev, isFeatured: e.target.checked }))}
+                  className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <label htmlFor="isFeatured" className="ml-3 flex-1">
+                  <span className="block text-sm font-medium text-gray-900">
+                    ⭐ 주요 프로젝트로 표시
+                  </span>
+                  <span className="block text-xs text-gray-600 mt-1">
+                    체크하면 프로젝트 페이지 상단의 "주요 프로젝트" 섹션에 확대된 카드로 표시됩니다
+                  </span>
+                </label>
               </div>
 
               {/* 구축(시공)기간 및 클라이언트 정보 */}

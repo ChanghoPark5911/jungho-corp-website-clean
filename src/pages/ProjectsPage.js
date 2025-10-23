@@ -14,7 +14,7 @@ import {
 } from '../services/projectService';
 
 const ProjectsPage = () => {
-  const { t, currentLanguage } = useI18n(); // 다국어 지원
+  const { t, currentLanguage} = useI18n(); // 다국어 지원
   // 동적 프로젝트 상태
   const [dynamicProjects, setDynamicProjects] = useState([]);
   const [featuredProjects, setFeaturedProjects] = useState([]);
@@ -27,6 +27,9 @@ const ProjectsPage = () => {
   // 프로젝트 상세 모달 상태
   const [selectedProject, setSelectedProject] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  
+  // 분야별 통계 (자동 계산)
+  const [categoryStats, setCategoryStats] = useState({});
 
   // 🌐 다국어 텍스트 가져오기 헬퍼 함수
   const getTranslatedText = (project, field) => {
@@ -93,6 +96,17 @@ const ProjectsPage = () => {
     try {
       // 모든 프로젝트를 가져온 후 클라이언트에서 필터링
       const allProjects = await projectService.getProjectList(PROJECT_CATEGORIES.ALL);
+      
+      // 🔢 분야별 통계 계산
+      const stats = {};
+      Object.values(PROJECT_CATEGORIES).forEach(category => {
+        if (category !== PROJECT_CATEGORIES.ALL) {
+          const count = allProjects.filter(p => p.category === category).length;
+          stats[category] = count;
+        }
+      });
+      setCategoryStats(stats);
+      console.log('📊 분야별 통계:', stats);
       
       let filteredProjects = allProjects;
       
@@ -189,7 +203,7 @@ const ProjectsPage = () => {
         <Hero {...heroData} useLocalStorage={false} />
       </section>
 
-      {/* 프로젝트 갤러리 */}
+      {/* 프로젝트 갤러리 (분류별 필터) */}
       <Section className="py-16">
         <div className="container">
           <ProjectGalleryAdvanced 
@@ -337,52 +351,64 @@ const ProjectsPage = () => {
             <Card className="text-center">
               <div className="text-4xl mb-4">🏢</div>
               <h3 className="text-xl font-bold text-primary mb-2">스마트빌딩</h3>
-              <div className="text-3xl font-bold text-primary mb-2">250+</div>
+              <div className="text-3xl font-bold text-primary mb-2">
+                {categoryStats['스마트빌딩'] || 0}
+              </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
               <div className="text-4xl mb-4">🏛️</div>
               <h3 className="text-xl font-bold text-primary mb-2">공공시설</h3>
-              <div className="text-3xl font-bold text-primary mb-2">150+</div>
+              <div className="text-3xl font-bold text-primary mb-2">
+                {categoryStats['공공시설'] || 0}
+              </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
               <div className="text-4xl mb-4">🏭</div>
               <h3 className="text-xl font-bold text-primary mb-2">산업용시설</h3>
-              <div className="text-3xl font-bold text-primary mb-2">150+</div>
+              <div className="text-3xl font-bold text-primary mb-2">
+                {categoryStats['산업용시설'] || 0}
+              </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
               <div className="text-4xl mb-4">📦</div>
               <h3 className="text-xl font-bold text-primary mb-2">물류 및 데이터센터</h3>
-              <div className="text-3xl font-bold text-primary mb-2">100+</div>
+              <div className="text-3xl font-bold text-primary mb-2">
+                {categoryStats['물류 및 데이터센터'] || 0}
+              </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
               <div className="text-4xl mb-4">🎭</div>
               <h3 className="text-xl font-bold text-primary mb-2">문화시설</h3>
-              <div className="text-3xl font-bold text-primary mb-2">100+</div>
+              <div className="text-3xl font-bold text-primary mb-2">
+                {categoryStats['문화시설'] || 0}
+              </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
             <Card className="text-center">
               <div className="text-4xl mb-4">🏖️</div>
               <h3 className="text-xl font-bold text-primary mb-2">관광시설</h3>
-              <div className="text-3xl font-bold text-primary mb-2">50+</div>
+              <div className="text-3xl font-bold text-primary mb-2">
+                {categoryStats['관광시설'] || 0}
+              </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
           </div>
         </div>
       </Section>
 
-      {/* 동적 프로젝트 갤러리 */}
+      {/* 전체 프로젝트 목록 */}
       <Section className="py-20 bg-white">
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-              프로젝트 갤러리
+              전체 프로젝트 목록
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              관리자가 등록한 최신 프로젝트들을 확인해보세요
+              관리자가 등록한 모든 프로젝트를 검색하고 확인하세요
             </p>
             
             {/* 필터링 및 검색 */}

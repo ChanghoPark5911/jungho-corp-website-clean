@@ -381,32 +381,47 @@ export const getFeaturedProjects = async () => {
   try {
     console.log('주요 프로젝트 조회 시작');
     
-    // 단순한 쿼리로 시작
-    const q = query(collection(db, PROJECTS_COLLECTION));
-    const querySnapshot = await getDocs(q);
-    let projects = [];
+    // 1. localStorage에서 관리자가 추가한 프로젝트 확인
+    let adminProjects = [];
+    const localProjects = localStorage.getItem('projects_data');
+    if (localProjects) {
+      try {
+        adminProjects = JSON.parse(localProjects);
+        console.log('✅ localStorage에서 관리자 프로젝트 로드:', adminProjects.length, '개');
+        
+        // 날짜 변환 및 주요 프로젝트 필터링
+        adminProjects = adminProjects
+          .map(project => ({
+            ...project,
+            createdAt: project.createdAt ? new Date(project.createdAt) : new Date(),
+            updatedAt: project.updatedAt ? new Date(project.updatedAt) : new Date(),
+            publishedAt: project.publishedAt ? new Date(project.publishedAt) : new Date(),
+            source: 'admin'
+          }))
+          .filter(project => 
+            project.isPublished !== false && project.isFeatured === true
+          );
+        
+        console.log('주요 프로젝트 (관리자):', adminProjects.length, '개');
+      } catch (error) {
+        console.error('❌ localStorage 프로젝트 데이터 파싱 오류:', error);
+      }
+    }
     
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      projects.push({
-        id: doc.id,
-        ...data,
-        createdAt: data.createdAt?.toDate?.() || new Date(),
-        updatedAt: data.updatedAt?.toDate?.() || new Date(),
-        publishedAt: data.publishedAt?.toDate?.() || new Date()
-      });
-    });
+    // 2. 기본 프로젝트에서 주요 프로젝트 가져오기
+    const defaultProjects = getDefaultProjects()
+      .filter(project => project.isFeatured === true)
+      .map(project => ({ ...project, source: 'default' }));
+    console.log('주요 프로젝트 (기본):', defaultProjects.length, '개');
     
-    // 클라이언트 사이드에서 필터링
-    projects = projects.filter(project => 
-      project.isPublished !== false && project.isFeatured === true
-    );
+    // 3. 합치기
+    let allFeaturedProjects = [...adminProjects, ...defaultProjects];
     
-    // 정렬
-    projects.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    // 4. 정렬 (최신순)
+    allFeaturedProjects.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     
-    console.log('주요 프로젝트 수:', projects.length);
-    return projects;
+    console.log('✅ 전체 주요 프로젝트 수:', allFeaturedProjects.length, '개');
+    return allFeaturedProjects;
   } catch (error) {
     console.error('주요 프로젝트 조회 오류:', error);
     // 오프라인 모드에서는 기본 데이터 반환

@@ -1206,6 +1206,7 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
       id: Date.now().toString(),
       client: '',
       year: new Date().getFullYear().toString(),
+      duration: '', // 구축(시공)기간 추가
       category: '조명제어',
       status: '완료',
       image: '',
@@ -1366,7 +1367,10 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
                       {project.status}
                     </span>
                   </div>
-                  <p className="text-gray-600 text-sm mb-2">{project.client} • {project.year}</p>
+                  <p className="text-gray-600 text-sm mb-2">
+                    {project.client} • {project.year}
+                    {project.duration && ` • ${project.duration}`}
+                  </p>
                   <p className="text-gray-700 line-clamp-2">
                     {project.translations?.ko?.description || project.description || '설명 없음'}
                   </p>
@@ -1540,30 +1544,55 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  이미지 URL
-                </label>
-                <input
-                  type="url"
-                  value={editingProject?.image || ''}
-                  onChange={(e) => setEditingProject(prev => ({ ...prev, image: e.target.value }))}
-                  className="w-full p-3 border border-gray-300 rounded-lg"
-                  placeholder="프로젝트 이미지 URL을 입력하세요"
-                />
+              {/* 구축(시공)기간 및 클라이언트 정보 */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    구축(시공)기간
+                  </label>
+                  <input
+                    type="text"
+                    value={editingProject?.duration || ''}
+                    onChange={(e) => setEditingProject(prev => ({ ...prev, duration: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg"
+                    placeholder="예: 4개월, 6개월, 2022.01-2022.06"
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    프로젝트 구축 또는 시공에 소요된 기간을 입력하세요
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    이미지 URL
+                  </label>
+                  <input
+                    type="url"
+                    value={editingProject?.image || ''}
+                    onChange={(e) => setEditingProject(prev => ({ ...prev, image: e.target.value }))}
+                    className="w-full p-3 border border-gray-300 rounded-lg"
+                    placeholder="프로젝트 대표 이미지 URL"
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    프로젝트 목록과 상세 페이지에 표시될 대표 이미지
+                  </p>
+                </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  프로젝트 링크
+                  프로젝트 링크 (선택사항)
                 </label>
                 <input
                   type="url"
                   value={editingProject?.link || ''}
                   onChange={(e) => setEditingProject(prev => ({ ...prev, link: e.target.value }))}
                   className="w-full p-3 border border-gray-300 rounded-lg"
-                  placeholder="프로젝트 상세 페이지 URL을 입력하세요"
+                  placeholder="외부 케이스 스터디나 상세 페이지 URL"
                 />
+                <p className="mt-1 text-xs text-gray-500">
+                  프로젝트 상세 정보 페이지, 고객사 웹사이트, 보도자료 등의 링크 (선택사항)
+                </p>
               </div>
 
               {/* 언어별 기술 스택 */}

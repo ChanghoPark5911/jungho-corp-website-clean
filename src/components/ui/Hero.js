@@ -58,67 +58,53 @@ const Hero = ({
     supportLabel: '고객만족도'
   });
 
-  // localStorage에서 히어로 데이터 로드 및 실시간 업데이트
+  // 히어로 데이터 로드 (홈페이지는 i18n 사용, 다른 페이지는 props 사용)
   useEffect(() => {
     const loadHeroContent = () => {
-      // 🔧 props가 제공되면 props를 사용하되, 다국어는 현재 언어 반영
-      if (mainCopy || subCopy || description) {
-        console.log('✅ Hero: props에서 데이터 사용 (다국어 적용)', { mainCopy, subCopy, description });
+      // 홈페이지: mainCopy, subCopy, description props가 모두 없으면 i18n 사용
+      if (!mainCopy && !subCopy && !description) {
+        console.log('🏠 HomePage Hero: i18n 사용, 언어:', currentLanguage);
         
-        // props는 그대로 사용 (페이지별로 고유한 텍스트)
-        // Hero 컴포넌트 내부에서 다국어 처리는 렌더링 시 수행
+        // 현재 언어에 맞는 번역을 i18n에서 가져옴
+        const i18nTitle = t('home.hero.title');
+        const i18nSubtitle = t('home.hero.subtitle');
+        const i18nDescription = t('home.hero.description');
+        
+        console.log('🌐 번역 데이터:', { i18nTitle, i18nSubtitle, i18nDescription });
+        
         setHeroData({
-          mainTitle: mainCopy || '',
-          subtitle: subCopy || '',
-          description: description || ''
+          mainTitle: i18nTitle.replace(/\\n/g, '\n'),
+          subtitle: i18nSubtitle.replace(/\\n/g, '\n'),
+          description: i18nDescription.replace(/\\n/g, '\n')
         });
         return;
       }
       
-      // props가 없으면 i18n에서 현재 언어에 맞는 데이터 사용 (홈페이지용)
-      console.log('📚 Hero: i18n에서 데이터 사용, 현재 언어:', currentLanguage);
-      
-      // 현재 언어에 맞는 번역을 i18n에서 가져옴
-      const i18nTitle = t('home.hero.title');
-      const i18nSubtitle = t('home.hero.subtitle');
-      const i18nDescription = t('home.hero.description');
-      
-      console.log('🌐 Hero 번역 데이터:', { i18nTitle, i18nSubtitle, i18nDescription });
-      
+      // 다른 페이지: props 사용 (Business, Support 등)
+      console.log('📄 Other Page Hero: props 사용');
       setHeroData({
-        mainTitle: i18nTitle.replace(/\\n/g, '\n'),
-        subtitle: i18nSubtitle.replace(/\\n/g, '\n'),
-        description: i18nDescription.replace(/\\n/g, '\n')
+        mainTitle: mainCopy || '',
+        subtitle: subCopy || '',
+        description: description || ''
       });
     };
     
     // 초기 로드
     loadHeroContent();
     
-    // 페이지 가시성 변경 감지 (탭 전환, 브라우저 최소화 등)
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        loadHeroContent();
-      }
-    };
-    
-    // 실시간 업데이트 리스너
-    const handleContentUpdate = () => {
+    // 언어 변경 이벤트 리스너
+    const handleLanguageChange = () => {
+      console.log('🔄 언어 변경 감지 - Hero 재로드');
       loadHeroContent();
     };
     
-    // 커스텀 이벤트 리스너 추가
-    window.addEventListener('heroContentUpdated', handleContentUpdate);
-    
-    // 페이지 가시성 변경 리스너 추가
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('languageChanged', handleLanguageChange);
     
     // 컴포넌트 언마운트 시 리스너 제거
     return () => {
-      window.removeEventListener('heroContentUpdated', handleContentUpdate);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('languageChanged', handleLanguageChange);
     };
-  }, [mainCopy, subCopy, useLocalStorage, currentLanguage, t]); // currentLanguage 추가로 언어 변경 시 다시 로드
+  }, [mainCopy, subCopy, description, currentLanguage, t]); // 모든 의존성 포함
 
   // 성과지표 데이터 로드 및 실시간 업데이트
   useEffect(() => {

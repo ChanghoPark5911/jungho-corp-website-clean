@@ -270,38 +270,38 @@ const HomePage = () => {
   const heroData = {
     backgroundImage: optimizedImages.hero.src,
     webpBackgroundImage: optimizedImages.hero.webpSrc,
-    // mainCopy, subCopy, description는 제거 - Hero 컴포넌트가 i18n에서 가져옴
+    // mainCopy, subCopy, description props를 전달하지 않음 - Hero 컴포넌트가 i18n에서 가져옴
     stats: [
       {
         value: "40",
-        suffix: t('home.stats.years.suffix'),
-        label: t('home.stats.years.label')
+        suffix: t('home.stats.years.suffix') || "년",
+        label: t('home.stats.years.label') || "조명제어 전문 경험"
       },
       {
         value: "800",
         suffix: "+",
-        label: t('home.achievements.projects')
+        label: t('home.achievements.projects') || "프로젝트"
       },
       {
         value: "7",
         suffix: "+",
-        label: t('home.achievements.countries')
+        label: t('home.achievements.countries') || "국가 진출"
       },
       {
         value: "99",
         suffix: "%",
-        label: t('home.achievements.satisfaction')
+        label: t('home.achievements.satisfaction') || "고객 만족도"
       }
     ],
     primaryAction: {
-      label: "home.hero.primaryAction", // i18n 키로 변경
+      label: "home.hero.primaryAction", // i18n 키
       path: "/business"
     },
     secondaryAction: {
-      label: "home.hero.secondaryAction", // i18n 키로 변경
+      label: "home.hero.secondaryAction", // i18n 키
       path: "/support"
     },
-    useLocalStorage: false // localStorage 사용 비활성화
+    useLocalStorage: false
   };
 
   // 그룹 소개 섹션 데이터

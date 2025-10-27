@@ -228,8 +228,16 @@ class I18nAdvanced {
             business: '사업영역',
             projects: '프로젝트',
             support: '고객지원',
-            news: '뉴스'
+            news: '뉴스',
+            admin: '관리자'
           }
+        },
+        // 계열사
+        subsidiaries: {
+          clarus: '클라루스',
+          tlc: '정호티엘씨',
+          illutech: '일루텍',
+          texcom: '정호텍스컴'
         },
         // 버튼 및 UI 요소
         buttons: {
@@ -711,8 +719,16 @@ class I18nAdvanced {
             business: 'Business',
             projects: 'Projects',
             support: 'Support',
-            news: 'News'
+            news: 'News',
+            admin: 'Admin'
           }
+        },
+        // Subsidiaries
+        subsidiaries: {
+          clarus: 'Clarus',
+          tlc: 'Jungho TLC',
+          illutech: 'Illutech',
+          texcom: 'Jungho Texcom'
         },
         // Buttons and UI elements
         buttons: {
@@ -1263,8 +1279,16 @@ class I18nAdvanced {
             business: '业务领域',
             projects: '项目',
             support: '客户支持',
-            news: '新闻'
+            news: '新闻',
+            admin: '管理'
           }
+        },
+        // Subsidiaries
+        subsidiaries: {
+          clarus: '克拉鲁斯',
+          tlc: '正浩TLC',
+          illutech: '伊利泰克',
+          texcom: '正浩泰克斯康'
         },
         // SEO
         seo: {
@@ -1661,8 +1685,16 @@ class I18nAdvanced {
             business: '事業領域',
             projects: 'プロジェクト',
             support: 'サポート',
-            news: 'ニュース'
+            news: 'ニュース',
+            admin: '管理'
           }
+        },
+        // Subsidiaries
+        subsidiaries: {
+          clarus: 'クラルス',
+          tlc: '正浩TLC',
+          illutech: 'イルテック',
+          texcom: '正浩テクスコム'
         },
         // SEO
         seo: {

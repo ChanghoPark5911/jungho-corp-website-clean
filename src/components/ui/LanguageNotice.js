@@ -39,12 +39,12 @@ const LanguageNotice = () => {
   const message = messages[currentLanguage] || messages.en;
 
   return (
-    <div className="bg-blue-50 border-l-4 border-blue-500 py-4 px-6 mb-8">
+    <div className="bg-blue-50 border-l-4 border-blue-500 py-2 px-4 mb-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-start">
           <div className="flex-shrink-0">
             <svg 
-              className="h-6 w-6 text-blue-500" 
+              className="h-5 w-5 text-blue-500 mt-0.5" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -58,32 +58,30 @@ const LanguageNotice = () => {
             </svg>
           </div>
           <div className="ml-3 flex-1">
-            <h3 className="text-sm font-medium text-blue-800">
+            <h3 className="text-sm font-medium text-blue-800 mb-1">
               {message.title}
             </h3>
-            <div className="mt-2 text-sm text-blue-700">
-              <p>{message.content}</p>
-              <div className="mt-3 flex flex-wrap gap-4 text-sm">
-                <a 
-                  href={`mailto:${message.email}`}
-                  className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
-                >
-                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  {message.email}
-                </a>
-                <span className="text-blue-600">|</span>
-                <a 
-                  href={`tel:${message.phone}`}
-                  className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
-                >
-                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                  {message.phone}
-                </a>
-              </div>
+            <p className="text-sm text-blue-700 mb-2">{message.content}</p>
+            <div className="flex flex-wrap gap-3 text-xs">
+              <a 
+                href={`mailto:${message.email}`}
+                className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+              >
+                <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                {message.email}
+              </a>
+              <span className="text-blue-600">|</span>
+              <a 
+                href={`tel:${message.phone}`}
+                className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+              >
+                <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                {message.phone}
+              </a>
             </div>
           </div>
         </div>

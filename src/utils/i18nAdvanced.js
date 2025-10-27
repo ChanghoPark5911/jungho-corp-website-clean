@@ -435,7 +435,12 @@ class I18nAdvanced {
               label: '조명제어 전문 경험'
             },
             projects: {
-              label: '프로젝트 완료'
+              label: '프로젝트 완료',
+              sublabel: '(누적, 1983년~)'
+            },
+            registered: {
+              label: '등록된 프로젝트',
+              sublabel: '(온라인 등록)'
             },
             countries: {
               label: '해외 진출국'
@@ -926,7 +931,12 @@ class I18nAdvanced {
               label: 'Lighting Control Expertise'
             },
             projects: {
-              label: 'Projects Completed'
+              label: 'Projects Completed',
+              sublabel: '(Cumulative, Since 1983)'
+            },
+            registered: {
+              label: 'Registered Projects',
+              sublabel: '(Online Registry)'
             },
             countries: {
               label: 'Countries Expanded'
@@ -1290,6 +1300,30 @@ class I18nAdvanced {
           illutech: '伊利泰克',
           texcom: '正浩泰克斯康'
         },
+        // Buttons and UI elements
+        buttons: {
+          learnMore: '了解更多',
+          readMore: '阅读更多',
+          viewDetails: '查看详情',
+          contact: '联系我们',
+          download: '下载',
+          submit: '提交',
+          save: '保存',
+          cancel: '取消',
+          edit: '编辑',
+          delete: '删除',
+          add: '添加',
+          update: '更新',
+          confirm: '确认',
+          back: '返回',
+          next: '下一步',
+          previous: '上一步',
+          close: '关闭',
+          search: '搜索',
+          filter: '筛选',
+          reset: '重置',
+          apply: '应用'
+        },
         // SEO
         seo: {
           home: {
@@ -1333,7 +1367,12 @@ class I18nAdvanced {
               label: '照明控制专业经验'
             },
             projects: {
-              label: '项目完成'
+              label: '项目完成',
+              sublabel: '(累计，1983年~)'
+            },
+            registered: {
+              label: '已注册项目',
+              sublabel: '(在线注册)'
             },
             countries: {
               label: '海外进出国'
@@ -1696,6 +1735,30 @@ class I18nAdvanced {
           illutech: 'イルテック',
           texcom: '正浩テクスコム'
         },
+        // Buttons and UI elements
+        buttons: {
+          learnMore: '詳細を見る',
+          readMore: '続きを読む',
+          viewDetails: '詳細を見る',
+          contact: 'お問い合わせ',
+          download: 'ダウンロード',
+          submit: '送信',
+          save: '保存',
+          cancel: 'キャンセル',
+          edit: '編集',
+          delete: '削除',
+          add: '追加',
+          update: '更新',
+          confirm: '確認',
+          back: '戻る',
+          next: '次へ',
+          previous: '前へ',
+          close: '閉じる',
+          search: '検索',
+          filter: 'フィルター',
+          reset: 'リセット',
+          apply: '適用'
+        },
         // SEO
         seo: {
           home: {
@@ -1739,7 +1802,12 @@ class I18nAdvanced {
               label: '照明制御専門経験'
             },
             projects: {
-              label: 'プロジェクト完了'
+              label: 'プロジェクト完了',
+              sublabel: '(累計、1983年~)'
+            },
+            registered: {
+              label: '登録プロジェクト',
+              sublabel: '(オンライン登録)'
             },
             countries: {
               label: '海外進出国'

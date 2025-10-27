@@ -15,17 +15,31 @@ const SubsidiariesIntro = ({
   const [companyLogos, setCompanyLogos] = useState({});
   const sectionRef = useRef(null);
   const navigate = useNavigate();
+  
+  // 버튼 텍스트 (언어 변경 시 즉시 업데이트)
+  const viewDetailsText = React.useMemo(() => {
+    const result = t('buttons.viewDetails');
+    
+    // fallback: t() 함수가 키를 반환하면 수동으로 매핑
+    if (result === 'buttons.viewDetails' || !result) {
+      const fallbackMap = {
+        'ko': '상세 보기',
+        'en': 'View Details',
+        'zh': '查看详情',
+        'ja': '詳細を見る'
+      };
+      return fallbackMap[currentLanguage] || '상세 보기';
+    }
+    
+    return result;
+  }, [t, currentLanguage]);
 
   // i18n에서 계열사 데이터 가져오기
   // t() 함수가 번역을 찾지 못하면 키를 반환하므로, || 연산자로 기본값 사용
   const defaultSubsidiaries = React.useMemo(() => {
-    console.log('🔍 SubsidiariesIntro - 현재 언어:', currentLanguage);
-    
     const getTrans = (key, fallback) => {
       const result = t(key);
-      const finalValue = (result === key) ? fallback : result;
-      console.log(`📝 번역: ${key} -> ${finalValue}`);
-      return finalValue;
+      return (result === key) ? fallback : result;
     };
     
     return [
@@ -74,7 +88,7 @@ const SubsidiariesIntro = ({
         path: '/texcom'
       }
     ];
-  }, [t]);
+  }, [t, currentLanguage]);
 
   // 계열사 이름을 경로로 매핑하는 함수
   const getPathFromName = (name) => {
@@ -89,18 +103,13 @@ const SubsidiariesIntro = ({
 
   // 한국어일 때만 props 우선, 다른 언어는 i18n 사용
   const safeSubsidiaries = React.useMemo(() => {
-    console.log('🔍 safeSubsidiaries - 현재 언어:', currentLanguage);
-    console.log('🔍 props subsidiaries:', subsidiaries);
-    
     // 한국어가 아니거나, props subsidiaries가 없으면 i18n 사용
     if (currentLanguage !== 'ko' || !subsidiaries || subsidiaries.length === 0) {
-      console.log('✅ i18n 데이터 사용 (defaultSubsidiaries)');
       return defaultSubsidiaries;
     }
     
     // 한국어이고 props subsidiaries가 있으면 사용
     if (currentLanguage === 'ko' && subsidiaries && Array.isArray(subsidiaries) && subsidiaries.length > 0) {
-      console.log('✅ props 데이터 사용 (한국어)');
       return subsidiaries.map(item => ({
         id: item.id || item.name || 'unknown',
         title: item.title || item.name || '제목 없음',
@@ -115,7 +124,7 @@ const SubsidiariesIntro = ({
     }
     
     return defaultSubsidiaries;
-  }, [currentLanguage, subsidiaries, defaultSubsidiaries]);
+  }, [currentLanguage, subsidiaries, defaultSubsidiaries, t]);
 
   // 회사 로고 데이터 로드
   useEffect(() => {
@@ -165,15 +174,8 @@ const SubsidiariesIntro = ({
 
   // 카드 클릭 핸들러
   const handleCardClick = (path, companyName) => {
-    console.log(`🔵 클릭된 회사: ${companyName}, 경로: ${path}`);
-    console.log('🔵 현재 경로:', window.location.pathname);
-    
     if (path && path !== '/' && path !== 'undefined' && path.startsWith('/')) {
-      console.log(`🚀 네비게이션 시작: ${path}`);
       window.location.href = path;
-    } else {
-      console.error('❌ 유효하지 않은 경로:', path);
-      console.log('사용 가능한 경로들:', defaultSubsidiaries.map(s => s.path));
     }
   };
 
@@ -287,13 +289,14 @@ const SubsidiariesIntro = ({
 
                 {/* 자세히 보기 버튼 */}
                 <button 
+                  key={`btn-${subsidiary.id}-${currentLanguage}`}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleCardClick(subsidiary.path, subsidiary.title);
                   }}
                   className={`inline-block px-6 py-3 rounded-lg text-sm font-medium text-white ${subsidiary.buttonColor} hover:opacity-80 transition-opacity`}
                 >
-                  상세보기 &gt;
+                  {viewDetailsText} &gt;
                 </button>
               </div>
             </div>

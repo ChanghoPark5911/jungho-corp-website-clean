@@ -218,7 +218,7 @@ const UnifiedHomePage = () => {
         translatedLabel = t('home.stats.years.label') || stat.label;
       } else if (index === 1) {
         translatedLabel = t('home.stats.projects.label') || stat.label;
-        sublabel = '(누적, 1983년~)';  // 800+ 에 대한 설명
+        sublabel = t('home.stats.projects.sublabel') || '(누적, 1983년~)';  // 800+ 에 대한 설명
       } else if (index === 2) {
         translatedLabel = t('home.stats.countries.label') || stat.label;
       } else if (index === 3) {
@@ -238,8 +238,8 @@ const UnifiedHomePage = () => {
       translatedStats.splice(2, 0, {
         value: registeredProjectsCount.toString(),
         suffix: '+',
-        label: '등록된 프로젝트',
-        sublabel: '(온라인 등록)'
+        label: t('home.stats.registered.label') || '등록된 프로젝트',
+        sublabel: t('home.stats.registered.sublabel') || '(온라인 등록)'
       });
     }
     

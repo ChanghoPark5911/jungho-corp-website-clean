@@ -89,7 +89,7 @@ const Footer = () => {
               {Object.entries(SUBSIDIARIES).map(([key, subsidiary]) => (
                 <div key={key}>
                   <Typography variant="h6" className="text-secondary mb-2 md:mb-3">
-                    {subsidiary.name}
+                    {t(`subsidiaries.${key}`) || subsidiary.name}
                   </Typography>
                   <ul className="space-y-1 md:space-y-2">
                     {subsidiary.pages.map((page, index) => (

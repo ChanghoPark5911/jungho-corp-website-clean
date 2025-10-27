@@ -93,6 +93,20 @@ const LatestNews = ({
     };
   }, []);
 
+  // 🌍 다국어 필드 가져오기 헬퍼 함수
+  const getTranslatedField = (newsItem, field) => {
+    // 1. 현재 언어의 번역이 있으면 사용
+    if (newsItem.translations?.[currentLanguage]?.[field]) {
+      return newsItem.translations[currentLanguage][field];
+    }
+    // 2. 없으면 한국어 기본값 사용
+    if (newsItem.translations?.ko?.[field]) {
+      return newsItem.translations.ko[field];
+    }
+    // 3. 그것도 없으면 기존 필드 사용 (하위 호환)
+    return newsItem[field] || '';
+  };
+
   // 기본 뉴스 데이터 (news가 전달되지 않았을 때 사용)
   const defaultNews = [
     {
@@ -126,6 +140,9 @@ const LatestNews = ({
 
   // localStorage 데이터가 있으면 사용, 없으면 기본값 사용
   const newsToRender = newsData.length > 0 ? newsData : (news && news.length > 0 ? news : defaultNews);
+  
+  console.log('🔍 뉴스 렌더링 데이터:', newsToRender);
+  console.log('🌍 현재 언어:', currentLanguage);
 
   // Intersection Observer 설정
   useEffect(() => {
@@ -206,7 +223,7 @@ const LatestNews = ({
                 {/* 카테고리 배지 */}
                 {newsItem.category && (
                   <div className="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
-                    {newsItem.category}
+                    {getTranslatedField(newsItem, 'category') || newsItem.category}
                   </div>
                 )}
                 
@@ -226,10 +243,13 @@ const LatestNews = ({
               {/* 뉴스 내용 */}
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
-                  {newsItem.title}
+                  {getTranslatedField(newsItem, 'title') || newsItem.title}
                 </h3>
                 <p className="text-gray-600 mb-4 line-clamp-3">
-                  {newsItem.content || newsItem.summary}
+                  {getTranslatedField(newsItem, 'content') || 
+                   getTranslatedField(newsItem, 'summary') || 
+                   newsItem.content || 
+                   newsItem.summary}
                 </p>
                 
                 {/* 태그 */}

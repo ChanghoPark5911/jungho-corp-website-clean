@@ -364,7 +364,7 @@ const ProjectsPage = () => {
               <div className="text-4xl mb-4">🏢</div>
               <h3 className="text-xl font-bold text-primary mb-2">스마트빌딩</h3>
               <div className="text-3xl font-bold text-primary mb-2">
-                {categoryStats['스마트빌딩'] || 0}
+                {categoryStats[PROJECT_CATEGORIES.SMART_BUILDING] || 0}
               </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
@@ -372,7 +372,7 @@ const ProjectsPage = () => {
               <div className="text-4xl mb-4">🏛️</div>
               <h3 className="text-xl font-bold text-primary mb-2">공공시설</h3>
               <div className="text-3xl font-bold text-primary mb-2">
-                {categoryStats['공공시설'] || 0}
+                {categoryStats[PROJECT_CATEGORIES.PUBLIC_FACILITY] || 0}
               </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
@@ -380,7 +380,7 @@ const ProjectsPage = () => {
               <div className="text-4xl mb-4">🏭</div>
               <h3 className="text-xl font-bold text-primary mb-2">산업용시설</h3>
               <div className="text-3xl font-bold text-primary mb-2">
-                {categoryStats['산업용시설'] || 0}
+                {categoryStats[PROJECT_CATEGORIES.INDUSTRIAL_FACILITY] || 0}
               </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
@@ -388,7 +388,7 @@ const ProjectsPage = () => {
               <div className="text-4xl mb-4">📦</div>
               <h3 className="text-xl font-bold text-primary mb-2">물류 및 데이터센터</h3>
               <div className="text-3xl font-bold text-primary mb-2">
-                {categoryStats['물류 및 데이터센터'] || 0}
+                {categoryStats[PROJECT_CATEGORIES.LOGISTICS_DATACENTER] || 0}
               </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
@@ -396,7 +396,7 @@ const ProjectsPage = () => {
               <div className="text-4xl mb-4">🎭</div>
               <h3 className="text-xl font-bold text-primary mb-2">문화시설</h3>
               <div className="text-3xl font-bold text-primary mb-2">
-                {categoryStats['문화시설'] || 0}
+                {categoryStats[PROJECT_CATEGORIES.CULTURAL_FACILITY] || 0}
               </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>
@@ -404,7 +404,7 @@ const ProjectsPage = () => {
               <div className="text-4xl mb-4">🏖️</div>
               <h3 className="text-xl font-bold text-primary mb-2">관광시설</h3>
               <div className="text-3xl font-bold text-primary mb-2">
-                {categoryStats['관광시설'] || 0}
+                {categoryStats[PROJECT_CATEGORIES.TOURIST_FACILITY] || 0}
               </div>
               <p className="text-gray-600">완료 프로젝트</p>
             </Card>

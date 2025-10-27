@@ -157,10 +157,36 @@ const ProjectGallery = ({
     }
   ];
 
+  // 🌍 다국어 필드 가져오기 헬퍼 함수
+  const getTranslatedField = (project, field) => {
+    // 1. 현재 언어의 번역이 있으면 사용
+    if (project.translations?.[currentLanguage]?.[field]) {
+      return project.translations[currentLanguage][field];
+    }
+    // 2. 없으면 한국어 기본값 사용
+    if (project.translations?.ko?.[field]) {
+      return project.translations.ko[field];
+    }
+    // 3. 그것도 없으면 기존 필드 사용 (하위 호환)
+    return project[field] || '';
+  };
+
+  // 🌍 배열 필드 가져오기 (technologies, features 등)
+  const getTranslatedArray = (project, field) => {
+    if (project.translations?.[currentLanguage]?.[field]?.length > 0) {
+      return project.translations[currentLanguage][field];
+    }
+    if (project.translations?.ko?.[field]?.length > 0) {
+      return project.translations.ko[field];
+    }
+    return project[field] || [];
+  };
+
   // localStorage 데이터가 있으면 사용, 없으면 기본값 사용
   const projectsToRender = projectData.length > 0 ? projectData : (projects && projects.length > 0 ? projects : defaultProjects);
   
   console.log('🔍 프로젝트 렌더링 데이터:', projectsToRender);
+  console.log('🌍 현재 언어:', currentLanguage);
   
   // 프로젝트 갤러리 이미지가 있으면 프로젝트 이미지에 적용
   const projectsWithGalleryImages = projectsToRender.map((project, index) => {
@@ -271,8 +297,12 @@ const ProjectGallery = ({
                 
                 {/* 프로젝트 정보 */}
                 <div className="absolute inset-0 p-6 flex flex-col justify-end text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                  <p className="text-sm text-gray-200 mb-3">{project.description}</p>
+                  <h3 className="text-xl font-bold mb-2">
+                    {getTranslatedField(project, 'title') || project.title}
+                  </h3>
+                  <p className="text-sm text-gray-200 mb-3">
+                    {getTranslatedField(project, 'description') || project.description}
+                  </p>
                   
                   {/* 프로젝트 세부사항 */}
                   <div className="space-y-2">
@@ -282,7 +312,8 @@ const ProjectGallery = ({
                         <span>{detail}</span>
                       </div>
                     ))}
-                    {project.technologies && project.technologies.slice(0, 2).map((tech, techIndex) => (
+                    {/* 🌍 다국어 지원 기술스택 */}
+                    {getTranslatedArray(project, 'technologies').slice(0, 2).map((tech, techIndex) => (
                       <div key={techIndex} className="flex items-center text-sm">
                         <div className="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
                         <span>{tech}</span>
@@ -292,7 +323,12 @@ const ProjectGallery = ({
                   
                   {/* 완료 연도 */}
                   <div className="mt-4 pt-3 border-t border-white/20">
-                    <span className="text-sm font-medium">완료: {project.year}</span>
+                    <span className="text-sm font-medium">
+                      {currentLanguage === 'ko' ? '완료' : 
+                       currentLanguage === 'en' ? 'Completed' :
+                       currentLanguage === 'zh' ? '完成' :
+                       currentLanguage === 'ja' ? '完了' : '완료'}: {project.year}
+                    </span>
                     {project.client && (
                       <span className="text-sm text-gray-300 ml-2">• {project.client}</span>
                     )}

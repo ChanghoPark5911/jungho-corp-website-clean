@@ -7,11 +7,13 @@ import CustomerConvenienceSection from '../components/illutech/CustomerConvenien
 import CustomerReviewSection from '../components/illutech/CustomerReviewSection';
 import EventBenefitSection from '../components/illutech/EventBenefitSection';
 import ContactShoppingSection from '../components/illutech/ContactShoppingSection';
+import LanguageNotice from '../components/ui/LanguageNotice';
 
 const IllutechDetailPage = () => {
   return (
     <div className="min-h-screen">
       <HeroSection />
+      <LanguageNotice />
       <ProductCategorySection />
       <ExpertCurationSection />
       <CustomizedServiceSection />

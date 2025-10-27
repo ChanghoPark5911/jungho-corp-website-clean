@@ -7,11 +7,13 @@ import ASCenterSection from '../components/tlc/ASCenterSection';
 import KeyCustomersSection from '../components/tlc/KeyCustomersSection';
 import CustomerSupportSection from '../components/tlc/CustomerSupportSection';
 import ContactSection from '../components/tlc/ContactSection';
+import LanguageNotice from '../components/ui/LanguageNotice';
 
 const TlcDetailPage = () => {
   return (
     <div className="min-h-screen">
       <HeroSection />
+      <LanguageNotice />
       <ServiceAreaSection />
       <ProjectProcessSection />
       <NationalNetworkSection />

@@ -7,11 +7,13 @@ import GlobalPresenceSection from '../components/clarus/GlobalPresenceSection';
 import ProjectPortfolioSection from '../components/clarus/ProjectPortfolioSection';
 import TechnicalSupportSection from '../components/clarus/TechnicalSupportSection';
 import ContactSection from '../components/clarus/ContactSection';
+import LanguageNotice from '../components/ui/LanguageNotice';
 
 const ClarusDetailPage = () => {
   return (
     <div className="min-h-screen">
       <HeroSection />
+      <LanguageNotice />
       <CoreTechnologySection />
       <ProductLineupSection />
       <RnDStatusSection />

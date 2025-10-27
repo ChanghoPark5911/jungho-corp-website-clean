@@ -7,11 +7,13 @@ import InnovationTechnologySection from '../components/texcom/InnovationTechnolo
 import KeyAchievementsSection from '../components/texcom/KeyAchievementsSection';
 import CustomerSupportSection from '../components/texcom/CustomerSupportSection';
 import ContactSection from '../components/texcom/ContactSection';
+import LanguageNotice from '../components/ui/LanguageNotice';
 
 const TexcomDetailPage = () => {
   return (
     <div className="min-h-screen">
       <HeroSection />
+      <LanguageNotice />
       <BusinessAreaSection />
       <CoreStrengthsSection />
       <ProductServiceSection />

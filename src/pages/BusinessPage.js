@@ -6,6 +6,7 @@ import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import staticPageContentService from '../services/staticPageContentService';
 import { useI18n } from '../hooks/useI18n';
+import LanguageNotice from '../components/ui/LanguageNotice';
 
 const BusinessPage = () => {
   const { t } = useI18n(); // 다국어 지원
@@ -101,6 +102,11 @@ const BusinessPage = () => {
       <section className="hero-section">
         <Hero {...heroData} useLocalStorage={false} />
       </section>
+
+      {/* 언어 안내 배너 */}
+      <div className="container mx-auto px-4 pt-8">
+        <LanguageNotice />
+      </div>
 
       {/* 사업영역 소개 */}
       <Section className="py-20">

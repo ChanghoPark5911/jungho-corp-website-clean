@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import newsService, { NEWS_CATEGORIES, NEWS_CATEGORY_LABELS } from '../services/newsService';
+import { useI18n } from '../hooks/useI18n';
 
 const NewsPage = () => {
+  const { t } = useI18n(); // 다국어 지원
   const [selectedCategory, setSelectedCategory] = useState(NEWS_CATEGORIES.ALL);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedNews, setSelectedNews] = useState(null);
@@ -83,9 +85,23 @@ const NewsPage = () => {
   };
 
   const categoryStats = getCategoryStats();
+  
+  // 카테고리 레이블을 다국어로 처리
+  const getCategoryLabel = (category) => {
+    const categoryMap = {
+      [NEWS_CATEGORIES.ALL]: 'news.categories.all',
+      [NEWS_CATEGORIES.TECHNOLOGY]: 'news.categories.technology',
+      [NEWS_CATEGORIES.BUSINESS]: 'news.categories.business',
+      [NEWS_CATEGORIES.ESG]: 'news.categories.esg',
+      [NEWS_CATEGORIES.AWARDS]: 'news.categories.awards',
+      [NEWS_CATEGORIES.ANNOUNCEMENT]: 'news.categories.announcement',
+    };
+    return t(categoryMap[category] || category);
+  };
+  
   const categories = Object.values(NEWS_CATEGORIES).map(category => ({
     id: category,
-    label: NEWS_CATEGORY_LABELS[category],
+    label: getCategoryLabel(category),
     count: categoryStats[category] || 0
   }));
 
@@ -119,7 +135,7 @@ const NewsPage = () => {
   const handleNewsletterSubscribe = (e) => {
     e.preventDefault();
     if (email) {
-      alert('뉴스레터 구독이 완료되었습니다!');
+      alert(t('news.newsletter.subscribeSuccess'));
       setEmail('');
     }
   };
@@ -132,14 +148,14 @@ const NewsPage = () => {
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">정호그룹 뉴스</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">{t('news.hero.title')}</h1>
             <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8 text-white">
-              40년 전통의 조명제어 전문기업 정호그룹의 최신 소식과 업계 동향을 확인하세요
+              {t('news.hero.subtitle')}
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="bg-white/20 px-3 py-1 rounded-full">실시간 업데이트</span>
-              <span className="bg-white/20 px-3 py-1 rounded-full">전문 기자진</span>
-              <span className="bg-white/20 px-3 py-1 rounded-full">독점 인터뷰</span>
+              <span className="bg-white/20 px-3 py-1 rounded-full">{t('news.hero.badges.realtime')}</span>
+              <span className="bg-white/20 px-3 py-1 rounded-full">{t('news.hero.badges.professional')}</span>
+              <span className="bg-white/20 px-3 py-1 rounded-full">{t('news.hero.badges.exclusive')}</span>
             </div>
           </div>
         </div>
@@ -154,7 +170,7 @@ const NewsPage = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="뉴스 제목, 내용으로 검색..."
+                  placeholder={t('news.search.placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -193,7 +209,7 @@ const NewsPage = () => {
           {error && (
             <div className="mb-8 bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded-lg">
               <p className="text-sm">
-                <strong>주의:</strong> {error} 기본 데이터를 표시합니다.
+                <strong>{t('news.error.title')}</strong> {error} {t('news.error.message')}
               </p>
             </div>
           )}
@@ -201,8 +217,8 @@ const NewsPage = () => {
           {/* 결과 카운트 */}
           <div className="mb-8">
             <p className="text-gray-600">
-              총 <span className="font-semibold text-primary-600">{newsList.length}</span>개의 뉴스를 찾았습니다
-              {searchTerm && ` (검색어: "${searchTerm}")`}
+              {t('news.results.total')} <span className="font-semibold text-primary-600">{newsList.length}</span>{t('news.results.found')}
+              {searchTerm && ` (${t('news.results.searchTerm')} "${searchTerm}")`}
             </p>
           </div>
 
@@ -210,7 +226,7 @@ const NewsPage = () => {
           {loading && (
             <div className="text-center py-16">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">뉴스를 불러오는 중...</p>
+              <p className="text-gray-600">{t('news.loading')}</p>
             </div>
           )}
 
@@ -262,7 +278,7 @@ const NewsPage = () => {
                     {/* 카테고리 배지 */}
                   <div className="absolute top-4 left-4">
                     <span className="bg-white/20 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
-                        {NEWS_CATEGORY_LABELS[news.category] || news.category}
+                        {getCategoryLabel(news.category)}
                     </span>
                   </div>
                 </div>
@@ -301,7 +317,7 @@ const NewsPage = () => {
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-500">{news.author}</span>
                     <span className="text-primary-600 text-sm font-medium group-hover:translate-x-1 transition-transform">
-                      자세히 보기 →
+                      {t('news.card.readMore')} →
                     </span>
                   </div>
                 </div>
@@ -316,8 +332,8 @@ const NewsPage = () => {
               <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
               </svg>
-              <p className="text-gray-500 text-lg mb-2">검색 결과가 없습니다</p>
-              <p className="text-gray-400">다른 검색어나 카테고리를 시도해보세요</p>
+              <p className="text-gray-500 text-lg mb-2">{t('news.results.noResults')}</p>
+              <p className="text-gray-400">{t('news.results.tryOther')}</p>
             </div>
           )}
         </div>
@@ -326,15 +342,15 @@ const NewsPage = () => {
       {/* 4. 뉴스레터 구독 섹션 */}
       <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">최신 뉴스를 이메일로 받아보세요</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('news.newsletter.title')}</h2>
           <p className="text-xl mb-8 opacity-90 text-white">
-            정호그룹의 최신 소식과 업계 동향을 매주 이메일로 받아보실 수 있습니다
+            {t('news.newsletter.subtitle')}
           </p>
           
           <form onSubmit={handleNewsletterSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input
               type="email"
-              placeholder="이메일 주소를 입력하세요"
+              placeholder={t('news.newsletter.placeholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
@@ -344,12 +360,12 @@ const NewsPage = () => {
               type="submit"
               className="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
             >
-              구독하기
+              {t('news.newsletter.subscribe')}
             </button>
           </form>
           
           <p className="text-sm opacity-75 mt-4 text-white">
-            언제든지 구독을 해지할 수 있습니다. 개인정보는 안전하게 보호됩니다.
+            {t('news.newsletter.privacy')}
           </p>
         </div>
       </section>
@@ -360,10 +376,9 @@ const NewsPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* 언론 문의 */}
             <div>
-              <h2 className="text-3xl font-bold mb-6 text-gray-900">언론 문의</h2>
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">{t('news.press.title')}</h2>
               <p className="text-lg text-gray-600 mb-8">
-                정호그룹에 대한 보도 자료나 인터뷰 요청이 있으시면 언제든 연락주세요.
-                전문 담당자가 빠른 시일 내에 답변드리겠습니다.
+                {t('news.press.description')}
               </p>
               
               <div className="space-y-4">
@@ -389,17 +404,17 @@ const NewsPage = () => {
               </div>
               
               <button className="mt-8 bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors">
-                언론 문의하기
+                {t('news.press.contact')}
               </button>
             </div>
             
             {/* 보도자료 다운로드 */}
             <div className="bg-gray-50 p-8 rounded-xl">
-              <h3 className="text-2xl font-bold mb-6 text-gray-900">보도자료</h3>
+              <h3 className="text-2xl font-bold mb-6 text-gray-900">{t('news.press.materials')}</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-white rounded-lg">
                   <div>
-                    <h4 className="font-semibold text-gray-900">정호그룹 회사 소개서</h4>
+                    <h4 className="font-semibold text-gray-900">{t('news.press.downloads.companyIntro')}</h4>
                     <p className="text-sm text-gray-600">PDF • 2.3MB</p>
                   </div>
                   <button className="text-primary-600 hover:text-primary-700">
@@ -411,7 +426,7 @@ const NewsPage = () => {
                 
                 <div className="flex items-center justify-between p-4 bg-white rounded-lg">
                   <div>
-                    <h4 className="font-semibold text-gray-900">2024년 기술 백서</h4>
+                    <h4 className="font-semibold text-gray-900">{t('news.press.downloads.techPaper')}</h4>
                     <p className="text-sm text-gray-600">PDF • 1.8MB</p>
                   </div>
                   <button className="text-primary-600 hover:text-primary-700">
@@ -423,7 +438,7 @@ const NewsPage = () => {
                 
                 <div className="flex items-center justify-between p-4 bg-white rounded-lg">
                   <div>
-                    <h4 className="font-semibold text-gray-900">로고 및 이미지 자료</h4>
+                    <h4 className="font-semibold text-gray-900">{t('news.press.downloads.logoAssets')}</h4>
                     <p className="text-sm text-gray-600">ZIP • 15.2MB</p>
                   </div>
                   <button className="text-primary-600 hover:text-primary-700">
@@ -459,10 +474,10 @@ const NewsPage = () => {
 
               {/* 헤더 */}
               <div className="flex justify-between items-start mb-6">
-                <div className="flex-1">
+                  <div className="flex-1">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm font-medium">
-                      {NEWS_CATEGORY_LABELS[selectedNews.category] || selectedNews.category}
+                      {getCategoryLabel(selectedNews.category)}
                     </span>
                     <span className="text-gray-500 text-sm">{formatDate(selectedNews.publishedAt)}</span>
                     <span className="text-gray-500 text-sm">•</span>
@@ -470,7 +485,7 @@ const NewsPage = () => {
                     {selectedNews.viewCount && (
                       <>
                         <span className="text-gray-500 text-sm">•</span>
-                        <span className="text-gray-500 text-sm">조회 {selectedNews.viewCount}</span>
+                        <span className="text-gray-500 text-sm">{t('news.modal.views')} {selectedNews.viewCount}</span>
                       </>
                     )}
                   </div>
@@ -510,7 +525,7 @@ const NewsPage = () => {
               <div className="mt-8 pt-6 border-t border-gray-200">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <span className="text-gray-500">작성자: {selectedNews.author}</span>
+                    <span className="text-gray-500">{t('news.modal.author')} {selectedNews.author}</span>
                     <div className="flex gap-2">
                       <button className="text-gray-500 hover:text-blue-600 transition-colors">
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -533,7 +548,7 @@ const NewsPage = () => {
                     onClick={() => setIsModalOpen(false)}
                     className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
                   >
-                    닫기
+                    {t('news.modal.close')}
                   </button>
                 </div>
               </div>

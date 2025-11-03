@@ -729,12 +729,66 @@ class I18nAdvanced {
         news: {
           title: '뉴스',
           description: '정호그룹의 최신 소식과 업계 동향을 확인하세요',
-          subscribe: '구독하기',
+          hero: {
+            title: '정호그룹 뉴스',
+            subtitle: '40년 전통의 조명제어 전문기업 정호그룹의 최신 소식과 업계 동향을 확인하세요',
+            badges: {
+              realtime: '실시간 업데이트',
+              professional: '전문 기자진',
+              exclusive: '독점 인터뷰'
+            }
+          },
+          search: {
+            placeholder: '뉴스 제목, 내용으로 검색...'
+          },
           categories: {
             all: '전체',
-            company: '회사소식',
-            industry: '업계동향',
-            technology: '기술소식'
+            technology: '기술',
+            business: '사업',
+            esg: 'ESG',
+            awards: '수상',
+            announcement: '공지사항'
+          },
+          results: {
+            total: '총',
+            found: '개의 뉴스를 찾았습니다',
+            searchTerm: '검색어:',
+            noResults: '검색 결과가 없습니다',
+            tryOther: '다른 검색어나 카테고리를 시도해보세요'
+          },
+          card: {
+            readMore: '자세히 보기',
+            readTime: '분',
+            views: '조회'
+          },
+          loading: '뉴스를 불러오는 중...',
+          error: {
+            title: '주의:',
+            message: '기본 데이터를 표시합니다.'
+          },
+          newsletter: {
+            title: '최신 뉴스를 이메일로 받아보세요',
+            subtitle: '정호그룹의 최신 소식과 업계 동향을 매주 이메일로 받아보실 수 있습니다',
+            placeholder: '이메일 주소를 입력하세요',
+            subscribe: '구독하기',
+            subscribeSuccess: '뉴스레터 구독이 완료되었습니다!',
+            privacy: '언제든지 구독을 해지할 수 있습니다. 개인정보는 안전하게 보호됩니다.'
+          },
+          press: {
+            title: '언론 문의',
+            description: '정호그룹에 대한 보도 자료나 인터뷰 요청이 있으시면 언제든 연락주세요. 전문 담당자가 빠른 시일 내에 답변드리겠습니다.',
+            contact: '언론 문의하기',
+            materials: '보도자료',
+            downloads: {
+              companyIntro: '정호그룹 회사 소개서',
+              techPaper: '2024년 기술 백서',
+              logoAssets: '로고 및 이미지 자료'
+            }
+          },
+          modal: {
+            close: '닫기',
+            author: '작성자:',
+            views: '조회'
           }
         }
       },
@@ -1291,6 +1345,72 @@ class I18nAdvanced {
             demo: 'View Demo',
             caseStudy: 'Case Study'
           }
+        },
+        // News Page
+        news: {
+          title: 'News',
+          description: 'Check out the latest news and industry trends from Jungho Group',
+          hero: {
+            title: 'Jungho Group News',
+            subtitle: 'Check out the latest news and industry trends from Jungho Group, a professional lighting control company with 40 years of tradition',
+            badges: {
+              realtime: 'Real-time Updates',
+              professional: 'Professional Journalists',
+              exclusive: 'Exclusive Interviews'
+            }
+          },
+          search: {
+            placeholder: 'Search by title, content...'
+          },
+          categories: {
+            all: 'All',
+            technology: 'Technology',
+            business: 'Business',
+            esg: 'ESG',
+            awards: 'Awards',
+            announcement: 'Announcement'
+          },
+          results: {
+            total: 'Total',
+            found: 'news found',
+            searchTerm: 'Search term:',
+            noResults: 'No results found',
+            tryOther: 'Try different keywords or categories'
+          },
+          card: {
+            readMore: 'Read More',
+            readTime: 'min',
+            views: 'views'
+          },
+          loading: 'Loading news...',
+          error: {
+            title: 'Warning:',
+            message: 'Displaying default data.'
+          },
+          newsletter: {
+            title: 'Get the Latest News via Email',
+            subtitle: 'Receive Jungho Group\'s latest news and industry trends weekly via email',
+            placeholder: 'Enter your email address',
+            subscribe: 'Subscribe',
+            subscribeSuccess: 'Newsletter subscription completed!',
+            privacy: 'You can unsubscribe anytime. Your privacy is protected.'
+          },
+          press: {
+            title: 'Press Inquiry',
+            description: 'For press releases or interview requests about Jungho Group, please contact us anytime. Our professional staff will respond promptly.',
+            contact: 'Contact Press',
+            materials: 'Press Materials',
+            downloads: {
+              companyIntro: 'Company Introduction',
+              techPaper: '2024 Technical White Paper',
+              logoAssets: 'Logo and Image Assets'
+            }
+          },
+          modal: {
+            close: 'Close',
+            author: 'Author:',
+            views: 'views'
+          }
         }
       },
       zh: {
@@ -1787,6 +1907,72 @@ class I18nAdvanced {
             achievements: '主要成就',
             demo: '查看演示',
             caseStudy: '案例研究'
+          }
+        },
+        // News Page
+        news: {
+          title: '新闻',
+          description: '查看正浩集团的最新消息和行业动态',
+          hero: {
+            title: '正浩集团新闻',
+            subtitle: '查看拥有40年传统的照明控制专业企业正浩集团的最新消息和行业动态',
+            badges: {
+              realtime: '实时更新',
+              professional: '专业记者',
+              exclusive: '独家专访'
+            }
+          },
+          search: {
+            placeholder: '按标题、内容搜索...'
+          },
+          categories: {
+            all: '全部',
+            technology: '技术',
+            business: '业务',
+            esg: 'ESG',
+            awards: '奖项',
+            announcement: '公告'
+          },
+          results: {
+            total: '共',
+            found: '条新闻',
+            searchTerm: '搜索词：',
+            noResults: '未找到结果',
+            tryOther: '请尝试其他关键词或类别'
+          },
+          card: {
+            readMore: '阅读更多',
+            readTime: '分钟',
+            views: '查看'
+          },
+          loading: '正在加载新闻...',
+          error: {
+            title: '警告：',
+            message: '显示默认数据。'
+          },
+          newsletter: {
+            title: '通过电子邮件接收最新新闻',
+            subtitle: '每周通过电子邮件接收正浩集团的最新消息和行业动态',
+            placeholder: '输入您的电子邮件地址',
+            subscribe: '订阅',
+            subscribeSuccess: '新闻订阅完成！',
+            privacy: '您可以随时取消订阅。您的隐私将受到保护。'
+          },
+          press: {
+            title: '媒体咨询',
+            description: '如果您对正浩集团的新闻稿或采访请求有任何疑问，请随时与我们联系。专业人员将尽快回复。',
+            contact: '联系媒体',
+            materials: '新闻资料',
+            downloads: {
+              companyIntro: '公司简介',
+              techPaper: '2024技术白皮书',
+              logoAssets: '徽标和图像资产'
+            }
+          },
+          modal: {
+            close: '关闭',
+            author: '作者：',
+            views: '查看'
           }
         },
         // Business
@@ -2301,6 +2487,72 @@ class I18nAdvanced {
             achievements: '主要成果',
             demo: 'デモを見る',
             caseStudy: 'ケーススタディ'
+          }
+        },
+        // News Page
+        news: {
+          title: 'ニュース',
+          description: '正浩グループの最新ニュースと業界動向をご確認ください',
+          hero: {
+            title: '正浩グループニュース',
+            subtitle: '40年の伝統を持つ照明制御専門企業、正浩グループの最新ニュースと業界動向をご確認ください',
+            badges: {
+              realtime: 'リアルタイム更新',
+              professional: '専門記者陣',
+              exclusive: '独占インタビュー'
+            }
+          },
+          search: {
+            placeholder: 'タイトル、内容で検索...'
+          },
+          categories: {
+            all: 'すべて',
+            technology: '技術',
+            business: 'ビジネス',
+            esg: 'ESG',
+            awards: '受賞',
+            announcement: 'お知らせ'
+          },
+          results: {
+            total: '合計',
+            found: '件のニュースが見つかりました',
+            searchTerm: '検索語：',
+            noResults: '検索結果がありません',
+            tryOther: '別のキーワードやカテゴリーをお試しください'
+          },
+          card: {
+            readMore: '詳細を見る',
+            readTime: '分',
+            views: '閲覧'
+          },
+          loading: 'ニュースを読み込み中...',
+          error: {
+            title: '警告：',
+            message: 'デフォルトデータを表示しています。'
+          },
+          newsletter: {
+            title: '最新ニュースをメールで受け取る',
+            subtitle: '正浩グループの最新ニュースと業界動向を毎週メールで受け取れます',
+            placeholder: 'メールアドレスを入力してください',
+            subscribe: '購読する',
+            subscribeSuccess: 'ニュースレター購読が完了しました！',
+            privacy: 'いつでも購読解除できます。プライバシーは保護されます。'
+          },
+          press: {
+            title: '報道関係者向けお問い合わせ',
+            description: '正浩グループに関するプレスリリースやインタビュー依頼がございましたら、いつでもご連絡ください。専門担当者が迅速に対応いたします。',
+            contact: '報道関係者向けお問い合わせ',
+            materials: 'プレス資料',
+            downloads: {
+              companyIntro: '会社紹介資料',
+              techPaper: '2024年技術白書',
+              logoAssets: 'ロゴ及び画像素材'
+            }
+          },
+          modal: {
+            close: '閉じる',
+            author: '著者：',
+            views: '閲覧'
           }
         },
         // Business

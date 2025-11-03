@@ -285,19 +285,98 @@ class I18nAdvanced {
           hero: {
             title: '고객 지원',
             subtitle: '정호그룹의 전문가들이 24시간 내에 답변드립니다. 언제든지 문의해주세요.',
-            description: '전문적인 기술 지원과 서비스를 통해 고객의 성공을 지원합니다'
+            description: '전문적인 기술 지원과 서비스를 통해 고객의 성공을 지원합니다',
+            button: '지금 문의하기'
           },
           channels: {
             title: '지원 채널',
-            description: '다양한 방법으로 정호그룹의 전문가들과 연락하실 수 있습니다'
+            description: '다양한 방법으로 정호그룹의 전문가들과 연락하실 수 있습니다',
+            items: {
+              phone: {
+                title: '전화 상담',
+                description: '전문 엔지니어가 직접 답변드립니다.',
+                contact: '1588-1234',
+                hours: '평일 09:00-18:00',
+                button: '전화하기'
+              },
+              email: {
+                title: '이메일 문의',
+                description: '상세한 기술 문의사항을 보내주세요.',
+                contact: 'support@jungho.com',
+                hours: '24시간 접수 가능',
+                button: '이메일 보내기'
+              },
+              kakao: {
+                title: '카카오톡',
+                description: '실시간 채팅으로 빠른 답변을 받으세요.',
+                contact: '@정호그룹',
+                hours: '평일 09:00-18:00',
+                button: '채팅 시작'
+              },
+              online: {
+                title: '온라인 문의',
+                description: '웹사이트를 통한 간편한 문의.',
+                contact: '24시간 접수',
+                hours: '24시간 접수 가능',
+                button: '문의하기'
+              }
+            }
           },
           services: {
             title: '지원 서비스',
-            description: '시스템 도입부터 운영까지 전 과정을 지원합니다'
+            description: '시스템 도입부터 운영까지 전 과정을 지원합니다',
+            items: {
+              technical: {
+                title: '기술 상담',
+                description: '조명제어 시스템에 대한 전문적인 기술 상담을 제공합니다.',
+                features: ['시스템 설계', '기술 검토', '최적화 방안', '비용 분석']
+              },
+              installation: {
+                title: '설치 지원',
+                description: '전문 엔지니어가 현장에서 직접 설치를 지원합니다.',
+                features: ['현장 설치', '시스템 연동', '테스트', '교육']
+              },
+              maintenance: {
+                title: '유지보수',
+                description: '정기적인 점검과 예방정비로 시스템을 안정적으로 운영합니다.',
+                features: ['정기 점검', '예방정비', '고장 수리', '부품 교체']
+              },
+              education: {
+                title: '교육 서비스',
+                description: '시스템 운영자를 위한 전문 교육을 제공합니다.',
+                features: ['운영 교육', '기술 교육', '매뉴얼 제공', '온라인 지원']
+              }
+            }
           },
           faq: {
             title: '자주 묻는 질문',
-            description: '고객님들이 자주 문의하시는 내용들을 정리했습니다'
+            description: '고객님들이 자주 문의하시는 내용들을 정리했습니다',
+            items: [
+              {
+                question: '조명제어 시스템 도입에 얼마나 시간이 걸리나요?',
+                answer: '프로젝트 규모에 따라 다르지만, 일반적으로 3-6개월 정도 소요됩니다. 상세한 일정은 기술 상담을 통해 안내드립니다.'
+              },
+              {
+                question: '기존 조명 시스템과 호환되나요?',
+                answer: '네, 대부분의 기존 조명 시스템과 호환됩니다. 정확한 호환성은 현장 점검을 통해 확인해드립니다.'
+              },
+              {
+                question: '에너지 절약 효과는 어느 정도인가요?',
+                answer: '일반적으로 20-40%의 에너지 절약 효과를 기대할 수 있습니다. 구체적인 수치는 사용 패턴에 따라 달라집니다.'
+              },
+              {
+                question: '원격 제어가 가능한가요?',
+                answer: '네, IoT 기술을 활용한 원격 제어가 가능합니다. 스마트폰 앱이나 웹 인터페이스를 통해 언제든지 제어할 수 있습니다.'
+              },
+              {
+                question: '유지보수 비용은 얼마인가요?',
+                answer: '시스템 규모와 서비스 수준에 따라 다르며, 연간 시스템 구축 비용의 5-10% 정도입니다. 상세한 견적은 문의해주세요.'
+              },
+              {
+                question: '긴급 상황 시 지원이 가능한가요?',
+                answer: '네, 24시간 긴급 지원 서비스를 제공합니다. 전화나 온라인을 통해 언제든지 연락하실 수 있습니다.'
+              }
+            ]
           },
           contactForm: {
             title: '문의하기',
@@ -781,19 +860,98 @@ class I18nAdvanced {
           hero: {
             title: 'Customer Support',
             subtitle: 'Jungho Group experts will respond within 24 hours. Please contact us anytime.',
-            description: 'We support customer success through professional technical support and services'
+            description: 'We support customer success through professional technical support and services',
+            button: 'Contact Now'
           },
           channels: {
             title: 'Support Channels',
-            description: 'Connect with Jungho Group experts through various channels'
+            description: 'Connect with Jungho Group experts through various channels',
+            items: {
+              phone: {
+                title: 'Phone Support',
+                description: 'Professional engineers answer directly.',
+                contact: '1588-1234',
+                hours: 'Weekdays 09:00-18:00',
+                button: 'Call Now'
+              },
+              email: {
+                title: 'Email Inquiry',
+                description: 'Please send us your detailed technical inquiries.',
+                contact: 'support@jungho.com',
+                hours: '24/7 available',
+                button: 'Send Email'
+              },
+              kakao: {
+                title: 'KakaoTalk',
+                description: 'Get quick responses through real-time chat.',
+                contact: '@Jungho Group',
+                hours: 'Weekdays 09:00-18:00',
+                button: 'Start Chat'
+              },
+              online: {
+                title: 'Online Inquiry',
+                description: 'Convenient inquiry through website.',
+                contact: '24/7 submission',
+                hours: '24/7 available',
+                button: 'Inquire Now'
+              }
+            }
           },
           services: {
             title: 'Support Services',
-            description: 'We support the entire process from system introduction to operation'
+            description: 'We support the entire process from system introduction to operation',
+            items: {
+              technical: {
+                title: 'Technical Consultation',
+                description: 'We provide professional technical consultation on lighting control systems.',
+                features: ['System Design', 'Technical Review', 'Optimization Plan', 'Cost Analysis']
+              },
+              installation: {
+                title: 'Installation Support',
+                description: 'Professional engineers provide on-site installation support.',
+                features: ['On-site Installation', 'System Integration', 'Testing', 'Training']
+              },
+              maintenance: {
+                title: 'Maintenance',
+                description: 'Stable system operation through regular inspection and preventive maintenance.',
+                features: ['Regular Inspection', 'Preventive Maintenance', 'Fault Repair', 'Parts Replacement']
+              },
+              education: {
+                title: 'Education Services',
+                description: 'Professional training for system operators.',
+                features: ['Operation Training', 'Technical Training', 'Manual Provision', 'Online Support']
+              }
+            }
           },
           faq: {
             title: 'Frequently Asked Questions',
-            description: 'Common questions from our customers'
+            description: 'Common questions from our customers',
+            items: [
+              {
+                question: 'How long does it take to introduce a lighting control system?',
+                answer: 'It varies depending on the project size, but generally takes 3-6 months. Detailed schedule will be provided through technical consultation.'
+              },
+              {
+                question: 'Is it compatible with existing lighting systems?',
+                answer: 'Yes, it is compatible with most existing lighting systems. Exact compatibility will be confirmed through on-site inspection.'
+              },
+              {
+                question: 'How much energy can be saved?',
+                answer: 'Generally, 20-40% energy savings can be expected. Specific figures vary depending on usage patterns.'
+              },
+              {
+                question: 'Is remote control possible?',
+                answer: 'Yes, remote control using IoT technology is possible. You can control it anytime via smartphone app or web interface.'
+              },
+              {
+                question: 'How much is the maintenance cost?',
+                answer: 'It depends on the system size and service level, approximately 5-10% of annual system construction cost. Please contact us for detailed quote.'
+              },
+              {
+                question: 'Is emergency support available?',
+                answer: 'Yes, we provide 24/7 emergency support service. You can contact us anytime by phone or online.'
+              }
+            ]
           },
           contactForm: {
             title: 'Contact Us',
@@ -1172,19 +1330,98 @@ class I18nAdvanced {
           hero: {
             title: '客户支持',
             subtitle: '正浩集团专家将在24小时内回复。请随时联系我们。',
-            description: '通过专业的技术支持和服务，我们支持客户成功'
+            description: '通过专业的技术支持和服务，我们支持客户成功',
+            button: '立即咨询'
           },
           channels: {
             title: '支持渠道',
-            description: '通过各种渠道联系正浩集团的专家'
+            description: '通过各种渠道联系正浩集团的专家',
+            items: {
+              phone: {
+                title: '电话咨询',
+                description: '专业工程师直接回复。',
+                contact: '1588-1234',
+                hours: '工作日 09:00-18:00',
+                button: '立即拨打'
+              },
+              email: {
+                title: '电子邮件咨询',
+                description: '请发送您的详细技术咨询。',
+                contact: 'support@jungho.com',
+                hours: '24小时接受',
+                button: '发送邮件'
+              },
+              kakao: {
+                title: 'KakaoTalk',
+                description: '通过实时聊天获得快速回复。',
+                contact: '@正浩集团',
+                hours: '工作日 09:00-18:00',
+                button: '开始聊天'
+              },
+              online: {
+                title: '在线咨询',
+                description: '通过网站便捷咨询。',
+                contact: '24小时接受',
+                hours: '24小时接受',
+                button: '立即咨询'
+              }
+            }
           },
           services: {
             title: '支持服务',
-            description: '我们支持从系统引进到运营的整个过程'
+            description: '我们支持从系统引进到运营的整个过程',
+            items: {
+              technical: {
+                title: '技术咨询',
+                description: '我们提供照明控制系统的专业技术咨询。',
+                features: ['系统设计', '技术审查', '优化方案', '成本分析']
+              },
+              installation: {
+                title: '安装支持',
+                description: '专业工程师提供现场安装支持。',
+                features: ['现场安装', '系统集成', '测试', '培训']
+              },
+              maintenance: {
+                title: '维护',
+                description: '通过定期检查和预防性维护保证系统稳定运行。',
+                features: ['定期检查', '预防性维护', '故障修理', '零件更换']
+              },
+              education: {
+                title: '教育服务',
+                description: '为系统操作员提供专业培训。',
+                features: ['操作培训', '技术培训', '提供手册', '在线支持']
+              }
+            }
           },
           faq: {
             title: '常见问题',
-            description: '客户经常咨询的内容'
+            description: '客户经常咨询的内容',
+            items: [
+              {
+                question: '引进照明控制系统需要多长时间？',
+                answer: '根据项目规模而异，但通常需要3-6个月。详细时间表将通过技术咨询提供。'
+              },
+              {
+                question: '是否与现有照明系统兼容？',
+                answer: '是的，与大多数现有照明系统兼容。确切的兼容性将通过现场检查确认。'
+              },
+              {
+                question: '能节省多少能源？',
+                answer: '一般可以预期节省20-40%的能源。具体数字因使用模式而异。'
+              },
+              {
+                question: '是否可以远程控制？',
+                answer: '是的，可以使用IoT技术进行远程控制。您可以随时通过智能手机应用或网络界面进行控制。'
+              },
+              {
+                question: '维护费用是多少？',
+                answer: '根据系统规模和服务水平而异，大约是年度系统建设费用的5-10%。详细报价请咨询。'
+              },
+              {
+                question: '紧急情况下是否可以获得支持？',
+                answer: '是的，我们提供24/7紧急支持服务。您可以随时通过电话或在线联系我们。'
+              }
+            ]
           },
           contactForm: {
             title: '联系我们',
@@ -1607,19 +1844,98 @@ class I18nAdvanced {
           hero: {
             title: 'カスタマーサポート',
             subtitle: '正浩グループの専門家が24時間以内に回答いたします。いつでもお問い合わせください。',
-            description: '専門的な技術サポートとサービスを通じて、お客様の成功をサポートします'
+            description: '専門的な技術サポートとサービスを通じて、お客様の成功をサポートします',
+            button: '今すぐお問い合わせ'
           },
           channels: {
             title: 'サポートチャネル',
-            description: '様々な方法でジョンホグループの専門家にお問い合わせいただけます'
+            description: '様々な方法でジョンホグループの専門家にお問い合わせいただけます',
+            items: {
+              phone: {
+                title: '電話相談',
+                description: '専門エンジニアが直接お答えします。',
+                contact: '1588-1234',
+                hours: '平日 09:00-18:00',
+                button: '電話する'
+              },
+              email: {
+                title: 'メールお問い合わせ',
+                description: '詳細な技術的なお問い合わせをお送りください。',
+                contact: 'support@jungho.com',
+                hours: '24時間受付',
+                button: 'メール送信'
+              },
+              kakao: {
+                title: 'KakaoTalk',
+                description: 'リアルタイムチャットで迅速な回答を受け取れます。',
+                contact: '@正浩グループ',
+                hours: '平日 09:00-18:00',
+                button: 'チャット開始'
+              },
+              online: {
+                title: 'オンラインお問い合わせ',
+                description: 'ウェブサイトから簡単にお問い合わせ。',
+                contact: '24時間受付',
+                hours: '24時間受付',
+                button: 'お問い合わせ'
+              }
+            }
           },
           services: {
             title: 'サポートサービス',
-            description: 'システム導入から運用まで全プロセスをサポートします'
+            description: 'システム導入から運用まで全プロセスをサポートします',
+            items: {
+              technical: {
+                title: '技術相談',
+                description: '照明制御システムに関する専門的な技術相談を提供します。',
+                features: ['システム設計', '技術レビュー', '最適化案', 'コスト分析']
+              },
+              installation: {
+                title: '設置サポート',
+                description: '専門エンジニアが現場で直接設置をサポートします。',
+                features: ['現場設置', 'システム連携', 'テスト', 'トレーニング']
+              },
+              maintenance: {
+                title: 'メンテナンス',
+                description: '定期点検と予防保守でシステムを安定的に運用します。',
+                features: ['定期点検', '予防保守', '故障修理', '部品交換']
+              },
+              education: {
+                title: '教育サービス',
+                description: 'システム運用者向けの専門トレーニングを提供します。',
+                features: ['運用トレーニング', '技術トレーニング', 'マニュアル提供', 'オンラインサポート']
+              }
+            }
           },
           faq: {
             title: 'よくある質問',
-            description: 'お客様からよくいただくご質問をまとめました'
+            description: 'お客様からよくいただくご質問をまとめました',
+            items: [
+              {
+                question: '照明制御システムの導入にどのくらいの時間がかかりますか？',
+                answer: 'プロジェクトの規模によりますが、一般的に3〜6ヶ月程度です。詳細なスケジュールは技術相談を通じてご案内します。'
+              },
+              {
+                question: '既存の照明システムと互換性がありますか？',
+                answer: 'はい、ほとんどの既存照明システムと互換性があります。正確な互換性は現場確認を通じて確認いたします。'
+              },
+              {
+                question: 'エネルギー削減効果はどの程度ですか？',
+                answer: '一般的に20〜40%のエネルギー削減効果が期待できます。具体的な数値は使用パターンによって異なります。'
+              },
+              {
+                question: '遠隔制御は可能ですか？',
+                answer: 'はい、IoT技術を活用した遠隔制御が可能です。スマートフォンアプリやWebインターフェースからいつでも制御できます。'
+              },
+              {
+                question: 'メンテナンス費用はいくらですか？',
+                answer: 'システム規模とサービスレベルによって異なり、年間システム構築費用の5〜10%程度です。詳細な見積もりはお問い合わせください。'
+              },
+              {
+                question: '緊急時のサポートは可能ですか？',
+                answer: 'はい、24時間緊急サポートサービスを提供しています。電話またはオンラインでいつでもご連絡いただけます。'
+              }
+            ]
           },
           contactForm: {
             title: 'お問い合わせ',

@@ -27,6 +27,10 @@ const AdminPage = lazy(() => import('./pages/AdminPageWithFirebase.jsx'));
 const UnifiedAdminPage = lazy(() => import('./pages/UnifiedAdminPage.jsx')); // Added
 const DesignSystem = lazy(() => import('./components/design-system/DesignSystem'));
 
+// v2 페이지 및 레이아웃
+const LayoutV2 = lazy(() => import('./components/v2/LayoutV2'));
+const HomePageV2 = lazy(() => import('./pages/v2/HomePageV2'));
+
 // 로딩 컴포넌트
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -80,28 +84,43 @@ function App() {
     <ThemeProvider>
       <Router>
         <ScrollToTop />
-        <Layout>
-          <Suspense fallback={<PageLoader />}>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            {/* v2 라우트 (새 디자인) */}
+            <Route path="/v2/*" element={
+              <LayoutV2>
+                <Routes>
+                  <Route path="/" element={<HomePageV2 />} />
+                  <Route path="/about" element={<div className="p-20 text-center">ABOUT 페이지 (준비 중)</div>} />
+                  <Route path="/subsidiaries/*" element={<div className="p-20 text-center">계열사 페이지 (준비 중)</div>} />
+                </Routes>
+              </LayoutV2>
+            } />
+
+            {/* v1 라우트 (기존) */}
+            <Route path="/*" element={
+              <Layout>
                 <Routes>
                   <Route path="/" element={<UnifiedHomePage />} />
                   <Route path="/old" element={<div>기존 홈페이지 임시 비활성화</div>} />
-              <Route path="/business" element={<BusinessPage />} />
-              <Route path="/projects" element={<ProjectsPage />} />
-              <Route path="/support" element={<SupportPage />} />
-              <Route path="/news" element={<NewsPage />} />
-              <Route path="/clarus" element={<ClarusDetailPage />} />
-              <Route path="/tlc" element={<TlcDetailPage />} />
-              <Route path="/illutech" element={<IllutechDetailPage />} />
-              <Route path="/texcom" element={<TexcomDetailPage />} />
-              <Route path="/privacy" element={<PrivacyPage />} />
-              <Route path="/admin" element={<UnifiedAdminPage />} />
-              <Route path="/admin-old" element={<AdminPage />} /> {/* Backup */}
-              <Route path="/design-system" element={<DesignSystem />} />
-            </Routes>
-          </Suspense>
-          <PWAInstallPrompt />
-          {/* PerformanceDashboard는 관리자 페이지로 이동 */}
-        </Layout>
+                  <Route path="/business" element={<BusinessPage />} />
+                  <Route path="/projects" element={<ProjectsPage />} />
+                  <Route path="/support" element={<SupportPage />} />
+                  <Route path="/news" element={<NewsPage />} />
+                  <Route path="/clarus" element={<ClarusDetailPage />} />
+                  <Route path="/tlc" element={<TlcDetailPage />} />
+                  <Route path="/illutech" element={<IllutechDetailPage />} />
+                  <Route path="/texcom" element={<TexcomDetailPage />} />
+                  <Route path="/privacy" element={<PrivacyPage />} />
+                  <Route path="/admin" element={<UnifiedAdminPage />} />
+                  <Route path="/admin-old" element={<AdminPage />} />
+                  <Route path="/design-system" element={<DesignSystem />} />
+                </Routes>
+                <PWAInstallPrompt />
+              </Layout>
+            } />
+          </Routes>
+        </Suspense>
       </Router>
     </ThemeProvider>
   );

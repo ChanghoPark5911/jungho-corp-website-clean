@@ -285,98 +285,19 @@ class I18nAdvanced {
           hero: {
             title: '고객 지원',
             subtitle: '정호그룹의 전문가들이 24시간 내에 답변드립니다. 언제든지 문의해주세요.',
-            description: '전문적인 기술 지원과 서비스를 통해 고객의 성공을 지원합니다',
-            button: '지금 문의하기'
+            description: '전문적인 기술 지원과 서비스를 통해 고객의 성공을 지원합니다'
           },
           channels: {
             title: '지원 채널',
-            description: '다양한 방법으로 정호그룹의 전문가들과 연락하실 수 있습니다',
-            items: {
-              phone: {
-                title: '전화 상담',
-                description: '전문 엔지니어가 직접 답변드립니다.',
-                contact: '1588-1234',
-                hours: '평일 09:00-18:00',
-                button: '전화하기'
-              },
-              email: {
-                title: '이메일 문의',
-                description: '상세한 기술 문의사항을 보내주세요.',
-                contact: 'support@jungho.com',
-                hours: '24시간 접수 가능',
-                button: '이메일 보내기'
-              },
-              kakao: {
-                title: '카카오톡',
-                description: '실시간 채팅으로 빠른 답변을 받으세요.',
-                contact: '@정호그룹',
-                hours: '평일 09:00-18:00',
-                button: '채팅 시작'
-              },
-              online: {
-                title: '온라인 문의',
-                description: '웹사이트를 통한 간편한 문의.',
-                contact: '24시간 접수',
-                hours: '24시간 접수 가능',
-                button: '문의하기'
-              }
-            }
+            description: '다양한 방법으로 정호그룹의 전문가들과 연락하실 수 있습니다'
           },
           services: {
             title: '지원 서비스',
-            description: '시스템 도입부터 운영까지 전 과정을 지원합니다',
-            items: {
-              technical: {
-                title: '기술 상담',
-                description: '조명제어 시스템에 대한 전문적인 기술 상담을 제공합니다.',
-                features: ['시스템 설계', '기술 검토', '최적화 방안', '비용 분석']
-              },
-              installation: {
-                title: '설치 지원',
-                description: '전문 엔지니어가 현장에서 직접 설치를 지원합니다.',
-                features: ['현장 설치', '시스템 연동', '테스트', '교육']
-              },
-              maintenance: {
-                title: '유지보수',
-                description: '정기적인 점검과 예방정비로 시스템을 안정적으로 운영합니다.',
-                features: ['정기 점검', '예방정비', '고장 수리', '부품 교체']
-              },
-              education: {
-                title: '교육 서비스',
-                description: '시스템 운영자를 위한 전문 교육을 제공합니다.',
-                features: ['운영 교육', '기술 교육', '매뉴얼 제공', '온라인 지원']
-              }
-            }
+            description: '시스템 도입부터 운영까지 전 과정을 지원합니다'
           },
           faq: {
             title: '자주 묻는 질문',
-            description: '고객님들이 자주 문의하시는 내용들을 정리했습니다',
-            items: [
-              {
-                question: '조명제어 시스템 도입에 얼마나 시간이 걸리나요?',
-                answer: '프로젝트 규모에 따라 다르지만, 일반적으로 3-6개월 정도 소요됩니다. 상세한 일정은 기술 상담을 통해 안내드립니다.'
-              },
-              {
-                question: '기존 조명 시스템과 호환되나요?',
-                answer: '네, 대부분의 기존 조명 시스템과 호환됩니다. 정확한 호환성은 현장 점검을 통해 확인해드립니다.'
-              },
-              {
-                question: '에너지 절약 효과는 어느 정도인가요?',
-                answer: '일반적으로 20-40%의 에너지 절약 효과를 기대할 수 있습니다. 구체적인 수치는 사용 패턴에 따라 달라집니다.'
-              },
-              {
-                question: '원격 제어가 가능한가요?',
-                answer: '네, IoT 기술을 활용한 원격 제어가 가능합니다. 스마트폰 앱이나 웹 인터페이스를 통해 언제든지 제어할 수 있습니다.'
-              },
-              {
-                question: '유지보수 비용은 얼마인가요?',
-                answer: '시스템 규모와 서비스 수준에 따라 다르며, 연간 시스템 구축 비용의 5-10% 정도입니다. 상세한 견적은 문의해주세요.'
-              },
-              {
-                question: '긴급 상황 시 지원이 가능한가요?',
-                answer: '네, 24시간 긴급 지원 서비스를 제공합니다. 전화나 온라인을 통해 언제든지 연락하실 수 있습니다.'
-              }
-            ]
+            description: '고객님들이 자주 문의하시는 내용들을 정리했습니다'
           },
           contactForm: {
             title: '문의하기',
@@ -729,66 +650,12 @@ class I18nAdvanced {
         news: {
           title: '뉴스',
           description: '정호그룹의 최신 소식과 업계 동향을 확인하세요',
-          hero: {
-            title: '정호그룹 뉴스',
-            subtitle: '40년 전통의 조명제어 전문기업 정호그룹의 최신 소식과 업계 동향을 확인하세요',
-            badges: {
-              realtime: '실시간 업데이트',
-              professional: '전문 기자진',
-              exclusive: '독점 인터뷰'
-            }
-          },
-          search: {
-            placeholder: '뉴스 제목, 내용으로 검색...'
-          },
+          subscribe: '구독하기',
           categories: {
             all: '전체',
-            technology: '기술',
-            business: '사업',
-            esg: 'ESG',
-            awards: '수상',
-            announcement: '공지사항'
-          },
-          results: {
-            total: '총',
-            found: '개의 뉴스를 찾았습니다',
-            searchTerm: '검색어:',
-            noResults: '검색 결과가 없습니다',
-            tryOther: '다른 검색어나 카테고리를 시도해보세요'
-          },
-          card: {
-            readMore: '자세히 보기',
-            readTime: '분',
-            views: '조회'
-          },
-          loading: '뉴스를 불러오는 중...',
-          error: {
-            title: '주의:',
-            message: '기본 데이터를 표시합니다.'
-          },
-          newsletter: {
-            title: '최신 뉴스를 이메일로 받아보세요',
-            subtitle: '정호그룹의 최신 소식과 업계 동향을 매주 이메일로 받아보실 수 있습니다',
-            placeholder: '이메일 주소를 입력하세요',
-            subscribe: '구독하기',
-            subscribeSuccess: '뉴스레터 구독이 완료되었습니다!',
-            privacy: '언제든지 구독을 해지할 수 있습니다. 개인정보는 안전하게 보호됩니다.'
-          },
-          press: {
-            title: '언론 문의',
-            description: '정호그룹에 대한 보도 자료나 인터뷰 요청이 있으시면 언제든 연락주세요. 전문 담당자가 빠른 시일 내에 답변드리겠습니다.',
-            contact: '언론 문의하기',
-            materials: '보도자료',
-            downloads: {
-              companyIntro: '정호그룹 회사 소개서',
-              techPaper: '2024년 기술 백서',
-              logoAssets: '로고 및 이미지 자료'
-            }
-          },
-          modal: {
-            close: '닫기',
-            author: '작성자:',
-            views: '조회'
+            company: '회사소식',
+            industry: '업계동향',
+            technology: '기술소식'
           }
         }
       },
@@ -914,98 +781,19 @@ class I18nAdvanced {
           hero: {
             title: 'Customer Support',
             subtitle: 'Jungho Group experts will respond within 24 hours. Please contact us anytime.',
-            description: 'We support customer success through professional technical support and services',
-            button: 'Contact Now'
+            description: 'We support customer success through professional technical support and services'
           },
           channels: {
             title: 'Support Channels',
-            description: 'Connect with Jungho Group experts through various channels',
-            items: {
-              phone: {
-                title: 'Phone Support',
-                description: 'Professional engineers answer directly.',
-                contact: '1588-1234',
-                hours: 'Weekdays 09:00-18:00',
-                button: 'Call Now'
-              },
-              email: {
-                title: 'Email Inquiry',
-                description: 'Please send us your detailed technical inquiries.',
-                contact: 'support@jungho.com',
-                hours: '24/7 available',
-                button: 'Send Email'
-              },
-              kakao: {
-                title: 'KakaoTalk',
-                description: 'Get quick responses through real-time chat.',
-                contact: '@Jungho Group',
-                hours: 'Weekdays 09:00-18:00',
-                button: 'Start Chat'
-              },
-              online: {
-                title: 'Online Inquiry',
-                description: 'Convenient inquiry through website.',
-                contact: '24/7 submission',
-                hours: '24/7 available',
-                button: 'Inquire Now'
-              }
-            }
+            description: 'Connect with Jungho Group experts through various channels'
           },
           services: {
             title: 'Support Services',
-            description: 'We support the entire process from system introduction to operation',
-            items: {
-              technical: {
-                title: 'Technical Consultation',
-                description: 'We provide professional technical consultation on lighting control systems.',
-                features: ['System Design', 'Technical Review', 'Optimization Plan', 'Cost Analysis']
-              },
-              installation: {
-                title: 'Installation Support',
-                description: 'Professional engineers provide on-site installation support.',
-                features: ['On-site Installation', 'System Integration', 'Testing', 'Training']
-              },
-              maintenance: {
-                title: 'Maintenance',
-                description: 'Stable system operation through regular inspection and preventive maintenance.',
-                features: ['Regular Inspection', 'Preventive Maintenance', 'Fault Repair', 'Parts Replacement']
-              },
-              education: {
-                title: 'Education Services',
-                description: 'Professional training for system operators.',
-                features: ['Operation Training', 'Technical Training', 'Manual Provision', 'Online Support']
-              }
-            }
+            description: 'We support the entire process from system introduction to operation'
           },
           faq: {
             title: 'Frequently Asked Questions',
-            description: 'Common questions from our customers',
-            items: [
-              {
-                question: 'How long does it take to introduce a lighting control system?',
-                answer: 'It varies depending on the project size, but generally takes 3-6 months. Detailed schedule will be provided through technical consultation.'
-              },
-              {
-                question: 'Is it compatible with existing lighting systems?',
-                answer: 'Yes, it is compatible with most existing lighting systems. Exact compatibility will be confirmed through on-site inspection.'
-              },
-              {
-                question: 'How much energy can be saved?',
-                answer: 'Generally, 20-40% energy savings can be expected. Specific figures vary depending on usage patterns.'
-              },
-              {
-                question: 'Is remote control possible?',
-                answer: 'Yes, remote control using IoT technology is possible. You can control it anytime via smartphone app or web interface.'
-              },
-              {
-                question: 'How much is the maintenance cost?',
-                answer: 'It depends on the system size and service level, approximately 5-10% of annual system construction cost. Please contact us for detailed quote.'
-              },
-              {
-                question: 'Is emergency support available?',
-                answer: 'Yes, we provide 24/7 emergency support service. You can contact us anytime by phone or online.'
-              }
-            ]
+            description: 'Common questions from our customers'
           },
           contactForm: {
             title: 'Contact Us',
@@ -1345,72 +1133,6 @@ class I18nAdvanced {
             demo: 'View Demo',
             caseStudy: 'Case Study'
           }
-        },
-        // News Page
-        news: {
-          title: 'News',
-          description: 'Check out the latest news and industry trends from Jungho Group',
-          hero: {
-            title: 'Jungho Group News',
-            subtitle: 'Check out the latest news and industry trends from Jungho Group, a professional lighting control company with 40 years of tradition',
-            badges: {
-              realtime: 'Real-time Updates',
-              professional: 'Professional Journalists',
-              exclusive: 'Exclusive Interviews'
-            }
-          },
-          search: {
-            placeholder: 'Search by title, content...'
-          },
-          categories: {
-            all: 'All',
-            technology: 'Technology',
-            business: 'Business',
-            esg: 'ESG',
-            awards: 'Awards',
-            announcement: 'Announcement'
-          },
-          results: {
-            total: 'Total',
-            found: 'news found',
-            searchTerm: 'Search term:',
-            noResults: 'No results found',
-            tryOther: 'Try different keywords or categories'
-          },
-          card: {
-            readMore: 'Read More',
-            readTime: 'min',
-            views: 'views'
-          },
-          loading: 'Loading news...',
-          error: {
-            title: 'Warning:',
-            message: 'Displaying default data.'
-          },
-          newsletter: {
-            title: 'Get the Latest News via Email',
-            subtitle: 'Receive Jungho Group\'s latest news and industry trends weekly via email',
-            placeholder: 'Enter your email address',
-            subscribe: 'Subscribe',
-            subscribeSuccess: 'Newsletter subscription completed!',
-            privacy: 'You can unsubscribe anytime. Your privacy is protected.'
-          },
-          press: {
-            title: 'Press Inquiry',
-            description: 'For press releases or interview requests about Jungho Group, please contact us anytime. Our professional staff will respond promptly.',
-            contact: 'Contact Press',
-            materials: 'Press Materials',
-            downloads: {
-              companyIntro: 'Company Introduction',
-              techPaper: '2024 Technical White Paper',
-              logoAssets: 'Logo and Image Assets'
-            }
-          },
-          modal: {
-            close: 'Close',
-            author: 'Author:',
-            views: 'views'
-          }
         }
       },
       zh: {
@@ -1450,98 +1172,19 @@ class I18nAdvanced {
           hero: {
             title: '客户支持',
             subtitle: '正浩集团专家将在24小时内回复。请随时联系我们。',
-            description: '通过专业的技术支持和服务，我们支持客户成功',
-            button: '立即咨询'
+            description: '通过专业的技术支持和服务，我们支持客户成功'
           },
           channels: {
             title: '支持渠道',
-            description: '通过各种渠道联系正浩集团的专家',
-            items: {
-              phone: {
-                title: '电话咨询',
-                description: '专业工程师直接回复。',
-                contact: '1588-1234',
-                hours: '工作日 09:00-18:00',
-                button: '立即拨打'
-              },
-              email: {
-                title: '电子邮件咨询',
-                description: '请发送您的详细技术咨询。',
-                contact: 'support@jungho.com',
-                hours: '24小时接受',
-                button: '发送邮件'
-              },
-              kakao: {
-                title: 'KakaoTalk',
-                description: '通过实时聊天获得快速回复。',
-                contact: '@正浩集团',
-                hours: '工作日 09:00-18:00',
-                button: '开始聊天'
-              },
-              online: {
-                title: '在线咨询',
-                description: '通过网站便捷咨询。',
-                contact: '24小时接受',
-                hours: '24小时接受',
-                button: '立即咨询'
-              }
-            }
+            description: '通过各种渠道联系正浩集团的专家'
           },
           services: {
             title: '支持服务',
-            description: '我们支持从系统引进到运营的整个过程',
-            items: {
-              technical: {
-                title: '技术咨询',
-                description: '我们提供照明控制系统的专业技术咨询。',
-                features: ['系统设计', '技术审查', '优化方案', '成本分析']
-              },
-              installation: {
-                title: '安装支持',
-                description: '专业工程师提供现场安装支持。',
-                features: ['现场安装', '系统集成', '测试', '培训']
-              },
-              maintenance: {
-                title: '维护',
-                description: '通过定期检查和预防性维护保证系统稳定运行。',
-                features: ['定期检查', '预防性维护', '故障修理', '零件更换']
-              },
-              education: {
-                title: '教育服务',
-                description: '为系统操作员提供专业培训。',
-                features: ['操作培训', '技术培训', '提供手册', '在线支持']
-              }
-            }
+            description: '我们支持从系统引进到运营的整个过程'
           },
           faq: {
             title: '常见问题',
-            description: '客户经常咨询的内容',
-            items: [
-              {
-                question: '引进照明控制系统需要多长时间？',
-                answer: '根据项目规模而异，但通常需要3-6个月。详细时间表将通过技术咨询提供。'
-              },
-              {
-                question: '是否与现有照明系统兼容？',
-                answer: '是的，与大多数现有照明系统兼容。确切的兼容性将通过现场检查确认。'
-              },
-              {
-                question: '能节省多少能源？',
-                answer: '一般可以预期节省20-40%的能源。具体数字因使用模式而异。'
-              },
-              {
-                question: '是否可以远程控制？',
-                answer: '是的，可以使用IoT技术进行远程控制。您可以随时通过智能手机应用或网络界面进行控制。'
-              },
-              {
-                question: '维护费用是多少？',
-                answer: '根据系统规模和服务水平而异，大约是年度系统建设费用的5-10%。详细报价请咨询。'
-              },
-              {
-                question: '紧急情况下是否可以获得支持？',
-                answer: '是的，我们提供24/7紧急支持服务。您可以随时通过电话或在线联系我们。'
-              }
-            ]
+            description: '客户经常咨询的内容'
           },
           contactForm: {
             title: '联系我们',
@@ -1909,72 +1552,6 @@ class I18nAdvanced {
             caseStudy: '案例研究'
           }
         },
-        // News Page
-        news: {
-          title: '新闻',
-          description: '查看正浩集团的最新消息和行业动态',
-          hero: {
-            title: '正浩集团新闻',
-            subtitle: '查看拥有40年传统的照明控制专业企业正浩集团的最新消息和行业动态',
-            badges: {
-              realtime: '实时更新',
-              professional: '专业记者',
-              exclusive: '独家专访'
-            }
-          },
-          search: {
-            placeholder: '按标题、内容搜索...'
-          },
-          categories: {
-            all: '全部',
-            technology: '技术',
-            business: '业务',
-            esg: 'ESG',
-            awards: '奖项',
-            announcement: '公告'
-          },
-          results: {
-            total: '共',
-            found: '条新闻',
-            searchTerm: '搜索词：',
-            noResults: '未找到结果',
-            tryOther: '请尝试其他关键词或类别'
-          },
-          card: {
-            readMore: '阅读更多',
-            readTime: '分钟',
-            views: '查看'
-          },
-          loading: '正在加载新闻...',
-          error: {
-            title: '警告：',
-            message: '显示默认数据。'
-          },
-          newsletter: {
-            title: '通过电子邮件接收最新新闻',
-            subtitle: '每周通过电子邮件接收正浩集团的最新消息和行业动态',
-            placeholder: '输入您的电子邮件地址',
-            subscribe: '订阅',
-            subscribeSuccess: '新闻订阅完成！',
-            privacy: '您可以随时取消订阅。您的隐私将受到保护。'
-          },
-          press: {
-            title: '媒体咨询',
-            description: '如果您对正浩集团的新闻稿或采访请求有任何疑问，请随时与我们联系。专业人员将尽快回复。',
-            contact: '联系媒体',
-            materials: '新闻资料',
-            downloads: {
-              companyIntro: '公司简介',
-              techPaper: '2024技术白皮书',
-              logoAssets: '徽标和图像资产'
-            }
-          },
-          modal: {
-            close: '关闭',
-            author: '作者：',
-            views: '查看'
-          }
-        },
         // Business
         business: {
           hero: {
@@ -2030,98 +1607,19 @@ class I18nAdvanced {
           hero: {
             title: 'カスタマーサポート',
             subtitle: '正浩グループの専門家が24時間以内に回答いたします。いつでもお問い合わせください。',
-            description: '専門的な技術サポートとサービスを通じて、お客様の成功をサポートします',
-            button: '今すぐお問い合わせ'
+            description: '専門的な技術サポートとサービスを通じて、お客様の成功をサポートします'
           },
           channels: {
             title: 'サポートチャネル',
-            description: '様々な方法でジョンホグループの専門家にお問い合わせいただけます',
-            items: {
-              phone: {
-                title: '電話相談',
-                description: '専門エンジニアが直接お答えします。',
-                contact: '1588-1234',
-                hours: '平日 09:00-18:00',
-                button: '電話する'
-              },
-              email: {
-                title: 'メールお問い合わせ',
-                description: '詳細な技術的なお問い合わせをお送りください。',
-                contact: 'support@jungho.com',
-                hours: '24時間受付',
-                button: 'メール送信'
-              },
-              kakao: {
-                title: 'KakaoTalk',
-                description: 'リアルタイムチャットで迅速な回答を受け取れます。',
-                contact: '@正浩グループ',
-                hours: '平日 09:00-18:00',
-                button: 'チャット開始'
-              },
-              online: {
-                title: 'オンラインお問い合わせ',
-                description: 'ウェブサイトから簡単にお問い合わせ。',
-                contact: '24時間受付',
-                hours: '24時間受付',
-                button: 'お問い合わせ'
-              }
-            }
+            description: '様々な方法でジョンホグループの専門家にお問い合わせいただけます'
           },
           services: {
             title: 'サポートサービス',
-            description: 'システム導入から運用まで全プロセスをサポートします',
-            items: {
-              technical: {
-                title: '技術相談',
-                description: '照明制御システムに関する専門的な技術相談を提供します。',
-                features: ['システム設計', '技術レビュー', '最適化案', 'コスト分析']
-              },
-              installation: {
-                title: '設置サポート',
-                description: '専門エンジニアが現場で直接設置をサポートします。',
-                features: ['現場設置', 'システム連携', 'テスト', 'トレーニング']
-              },
-              maintenance: {
-                title: 'メンテナンス',
-                description: '定期点検と予防保守でシステムを安定的に運用します。',
-                features: ['定期点検', '予防保守', '故障修理', '部品交換']
-              },
-              education: {
-                title: '教育サービス',
-                description: 'システム運用者向けの専門トレーニングを提供します。',
-                features: ['運用トレーニング', '技術トレーニング', 'マニュアル提供', 'オンラインサポート']
-              }
-            }
+            description: 'システム導入から運用まで全プロセスをサポートします'
           },
           faq: {
             title: 'よくある質問',
-            description: 'お客様からよくいただくご質問をまとめました',
-            items: [
-              {
-                question: '照明制御システムの導入にどのくらいの時間がかかりますか？',
-                answer: 'プロジェクトの規模によりますが、一般的に3〜6ヶ月程度です。詳細なスケジュールは技術相談を通じてご案内します。'
-              },
-              {
-                question: '既存の照明システムと互換性がありますか？',
-                answer: 'はい、ほとんどの既存照明システムと互換性があります。正確な互換性は現場確認を通じて確認いたします。'
-              },
-              {
-                question: 'エネルギー削減効果はどの程度ですか？',
-                answer: '一般的に20〜40%のエネルギー削減効果が期待できます。具体的な数値は使用パターンによって異なります。'
-              },
-              {
-                question: '遠隔制御は可能ですか？',
-                answer: 'はい、IoT技術を活用した遠隔制御が可能です。スマートフォンアプリやWebインターフェースからいつでも制御できます。'
-              },
-              {
-                question: 'メンテナンス費用はいくらですか？',
-                answer: 'システム規模とサービスレベルによって異なり、年間システム構築費用の5〜10%程度です。詳細な見積もりはお問い合わせください。'
-              },
-              {
-                question: '緊急時のサポートは可能ですか？',
-                answer: 'はい、24時間緊急サポートサービスを提供しています。電話またはオンラインでいつでもご連絡いただけます。'
-              }
-            ]
+            description: 'お客様からよくいただくご質問をまとめました'
           },
           contactForm: {
             title: 'お問い合わせ',
@@ -2487,72 +1985,6 @@ class I18nAdvanced {
             achievements: '主要成果',
             demo: 'デモを見る',
             caseStudy: 'ケーススタディ'
-          }
-        },
-        // News Page
-        news: {
-          title: 'ニュース',
-          description: '正浩グループの最新ニュースと業界動向をご確認ください',
-          hero: {
-            title: '正浩グループニュース',
-            subtitle: '40年の伝統を持つ照明制御専門企業、正浩グループの最新ニュースと業界動向をご確認ください',
-            badges: {
-              realtime: 'リアルタイム更新',
-              professional: '専門記者陣',
-              exclusive: '独占インタビュー'
-            }
-          },
-          search: {
-            placeholder: 'タイトル、内容で検索...'
-          },
-          categories: {
-            all: 'すべて',
-            technology: '技術',
-            business: 'ビジネス',
-            esg: 'ESG',
-            awards: '受賞',
-            announcement: 'お知らせ'
-          },
-          results: {
-            total: '合計',
-            found: '件のニュースが見つかりました',
-            searchTerm: '検索語：',
-            noResults: '検索結果がありません',
-            tryOther: '別のキーワードやカテゴリーをお試しください'
-          },
-          card: {
-            readMore: '詳細を見る',
-            readTime: '分',
-            views: '閲覧'
-          },
-          loading: 'ニュースを読み込み中...',
-          error: {
-            title: '警告：',
-            message: 'デフォルトデータを表示しています。'
-          },
-          newsletter: {
-            title: '最新ニュースをメールで受け取る',
-            subtitle: '正浩グループの最新ニュースと業界動向を毎週メールで受け取れます',
-            placeholder: 'メールアドレスを入力してください',
-            subscribe: '購読する',
-            subscribeSuccess: 'ニュースレター購読が完了しました！',
-            privacy: 'いつでも購読解除できます。プライバシーは保護されます。'
-          },
-          press: {
-            title: '報道関係者向けお問い合わせ',
-            description: '正浩グループに関するプレスリリースやインタビュー依頼がございましたら、いつでもご連絡ください。専門担当者が迅速に対応いたします。',
-            contact: '報道関係者向けお問い合わせ',
-            materials: 'プレス資料',
-            downloads: {
-              companyIntro: '会社紹介資料',
-              techPaper: '2024年技術白書',
-              logoAssets: 'ロゴ及び画像素材'
-            }
-          },
-          modal: {
-            close: '閉じる',
-            author: '著者：',
-            views: '閲覧'
           }
         },
         // Business

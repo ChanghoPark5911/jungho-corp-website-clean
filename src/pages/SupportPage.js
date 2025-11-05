@@ -70,101 +70,24 @@ const SupportPage = () => {
     );
   }
 
-  // 🔧 다국어 지원: 모든 콘텐츠를 i18n에서 가져오기
+  // 콘텐츠에서 데이터 추출
   const rawHeroData = content.hero || {};
-  
-  // 히어로 데이터
-  const heroData = {
-    backgroundImage: rawHeroData.backgroundImage || "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    mainCopy: t('support.hero.title'),
-    subCopy: t('support.hero.subtitle'),
-    description: t('support.hero.description'),
-    primaryAction: {
-      label: t('support.hero.button'),
-      path: "#contact-form"
-    }
-  };
-
-  // Support Channels 데이터 (i18n에서 가져오기)
-  const supportChannels = [
-    {
-      title: t('support.channels.items.phone.title'),
-      description: t('support.channels.items.phone.description'),
-      contact: t('support.channels.items.phone.contact'),
-      hours: t('support.channels.items.phone.hours'),
-      icon: "📞",
-      action: {
-        label: t('support.channels.items.phone.button'),
-        onClick: "tel:1588-1234"
-      }
-    },
-    {
-      title: t('support.channels.items.email.title'),
-      description: t('support.channels.items.email.description'),
-      contact: t('support.channels.items.email.contact'),
-      hours: t('support.channels.items.email.hours'),
-      icon: "📧",
-      action: {
-        label: t('support.channels.items.email.button'),
-        onClick: "mailto:support@jungho.com"
-      }
-    },
-    {
-      title: t('support.channels.items.kakao.title'),
-      description: t('support.channels.items.kakao.description'),
-      contact: t('support.channels.items.kakao.contact'),
-      hours: t('support.channels.items.kakao.hours'),
-      icon: "💬",
-      action: {
-        label: t('support.channels.items.kakao.button'),
-        path: "https://open.kakao.com/정호그룹"
-      }
-    },
-    {
-      title: t('support.channels.items.online.title'),
-      description: t('support.channels.items.online.description'),
-      contact: t('support.channels.items.online.contact'),
-      hours: t('support.channels.items.online.hours'),
-      icon: "🌐",
-      action: {
-        label: t('support.channels.items.online.button'),
-        path: "#contact-form"
-      }
-    }
-  ];
-
-  // Support Services 데이터 (i18n에서 가져오기)
-  const supportServices = [
-    {
-      title: t('support.services.items.technical.title'),
-      description: t('support.services.items.technical.description'),
-      icon: "🔧",
-      features: t('support.services.items.technical.features')
-    },
-    {
-      title: t('support.services.items.installation.title'),
-      description: t('support.services.items.installation.description'),
-      icon: "⚙️",
-      features: t('support.services.items.installation.features')
-    },
-    {
-      title: t('support.services.items.maintenance.title'),
-      description: t('support.services.items.maintenance.description'),
-      icon: "🔍",
-      features: t('support.services.items.maintenance.features')
-    },
-    {
-      title: t('support.services.items.education.title'),
-      description: t('support.services.items.education.description'),
-      icon: "📚",
-      features: t('support.services.items.education.features')
-    }
-  ];
-
-  // FAQ 데이터 (i18n에서 가져오기)
-  const faqs = t('support.faq.items');
-  
+  const supportChannels = content.supportChannels || [];
+  const supportServices = content.supportServices || [];
+  const faqs = content.faqs || [];
   const contactForm = content.contactForm || {};
+
+  // 🔧 다국어 지원: 히어로 데이터를 다국어 키로 변환
+  const heroData = {
+    backgroundImage: rawHeroData.backgroundImage,
+    mainCopy: t('support.hero.title', { fallback: rawHeroData.mainCopy || '고객 지원' }),
+    subCopy: t('support.hero.subtitle', { fallback: rawHeroData.subCopy || '정호그룹의 전문가들이 24시간 내에 답변드립니다. 언제든지 문의해주세요.' }),
+    description: t('support.hero.description', { fallback: rawHeroData.description || '' }),
+    primaryAction: rawHeroData.primaryAction ? {
+      ...rawHeroData.primaryAction,
+      label: t(rawHeroData.primaryAction.label, { fallback: rawHeroData.primaryAction.label })
+    } : undefined
+  };
 
   return (
     <>
@@ -279,10 +202,10 @@ const SupportPage = () => {
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              {t('support.contactForm.title')}
+              {contactForm.title || t('support.contactForm.title')}
             </h2>
             <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-              {t('support.contactForm.description')}
+              {contactForm.description || t('support.contactForm.description')}
             </p>
           </div>
 
@@ -292,7 +215,7 @@ const SupportPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {t('support.contactForm.fields.name')} *
+                      {contactForm.fields?.name?.label || t('support.contactForm.fields.name')} *
                     </label>
                     <input
                       type="text"
@@ -303,7 +226,7 @@ const SupportPage = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {t('support.contactForm.fields.company')}
+                      {contactForm.fields?.company?.label || t('support.contactForm.fields.company')}
                     </label>
                     <input
                       type="text"
@@ -316,7 +239,7 @@ const SupportPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {t('support.contactForm.fields.email')} *
+                      {contactForm.fields?.email?.label || t('support.contactForm.fields.email')} *
                     </label>
                     <input
                       type="email"
@@ -327,7 +250,7 @@ const SupportPage = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {t('support.contactForm.fields.phone')} *
+                      {contactForm.fields?.phone?.label || t('support.contactForm.fields.phone')} *
                     </label>
                     <input
                       type="tel"
@@ -340,22 +263,28 @@ const SupportPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('support.contactForm.fields.category')}
+                    {contactForm.fields?.category?.label || t('support.contactForm.fields.category')}
                   </label>
                   <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                    <option>{t('support.contactForm.placeholders.category')}</option>
-                    <option>{t('support.contactForm.categories.smartBuilding')}</option>
-                    <option>{t('support.contactForm.categories.cityInfra')}</option>
-                    <option>{t('support.contactForm.categories.industrial')}</option>
-                    <option>{t('support.contactForm.categories.cultural')}</option>
-                    <option>{t('support.contactForm.categories.technical')}</option>
-                    <option>{t('support.contactForm.categories.other')}</option>
+                    {contactForm.fields?.category?.options?.map((option, index) => (
+                      <option key={index} value={option}>{option}</option>
+                    )) || (
+                      <>
+                        <option>{t('support.contactForm.placeholders.category')}</option>
+                        <option>{t('support.contactForm.categories.smartBuilding')}</option>
+                        <option>{t('support.contactForm.categories.cityInfra')}</option>
+                        <option>{t('support.contactForm.categories.industrial')}</option>
+                        <option>{t('support.contactForm.categories.cultural')}</option>
+                        <option>{t('support.contactForm.categories.technical')}</option>
+                        <option>{t('support.contactForm.categories.other')}</option>
+                      </>
+                    )}
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('support.contactForm.fields.message')} *
+                    {contactForm.fields?.message?.label || t('support.contactForm.fields.message')} *
                   </label>
                   <textarea
                     rows="6"

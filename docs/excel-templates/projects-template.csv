@@ -1,6 +1,0 @@
-프로젝트명(한글),프로젝트명(영문),클라이언트,카테고리,위치,완공연도,프로젝트설명(한글),프로젝트설명(영문),사용기술,제어포인트수,주요성과1,주요성과2,주요성과3,대표이미지파일명,추가이미지1,추가이미지2,추가이미지3,비고
-서울시청 스마트 조명 시스템,Seoul City Hall Smart Lighting System,서울특별시,스마트빌딩,서울특별시 중구 세종대로 110,2023,"서울시청 청사 전체의 조명을 스마트하게 제어하는 시스템을 구축했습니다. E/F2-BUS 프로토콜을 활용하여 1,200개의 조명을 통합 관리하며, 에너지 효율을 30% 향상시켰습니다.","Implemented a smart lighting control system for the entire Seoul City Hall building. Using E/F2-BUS protocol to manage 1,200 lighting points, achieving 30% energy efficiency improvement.","E/F2-BUS, IoT센서, 중앙제어시스템",1200,에너지 30% 절감,연간 유지비 20% 감소,실시간 모니터링 구현,seoul-cityhall-main.jpg,seoul-cityhall-01.jpg,seoul-cityhall-02.jpg,seoul-cityhall-03.jpg,대표 프로젝트
-삼성물산 물류센터,Samsung C&T Logistics Center,삼성물산,산업용,경기도 용인시,2022,"대규모 물류센터의 조명 자동화 시스템을 구축하여 물류 작업의 효율성을 높였습니다. 재고 위치에 따른 자동 조명 제어로 작업자의 편의성을 극대화했습니다.","Built an automated lighting system for a large-scale logistics center, enhancing logistics operation efficiency. Maximized worker convenience through automatic lighting control based on inventory location.",E/F2-BUS,3500,작업 효율 25% 향상,에너지 비용 35% 절감,,logistics-main.jpg,logistics-01.jpg,,,우수 사례
-,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,
-

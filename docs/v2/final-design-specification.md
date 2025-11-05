@@ -510,20 +510,21 @@ CLARUS
 
 ### **색상 팔레트**
 
-**Primary (정호그룹 메인):**
+**Primary (정호그룹 메인) - Green 기반:**
 ```
-- Primary Blue: #1565C0 (롯데 느낌의 신뢰감 있는 블루)
-- Light Blue: #42A5F5
-- Dark Blue: #0D47A1
+- Primary Green: #2E7D32 (정호그룹 메인 그린)
+- Light Green: #66BB6A (밝은 그린)
+- Dark Green: #1B5E20 (진한 그린)
+- Accent Green: #4CAF50 (강조 그린)
 ```
 
 **계열사별 Accent:**
 ```
-- 정호티엘씨: #1976D2 (진한 블루)
-- 클라루스: #00ACC1 (청록)
-- 일루텍: #FFA726 (오렌지)
-- 정호텍스컴: #7E57C2 (퍼플)
-- RSS: #66BB6A (그린)
+- 정호티엘씨: #2E7D32 (메인 그린)
+- 클라루스: #00897B (청록 그린)
+- 일루텍: #FFA726 (오렌지 - LED 조명 이미지)
+- 정호텍스컴: #7E57C2 (퍼플 - 패션 이미지)
+- RSS: #66BB6A (밝은 그린)
 ```
 
 **Neutral:**
@@ -613,6 +614,7 @@ Small: 40px
 ✅ React Router (기존)
 ✅ Tailwind CSS (기존)
 ✅ Framer Motion (애니메이션 추가)
+✅ i18n: 한국어 + 영어 (중국어/일본어는 비활성화)
 ```
 
 ### **Backend:**

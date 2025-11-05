@@ -82,7 +82,7 @@ const MegaMenu = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-md">
+    <header className="fixed top-0 left-0 right-0 z-[100] bg-white dark:bg-gray-900 shadow-md">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* 로고 */}
@@ -94,14 +94,14 @@ const MegaMenu = () => {
               <span className="text-xl font-bold text-gray-900 dark:text-white">
                 정호그룹
               </span>
-              <span className="text-xs text-gray-500 dark:text-gray-400">
+              <span className="text-xs text-gray-600 dark:text-gray-400">
                 Jungho Group
               </span>
             </div>
           </Link>
 
           {/* 데스크톱 메뉴 */}
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="flex items-center space-x-1">
             {menuStructure.map((menu) => (
               <div
                 key={menu.id}
@@ -117,7 +117,7 @@ const MegaMenu = () => {
                     ${
                       activeMenu === menu.id
                         ? 'text-primary-600 bg-primary-50'
-                        : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 hover:bg-gray-50'
+                        : 'text-gray-900 dark:text-gray-300 hover:text-primary-600 hover:bg-gray-50'
                     }
                   `}
                 >
@@ -162,7 +162,7 @@ const MegaMenu = () => {
                   ${
                     activeMenu === 'family'
                       ? 'text-primary-600 bg-primary-50'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 hover:bg-gray-50'
+                      : 'text-gray-900 dark:text-gray-300 hover:text-primary-600 hover:bg-gray-50'
                   }
                 `}
               >
@@ -192,7 +192,7 @@ const MegaMenu = () => {
           </div>
 
           {/* 오른쪽 액션 버튼들 */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="flex items-center space-x-4">
             <LanguageSelector />
             <button
               onClick={() => navigate('/admin')}
@@ -202,10 +202,10 @@ const MegaMenu = () => {
             </button>
           </div>
 
-          {/* 모바일 햄버거 메뉴 */}
+          {/* 모바일 햄버거 메뉴 - 임시 숨김 */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileMenuOpen ? (

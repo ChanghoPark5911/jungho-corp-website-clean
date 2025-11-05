@@ -10,7 +10,7 @@ const HomePageV2 = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white dark:bg-gray-900 pt-20">
       {/* Hero Section */}
       <HeroSection
         backgroundImage="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
@@ -32,7 +32,7 @@ const HomePageV2 = () => {
           },
         ]}
         showScrollIndicator={true}
-        overlay="gradient"
+        overlay="dark"
         height="full"
       />
 

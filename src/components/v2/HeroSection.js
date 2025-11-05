@@ -40,10 +40,10 @@ const HeroSection = ({
 
   // 오버레이 클래스
   const overlayClasses = {
-    dark: 'bg-black/60',
+    dark: 'bg-black/40',
     light: 'bg-white/60',
-    green: 'bg-primary-900/70',
-    gradient: 'bg-gradient-to-b from-black/70 via-black/50 to-black/70',
+    green: 'bg-primary-900/50',
+    gradient: 'bg-gradient-to-b from-black/50 via-black/30 to-black/50',
     none: '',
   };
 
@@ -57,6 +57,7 @@ const HeroSection = ({
   return (
     <section
       className={`relative ${heightClasses[height]} flex items-center justify-center overflow-hidden ${className}`}
+      style={{ marginTop: '0' }}
     >
       {/* 배경 비디오 (있는 경우) */}
       {backgroundVideo && (

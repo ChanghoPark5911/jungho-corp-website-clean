@@ -1,13 +1,15 @@
 // 고급 다국어 지원 시스템
 class I18nAdvanced {
   constructor() {
-    this.supportedLanguages = ['ko', 'en', 'zh', 'ja'];
+    // v2: 한국어/영어만 활성화 (중국어/일본어는 향후 추가 예정)
+    this.supportedLanguages = ['ko', 'en'];
     this.fallbackLanguage = 'ko';
     this.languageNames = {
       ko: '한국어',
       en: 'English',
-      zh: '中文',
-      ja: '日本語'
+      // 향후 추가 예정
+      // zh: '中文',
+      // ja: '日本語'
     };
     
     // 저장된 언어를 먼저 확인
@@ -55,7 +57,7 @@ class I18nAdvanced {
     }
   }
 
-  // 브라우저 언어 감지
+  // 브라우저 언어 감지 (v2: 한/영만)
   detectBrowserLanguage() {
     const browserLang = navigator.language || navigator.userLanguage;
     const langCode = browserLang.split('-')[0];
@@ -69,15 +71,13 @@ class I18nAdvanced {
       return 'en';
     }
     
-    // 중국어권 감지
-    if (['zh', 'cn', 'tw', 'hk'].includes(langCode)) {
-      return 'zh';
-    }
-    
-    // 일본어권 감지
-    if (['ja', 'jp'].includes(langCode)) {
-      return 'ja';
-    }
+    // v2: 중국어/일본어는 향후 추가 예정
+    // if (['zh', 'cn', 'tw', 'hk'].includes(langCode)) {
+    //   return 'zh';
+    // }
+    // if (['ja', 'jp'].includes(langCode)) {
+    //   return 'ja';
+    // }
     
     return 'ko'; // 기본값
   }

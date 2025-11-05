@@ -22,8 +22,6 @@ const LanguageSelector = ({ className = '' }) => {
         <span className="text-lg">
           {currentLanguage === 'ko' && '🇰🇷'}
           {currentLanguage === 'en' && '🇺🇸'}
-          {currentLanguage === 'zh' && '🇨🇳'}
-          {currentLanguage === 'ja' && '🇯🇵'}
         </span>
         <span>{currentLanguageName}</span>
         <svg 
@@ -59,8 +57,6 @@ const LanguageSelector = ({ className = '' }) => {
                 <span className="text-lg">
                   {language === 'ko' && '🇰🇷'}
                   {language === 'en' && '🇺🇸'}
-                  {language === 'zh' && '🇨🇳'}
-                  {language === 'ja' && '🇯🇵'}
                 </span>
                 <span>{getLanguageName(language)}</span>
                 {currentLanguage === language && (

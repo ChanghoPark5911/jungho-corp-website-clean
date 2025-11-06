@@ -299,7 +299,7 @@ const ProjectsPage = () => {
                     
                     {/* 정보 */}
                     <div className="p-4">
-                      <h3 className="font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                      <h3 className="font-semibold text-sm text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                         {project.name}
                       </h3>
                       <div className="flex items-center justify-between text-sm">
@@ -372,7 +372,7 @@ const ProjectsPage = () => {
 
               {/* 정보 */}
               <div className="mt-6 bg-white dark:bg-gray-800 rounded-lg p-6">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   {selectedProject.name}
                 </h2>
                 <div className="flex items-center gap-4 text-sm">

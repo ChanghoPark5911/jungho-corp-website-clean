@@ -42,24 +42,11 @@ const MegaMenu = () => {
       ],
     },
     {
-      id: 'projects',
-      label: '프로젝트',
-      path: '/v2/projects',
-      submenu: [
-        { label: '프로젝트 포트폴리오', path: '/v2/projects', icon: '🏢' },
-        { label: '업무시설', path: '/v2/projects?category=업무시설', icon: '🏢' },
-        { label: '공공시설', path: '/v2/projects?category=공공시설', icon: '🏛️' },
-        { label: '주거시설', path: '/v2/projects?category=주거시설', icon: '🏘️' },
-        { label: '상업시설', path: '/v2/projects?category=상업시설', icon: '🏬' },
-        { label: '문화·의료·교육', path: '/v2/projects?category=문화·의료·교육', icon: '🏥' },
-      ],
-    },
-    {
       id: 'media',
       label: '미디어/PR',
       path: '/v2/media',
       submenu: [
-        { label: '미디어 영상', path: '/v2/media/videos', icon: '🎬' },
+        { label: '프로젝트 영상', path: '/v2/projects', icon: '🏢' },
         { label: '홍보영상', path: '/v2/media/promotion', icon: '📺' },
         { label: 'SNS', path: '/v2/media/sns', icon: '📱' },
       ],

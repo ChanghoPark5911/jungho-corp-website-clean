@@ -44,7 +44,7 @@ const MegaMenu = () => {
     {
       id: 'media',
       label: '미디어/PR',
-      path: '/v2/media',
+      path: '/v2/projects', // 프로젝트 영상으로 바로 연결
       submenu: [
         { label: '프로젝트 영상', path: '/v2/projects', icon: '🏢' },
         { label: '홍보영상', path: '/v2/media/promotion', icon: '📺' },

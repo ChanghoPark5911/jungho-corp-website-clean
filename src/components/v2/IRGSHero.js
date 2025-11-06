@@ -109,11 +109,22 @@ const IRGSHero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* 왼쪽: IRGS 애니메이션 */}
           <div className="flex items-center justify-center">
-            <div className="relative w-full max-w-md">
+            <div className="relative w-full max-w-md flex flex-col items-center">
               {/* 중앙 큰 아이콘 */}
               <div className="relative">
                 <div className={`absolute inset-0 rounded-full ${currentValue.bgColor} blur-3xl animate-pulse-slow`} />
-                <div className="relative flex items-center justify-center">
+                <div className="relative flex flex-col items-center justify-center">
+                  {/* IRGS 텍스트 - 아이콘 바로 위 */}
+                  <div className="mb-4 text-center">
+                    <div className={`text-4xl sm:text-5xl font-bold bg-gradient-to-r ${currentValue.color} bg-clip-text text-transparent animate-fade-in`}>
+                      {currentValue.title}
+                    </div>
+                    <div className="text-xl sm:text-2xl font-semibold text-gray-700 dark:text-gray-300 mt-1 animate-fade-in-delay">
+                      {currentValue.subtitle}
+                    </div>
+                  </div>
+                  
+                  {/* 아이콘 */}
                   <div className="text-[200px] leading-none animate-bounce-slow transition-all duration-1000">
                     {currentValue.icon}
                   </div>
@@ -121,7 +132,7 @@ const IRGSHero = () => {
               </div>
 
               {/* 원형 파티클 */}
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute inset-0 flex items-center justify-center" style={{ marginTop: '140px' }}>
                 {[...Array(8)].map((_, i) => {
                   const angle = (i * 360) / 8;
                   const radius = 180;
@@ -142,22 +153,12 @@ const IRGSHero = () => {
                   );
                 })}
               </div>
-
-              {/* 하단 IRGS 텍스트 */}
-              <div className="mt-8 text-center">
-                <div className={`inline-block text-6xl font-bold bg-gradient-to-r ${currentValue.color} bg-clip-text text-transparent animate-fade-in`}>
-                  {currentValue.title}
-                </div>
-              </div>
             </div>
           </div>
 
           {/* 오른쪽: 텍스트 컨텐츠 */}
           <div className="text-center lg:text-left space-y-6">
             <div className="space-y-4">
-              <h2 className={`text-xl sm:text-2xl font-semibold bg-gradient-to-r ${currentValue.color} bg-clip-text text-transparent animate-fade-in`}>
-                {currentValue.subtitle}
-              </h2>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 dark:text-white animate-slide-up leading-tight">
                 사람과 공간을<br />
                 밝히는 기술

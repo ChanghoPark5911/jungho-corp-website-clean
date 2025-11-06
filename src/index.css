@@ -841,6 +841,26 @@ body {
   }
 }
 
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(-30px) rotate(180deg);
+    opacity: 0.4;
+  }
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(180px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(180px) rotate(-360deg);
+  }
+}
+
 /* ===== Performance Optimizations ===== */
 .performance-optimized {
   will-change: transform, opacity;
@@ -945,4 +965,59 @@ section p.hero-subtitle {
   color: white !important;
   color: rgb(255, 255, 255) !important;
   color: rgba(255, 255, 255, 1) !important;
+}
+
+/* ===== Swiper Slider 스타일 ===== */
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  width: 100%;
+  height: 100%;
+}
+
+/* Swiper Pagination 커스텀 */
+.swiper-pagination {
+  bottom: 30px !important;
+  z-index: 10;
+}
+
+.swiper-pagination-bullet {
+  width: 12px !important;
+  height: 12px !important;
+  background: white !important;
+  opacity: 0.5 !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1 !important;
+  width: 32px !important;
+  border-radius: 6px !important;
+  background: white !important;
+}
+
+/* Swiper Navigation 버튼 (필요시) */
+.swiper-button-next,
+.swiper-button-prev {
+  color: white !important;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  opacity: 1;
+}
+
+/* Hero Section 내의 Swiper 전환 효과 */
+.swiper-fade .swiper-slide {
+  opacity: 0 !important;
+  transition-property: opacity !important;
+}
+
+.swiper-fade .swiper-slide-active {
+  opacity: 1 !important;
 }

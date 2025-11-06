@@ -6,6 +6,7 @@ import LanguageSelector from '../LanguageSelector';
 /**
  * v2 MegaMenu 컴포넌트
  * 롯데그룹 스타일의 메가메뉴 네비게이션
+ * + 부드러운 CSS 드롭다운 애니메이션
  */
 const MegaMenu = () => {
   const { t } = useI18n();
@@ -17,46 +18,59 @@ const MegaMenu = () => {
   const menuStructure = [
     {
       id: 'about',
-      label: 'ABOUT 정호그룹',
-      path: '/about',
+      label: 'ABOUT',
+      path: '/v2/about',
       submenu: [
-        { label: '정호소개', path: '/about/intro', icon: '👋' },
-        { label: '그룹비전 (IRGS)', path: '/about/vision', icon: '🎯' },
-        { label: '경영방침', path: '/about/management', icon: '📋' },
-        { label: 'CI/BI', path: '/about/ci', icon: '🎨' },
-        { label: 'HISTORY', path: '/about/history', icon: '📅' },
-        { label: '찾아오시는길', path: '/about/location', icon: '📍' },
+        { label: '정호소개', path: '/v2/about/intro', icon: '👋' },
+        { label: '그룹비전 (IRGS)', path: '/v2/about/vision', icon: '🎯' },
+        { label: '경영방침', path: '/v2/about/management', icon: '📋' },
+        { label: 'CI/BI', path: '/v2/about/ci', icon: '🎨' },
+        { label: 'HISTORY', path: '/v2/about/history', icon: '📅' },
+        { label: '찾아오시는길', path: '/v2/about/location', icon: '📍' },
       ],
     },
     {
       id: 'subsidiaries',
       label: '그룹사',
-      path: '/subsidiaries',
+      path: '/v2/subsidiaries',
       submenu: [
-        { label: '정호티엘씨', path: '/subsidiaries/tlc', icon: '⚡', color: 'tlc' },
-        { label: '클라루스', path: '/subsidiaries/clarus', icon: '💡', color: 'clarus' },
-        { label: '일루텍', path: '/subsidiaries/illutech', icon: '🔆', color: 'illutech' },
-        { label: '정호텍스컴', path: '/subsidiaries/texcom', icon: '🧵', color: 'texcom' },
-        { label: 'RSS 사업부', path: '/subsidiaries/rss', icon: '🔧', color: 'rss' },
+        { label: '정호티엘씨', path: '/v2/subsidiaries/tlc', icon: '⚡', color: 'tlc' },
+        { label: '클라루스', path: '/v2/subsidiaries/clarus', icon: '💡', color: 'clarus' },
+        { label: '일루텍', path: '/v2/subsidiaries/illutech', icon: '🔆', color: 'illutech' },
+        { label: '정호텍스컴', path: '/v2/subsidiaries/texcom', icon: '🧵', color: 'texcom' },
+        { label: 'RSS 사업부', path: '/v2/subsidiaries/rss', icon: '🔧', color: 'rss' },
+      ],
+    },
+    {
+      id: 'projects',
+      label: '프로젝트',
+      path: '/v2/projects',
+      submenu: [
+        { label: '프로젝트 포트폴리오', path: '/v2/projects', icon: '🏢' },
+        { label: '업무시설', path: '/v2/projects?category=업무시설', icon: '🏢' },
+        { label: '공공시설', path: '/v2/projects?category=공공시설', icon: '🏛️' },
+        { label: '주거시설', path: '/v2/projects?category=주거시설', icon: '🏘️' },
+        { label: '상업시설', path: '/v2/projects?category=상업시설', icon: '🏬' },
+        { label: '문화·의료·교육', path: '/v2/projects?category=문화·의료·교육', icon: '🏥' },
       ],
     },
     {
       id: 'media',
       label: '미디어/PR',
-      path: '/media',
+      path: '/v2/media',
       submenu: [
-        { label: '미디어 영상', path: '/media/videos', icon: '🎬' },
-        { label: '홍보영상', path: '/media/promotion', icon: '📺' },
-        { label: 'SNS', path: '/media/sns', icon: '📱' },
+        { label: '미디어 영상', path: '/v2/media/videos', icon: '🎬' },
+        { label: '홍보영상', path: '/v2/media/promotion', icon: '📺' },
+        { label: 'SNS', path: '/v2/media/sns', icon: '📱' },
       ],
     },
     {
       id: 'support',
       label: '고객센터',
-      path: '/support',
+      path: '/v2/support',
       submenu: [
-        { label: '지원 제보', path: '/support/report', icon: '📝' },
-        { label: '문의하기', path: '/support/contact', icon: '📧' },
+        { label: '지원 제보', path: '/v2/support/report', icon: '📝' },
+        { label: '문의하기', path: '/v2/support/contact', icon: '📧' },
       ],
     },
   ];
@@ -81,12 +95,17 @@ const MegaMenu = () => {
     setMobileMenuOpen(false);
   };
 
+  const handleExternalLink = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+    setActiveMenu(null);
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] bg-white dark:bg-gray-900 shadow-md">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* 로고 */}
-          <Link to="/" className="flex items-center space-x-3">
+          <Link to="/v2" className="flex items-center space-x-3">
             <div className="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center">
               <span className="text-2xl font-bold text-white">JH</span>
             </div>
@@ -105,7 +124,7 @@ const MegaMenu = () => {
             {menuStructure.map((menu) => (
               <div
                 key={menu.id}
-                className="relative"
+                className="relative dropdown-container"
                 onMouseEnter={() => handleMenuHover(menu.id)}
                 onMouseLeave={handleMenuLeave}
               >
@@ -124,21 +143,30 @@ const MegaMenu = () => {
                   {menu.label}
                 </button>
 
-                {/* 서브메뉴 드롭다운 */}
-                {activeMenu === menu.id && menu.submenu && (
-                  <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 py-2">
+                {/* 서브메뉴 드롭다운 - CSS 애니메이션 (간격 제거) */}
+                {menu.submenu && (
+                  <div
+                    className={`
+                      absolute left-0 top-full w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl 
+                      border border-gray-200 dark:border-gray-700 py-2 overflow-hidden
+                      dropdown-menu
+                      ${activeMenu === menu.id ? 'dropdown-menu-show' : ''}
+                    `}
+                  >
                     {menu.submenu.map((item, index) => (
                       <button
                         key={index}
                         onClick={() => handleNavigation(item.path)}
-                        className={`
-                          w-full flex items-center space-x-3 px-4 py-3
+                        className="
+                          w-full flex items-center space-x-3 px-4 py-2
                           text-left text-sm
-                          transition-colors duration-150
-                          hover:bg-primary-50 dark:hover:bg-primary-900
+                          transition-all duration-200
                           text-gray-700 dark:text-gray-300
                           hover:text-primary-600 dark:hover:text-primary-300
-                        `}
+                          hover:bg-primary-50 dark:hover:bg-primary-900/20
+                          hover:translate-x-1
+                        "
+                        style={{ animationDelay: `${index * 50}ms` }}
                       >
                         <span className="text-xl">{item.icon}</span>
                         <span className="font-medium">{item.label}</span>
@@ -151,7 +179,7 @@ const MegaMenu = () => {
 
             {/* 패밀리 사이트 드롭다운 */}
             <div
-              className="relative"
+              className="relative dropdown-container"
               onMouseEnter={() => handleMenuHover('family')}
               onMouseLeave={handleMenuLeave}
             >
@@ -169,127 +197,121 @@ const MegaMenu = () => {
                 패밀리 사이트
               </button>
 
-              {activeMenu === 'family' && (
-                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 py-2">
-                  {familySites.map((site, index) => (
-                    <a
-                      key={index}
-                      href={site.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center space-x-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900 hover:text-primary-600 dark:hover:text-primary-300"
-                    >
+              <div
+                className={`
+                  absolute left-0 top-full w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl 
+                  border border-gray-200 dark:border-gray-700 py-2 overflow-hidden
+                  dropdown-menu
+                  ${activeMenu === 'family' ? 'dropdown-menu-show' : ''}
+                `}
+              >
+                {familySites.map((site, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleExternalLink(site.url)}
+                    className="
+                      w-full flex items-center justify-between px-4 py-2
+                      text-left text-sm
+                      transition-all duration-200
+                      text-gray-700 dark:text-gray-300
+                      hover:text-primary-600 dark:hover:text-primary-300
+                      hover:bg-primary-50 dark:hover:bg-primary-900/20
+                      hover:translate-x-1
+                    "
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <div className="flex items-center space-x-3">
                       <span className="text-xl">{site.icon}</span>
                       <span className="font-medium">{site.label}</span>
-                      <svg className="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* 오른쪽 액션 버튼들 */}
-          <div className="flex items-center space-x-4">
-            <LanguageSelector />
-            <button
-              onClick={() => navigate('/admin')}
-              className="px-4 py-2 text-sm font-semibold text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200"
-            >
-              관리자
-            </button>
-          </div>
-
-          {/* 모바일 햄버거 메뉴 - 임시 숨김 */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-        </div>
-
-        {/* 모바일 메뉴 */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200 dark:border-gray-700 py-4">
-            {menuStructure.map((menu) => (
-              <div key={menu.id} className="mb-4">
-                <button
-                  onClick={() => handleNavigation(menu.path)}
-                  className="w-full text-left px-4 py-2 text-sm font-semibold text-gray-900 dark:text-white hover:text-primary-600"
-                >
-                  {menu.label}
-                </button>
-                {menu.submenu && (
-                  <div className="ml-4 mt-2 space-y-2">
-                    {menu.submenu.map((item, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleNavigation(item.path)}
-                        className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600"
-                      >
-                        <span>{item.icon}</span>
-                        <span>{item.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-
-            {/* 모바일 패밀리 사이트 */}
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-              <p className="px-4 py-2 text-sm font-semibold text-gray-900 dark:text-white">
-                패밀리 사이트
-              </p>
-              <div className="space-y-2 mt-2">
-                {familySites.map((site, index) => (
-                  <a
-                    key={index}
-                    href={site.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600"
-                  >
-                    <span>{site.icon}</span>
-                    <span>{site.label}</span>
-                  </a>
+                    </div>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </button>
                 ))}
               </div>
             </div>
 
-            {/* 모바일 액션 버튼 */}
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4 px-4">
-              <LanguageSelector className="mb-3" />
-              <button
-                onClick={() => handleNavigation('/admin')}
-                className="w-full px-4 py-2 text-sm font-semibold text-white bg-primary-600 rounded-lg hover:bg-primary-700"
-              >
-                관리자
-              </button>
+            {/* 언어 선택 */}
+            <div className="ml-4 pl-4 border-l border-gray-200 dark:border-gray-700">
+              <LanguageSelector />
             </div>
           </div>
-        )}
+
+          {/* 모바일 메뉴 버튼 (향후 구현) */}
+          {/* <button className="lg:hidden">...</button> */}
+        </div>
       </nav>
 
       {/* 메가메뉴 오버레이 (데스크톱) */}
       {activeMenu && (
         <div
-          className="fixed inset-0 bg-black/20 z-40 hidden lg:block"
+          className="fixed inset-0 bg-black/20 z-40 hidden lg:block fade-in"
           onMouseEnter={handleMenuLeave}
         />
       )}
+
+      {/* CSS 애니메이션 스타일 */}
+      <style jsx>{`
+        .dropdown-menu {
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-10px) scale(0.96);
+          transition: all 0.3s cubic-bezier(0.04, 0.62, 0.23, 0.98);
+          pointer-events: none;
+          margin-top: 4px;
+        }
+
+        .dropdown-menu-show {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0) scale(1);
+          pointer-events: auto;
+        }
+
+        .dropdown-container:hover .dropdown-menu {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0) scale(1);
+          pointer-events: auto;
+        }
+
+        /* 드롭다운과 버튼 사이 간격 메우기 */
+        .dropdown-container::after {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: transparent;
+        }
+
+        .fade-in {
+          animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
     </header>
   );
 };
 
 export default MegaMenu;
-

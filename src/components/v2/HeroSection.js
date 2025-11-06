@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useI18n } from '../../hooks/useI18n';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, EffectFade, Pagination } from 'swiper/modules';
+
+// Swiper 스타일
+import 'swiper/css';
+import 'swiper/css/effect-fade';
+import 'swiper/css/pagination';
 
 /**
  * v2 Hero Section 컴포넌트
  * 롯데그룹 스타일의 풀스크린 히어로 섹션
  * 
- * @param {string} backgroundImage - 배경 이미지 URL
+ * @param {string} backgroundImage - 배경 이미지 URL (단일)
+ * @param {Array} backgroundImages - 배경 이미지 URL 배열 (슬라이더)
  * @param {string} backgroundVideo - 배경 비디오 URL (선택)
  * @param {string} title - 메인 타이틀
  * @param {string} subtitle - 서브 타이틀
@@ -14,9 +22,11 @@ import { useI18n } from '../../hooks/useI18n';
  * @param {boolean} showScrollIndicator - 스크롤 인디케이터 표시 여부
  * @param {string} overlay - 오버레이 스타일 ('dark', 'light', 'green', 'none')
  * @param {string} height - 높이 ('full', 'large', 'medium', 'small')
+ * @param {number} autoplayDelay - 슬라이더 자동재생 딜레이 (ms, 기본 5000)
  */
 const HeroSection = ({
   backgroundImage,
+  backgroundImages = [],
   backgroundVideo,
   title,
   subtitle,
@@ -26,9 +36,14 @@ const HeroSection = ({
   overlay = 'dark',
   height = 'full',
   textAlign = 'center',
+  autoplayDelay = 5000,
   className = '',
 }) => {
   const { t } = useI18n();
+  
+  // 슬라이더 사용 여부 결정
+  const useSlider = backgroundImages.length > 1;
+  const images = useSlider ? backgroundImages : (backgroundImage ? [backgroundImage] : []);
 
   // 높이 클래스
   const heightClasses = {
@@ -43,7 +58,10 @@ const HeroSection = ({
     dark: 'bg-black/40',
     light: 'bg-white/60',
     green: 'bg-primary-900/50',
+    blue: 'bg-blue-900/50', // 옅은 청색 오버레이
+    lightBlue: 'bg-blue-600/40', // 더 밝은 청색
     gradient: 'bg-gradient-to-b from-black/50 via-black/30 to-black/50',
+    blueGradient: 'bg-gradient-to-b from-blue-900/60 via-blue-800/40 to-blue-900/60', // 청색 그라데이션
     none: '',
   };
 
@@ -72,12 +90,41 @@ const HeroSection = ({
         </video>
       )}
 
-      {/* 배경 이미지 (비디오가 없는 경우) */}
-      {!backgroundVideo && backgroundImage && (
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${backgroundImage})` }}
-        />
+      {/* 배경 이미지 슬라이더 (비디오가 없는 경우) */}
+      {!backgroundVideo && images.length > 0 && (
+        <>
+          {useSlider ? (
+            <Swiper
+              modules={[Autoplay, EffectFade, Pagination]}
+              effect="fade"
+              autoplay={{
+                delay: autoplayDelay,
+                disableOnInteraction: false,
+              }}
+              loop={true}
+              pagination={{
+                clickable: true,
+                bulletClass: 'swiper-pagination-bullet !bg-white !opacity-50',
+                bulletActiveClass: 'swiper-pagination-bullet-active !opacity-100',
+              }}
+              className="absolute inset-0 w-full h-full"
+            >
+              {images.map((img, index) => (
+                <SwiperSlide key={index}>
+                  <div
+                    className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${img})` }}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <div
+              className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${images[0]})` }}
+            />
+          )}
+        </>
       )}
 
       {/* 오버레이 */}

@@ -30,6 +30,19 @@ const DesignSystem = lazy(() => import('./components/design-system/DesignSystem'
 // v2 페이지 및 레이아웃
 const LayoutV2 = lazy(() => import('./components/v2/LayoutV2'));
 const HomePageV2 = lazy(() => import('./pages/v2/HomePageV2'));
+const AboutPage = lazy(() => import('./pages/v2/AboutPage'));
+const AboutIntroPage = lazy(() => import('./pages/v2/AboutIntroPage'));
+const AboutVisionPage = lazy(() => import('./pages/v2/AboutVisionPage'));
+const AboutManagementPage = lazy(() => import('./pages/v2/AboutManagementPage'));
+const AboutHistoryPage = lazy(() => import('./pages/v2/AboutHistoryPage'));
+const AboutLocationPage = lazy(() => import('./pages/v2/AboutLocationPage'));
+const SubsidiariesPage = lazy(() => import('./pages/v2/SubsidiariesPage'));
+const ClarusDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/ClarusDetailPage'));
+const TlcDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/TlcDetailPage'));
+const IllutechDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/IllutechDetailPage'));
+const TexcomDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/TexcomDetailPage'));
+const RssDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/RssDetailPage'));
+const ProjectsPageV2 = lazy(() => import('./pages/v2/ProjectsPage'));
 
 // 로딩 컴포넌트
 const PageLoader = () => (
@@ -91,8 +104,20 @@ function App() {
               <LayoutV2>
                 <Routes>
                   <Route path="/" element={<HomePageV2 />} />
-                  <Route path="/about" element={<div className="p-20 text-center">ABOUT 페이지 (준비 중)</div>} />
-                  <Route path="/subsidiaries/*" element={<div className="p-20 text-center">계열사 페이지 (준비 중)</div>} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/about/intro" element={<AboutIntroPage />} />
+                  <Route path="/about/vision" element={<AboutVisionPage />} />
+                  <Route path="/about/management" element={<AboutManagementPage />} />
+                  <Route path="/about/history" element={<AboutHistoryPage />} />
+                  <Route path="/about/ci" element={<div className="p-20 text-center">CI/BI (준비 중)</div>} />
+                  <Route path="/about/location" element={<AboutLocationPage />} />
+                  <Route path="/subsidiaries" element={<SubsidiariesPage />} />
+                  <Route path="/subsidiaries/clarus" element={<ClarusDetailPageV2 />} />
+                  <Route path="/subsidiaries/tlc" element={<TlcDetailPageV2 />} />
+                  <Route path="/subsidiaries/illutech" element={<IllutechDetailPageV2 />} />
+                  <Route path="/subsidiaries/texcom" element={<TexcomDetailPageV2 />} />
+                  <Route path="/subsidiaries/rss" element={<RssDetailPageV2 />} />
+                  <Route path="/projects" element={<ProjectsPageV2 />} />
                 </Routes>
               </LayoutV2>
             } />

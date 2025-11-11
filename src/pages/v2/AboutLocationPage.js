@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useI18n } from '../../hooks/useI18n';
 
 const AboutLocationPage = () => {
+  const { t, currentLanguage } = useI18n();
   // 애니메이션 variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -25,52 +27,77 @@ const AboutLocationPage = () => {
 
   // 본사 정보
   const headquarters = {
-    name: '정호그룹 본사',
+    name: currentLanguage === 'en' ? 'Jungho Group Headquarters' : '정호그룹 본사',
     nameEn: 'Jungho Group Headquarters',
     address: {
-      road: '서울시 강남구 논현로116길 17 정호빌딩, 3층',
-      jibun: '서울시 강남구 논현동 277-9, 3층',
+      road: currentLanguage === 'en' 
+        ? '3F, Jungho Building, 17, Nonhyeon-ro 116-gil, Gangnam-gu, Seoul, Republic of Korea'
+        : '서울시 강남구 논현로116길 17 정호빌딩, 3층',
+      jibun: currentLanguage === 'en'
+        ? '3F, 277-9, Nonhyeon-dong, Gangnam-gu, Seoul, Republic of Korea'
+        : '서울시 강남구 논현동 277-9, 3층',
       postal: '06107'
     },
     contact: {
       phone: '02.515.5018',
       fax: '02.515.5019'
     },
-    subway: [
+    subway: currentLanguage === 'en' ? [
+      { line: 'Line 9', station: 'Eonju Station', exit: 'Exit 3', time: '5 min walk', color: 'bg-amber-500' },
+      { line: 'Line 9/Bundang', station: 'Seonjeongneung Station', exit: 'Exit 1', time: '15 min walk', color: 'bg-amber-500' },
+      { line: 'Line 7', station: 'Hakdong Station', exit: 'Exit 3', time: '10 min walk', color: 'bg-green-600' }
+    ] : [
       { line: '9호선', station: '언주역', exit: '3번 출구', time: '도보 5분', color: 'bg-amber-500' },
       { line: '9호선/분당', station: '선정릉역', exit: '1번 출구', time: '도보 15분', color: 'bg-amber-500' },
       { line: '7호선', station: '학동역', exit: '3번 출구', time: '도보 10분', color: 'bg-green-600' }
     ],
-    bus: [
+    bus: currentLanguage === 'en' ? [
+      { type: 'Trunk', numbers: ['147', '463'], stop: 'Get off at Eonju Station Exit 3(4)' },
+      { type: 'Branch', numbers: ['3412', '3422', '4211'], stop: 'Get off at Eonju Station Exit 3(4)' }
+    ] : [
       { type: '간선', numbers: ['147', '463'], stop: '언주역 3번(4번)출구 하차' },
       { type: '지선', numbers: ['3412', '3422', '4211'], stop: '언주역 3번(4번)출구 하차' }
     ],
-    car: '정호빌딩 앞 도로가 일방통행인 관계로 논현아이파크와 팍스타워 사잇길로 진입',
+    car: currentLanguage === 'en'
+      ? 'Due to one-way street in front of Jungho Building, enter through the road between Nonhyeon I-Park and Park Tower'
+      : '정호빌딩 앞 도로가 일방통행인 관계로 논현아이파크와 팍스타워 사잇길로 진입',
     mapUrl: 'https://map.kakao.com/link/map/정호빌딩,37.5136,127.0385'
   };
 
   // 연구소 정보
   const rdCenter = {
-    name: 'R&D센터',
+    name: currentLanguage === 'en' ? 'R&D Center' : 'R&D센터',
     nameEn: 'R&D Center',
     address: {
-      road: '서울시 중랑구 면목로 34길 5 클라루스 빌딩',
-      jibun: '서울 중랑구 면목동 354-6',
+      road: currentLanguage === 'en'
+        ? 'Clarus Building, 5, Myeonmok-ro 34-gil, Jungnang-gu, Seoul, Republic of Korea'
+        : '서울시 중랑구 면목로 34길 5 클라루스 빌딩',
+      jibun: currentLanguage === 'en'
+        ? '354-6, Myeonmok-dong, Jungnang-gu, Seoul, Republic of Korea'
+        : '서울 중랑구 면목동 354-6',
       postal: null
     },
     contact: {
       phone: '02.515.5018',
       email: 'clarus@junghocorp.com'
     },
-    subway: [
+    subway: currentLanguage === 'en' ? [
+      { line: 'Line 7', station: 'Yongmasan Station', exit: 'Exit 1', time: '6 min walk', color: 'bg-green-600' },
+      { line: 'Line 7', station: 'Sagajeong Station', exit: 'Exit 4', time: '8 min walk', color: 'bg-green-600' }
+    ] : [
       { line: '7호선', station: '용마산역', exit: '1번 출구', time: '도보 6분', color: 'bg-green-600' },
       { line: '7호선', station: '사가정역', exit: '4번 출구', time: '도보 8분', color: 'bg-green-600' }
     ],
-    bus: [
+    bus: currentLanguage === 'en' ? [
+      { type: 'Trunk', numbers: ['240', '272'], stop: 'Get off at Bangyakguk, walk 130m' },
+      { type: 'Branch', numbers: ['2112', '2233', '2311'], stop: 'Get off at Bangyakguk, walk 130m' }
+    ] : [
       { type: '간선', numbers: ['240', '272'], stop: '방약국앞 하차 후 도보 130M' },
       { type: '지선', numbers: ['2112', '2233', '2311'], stop: '방약국앞 하차 후 도보 130M' }
     ],
-    car: '동부간선도로 장평교에서 진출 → 사가정 사거리에서 중곡/군자 방향 직진 약 500m',
+    car: currentLanguage === 'en'
+      ? 'Exit from Dongbu Expressway at Jangpyeong Bridge → Go straight about 500m toward Junggok/Gunja at Sagajeong intersection'
+      : '동부간선도로 장평교에서 진출 → 사가정 사거리에서 중곡/군자 방향 직진 약 500m',
     mapUrl: 'https://map.kakao.com/link/map/클라루스빌딩,37.5769,127.0816'
   };
 
@@ -115,7 +142,9 @@ const AboutLocationPage = () => {
           >
             <motion.div variants={fadeInUp}>
               <span className="inline-block px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-semibold mb-4">
-                📍 서울 강남 · 중랑
+                {currentLanguage === 'en' 
+                  ? '📍 Seoul Gangnam · Jungnang' 
+                  : '📍 서울 강남 · 중랑'}
               </span>
             </motion.div>
 
@@ -123,15 +152,24 @@ const AboutLocationPage = () => {
               className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white"
               variants={fadeInUp}
             >
-              찾아오시는 길
+              {currentLanguage === 'en' ? 'Location' : '찾아오시는 길'}
             </motion.h1>
 
             <motion.p 
               className="text-xl sm:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
               variants={fadeInUp}
             >
-              정호그룹 본사와 R&D 센터로<br />
-              <span className="text-primary-600 dark:text-primary-400 font-semibold">언제든 방문을 환영합니다</span>
+              {currentLanguage === 'en' ? (
+                <>
+                  Visit our headquarters and R&D center<br />
+                  <span className="text-primary-600 dark:text-primary-400 font-semibold">We welcome you anytime</span>
+                </>
+              ) : (
+                <>
+                  정호그룹 본사와 R&D 센터로<br />
+                  <span className="text-primary-600 dark:text-primary-400 font-semibold">언제든 방문을 환영합니다</span>
+                </>
+              )}
             </motion.p>
           </motion.div>
         </div>
@@ -141,8 +179,7 @@ const AboutLocationPage = () => {
       <motion.section 
         className="py-20 bg-white dark:bg-gray-900"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        animate="visible"
         variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -188,12 +225,14 @@ const AboutLocationPage = () => {
                   <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
                     <span className="text-xl">📮</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">주소</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'Address' : '주소'}
+                  </h3>
                 </div>
                 <div className="space-y-2 text-gray-700 dark:text-gray-300">
-                  <p><span className="font-semibold text-primary-600 dark:text-primary-400">도로명:</span> {headquarters.address.road}</p>
-                  <p><span className="font-semibold text-primary-600 dark:text-primary-400">지번:</span> {headquarters.address.jibun}</p>
-                  <p><span className="font-semibold text-primary-600 dark:text-primary-400">우편번호:</span> {headquarters.address.postal}</p>
+                  <p><span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Street:' : '도로명:'}</span> {headquarters.address.road}</p>
+                  <p><span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Lot:' : '지번:'}</span> {headquarters.address.jibun}</p>
+                  <p><span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Postal Code:' : '우편번호:'}</span> {headquarters.address.postal}</p>
                 </div>
               </div>
 
@@ -203,17 +242,19 @@ const AboutLocationPage = () => {
                   <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
                     <span className="text-xl">📞</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">연락처</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'Contact' : '연락처'}
+                  </h3>
                 </div>
                 <div className="space-y-2 text-gray-700 dark:text-gray-300">
                   <p className="flex items-center gap-2">
-                    <span className="font-semibold text-primary-600 dark:text-primary-400">전화:</span> 
+                    <span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Phone:' : '전화:'}</span> 
                     <a href={`tel:${headquarters.contact.phone.replace(/\./g, '-')}`} className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
                       {headquarters.contact.phone}
                     </a>
                   </p>
                   <p className="flex items-center gap-2">
-                    <span className="font-semibold text-primary-600 dark:text-primary-400">팩스:</span> 
+                    <span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Fax:' : '팩스:'}</span> 
                     {headquarters.contact.fax}
                   </p>
                 </div>
@@ -225,7 +266,9 @@ const AboutLocationPage = () => {
                   <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
                     <span className="text-xl">🚊</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">지하철</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'Subway' : '지하철'}
+                  </h3>
                 </div>
                 <div className="space-y-3">
                   {headquarters.subway.map((subway, index) => (
@@ -246,13 +289,17 @@ const AboutLocationPage = () => {
                   <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
                     <span className="text-xl">🚍</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">버스</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'Bus' : '버스'}
+                  </h3>
                 </div>
                 <div className="space-y-3">
                   {headquarters.bus.map((bus, index) => (
                     <div key={index}>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-primary-600 dark:text-primary-400">{bus.type}:</span>
+                        <span className="font-semibold text-primary-600 dark:text-primary-400">
+                          {bus.type}:
+                        </span>
                         <div className="flex gap-2">
                           {bus.numbers.map((num, idx) => (
                             <span key={idx} className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-sm font-semibold">
@@ -273,7 +320,9 @@ const AboutLocationPage = () => {
                   <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
                     <span className="text-xl">🚙</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">승용차</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'By Car' : '승용차'}
+                  </h3>
                 </div>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   {headquarters.car}
@@ -288,8 +337,7 @@ const AboutLocationPage = () => {
       <motion.section 
         className="py-20 bg-gray-50 dark:bg-gray-800"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        animate="visible"
         variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -335,11 +383,13 @@ const AboutLocationPage = () => {
                   <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg flex items-center justify-center">
                     <span className="text-xl">📮</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">주소</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'Address' : '주소'}
+                  </h3>
                 </div>
                 <div className="space-y-2 text-gray-700 dark:text-gray-300">
-                  <p><span className="font-semibold text-cyan-600 dark:text-cyan-400">도로명:</span> {rdCenter.address.road}</p>
-                  <p><span className="font-semibold text-cyan-600 dark:text-cyan-400">지번:</span> {rdCenter.address.jibun}</p>
+                  <p><span className="font-semibold text-cyan-600 dark:text-cyan-400">{currentLanguage === 'en' ? 'Street:' : '도로명:'}</span> {rdCenter.address.road}</p>
+                  <p><span className="font-semibold text-cyan-600 dark:text-cyan-400">{currentLanguage === 'en' ? 'Lot:' : '지번:'}</span> {rdCenter.address.jibun}</p>
                 </div>
               </div>
 
@@ -349,17 +399,19 @@ const AboutLocationPage = () => {
                   <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg flex items-center justify-center">
                     <span className="text-xl">📞</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">연락처</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'Contact' : '연락처'}
+                  </h3>
                 </div>
                 <div className="space-y-2 text-gray-700 dark:text-gray-300">
                   <p className="flex items-center gap-2">
-                    <span className="font-semibold text-cyan-600 dark:text-cyan-400">전화:</span> 
+                    <span className="font-semibold text-cyan-600 dark:text-cyan-400">{currentLanguage === 'en' ? 'Phone:' : '전화:'}</span> 
                     <a href={`tel:${rdCenter.contact.phone.replace(/\./g, '-')}`} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
                       {rdCenter.contact.phone}
                     </a>
                   </p>
                   <p className="flex items-center gap-2">
-                    <span className="font-semibold text-cyan-600 dark:text-cyan-400">이메일:</span> 
+                    <span className="font-semibold text-cyan-600 dark:text-cyan-400">{currentLanguage === 'en' ? 'Email:' : '이메일:'}</span> 
                     <a href={`mailto:${rdCenter.contact.email}`} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
                       {rdCenter.contact.email}
                     </a>
@@ -373,7 +425,9 @@ const AboutLocationPage = () => {
                   <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg flex items-center justify-center">
                     <span className="text-xl">🚊</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">지하철</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'Subway' : '지하철'}
+                  </h3>
                 </div>
                 <div className="space-y-3">
                   {rdCenter.subway.map((subway, index) => (
@@ -394,13 +448,17 @@ const AboutLocationPage = () => {
                   <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg flex items-center justify-center">
                     <span className="text-xl">🚍</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">버스</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'Bus' : '버스'}
+                  </h3>
                 </div>
                 <div className="space-y-3">
                   {rdCenter.bus.map((bus, index) => (
                     <div key={index}>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-cyan-600 dark:text-cyan-400">{bus.type}:</span>
+                        <span className="font-semibold text-cyan-600 dark:text-cyan-400">
+                          {bus.type}:
+                        </span>
                         <div className="flex gap-2">
                           {bus.numbers.map((num, idx) => (
                             <span key={idx} className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-sm font-semibold">
@@ -421,7 +479,9 @@ const AboutLocationPage = () => {
                   <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg flex items-center justify-center">
                     <span className="text-xl">🚙</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">승용차</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'By Car' : '승용차'}
+                  </h3>
                 </div>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   {rdCenter.car}

@@ -1,10 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useI18n } from '../../hooks/useI18n';
 
 /**
  * 경영방침 페이지
  */
 const AboutManagementPage = () => {
+  const { t, currentLanguage } = useI18n();
   // 애니메이션 variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -30,56 +32,56 @@ const AboutManagementPage = () => {
     {
       id: 1,
       title: 'Customer Value First',
-      subtitle: '고객가치 우선',
+      subtitle: currentLanguage === 'en' ? 'Customer Value First' : '고객가치 우선',
       icon: '🎯',
       color: 'from-blue-500 to-cyan-500',
     },
     {
       id: 2,
       title: 'Product & Quality',
-      subtitle: '제품 · 품질',
+      subtitle: currentLanguage === 'en' ? 'Product & Quality' : '제품 · 품질',
       icon: '⭐',
       color: 'from-green-500 to-emerald-500',
     },
     {
       id: 3,
       title: 'Manufacturing & Supply Chain',
-      subtitle: '제조 · 공급망',
+      subtitle: currentLanguage === 'en' ? 'Manufacturing & Supply Chain' : '제조 · 공급망',
       icon: '🏭',
       color: 'from-orange-500 to-amber-500',
     },
     {
       id: 4,
       title: 'Engineering & Service',
-      subtitle: '엔지니어링 · 서비스',
+      subtitle: currentLanguage === 'en' ? 'Engineering & Service' : '엔지니어링 · 서비스',
       icon: '🔧',
       color: 'from-purple-500 to-pink-500',
     },
     {
       id: 5,
       title: 'Global Compliance',
-      subtitle: '글로벌 규범 준수',
+      subtitle: currentLanguage === 'en' ? 'Global Compliance' : '글로벌 규범 준수',
       icon: '🌏',
       color: 'from-indigo-500 to-blue-500',
     },
     {
       id: 6,
       title: 'Sustainability Management',
-      subtitle: '지속가능경영',
+      subtitle: currentLanguage === 'en' ? 'Sustainability Management' : '지속가능경영',
       icon: '🌱',
       color: 'from-green-500 to-teal-500',
     },
     {
       id: 7,
       title: 'Ethics & Compliance',
-      subtitle: '윤리 · 컴플라이언스',
+      subtitle: currentLanguage === 'en' ? 'Ethics & Compliance' : '윤리 · 컴플라이언스',
       icon: '✅',
       color: 'from-red-500 to-rose-500',
     },
     {
       id: 8,
       title: 'People & Culture',
-      subtitle: '사람과 문화',
+      subtitle: currentLanguage === 'en' ? 'People & Culture' : '사람과 문화',
       icon: '👥',
       color: 'from-violet-500 to-purple-500',
     },
@@ -105,16 +107,18 @@ const AboutManagementPage = () => {
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div variants={fadeInUp}>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              경영방침
+              {currentLanguage === 'en' ? 'Management Policy' : '경영방침'}
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-primary-600 to-cyan-500 mx-auto rounded-full mb-8" />
             
             <h2 className="text-2xl sm:text-3xl font-bold text-primary-600 dark:text-primary-400 mb-8">
-              미래의 가치 창출
+              {currentLanguage === 'en' ? 'Creating Future Value' : '미래의 가치 창출'}
             </h2>
 
             <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
-              정호그룹은 미래 가치 창출을 위해 다음 원칙을 실행합니다.
+              {currentLanguage === 'en' 
+                ? 'Jungho Group implements the following principles to create future value.'
+                : '정호그룹은 미래 가치 창출을 위해 다음 원칙을 실행합니다.'}
             </p>
           </motion.div>
         </div>
@@ -124,8 +128,7 @@ const AboutManagementPage = () => {
       <motion.section 
         className="py-20 bg-gray-50 dark:bg-gray-800"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        animate="visible"
         variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -178,16 +181,19 @@ const AboutManagementPage = () => {
       <motion.section 
         className="py-20 bg-white dark:bg-gray-900"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+        animate="visible"
         variants={fadeInUp}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            원칙과 가치를 실천하는 정호그룹
+            {currentLanguage === 'en' 
+              ? 'Jungho Group Practices Principles and Values'
+              : '원칙과 가치를 실천하는 정호그룹'}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-            고객과 사회에 지속가능한 가치를 제공합니다
+            {currentLanguage === 'en'
+              ? 'Providing sustainable value to customers and society'
+              : '고객과 사회에 지속가능한 가치를 제공합니다'}
           </p>
         </div>
       </motion.section>

@@ -1,0 +1,579 @@
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useI18n } from '../../hooks/useI18n';
+
+/**
+ * V2 홍보영상 페이지
+ * 기업 홍보영상 및 계열사 소개 영상 제공
+ */
+const MediaPromotionPage = () => {
+  const { t } = useI18n();
+  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedVideo, setSelectedVideo] = useState(null);
+
+  // 애니메이션 variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut' }
+    }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15
+      }
+    }
+  };
+
+  // 카테고리
+  const categories = [
+    { id: 'all', label: '전체', icon: '📺' },
+    { id: 'company', label: '기업 소개', icon: '🏢' },
+    { id: 'subsidiaries', label: '계열사', icon: '🏭' },
+    { id: 'technology', label: '기술 혁신', icon: '💡' },
+    { id: 'awards', label: '수상 및 인증', icon: '🏆' }
+  ];
+
+  // 지적재산권 통계
+  const intellectualPropertyStats = {
+    total: 140,
+    patents: 85,
+    designs: 35,
+    software: 20
+  };
+
+  // 홍보영상 데이터 (실제로는 관리자 페이지에서 관리)
+  const promotionVideos = [
+    {
+      id: 1,
+      title: '정호그룹 2024 기업 소개',
+      category: 'company',
+      description: '40년 전통의 글로벌 기업, 정호그룹의 비전과 혁신을 소개합니다',
+      thumbnail: '🎬',
+      videoUrl: 'https://www.youtube.com/embed/sample1',
+      duration: '3:45',
+      date: '2024-11-01',
+      views: '12.5K'
+    },
+    {
+      id: 2,
+      title: '(주)클라루스 홍보영상',
+      category: 'subsidiaries',
+      description: '조명제어 전문기업 (주)클라루스의 History, Project, Products 등 홍보동영상',
+      thumbnail: '💡',
+      videoUrl: 'https://www.youtube.com/embed/LDRoaedo7QM',
+      youtubeUrl: 'https://youtu.be/LDRoaedo7QM',
+      duration: '5:20',
+      date: '2024-11-08',
+      views: '15.2K'
+    },
+    {
+      id: 3,
+      title: '정호티엘씨 친환경 물류 시스템',
+      category: 'subsidiaries',
+      description: '지속가능한 미래를 위한 정호티엘씨의 친환경 물류 혁신',
+      thumbnail: '🚚',
+      videoUrl: 'https://www.youtube.com/embed/sample3',
+      duration: '4:15',
+      date: '2024-10-20',
+      views: '6.7K'
+    },
+    {
+      id: 4,
+      title: '일루텍 스마트 조명 제어 시스템',
+      category: 'technology',
+      description: 'IoT 기술로 구현한 차세대 스마트 조명 솔루션',
+      thumbnail: '💡',
+      videoUrl: 'https://www.youtube.com/embed/sample4',
+      duration: '3:30',
+      date: '2024-10-15',
+      views: '9.2K'
+    },
+    {
+      id: 5,
+      title: '정호텍스컴 패션 텍스타일 혁신',
+      category: 'subsidiaries',
+      description: '전통과 혁신이 만나는 정호텍스컴의 텍스타일 기술',
+      thumbnail: '👔',
+      videoUrl: 'https://www.youtube.com/embed/sample5',
+      duration: '4:50',
+      date: '2024-10-10',
+      views: '5.4K'
+    },
+    {
+      id: 6,
+      title: '정호그룹 산업통상자원부 장관 표창',
+      category: 'awards',
+      description: '2024년 산업 혁신 공로로 산업통상자원부 장관 표창 수상',
+      thumbnail: '🏆',
+      videoUrl: 'https://www.youtube.com/embed/sample6',
+      duration: '2:15',
+      date: '2024-09-28',
+      views: '11.8K'
+    }
+  ];
+
+  // 주요 지적재산권 인증서 (샘플)
+  const intellectualPropertyCertificates = [
+    {
+      id: 'ip1',
+      title: '굿디자인_TLS 4\' (CRC3303 - CRC3305)',
+      category: '디자인',
+      description: '제 30-0882500, 녹색 부착형 터치 스위치 디자인등록증',
+      thumbnail: '🎨',
+      date: '2015-04-20'
+    },
+    {
+      id: 'ip2',
+      title: '산업융합 선도기업 선정서',
+      category: '인증',
+      description: '스마트 조명 선도기업 선정 (산업통상자원부)',
+      thumbnail: '🏅',
+      date: '2017-12-22'
+    },
+    {
+      id: 'ip3',
+      title: '에너지 에이터널 1.0',
+      category: '소프트웨어',
+      description: '터엣에스 에이터널 1.0 (에너지 매니저 V4.1)',
+      thumbnail: '💻',
+      date: '2017-11-15'
+    },
+    {
+      id: 'ip4',
+      title: '유무선 통합 Energy Manager 4.1',
+      category: '소프트웨어',
+      description: '에너지 관리 소프트웨어 등록증',
+      thumbnail: '📱',
+      date: '2017-10-25'
+    }
+  ];
+
+  // 필터링된 영상
+  const filteredVideos = selectedCategory === 'all' 
+    ? promotionVideos 
+    : promotionVideos.filter(v => v.category === selectedCategory);
+
+  // 영상 재생 핸들러
+  const handleVideoClick = (video) => {
+    setSelectedVideo(video);
+  };
+
+  // 모달 닫기
+  const closeModal = () => {
+    setSelectedVideo(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-purple-600 to-indigo-700 text-white py-20">
+        <motion.div 
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}
+        >
+          <motion.div 
+            className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-6"
+            variants={fadeInUp}
+          >
+            <span className="text-5xl">🎥</span>
+          </motion.div>
+          <motion.h1 
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+            variants={fadeInUp}
+          >
+            홍보영상
+          </motion.h1>
+          <motion.p 
+            className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto"
+            variants={fadeInUp}
+          >
+            정호그룹의 혁신과 성장을 영상으로 만나보세요
+          </motion.p>
+        </motion.div>
+      </section>
+
+      {/* 카테고리 필터 */}
+      <section className="py-8 bg-white dark:bg-gray-800 sticky top-20 z-40 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap justify-center gap-3">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2 ${
+                  selectedCategory === category.id
+                    ? 'bg-primary-600 text-white shadow-lg scale-105'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                }`}
+              >
+                <span>{category.icon}</span>
+                <span>{category.label}</span>
+                <span className={`text-xs px-2 py-1 rounded-full ${
+                  selectedCategory === category.id
+                    ? 'bg-white/20'
+                    : 'bg-gray-200 dark:bg-gray-600'
+                }`}>
+                  {category.id === 'all' 
+                    ? promotionVideos.length 
+                    : promotionVideos.filter(v => v.category === category.id).length}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 지적재산권 통계 섹션 (수상 및 인증 카테고리일 때만 표시) */}
+      {selectedCategory === 'awards' && (
+        <section className="py-16 bg-white dark:bg-gray-900">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* 제목 */}
+            <motion.div
+              className="text-center mb-12"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeInUp}
+            >
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full mb-4">
+                <span className="text-3xl">🏆</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                지적재산권 보유 현황
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400">
+                정호그룹의 기술력을 입증하는 140여 개의 지적재산권
+              </p>
+            </motion.div>
+
+            {/* 통계 카드 */}
+            <motion.div 
+              className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={staggerContainer}
+            >
+              <motion.div 
+                variants={fadeInUp}
+                className="bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900 dark:to-primary-800 rounded-2xl p-8 text-center shadow-lg"
+              >
+                <div className="text-5xl mb-3">📊</div>
+                <div className="text-4xl md:text-5xl font-bold text-primary-600 dark:text-primary-400 mb-2">
+                  {intellectualPropertyStats.total}+
+                </div>
+                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
+                  총 지적재산권
+                </div>
+              </motion.div>
+
+              <motion.div 
+                variants={fadeInUp}
+                className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 rounded-2xl p-8 text-center shadow-lg"
+              >
+                <div className="text-5xl mb-3">🔬</div>
+                <div className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                  {intellectualPropertyStats.patents}
+                </div>
+                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
+                  특허
+                </div>
+              </motion.div>
+
+              <motion.div 
+                variants={fadeInUp}
+                className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 rounded-2xl p-8 text-center shadow-lg"
+              >
+                <div className="text-5xl mb-3">🎨</div>
+                <div className="text-4xl md:text-5xl font-bold text-purple-600 dark:text-purple-400 mb-2">
+                  {intellectualPropertyStats.designs}
+                </div>
+                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
+                  디자인
+                </div>
+              </motion.div>
+
+              <motion.div 
+                variants={fadeInUp}
+                className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 rounded-2xl p-8 text-center shadow-lg"
+              >
+                <div className="text-5xl mb-3">💻</div>
+                <div className="text-4xl md:text-5xl font-bold text-green-600 dark:text-green-400 mb-2">
+                  {intellectualPropertyStats.software}
+                </div>
+                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
+                  소프트웨어
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* 주요 인증서 갤러리 */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeInUp}
+            >
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+                주요 인증 및 등록
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {intellectualPropertyCertificates.map((cert) => (
+                  <motion.div
+                    key={cert.id}
+                    variants={fadeInUp}
+                    whileHover={{ y: -5 }}
+                    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                  >
+                    <div className="text-5xl mb-4 text-center">{cert.thumbnail}</div>
+                    <div className="inline-block px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-full text-xs font-semibold mb-3">
+                      {cert.category}
+                    </div>
+                    <h4 className="text-base font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                      {cert.title}
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                      {cert.description}
+                    </p>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      {new Date(cert.date).toLocaleDateString('ko-KR')}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* 안내 메시지 */}
+            <motion.div
+              className="mt-12 text-center bg-gray-50 dark:bg-gray-800 rounded-2xl p-8"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeInUp}
+            >
+              <div className="text-4xl mb-4">📄</div>
+              <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                전체 지적재산권 목록
+              </h4>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                정호그룹이 보유한 140여 개의 지적재산권 전체 목록은<br />
+                별도 문의를 통해 확인하실 수 있습니다.
+              </p>
+              <button 
+                onClick={() => navigate('/support/contact')}
+                className="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors duration-300"
+              >
+                <span>문의하기</span>
+                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* 영상 그리드 */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {filteredVideos.length === 0 ? (
+            <motion.div 
+              className="text-center py-20"
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUp}
+            >
+              <div className="text-6xl mb-4">📹</div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                준비 중입니다
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                해당 카테고리의 영상이 곧 업데이트 될 예정입니다
+              </p>
+            </motion.div>
+          ) : (
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+            >
+              {filteredVideos.map((video) => (
+                <motion.div
+                  key={video.id}
+                  variants={fadeInUp}
+                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer"
+                  onClick={() => handleVideoClick(video)}
+                >
+                  {/* 썸네일 */}
+                  <div className="relative h-48 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                    <div className="text-8xl">{video.thumbnail}</div>
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+                        <svg className="w-8 h-8 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    {/* 재생시간 */}
+                    <div className="absolute bottom-3 right-3 bg-black/80 text-white px-2 py-1 rounded text-sm font-semibold">
+                      {video.duration}
+                    </div>
+                  </div>
+
+                  {/* 내용 */}
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-semibold text-primary-600 dark:text-primary-400 uppercase">
+                        {categories.find(c => c.id === video.category)?.label}
+                      </span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {new Date(video.date).toLocaleDateString('ko-KR')}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                      {video.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+                      {video.description}
+                    </p>
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center space-x-1 text-gray-500 dark:text-gray-400">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <span>{video.views}</span>
+                      </div>
+                      <button 
+                        className="text-primary-600 dark:text-primary-400 font-semibold hover:underline"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleVideoClick(video);
+                        }}
+                      >
+                        시청하기 →
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </div>
+      </section>
+
+      {/* 안내 배너 */}
+      <section className="py-16 bg-primary-600 text-white">
+        <motion.div 
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeInUp}
+        >
+          <div className="text-5xl mb-6">📢</div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            더 많은 영상을 준비하고 있습니다
+          </h2>
+          <p className="text-xl text-white/90 mb-8">
+            정호그룹의 다양한 이야기를 영상으로 만나보세요
+          </p>
+          <button className="bg-white text-primary-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors duration-300">
+            YouTube 채널 구독하기
+          </button>
+        </motion.div>
+      </section>
+
+      {/* 영상 재생 모달 */}
+      {selectedVideo && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          onClick={closeModal}
+        >
+          <motion.div 
+            className="relative w-full max-w-5xl bg-gray-900 rounded-2xl overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 닫기 버튼 */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* 영상 정보 */}
+            <div className="bg-gradient-to-r from-primary-600 to-primary-700 p-6">
+              <h3 className="text-2xl font-bold text-white mb-2">{selectedVideo.title}</h3>
+              <p className="text-white/90">{selectedVideo.description}</p>
+            </div>
+
+            {/* YouTube 영상 */}
+            <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+              <iframe
+                className="absolute top-0 left-0 w-full h-full"
+                src={`${selectedVideo.videoUrl}?autoplay=1`}
+                title={selectedVideo.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+
+            {/* 하단 정보 */}
+            <div className="bg-gray-800 p-6 flex items-center justify-between text-white">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <span>{selectedVideo.views} 조회</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>{new Date(selectedVideo.date).toLocaleDateString('ko-KR')}</span>
+                </div>
+              </div>
+              {selectedVideo.youtubeUrl && (
+                <a
+                  href={selectedVideo.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                  <span>YouTube에서 보기</span>
+                </a>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MediaPromotionPage;
+

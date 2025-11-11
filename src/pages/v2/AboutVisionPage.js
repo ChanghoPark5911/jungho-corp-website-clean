@@ -1,10 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useI18n } from '../../hooks/useI18n';
 
 /**
  * 그룹비전 (IRGS) 페이지
  */
 const AboutVisionPage = () => {
+  const { t, currentLanguage } = useI18n();
   // 애니메이션 variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -30,8 +32,10 @@ const AboutVisionPage = () => {
     {
       id: 'innovation',
       title: 'INNOVATION',
-      subtitle: '혁신',
-      description: '새로운 생각과 기술로 더 나은 "경험"을 만듭니다.',
+      subtitle: currentLanguage === 'en' ? 'Innovation' : '혁신',
+      description: currentLanguage === 'en' 
+        ? 'Creating better "experiences" with new ideas and technology.'
+        : '새로운 생각과 기술로 더 나은 "경험"을 만듭니다.',
       icon: '💡',
       color: 'from-blue-500 to-cyan-500',
       bgColor: 'bg-blue-50',
@@ -39,8 +43,10 @@ const AboutVisionPage = () => {
     {
       id: 'reliability',
       title: 'RELIABILITY',
-      subtitle: '신뢰',
-      description: '품질과 약속을 지키는 것, "관계의 가치"를 높입니다.',
+      subtitle: currentLanguage === 'en' ? 'Reliability' : '신뢰',
+      description: currentLanguage === 'en'
+        ? 'Keeping quality and promises, enhancing the "value of relationships".'
+        : '품질과 약속을 지키는 것, "관계의 가치"를 높입니다.',
       icon: '🤝',
       color: 'from-green-500 to-emerald-500',
       bgColor: 'bg-green-50',
@@ -48,8 +54,10 @@ const AboutVisionPage = () => {
     {
       id: 'global',
       title: 'GLOBAL',
-      subtitle: '글로벌',
-      description: '국제 기준을 선도하는 기술력과 서비스로 글로벌 "경쟁력"을 확장합니다.',
+      subtitle: currentLanguage === 'en' ? 'Global' : '글로벌',
+      description: currentLanguage === 'en'
+        ? 'Expanding global "competitiveness" with leading technology and services.'
+        : '국제 기준을 선도하는 기술력과 서비스로 글로벌 "경쟁력"을 확장합니다.',
       icon: '🌏',
       color: 'from-indigo-500 to-blue-500',
       bgColor: 'bg-indigo-50',
@@ -57,8 +65,10 @@ const AboutVisionPage = () => {
     {
       id: 'sustainability',
       title: 'SUSTAINABILITY',
-      subtitle: '지속가능성',
-      description: '인간과 자연이 함께 공존할 수 있도록 지속가능한 "내일"을 설계합니다.',
+      subtitle: currentLanguage === 'en' ? 'Sustainability' : '지속가능성',
+      description: currentLanguage === 'en'
+        ? 'Designing a sustainable "tomorrow" where humans and nature coexist.'
+        : '인간과 자연이 함께 공존할 수 있도록 지속가능한 "내일"을 설계합니다.',
       icon: '🌱',
       color: 'from-green-500 to-teal-500',
       bgColor: 'bg-teal-50',
@@ -85,16 +95,20 @@ const AboutVisionPage = () => {
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div variants={fadeInUp}>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              그룹비전
+              {currentLanguage === 'en' ? 'Group Vision' : '그룹비전'}
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-primary-600 to-cyan-500 mx-auto rounded-full mb-8" />
             
             <h2 className="text-2xl sm:text-3xl font-bold text-primary-600 dark:text-primary-400 mb-8">
-              기술은 정확하게, 경험은 아름답게
+              {currentLanguage === 'en' ? 'Technology with precision, Experience with beauty' : '기술은 정확하게, 경험은 아름답게'}
             </h2>
 
             <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
-              정호그룹은 <strong>IRGS</strong>(Innovation · Reliability · Global · Sustainability)를 기반으로 지속가능한 세상을 위한 다음 도약을 준비합니다.
+              {currentLanguage === 'en' ? (
+                <>Jungho Group prepares for the next leap toward a sustainable world based on <strong>IRGS</strong> (Innovation · Reliability · Global · Sustainability).</>
+              ) : (
+                <>정호그룹은 <strong>IRGS</strong>(Innovation · Reliability · Global · Sustainability)를 기반으로 지속가능한 세상을 위한 다음 도약을 준비합니다.</>
+              )}
             </p>
           </motion.div>
         </div>
@@ -104,8 +118,7 @@ const AboutVisionPage = () => {
       <motion.section 
         className="py-12 bg-white dark:bg-gray-900"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        animate="visible"
         variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -158,16 +171,19 @@ const AboutVisionPage = () => {
       <motion.section 
         className="py-20 bg-gradient-to-br from-primary-600 to-cyan-600 text-white"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+        animate="visible"
         variants={fadeInUp}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            지속가능한 미래를 위한 혁신
+            {currentLanguage === 'en' 
+              ? 'Innovation for a Sustainable Future'
+              : '지속가능한 미래를 위한 혁신'}
           </h2>
           <p className="text-xl mb-8 text-primary-100">
-            정호그룹과 함께 더 나은 내일을 만들어가세요
+            {currentLanguage === 'en'
+              ? 'Create a better tomorrow together with Jungho Group'
+              : '정호그룹과 함께 더 나은 내일을 만들어가세요'}
           </p>
         </div>
       </motion.section>

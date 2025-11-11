@@ -232,6 +232,34 @@ class I18nAdvanced {
             admin: '관리자'
           }
         },
+        // 네비게이션 메뉴
+        nav: {
+          about: {
+            intro: '정호소개',
+            vision: '그룹비전 (IRGS)',
+            management: '경영방침',
+            location: '찾아오시는길'
+          },
+          subsidiaries: {
+            main: '그룹사',
+            tlc: '정호티엘씨',
+            clarus: '클라루스',
+            illutech: '일루텍',
+            texcom: '정호텍스컴',
+            rss: 'RSS 사업부'
+          },
+          media: {
+            main: '미디어/PR',
+            projects: '프로젝트 영상',
+            promotion: '홍보영상'
+          },
+          support: {
+            main: '고객센터',
+            report: '지원 제보',
+            contact: '문의하기'
+          },
+          family: '패밀리 사이트'
+        },
         // 계열사
         subsidiaries: {
           clarus: '클라루스',
@@ -728,6 +756,34 @@ class I18nAdvanced {
             admin: 'Admin'
           }
         },
+        // Navigation Menu
+        nav: {
+          about: {
+            intro: 'Company Introduction',
+            vision: 'Group Vision (IRGS)',
+            management: 'Management Policy',
+            location: 'Location'
+          },
+          subsidiaries: {
+            main: 'Subsidiaries',
+            tlc: 'Jungho TLC',
+            clarus: 'Clarus',
+            illutech: 'Illutech',
+            texcom: 'Jungho Texcom',
+            rss: 'RSS Division'
+          },
+          media: {
+            main: 'Media/PR',
+            projects: 'Project Videos',
+            promotion: 'Promotional Videos'
+          },
+          support: {
+            main: 'Customer Service',
+            report: 'Support Report',
+            contact: 'Contact Us'
+          },
+          family: 'Family Sites'
+        },
         // Subsidiaries
         subsidiaries: {
           clarus: 'Clarus',
@@ -925,6 +981,80 @@ class I18nAdvanced {
             primaryAction: 'View Business Areas',
             secondaryAction: 'Contact Us'
           },
+          gateway: {
+            title: 'Jungho Group GATEWAY',
+            subtitle: 'Delivering various news from Jungho Group',
+            group: {
+              title: 'Group Introduction',
+              description: 'Check out Jungho Group\'s vision and history'
+            },
+            subsidiaries: {
+              title: 'Subsidiaries',
+              description: '4 professional subsidiaries together'
+            },
+            media: {
+              title: 'Media/PR',
+              description: 'Experience our latest news and videos'
+            },
+            contact: {
+              title: 'Contact Us',
+              description: 'Feel free to contact us with any questions'
+            }
+          },
+          philosophy: {
+            title: 'Management Philosophy',
+            subtitle: 'The direction of management that Jungho Group continuously pursues',
+            customerSatisfaction: {
+              title: 'Customer Satisfaction',
+              description: 'We accurately identify customer needs and respond with the best quality'
+            },
+            innovation: {
+              title: 'Technology Innovation',
+              description: 'We secure industry-leading technology through continuous R&D'
+            },
+            growth: {
+              title: 'Sustainable Growth',
+              description: 'We create a future where companies and society grow together from a long-term perspective'
+            }
+          },
+          numbers: {
+            title: 'Jungho Group by Numbers',
+            subtitle: 'Experience and achievements built over 40 years',
+            established: 'Established',
+            subsidiaries: 'Subsidiaries',
+            projects: 'Projects',
+            clients: 'Clients'
+          },
+          irgs: {
+            title: 'IRGS - Core Values of Jungho Group',
+            subtitle: 'Technology with precision, Experience with beauty',
+            innovation: {
+              title: 'Innovation',
+              subtitle: 'Innovation',
+              description: 'Creating better "experiences" with new ideas and technology'
+            },
+            reliability: {
+              title: 'Reliability',
+              subtitle: 'Reliability',
+              description: 'Keeping quality and promises, enhancing the "value of relationships"'
+            },
+            global: {
+              title: 'Global',
+              subtitle: 'Global',
+              description: 'Expanding global "competitiveness" with leading technology and services'
+            },
+            sustainability: {
+              title: 'Sustainability',
+              subtitle: 'Sustainability',
+              description: 'Designing a sustainable "tomorrow" where humans and nature coexist'
+            }
+          },
+          cta: {
+            title: 'Join Jungho Group',
+            subtitle: 'Creating a bright future with innovative technology and 40 years of experience',
+            aboutButton: 'About Company',
+            contactButton: 'Contact Us'
+          },
           stats: {
             years: {
               suffix: ' Years',
@@ -1007,6 +1137,30 @@ class I18nAdvanced {
               subtitle: 'Online Business Leading Textile Machinery Tradition and Cutting-edge Fashion',
               description: 'Professional company creating new value through 40 years of accumulated textile machinery expertise and fashion brand launching',
               feature: 'Textile Machinery & Fashion Brands'
+            }
+          },
+          // Subsidiaries Page
+          subsidiariesPage: {
+            badge: '🏢 4 Professional Subsidiaries',
+            title: 'Jungho Group Subsidiaries',
+            subtitle: 'Based on expertise in each field',
+            subtitleHighlight: 'Jungho Group subsidiaries growing together',
+            stats: {
+              subsidiaries: 'Subsidiaries',
+              history: 'History',
+              employees: 'Employees'
+            },
+            card: {
+              established: 'Established',
+              year: 'year',
+              businessField: 'Business Field',
+              visitWebsite: '🌐 Visit Website',
+              learnMore: 'Learn More'
+            },
+            cta: {
+              title: 'Growing Together - Jungho Group',
+              description: '4 professional subsidiaries provide the best technology and service in each field.\nTogether with Jungho Group, we create a brighter future.',
+              contactButton: 'Contact Us'
             }
           },
           // Project Gallery

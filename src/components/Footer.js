@@ -178,6 +178,14 @@ const Footer = () => {
               >
                 {t('footer.terms')}
               </a>
+              <span className="text-white/30">|</span>
+              <a
+                href="/admin"
+                className="text-white/50 hover:text-secondary transition-colors duration-200 text-xs"
+                title="관리자 페이지"
+              >
+                Admin
+              </a>
             </div>
           </div>
 

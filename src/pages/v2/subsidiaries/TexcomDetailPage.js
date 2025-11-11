@@ -1,83 +1,718 @@
 import React from 'react';
-import SubsidiaryDetailTemplate from './SubsidiaryDetailTemplate';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useI18n } from '../../../hooks/useI18n';
 
 const TexcomDetailPage = () => {
-  const data = {
-    name: '정호텍스컴',
-    nameEn: 'Jungho TEXCOM',
-    slogan: '섬유 산업과 패션을 잇는 가교',
-    icon: '👔',
-    established: '1982',
-    business: '섬유기계·시험기, 패션',
-    colorFrom: 'from-purple-50',
-    colorTo: 'to-pink-50',
-    darkColor: 'purple-900/20',
-    textColor: 'text-purple-600',
-    darkTextColor: 'text-purple-400',
-    buttonBg: 'bg-purple-600',
-    buttonHover: 'hover:bg-purple-700',
-    cardFrom: 'from-purple-50',
-    cardTo: 'to-pink-50',
-    borderColor: 'border-purple-200',
-    description: [
-      '1982년 설립 이후, 세계적인 섬유기계 및 시험기를 국내에 독점 공급하며 섬유 산업의 발전에 기여해온 정호텍스컴입니다.',
-      '이제 B2B 경험을 바탕으로 패션 B2C 분야까지 확장하며, 섬유와 패션의 미래를 함께 만들어갑니다.',
-      '최신 패션 트렌드와 기술력을 결합하여 고객과 함께 더 밝은 미래로 동반하고 있습니다.'
-    ],
-    products: [
-      {
-        name: '섬유기계',
-        description: '독일 SAURER, BENNINGER, 스위스 LUWA 등 세계 유수 브랜드 독점 공급',
-        icon: '🏭'
-      },
-      {
-        name: '섬유 시험기',
-        description: '독일 TEXTECHNO, 오스트리아 LENZING, 일본 KATO TECH 등',
-        icon: '🔬'
-      },
-      {
-        name: 'TAF (The Auto Finder)',
-        description: '고성능 현미경 자동 탐색기기 (자체 개발)',
-        icon: '🔍'
-      },
-      {
-        name: '기술 지원',
-        description: '설치, 작동법 교육, 유지보수 원스톱 서비스',
-        icon: '🛠️'
-      }
-    ],
-    strengths: [
-      {
-        title: '글로벌 파트너십',
-        description: '독일, 스위스, 오스트리아, 일본 등 세계 유수 브랜드 독점 공급',
-        icon: '🌍'
-      },
-      {
-        title: '40년 경험',
-        description: '1982년부터 축적된 섬유 산업 전문성',
-        icon: '🏆'
-      },
-      {
-        title: '원스톱 서비스',
-        description: '상담, 수입, 납품, 설치, 교육, 유지보수까지',
-        icon: '🔧'
-      },
-      {
-        title: 'B2B에서 B2C로',
-        description: '섬유 기계 전문성을 바탕으로 패션까지 확장',
-        icon: '🚀'
-      }
-    ],
-    contact: {
-      phone: '02-538-3652',
-      email: 'sales@junghocorp.com',
-      address: '서울시 강남구 논현로116길 17 정호빌딩 3층'
-    },
-    website: 'http://www.theautofinder.com'
+  const navigate = useNavigate();
+  const { t, currentLanguage } = useI18n();
+
+  // 애니메이션 variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut' }
+    }
   };
 
-  return <SubsidiaryDetailTemplate data={data} />;
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 pt-20">
+      {/* Hero Section */}
+      <motion.section 
+        className="relative py-20 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
+        {/* 배경 패턴 */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
+            backgroundSize: '40px 40px'
+          }} />
+        </div>
+
+        {/* 뒤로가기 버튼 */}
+        <motion.button
+          className="absolute top-8 left-8 z-10 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2"
+          onClick={() => navigate('/subsidiaries')}
+          whileHover={{ x: -5 }}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          <span className="font-semibold text-gray-700 dark:text-gray-300">
+            {currentLanguage === 'en' ? 'Subsidiaries' : '계열사 목록'}
+          </span>
+        </motion.button>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            className="text-center space-y-6"
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+          >
+            <motion.div variants={fadeInUp}>
+              <span className="text-6xl mb-6 inline-block">👔</span>
+            </motion.div>
+
+            <motion.h1 
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white"
+              variants={fadeInUp}
+            >
+              {currentLanguage === 'en' ? 'Jungho TEXCOM' : '정호텍스컴'}
+            </motion.h1>
+
+            <motion.p 
+              className="text-xl text-gray-600 dark:text-gray-400"
+              variants={fadeInUp}
+            >
+              {currentLanguage === 'en' ? '정호텍스컴' : 'Jungho TEXCOM'}
+            </motion.p>
+
+            <motion.p 
+              className="text-2xl sm:text-3xl text-purple-600 dark:text-purple-400 font-semibold max-w-3xl mx-auto"
+              variants={fadeInUp}
+            >
+              {currentLanguage === 'en'
+                ? 'Bridge connecting textile industry and fashion'
+                : '섬유 산업과 패션을 잇는 가교'}
+            </motion.p>
+
+            <motion.div 
+              className="flex flex-wrap items-center justify-center gap-6 pt-6"
+              variants={fadeInUp}
+            >
+              <div className="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  {currentLanguage === 'en' ? 'Established' : '설립'}
+                </span>
+                <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
+                  {currentLanguage === 'en' ? '1982' : '1982년'}
+                </div>
+              </div>
+              <div className="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  {currentLanguage === 'en' ? 'Business Field' : '사업 분야'}
+                </span>
+                <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
+                  {currentLanguage === 'en' ? 'Textile Machinery & Testers / RSS' : '섬유기계·시험기 / RSS'}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* 회사 소개 */}
+      <motion.section 
+        className="py-20 bg-white dark:bg-gray-900"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div variants={fadeInUp} className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+              {currentLanguage === 'en' ? 'Company Introduction' : '회사 소개'}
+            </h2>
+            <div className="space-y-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed text-left">
+              {currentLanguage === 'en' ? (
+                <>
+                  <p>Since its establishment in 1982, Jungho TEXCOM has been contributing to the development of the textile industry by exclusively supplying world-class textile machinery and testing equipment in Korea.</p>
+                  <p>Now, based on our B2B experience, we are expanding into the fashion B2C sector, creating the future of textiles and fashion together.</p>
+                  <p>Jungho TEXCOM consists of the <strong>Textile Machinery Division</strong> and <strong>RSS Division</strong> under Jungho Group, contributing to improving customer productivity and quality through global technology and domestic networks.</p>
+                </>
+              ) : (
+                <>
+                  <p>1982년 설립 이후, 세계적인 섬유기계 및 시험기를 국내에 독점 공급하며 섬유 산업의 발전에 기여해온 ㈜정호텍스컴입니다.</p>
+                  <p>이제 B2B 경험을 바탕으로 패션 B2C 분야까지 확장하며, 섬유와 패션의 미래를 함께 만들어갑니다.</p>
+                  <p>정호텍스컴은 정호그룹 산하의 <strong>섬유기계 사업부</strong>와 <strong>RSS 사업부</strong>로 구성되며, 글로벌 기술력과 국내 연결망을 통해 고객의 생산성과 품질 향상에 기여합니다.</p>
+                </>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* 섬유기계 사업부 */}
+      <motion.section 
+        className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div variants={fadeInUp} className="text-center mb-12">
+            <div className="inline-flex items-center gap-3 mb-4">
+              <span className="text-5xl">🏭</span>
+              <div className="text-left">
+                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                  {currentLanguage === 'en' ? 'Textile Machinery Division' : '섬유기계 사업부'}
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-gray-400">Textile Machinery Division</p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div variants={fadeInUp} className="mb-12">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">
+                {currentLanguage === 'en' 
+                  ? 'Connecting Global Technology to Korea'
+                  : '글로벌 기술, 국내에 연결하다'}
+              </h3>
+              <div className="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
+                {currentLanguage === 'en' ? (
+                  <>
+                    <p>Jungho TEXCOM is a specialized textile equipment distribution division under Jungho Group, importing and supplying excellent textile-related equipment, testing instruments, and parts from around the world to domestic textile industry customers.</p>
+                    <p>Beyond simple distribution, we provide <strong>one-stop service</strong> covering technical consultation, installation, operation training, and maintenance, contributing to improving customer productivity and quality.</p>
+                  </>
+                ) : (
+                  <>
+                    <p>정호텍스컴은 정호그룹 산하의 섬유기기 전문 유통 사업부로, 세계 각국의 우수한 섬유 관련 기기, 시험기기 및 부품을 수입하여 국내 섬유 산업 고객에게 공급하고 있습니다.</p>
+                    <p>단순한 유통을 넘어, 기술 상담부터 설치, 작동법 교육, 유지보수까지 아우르는 <strong>원스톱 서비스</strong>를 제공하며, 고객의 생산성과 품질 향상에 기여합니다.</p>
+                  </>
+                )}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* 제품 소개 */}
+          <motion.div variants={fadeInUp} className="mb-8">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+              {currentLanguage === 'en' ? 'Product Introduction' : '제품 소개'}
+            </h3>
+          </motion.div>
+
+          {/* 섬유기계 */}
+          <motion.div variants={fadeInUp} className="mb-12">
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-850 rounded-xl p-6 mb-6">
+              <h4 className="text-2xl font-bold text-green-800 dark:text-green-400 mb-4 flex items-center gap-2">
+                <span>🏭</span> {currentLanguage === 'en' ? 'Textile Machinery' : '섬유기계'}
+              </h4>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                whileHover={{ y: -5 }}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'SAURER (Germany)' : '독일 SAURER'}
+                  </h5>
+                  <span className="text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
+                    {currentLanguage === 'en' ? 'Germany' : '독일'}
+                  </span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                  {currentLanguage === 'en' 
+                    ? 'Industrial textile twisting machines for tire cords'
+                    : '타이어코드 등 산업용 섬유 연사기'}
+                </p>
+                <a href="https://www.saurer.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
+                  🌐 www.saurer.com
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </motion.div>
+
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                whileHover={{ y: -5 }}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'BENNINGER (Germany)' : '독일 BENNINGER'}
+                  </h5>
+                  <span className="text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
+                    {currentLanguage === 'en' ? 'Germany' : '독일'}
+                  </span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                  {currentLanguage === 'en' 
+                    ? 'Fabric heat treatment line'
+                    : '직물 열처리 Line'}
+                </p>
+                <a href="https://www.benningergroup.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
+                  🌐 www.benningergroup.com
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </motion.div>
+
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                whileHover={{ y: -5 }}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'LUWA (Switzerland)' : '스위스 LUWA'}
+                  </h5>
+                  <span className="text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
+                    {currentLanguage === 'en' ? 'Switzerland' : '스위스'}
+                  </span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                  {currentLanguage === 'en' 
+                    ? 'Air conditioning equipment for cotton & synthetic fiber spinning'
+                    : '면방, 합성용 공조 설비'}
+                </p>
+                <a href="https://www.luwa.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
+                  🌐 www.luwa.com
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </motion.div>
+
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                whileHover={{ y: -5 }}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'BRAECKER (Switzerland)' : '스위스 BRAECKER'}
+                  </h5>
+                  <span className="text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
+                    {currentLanguage === 'en' ? 'Switzerland' : '스위스'}
+                  </span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                  {currentLanguage === 'en' 
+                    ? 'Rings and Travellers for spinning frames'
+                    : '정방기용 Ring, Traveller'}
+                </p>
+                <a href="https://www.braecker.ch" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
+                  🌐 www.braecker.ch
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </motion.div>
+
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                whileHover={{ y: -5 }}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'TEKKIMP (UK)' : '영국 TEKKIMP'}
+                  </h5>
+                  <span className="text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
+                    {currentLanguage === 'en' ? 'UK' : '영국'}
+                  </span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                  {currentLanguage === 'en' 
+                    ? 'Loom creel'
+                    : '직기 Creel'}
+                </p>
+                <a href="https://www.cygnet-tekkimp.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
+                  🌐 www.cygnet-tekkimp.com
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* 시험기 */}
+          <motion.div variants={fadeInUp} className="mb-12">
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-850 rounded-xl p-6 mb-6">
+              <h4 className="text-2xl font-bold text-purple-800 dark:text-purple-400 mb-4 flex items-center gap-2">
+                <span>🔬</span> {currentLanguage === 'en' ? 'Testing Equipment' : '시험기'}
+              </h4>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                whileHover={{ y: -5 }}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'TEXTECHNO (Germany)' : '독일 TEXTECHNO'}
+                  </h5>
+                  <span className="text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
+                    {currentLanguage === 'en' ? 'Germany' : '독일'}
+                  </span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                  {currentLanguage === 'en' 
+                    ? 'Various textile testing equipment'
+                    : '섬유용 각종 시험장비'}
+                </p>
+                <a href="https://www.textechno.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
+                  🌐 www.textechno.com
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </motion.div>
+
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                whileHover={{ y: -5 }}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'LENZING (Austria)' : '오스트리아 LENZING'}
+                  </h5>
+                  <span className="text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
+                    {currentLanguage === 'en' ? 'Austria' : '오스트리아'}
+                  </span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                  {currentLanguage === 'en' 
+                    ? 'Various textile testing equipment'
+                    : '섬유용 각종 시험장비'}
+                </p>
+                <a href="https://www.lenzing-instruments.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
+                  🌐 www.lenzing-instruments.com
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </motion.div>
+
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                whileHover={{ y: -5 }}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'KATO TECH (Japan)' : '일본 KATO TECH'}
+                  </h5>
+                  <span className="text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
+                    {currentLanguage === 'en' ? 'Japan' : '일본'}
+                  </span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                  {currentLanguage === 'en' 
+                    ? 'Various testing instruments'
+                    : '각종 시험기기'}
+                </p>
+                <a href="https://www.keskato.co.jp" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
+                  🌐 www.keskato.co.jp
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* TAF 자체 개발 제품 */}
+          <motion.div variants={fadeInUp} className="mb-12">
+            <div className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-gray-800 dark:to-gray-850 rounded-xl p-6 mb-6">
+              <h4 className="text-2xl font-bold text-amber-800 dark:text-amber-400 mb-4 flex items-center gap-2">
+                <span>🔍</span> {currentLanguage === 'en' ? 'Self-Developed Products' : '자체 개발 제품'}
+              </h4>
+            </div>
+            <div className="max-w-2xl mx-auto">
+              <motion.div 
+                className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-amber-200 dark:border-amber-900"
+                whileHover={{ scale: 1.02 }}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h5 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">TAF (The Auto Finder)</h5>
+                    <span className="text-sm bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-3 py-1 rounded-full">
+                      {currentLanguage === 'en' ? 'Developed by Jungho TEXCOM, Korea' : '한국 정호텍스컴 개발'}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-gray-700 dark:text-gray-300 mb-4 text-lg">
+                  {currentLanguage === 'en' 
+                    ? 'High-performance automatic microscope finder'
+                    : '고성능 현미경 자동 탐색기기'}
+                </p>
+                <a href="https://www.theautofinder.com" target="_blank" rel="noopener noreferrer" 
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-lg shadow-md transition-all duration-300">
+                  🌐 www.theautofinder.com
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* 제품 문의 및 기술 지원 안내 */}
+          <motion.div variants={fadeInUp}>
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-8 shadow-xl">
+              <h4 className="text-2xl font-bold mb-6 text-center">
+                {currentLanguage === 'en' ? 'Product Inquiry & Technical Support' : '제품 문의 및 기술 지원 안내'}
+              </h4>
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">✅</span>
+                  <div>
+                    <strong>{currentLanguage === 'en' ? 'Products:' : '취급 품목:'}</strong> 
+                    {currentLanguage === 'en' 
+                      ? ' Textile machinery, testing equipment, related parts & consumables'
+                      : ' 섬유 기계, 섬유 시험기기, 관련 부품 및 소모품'
+                    }
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">🛠️</span>
+                  <div>
+                    <strong>{currentLanguage === 'en' ? 'Services:' : '서비스 범위:'}</strong> 
+                    {currentLanguage === 'en'
+                      ? ' Product consultation & customized proposals, import & delivery, technical support (installation, operation training, maintenance)'
+                      : ' 제품 상담 및 맞춤 제안, 수입 및 납품, 기술 지원 (설치, 작동법 교육, 유지보수)'
+                    }
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">📞</span>
+                  <div>
+                    {currentLanguage === 'en'
+                      ? 'For inquiries or technical support requests, please contact us below.'
+                      : '공급하신 사항이나 기술 지원 요청은 아래로 연락 주세요.'
+                    }
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                <a href="mailto:sales@junghocorp.com" className="flex items-center gap-3 text-lg hover:text-yellow-200 transition-colors">
+                  <span className="text-2xl">📧</span>
+                  <div>
+                    <div className="text-sm opacity-80">{currentLanguage === 'en' ? 'Email' : '이메일'}</div>
+                    <div className="font-bold">sales@junghocorp.com</div>
+                  </div>
+                </a>
+                <a href="tel:02-538-3652" className="flex items-center gap-3 text-lg hover:text-yellow-200 transition-colors">
+                  <span className="text-2xl">📞</span>
+                  <div>
+                    <div className="text-sm opacity-80">{currentLanguage === 'en' ? 'Phone' : '전화'}</div>
+                    <div className="font-bold">02-538-3652</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* RSS 사업부 */}
+      <motion.section 
+        className="py-20 bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-900 dark:to-gray-800"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div variants={fadeInUp} className="text-center">
+            <div className="inline-flex items-center gap-3 mb-6">
+              <span className="text-5xl">🧦</span>
+              <div className="text-left">
+                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                  {currentLanguage === 'en' ? 'RSS Division' : 'RSS 사업부'}
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-gray-400">RSS Division</p>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-10 shadow-2xl">
+              <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+                {currentLanguage === 'en' ? (
+                  <>
+                    The RSS Division operates a separate dedicated website.<br />
+                    Please visit the RSS official website for more information.
+                  </>
+                ) : (
+                  <>
+                    RSS 사업부는 별도의 전문 홈페이지를 운영하고 있습니다.<br />
+                    자세한 정보는 RSS 공식 웹사이트를 방문해주세요.
+                  </>
+                )}
+              </p>
+              <motion.a
+                href="https://redssocksoo.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white text-lg font-bold rounded-xl shadow-lg transition-all duration-300"
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className="text-2xl">🌐</span>
+                {currentLanguage === 'en' ? 'Visit RSS Official Website' : 'RSS 공식 홈페이지 방문'}
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </motion.a>
+              <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                redssocksoo.com
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* 핵심 강점 */}
+      <motion.section 
+        className="py-20 bg-white dark:bg-gray-900"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div variants={fadeInUp} className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              {currentLanguage === 'en' ? 'Core Strengths' : '핵심 강점'}
+            </h2>
+          </motion.div>
+
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            variants={staggerContainer}
+          >
+            <motion.div
+              variants={fadeInUp}
+              whileHover={{ scale: 1.03 }}
+              className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-850 rounded-xl p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-purple-200 dark:border-gray-700"
+            >
+              <div className="text-5xl mb-4">🌍</div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                {currentLanguage === 'en' ? 'Global Partnership' : '글로벌 파트너십'}
+              </h3>
+              <p className="text-gray-700 dark:text-gray-300 text-lg">
+                {currentLanguage === 'en'
+                  ? 'Exclusive supply of world-class brands from Germany, Switzerland, Austria, Japan, UK, etc.'
+                  : '독일, 스위스, 오스트리아, 일본, 영국 등 세계 유수 브랜드 독점 공급'}
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              whileHover={{ scale: 1.03 }}
+              className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-850 rounded-xl p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-purple-200 dark:border-gray-700"
+            >
+              <div className="text-5xl mb-4">🏆</div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                {currentLanguage === 'en' ? '40 Years of Experience' : '40년 경험'}
+              </h3>
+              <p className="text-gray-700 dark:text-gray-300 text-lg">
+                {currentLanguage === 'en'
+                  ? 'Textile industry expertise and technology accumulated since 1982'
+                  : '1982년부터 축적된 섬유 산업 전문성과 기술력'}
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              whileHover={{ scale: 1.03 }}
+              className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-850 rounded-xl p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-purple-200 dark:border-gray-700"
+            >
+              <div className="text-5xl mb-4">🔧</div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                {currentLanguage === 'en' ? 'One-Stop Service' : '원스톱 서비스'}
+              </h3>
+              <p className="text-gray-700 dark:text-gray-300 text-lg">
+                {currentLanguage === 'en'
+                  ? 'Integrated support from consultation, import, delivery, installation, training to maintenance'
+                  : '상담, 수입, 납품, 설치, 교육, 유지보수까지 통합 지원'}
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              whileHover={{ scale: 1.03 }}
+              className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-850 rounded-xl p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-purple-200 dark:border-gray-700"
+            >
+              <div className="text-5xl mb-4">🚀</div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                {currentLanguage === 'en' ? 'From B2B to B2C' : 'B2B에서 B2C로'}
+              </h3>
+              <p className="text-gray-700 dark:text-gray-300 text-lg">
+                {currentLanguage === 'en'
+                  ? 'Expanding to fashion based on textile machinery expertise'
+                  : '섬유 기계 전문성을 바탕으로 패션까지 확장'}
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* 문의하기 */}
+      <motion.section 
+        className="py-20 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div variants={fadeInUp}>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-8">
+              {currentLanguage === 'en' ? 'Contact Us' : '문의하기'}
+            </h2>
+            <div className="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg space-y-4">
+              <div className="flex items-center justify-center gap-3 text-lg">
+                <span className="text-2xl">📞</span>
+                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                  {currentLanguage === 'en' ? 'Phone:' : '전화:'}
+                </span>
+                <a href="tel:02-538-3652" className="text-purple-600 dark:text-purple-400 hover:underline font-bold">
+                  02-538-3652
+                </a>
+              </div>
+              <div className="flex items-center justify-center gap-3 text-lg">
+                <span className="text-2xl">📧</span>
+                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                  {currentLanguage === 'en' ? 'Email:' : '이메일:'}
+                </span>
+                <a href="mailto:sales@junghocorp.com" className="text-purple-600 dark:text-purple-400 hover:underline font-bold">
+                  sales@junghocorp.com
+                </a>
+              </div>
+              <div className="flex items-center justify-center gap-3 text-lg">
+                <span className="text-2xl">🌐</span>
+                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                  {currentLanguage === 'en' ? 'Website:' : '웹사이트:'}
+                </span>
+                <a href="http://www.theautofinder.com" target="_blank" rel="noopener noreferrer" className="text-purple-600 dark:text-purple-400 hover:underline font-bold">
+                  www.theautofinder.com
+                </a>
+              </div>
+              <div className="flex items-center justify-center gap-3 text-lg">
+                <span className="text-2xl">📍</span>
+                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                  {currentLanguage === 'en' ? 'Headquarters:' : '본사:'}
+                </span>
+                <span className="text-gray-700 dark:text-gray-300">
+                  {currentLanguage === 'en'
+                    ? '3F, Jungho Building, 17, Nonhyeon-ro 116-gil, Gangnam-gu, Seoul'
+                    : '서울시 강남구 논현로116길 17 정호빌딩 3층'}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </motion.section>
+    </div>
+  );
 };
 
 export default TexcomDetailPage;
-

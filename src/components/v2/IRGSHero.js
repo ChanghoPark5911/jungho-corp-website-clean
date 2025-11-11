@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useI18n } from '../../hooks/useI18n';
 
 /**
  * IRGS 핵심가치 Hero Section
@@ -7,15 +8,32 @@ import { useNavigate } from 'react-router-dom';
  */
 const IRGSHero = () => {
   const navigate = useNavigate();
+  const { t, currentLanguage } = useI18n();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [heroData, setHeroData] = useState(null);
 
-  // IRGS 핵심가치 데이터
-  const irgsValues = [
+  // LocalStorage에서 데이터 로드
+  useEffect(() => {
+    const savedData = localStorage.getItem('v2_homepage_data');
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        setHeroData(parsedData.hero);
+      } catch (error) {
+        console.error('Hero 데이터 로드 실패:', error);
+      }
+    }
+  }, []);
+
+  // 기본 IRGS 핵심가치 데이터 - currentLanguage가 변경될 때마다 재계산
+  const defaultIrgsValues = useMemo(() => [
     {
       id: 'innovation',
       title: 'Innovation',
-      subtitle: '혁신',
-      description: '새로운 생각과 기술로\n더 나은 "경험"을 만듭니다',
+      subtitle: currentLanguage === 'en' ? 'Innovation' : '혁신',
+      description: currentLanguage === 'en' 
+        ? 'Creating better "experiences"\nwith new ideas and technology'
+        : '새로운 생각과 기술로\n더 나은 "경험"을 만듭니다',
       icon: '💡',
       color: 'from-blue-500 to-cyan-500',
       bgColor: 'bg-blue-600/10',
@@ -24,8 +42,10 @@ const IRGSHero = () => {
     {
       id: 'reliability',
       title: 'Reliability',
-      subtitle: '신뢰',
-      description: '품질과 약속을 지키는 것,\n"관계의 가치"를 높입니다',
+      subtitle: currentLanguage === 'en' ? 'Reliability' : '신뢰',
+      description: currentLanguage === 'en'
+        ? 'Keeping quality and promises,\nenhancing the "value of relationships"'
+        : '품질과 약속을 지키는 것,\n"관계의 가치"를 높입니다',
       icon: '🤝',
       color: 'from-green-500 to-emerald-500',
       bgColor: 'bg-green-600/10',
@@ -34,8 +54,10 @@ const IRGSHero = () => {
     {
       id: 'global',
       title: 'Global',
-      subtitle: '글로벌',
-      description: '국제 기준을 선도하는\n기술력과 서비스로 글로벌 "경쟁력"',
+      subtitle: currentLanguage === 'en' ? 'Global' : '글로벌',
+      description: currentLanguage === 'en'
+        ? 'Expanding global "competitiveness"\nwith leading technology and services'
+        : '국제 기준을 선도하는\n기술력과 서비스로 글로벌 "경쟁력"',
       icon: '🌏',
       color: 'from-indigo-500 to-blue-500',
       bgColor: 'bg-indigo-600/10',
@@ -44,14 +66,35 @@ const IRGSHero = () => {
     {
       id: 'sustainability',
       title: 'Sustainability',
-      subtitle: '지속가능성',
-      description: '인간과 자연이 함께 공존하는\n지속가능한 "내일"을 설계합니다',
+      subtitle: currentLanguage === 'en' ? 'Sustainability' : '지속가능성',
+      description: currentLanguage === 'en'
+        ? 'Designing a sustainable "tomorrow"\nwhere humans and nature coexist'
+        : '인간과 자연이 함께 공존하는\n지속가능한 "내일"을 설계합니다',
       icon: '🌱',
       color: 'from-green-500 to-teal-500',
       bgColor: 'bg-teal-600/10',
       particles: ['🌱', '🌿', '♻️', '🌳', '🌸'],
     },
-  ];
+  ], [currentLanguage]); // currentLanguage가 변경될 때마다 재계산
+
+  // 관리자 데이터와 기본 데이터 병합
+  const irgsValues = heroData?.irgsValues ? heroData.irgsValues.map((savedValue, index) => ({
+    ...defaultIrgsValues[index],
+    ...savedValue
+  })) : defaultIrgsValues;
+
+  // 영어일 때는 번역 우선, 한국어일 때는 관리자 데이터 우선
+  const mainTitle = currentLanguage === 'en' 
+    ? (t('home.hero.title') || heroData?.mainTitle || 'Illuminating People and Spaces\nwith Technology')
+    : (heroData?.mainTitle || '사람과 공간을\n밝히는 기술');
+  
+  const companyName = currentLanguage === 'en'
+    ? (t('header.title') || heroData?.companyName || 'Jungho Group')
+    : (heroData?.companyName || '정호그룹');
+  
+  const description = currentLanguage === 'en'
+    ? (t('home.hero.description') || heroData?.description || 'Lighting tomorrow with 40 years of innovation')
+    : (heroData?.description || '40년의 혁신으로 내일의 빛을 밝힙니다');
 
   // 자동 슬라이드
   useEffect(() => {
@@ -120,7 +163,10 @@ const IRGSHero = () => {
                       {currentValue.title}
                     </div>
                     <div className="text-xl sm:text-2xl font-semibold text-gray-700 dark:text-gray-300 mt-1 animate-fade-in-delay">
-                      {currentValue.subtitle}
+                      {currentLanguage === 'en' 
+                        ? currentValue.title
+                        : (currentValue.subtitle || defaultIrgsValues[activeIndex].subtitle)
+                      }
                     </div>
                   </div>
                   
@@ -159,31 +205,30 @@ const IRGSHero = () => {
           {/* 오른쪽: 텍스트 컨텐츠 */}
           <div className="text-center lg:text-left space-y-6">
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 dark:text-white animate-slide-up leading-tight">
-                사람과 공간을<br />
-                밝히는 기술
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 dark:text-white animate-slide-up leading-tight whitespace-pre-line">
+                {mainTitle}
               </h1>
               <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-600 dark:text-primary-400 animate-fade-in-delay">
-                정호그룹
+                {companyName}
               </div>
             </div>
 
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed animate-fade-in-delay whitespace-pre-line">
-              40년의 혁신으로 내일의 빛을 밝힙니다
+              {description}
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start pt-4 animate-fade-in-delay-2">
               <button
-                onClick={() => navigate('/v2/about')}
+                onClick={() => navigate('/about')}
                 className="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
-                그룹 소개 보기
+                {currentLanguage === 'en' ? 'Learn More About Us' : '그룹 소개 보기'}
               </button>
               <button
-                onClick={() => navigate('/v2/subsidiaries')}
+                onClick={() => navigate('/subsidiaries')}
                 className="px-8 py-4 bg-white hover:bg-gray-100 text-primary-600 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-2 border-primary-600"
               >
-                사업분야 보기
+                {currentLanguage === 'en' ? 'View Business Areas' : '사업분야 보기'}
               </button>
             </div>
 

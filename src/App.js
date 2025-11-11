@@ -41,8 +41,11 @@ const ClarusDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/ClarusDeta
 const TlcDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/TlcDetailPage'));
 const IllutechDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/IllutechDetailPage'));
 const TexcomDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/TexcomDetailPage'));
-const RssDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/RssDetailPage'));
 const ProjectsPageV2 = lazy(() => import('./pages/v2/ProjectsPage'));
+const MediaSNSPage = lazy(() => import('./pages/v2/MediaSNSPage'));
+const MediaPromotionPage = lazy(() => import('./pages/v2/MediaPromotionPage'));
+const SupportPageV2 = lazy(() => import('./pages/v2/SupportPage'));
+const AdminPageV2 = lazy(() => import('./pages/v2/AdminPageV2'));
 
 // 로딩 컴포넌트
 const PageLoader = () => (
@@ -99,35 +102,14 @@ function App() {
         <ScrollToTop />
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* v2 라우트 (새 디자인) */}
-            <Route path="/v2/*" element={
-              <LayoutV2>
-                <Routes>
-                  <Route path="/" element={<HomePageV2 />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  <Route path="/about/intro" element={<AboutIntroPage />} />
-                  <Route path="/about/vision" element={<AboutVisionPage />} />
-                  <Route path="/about/management" element={<AboutManagementPage />} />
-                  <Route path="/about/history" element={<AboutHistoryPage />} />
-                  <Route path="/about/ci" element={<div className="p-20 text-center">CI/BI (준비 중)</div>} />
-                  <Route path="/about/location" element={<AboutLocationPage />} />
-                  <Route path="/subsidiaries" element={<SubsidiariesPage />} />
-                  <Route path="/subsidiaries/clarus" element={<ClarusDetailPageV2 />} />
-                  <Route path="/subsidiaries/tlc" element={<TlcDetailPageV2 />} />
-                  <Route path="/subsidiaries/illutech" element={<IllutechDetailPageV2 />} />
-                  <Route path="/subsidiaries/texcom" element={<TexcomDetailPageV2 />} />
-                  <Route path="/subsidiaries/rss" element={<RssDetailPageV2 />} />
-                  <Route path="/projects" element={<ProjectsPageV2 />} />
-                </Routes>
-              </LayoutV2>
-            } />
-
-            {/* v1 라우트 (기존) */}
-            <Route path="/*" element={
+            {/* v2 관리자 페이지 (레이아웃 없음) - 최우선 */}
+            <Route path="/admin" element={<AdminPageV2 />} />
+            
+            {/* v1 라우트 (이전 버전) */}
+            <Route path="/v1/*" element={
               <Layout>
                 <Routes>
                   <Route path="/" element={<UnifiedHomePage />} />
-                  <Route path="/old" element={<div>기존 홈페이지 임시 비활성화</div>} />
                   <Route path="/business" element={<BusinessPage />} />
                   <Route path="/projects" element={<ProjectsPage />} />
                   <Route path="/support" element={<SupportPage />} />
@@ -143,6 +125,33 @@ function App() {
                 </Routes>
                 <PWAInstallPrompt />
               </Layout>
+            } />
+
+            {/* v2 라우트 (메인) - 이제 기본 경로 */}
+            <Route path="/*" element={
+              <LayoutV2>
+                <Routes>
+                  <Route path="/" element={<HomePageV2 />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/about/intro" element={<AboutIntroPage />} />
+                  <Route path="/about/vision" element={<AboutVisionPage />} />
+                  <Route path="/about/management" element={<AboutManagementPage />} />
+                  <Route path="/about/history" element={<AboutHistoryPage />} />
+                  <Route path="/about/ci" element={<div className="p-20 text-center">CI/BI (준비 중)</div>} />
+                  <Route path="/about/location" element={<AboutLocationPage />} />
+                  <Route path="/subsidiaries" element={<SubsidiariesPage />} />
+                  <Route path="/subsidiaries/clarus" element={<ClarusDetailPageV2 />} />
+                  <Route path="/subsidiaries/tlc" element={<TlcDetailPageV2 />} />
+                  <Route path="/subsidiaries/illutech" element={<IllutechDetailPageV2 />} />
+                  <Route path="/subsidiaries/texcom" element={<TexcomDetailPageV2 />} />
+                  <Route path="/projects" element={<ProjectsPageV2 />} />
+                  <Route path="/media/sns" element={<MediaSNSPage />} />
+                  <Route path="/media/promotion" element={<MediaPromotionPage />} />
+                  <Route path="/support" element={<SupportPageV2 />} />
+                  <Route path="/support/report" element={<SupportPageV2 />} />
+                  <Route path="/support/contact" element={<SupportPageV2 />} />
+                </Routes>
+              </LayoutV2>
             } />
           </Routes>
         </Suspense>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useI18n } from '../../hooks/useI18n';
 
 /**
  * ABOUT 메인 페이지
@@ -8,6 +9,7 @@ import { motion } from 'framer-motion';
  */
 const AboutPage = () => {
   const navigate = useNavigate();
+  const { t, currentLanguage } = useI18n();
 
   // 애니메이션 variants
   const fadeInUp = {
@@ -29,67 +31,79 @@ const AboutPage = () => {
     }
   };
 
-  // 6개 카드 데이터
+  // 6개 카드 데이터 - 다국어 지원
   const aboutSections = [
     {
       id: 'intro',
-      title: '정호그룹 소개',
-      description: '40년 전통의 조명 제어 전문 기업\n정호그룹을 소개합니다',
+      title: currentLanguage === 'en' ? 'Company Introduction' : '정호그룹 소개',
+      description: currentLanguage === 'en' 
+        ? '40 years of lighting control expertise\nIntroducing Jungho Group'
+        : '40년 전통의 조명 제어 전문 기업\n정호그룹을 소개합니다',
       icon: '👋',
       color: 'from-blue-500 to-cyan-500',
       bgColor: 'bg-blue-50',
       iconBg: 'bg-blue-100',
-      path: '/v2/about/intro',
+      path: '/about/intro',
     },
     {
       id: 'vision',
-      title: '그룹비전 (IRGS)',
-      description: 'Innovation, Reliability, Global,\nSustainability 정호그룹의 핵심가치',
+      title: currentLanguage === 'en' ? 'Group Vision (IRGS)' : '그룹비전 (IRGS)',
+      description: currentLanguage === 'en'
+        ? 'Innovation, Reliability, Global,\nSustainability - Core values of Jungho Group'
+        : 'Innovation, Reliability, Global,\nSustainability 정호그룹의 핵심가치',
       icon: '🎯',
       color: 'from-green-500 to-emerald-500',
       bgColor: 'bg-green-50',
       iconBg: 'bg-green-100',
-      path: '/v2/about/vision',
+      path: '/about/vision',
     },
     {
       id: 'management',
-      title: '경영방침',
-      description: '고객만족, 기술혁신, 지속성장을 위한\n정호그룹의 경영철학',
+      title: currentLanguage === 'en' ? 'Management Policy' : '경영방침',
+      description: currentLanguage === 'en'
+        ? 'Customer satisfaction, technology innovation,\nand sustainable growth philosophy'
+        : '고객만족, 기술혁신, 지속성장을 위한\n정호그룹의 경영철학',
       icon: '📋',
       color: 'from-purple-500 to-pink-500',
       bgColor: 'bg-purple-50',
       iconBg: 'bg-purple-100',
-      path: '/v2/about/management',
+      path: '/about/management',
     },
     {
       id: 'ci',
       title: 'CI/BI',
-      description: '정호그룹의 브랜드 아이덴티티와\n기업 이미지를 확인하세요',
+      description: currentLanguage === 'en'
+        ? 'Discover Jungho Group\'s brand identity\nand corporate image'
+        : '정호그룹의 브랜드 아이덴티티와\n기업 이미지를 확인하세요',
       icon: '🎨',
       color: 'from-orange-500 to-red-500',
       bgColor: 'bg-orange-50',
       iconBg: 'bg-orange-100',
-      path: '/v2/about/ci',
+      path: '/about/ci',
     },
     {
       id: 'history',
       title: 'HISTORY',
-      description: '1985년부터 현재까지\n정호그룹의 성장 여정',
+      description: currentLanguage === 'en'
+        ? 'From 1985 to present\nJungho Group\'s growth journey'
+        : '1985년부터 현재까지\n정호그룹의 성장 여정',
       icon: '📅',
       color: 'from-indigo-500 to-purple-500',
       bgColor: 'bg-indigo-50',
       iconBg: 'bg-indigo-100',
-      path: '/v2/about/history',
+      path: '/about/history',
     },
     {
       id: 'location',
-      title: '찾아오시는길',
-      description: '정호그룹 본사 위치 및\n연락처 정보',
+      title: currentLanguage === 'en' ? 'Location' : '찾아오시는길',
+      description: currentLanguage === 'en'
+        ? 'Jungho Group headquarters location\nand contact information'
+        : '정호그룹 본사 위치 및\n연락처 정보',
       icon: '📍',
       color: 'from-teal-500 to-cyan-500',
       bgColor: 'bg-teal-50',
       iconBg: 'bg-teal-100',
-      path: '/v2/about/location',
+      path: '/about/location',
     },
   ];
 
@@ -128,12 +142,22 @@ const AboutPage = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div variants={fadeInUp}>
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-primary-600 dark:text-primary-400 mb-6">
-              정호그룹
+              {currentLanguage === 'en' ? 'Jungho Group' : '정호그룹'}
             </h1>
             <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              혁신적인 조명 기술로 40년,
-              <br />
-              더 밝은 미래를 만들어가는 정호그룹입니다
+              {currentLanguage === 'en' ? (
+                <>
+                  40 years of innovative lighting technology,
+                  <br />
+                  Creating a brighter future
+                </>
+              ) : (
+                <>
+                  혁신적인 조명 기술로 40년,
+                  <br />
+                  더 밝은 미래를 만들어가는 정호그룹입니다
+                </>
+              )}
             </p>
           </motion.div>
 
@@ -149,8 +173,7 @@ const AboutPage = () => {
       <motion.section 
         className="py-20"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        animate="visible"
         variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -198,7 +221,7 @@ const AboutPage = () => {
 
                   {/* 화살표 */}
                   <div className="mt-6 flex items-center text-primary-600 dark:text-primary-400 font-semibold group-hover:translate-x-2 transition-transform">
-                    <span>자세히 보기</span>
+                    <span>{currentLanguage === 'en' ? 'Learn More' : '자세히 보기'}</span>
                     <svg
                       className="w-5 h-5 ml-2"
                       fill="none"
@@ -240,33 +263,36 @@ const AboutPage = () => {
       <motion.section 
         className="py-20 bg-white dark:bg-gray-800"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+        animate="visible"
         variants={fadeInUp}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            더 자세한 정보가 필요하신가요?
+            {currentLanguage === 'en' 
+              ? 'Need more information?' 
+              : '더 자세한 정보가 필요하신가요?'}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-            정호그룹에 대해 궁금하신 점이 있으시면 언제든 문의해주세요
+            {currentLanguage === 'en'
+              ? 'Please contact us if you have any questions about Jungho Group'
+              : '정호그룹에 대해 궁금하신 점이 있으시면 언제든 문의해주세요'}
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <motion.button
-              onClick={() => navigate('/v2/support/contact')}
+              onClick={() => navigate('/support/contact')}
               className="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              문의하기
+              {currentLanguage === 'en' ? 'Contact Us' : '문의하기'}
             </motion.button>
             <motion.button
-              onClick={() => navigate('/v2/subsidiaries')}
+              onClick={() => navigate('/subsidiaries')}
               className="px-8 py-4 bg-white hover:bg-gray-100 text-primary-600 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-primary-600"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              계열사 보기
+              {currentLanguage === 'en' ? 'View Subsidiaries' : '계열사 보기'}
             </motion.button>
           </div>
         </div>

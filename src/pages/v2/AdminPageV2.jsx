@@ -1,0 +1,1531 @@
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+
+/**
+ * V2 관리자 페이지
+ * V2 홈페이지 콘텐츠, 미디어, 사용자 관리
+ */
+const AdminPageV2 = () => {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [saveStatus, setSaveStatus] = useState('');
+  
+  // i18n 데이터
+  const [i18nData, setI18nData] = useState(null);
+  
+  // V2 홈페이지 데이터 (IRGSHero + Gateway)
+  const [v2HomeData, setV2HomeData] = useState({
+    hero: {
+      mainTitle: '사람과 공간을\n밝히는 기술',
+      companyName: '정호그룹',
+      description: '40년의 혁신으로 내일의 빛을 밝힙니다',
+      irgsValues: [
+        {
+          id: 'innovation',
+          title: 'Innovation',
+          subtitle: '혁신',
+          description: '새로운 생각과 기술로\n더 나은 "경험"을 만듭니다',
+          icon: '💡',
+        },
+        {
+          id: 'reliability',
+          title: 'Reliability',
+          subtitle: '신뢰',
+          description: '품질과 약속을 지키는 것,\n"관계의 가치"를 높입니다',
+          icon: '🤝',
+        },
+        {
+          id: 'global',
+          title: 'Global',
+          subtitle: '글로벌',
+          description: '국제 기준을 선도하는\n기술력과 서비스로 글로벌 "경쟁력"',
+          icon: '🌏',
+        },
+        {
+          id: 'sustainability',
+          title: 'Sustainability',
+          subtitle: '지속가능성',
+          description: '인간과 자연이 함께 공존하는\n지속가능한 "내일"을 설계합니다',
+          icon: '🌱',
+        },
+      ]
+    },
+    gateway: {
+      title: '정호그룹 GATEWAY',
+      subtitle: '정호그룹의 다양한 소식을 전합니다',
+      cards: [
+        {
+          id: 'about',
+          icon: '👋',
+          title: '그룹 소개',
+          description: '정호그룹의 비전과\n역사를 확인하세요',
+          path: '/v2/about'
+        },
+        {
+          id: 'subsidiaries',
+          icon: '🏢',
+          title: '계열사',
+          description: '4개 전문 계열사가\n함께합니다',
+          path: '/v2/subsidiaries'
+        },
+        {
+          id: 'media',
+          icon: '🎬',
+          title: '미디어/PR',
+          description: '생생한 소식과\n영상을 만나보세요',
+          path: '/v2/media/promotion'
+        },
+        {
+          id: 'contact',
+          icon: '📞',
+          title: '문의',
+          description: '궁금한 점을\n문의해주세요',
+          path: '/v2/support'
+        }
+      ]
+    }
+  });
+
+  // 미디어 데이터
+  const [mediaData, setMediaData] = useState({
+    promotionVideos: [],
+    snsLinks: {
+      youtube: 'https://www.youtube.com/@JunghoGroup',
+      instagram: 'https://www.instagram.com/jungho_group/',
+      naverBlog: 'https://blog.naver.com/jungho_group',
+      facebook: 'https://www.facebook.com/JunghoGroup'
+    }
+  });
+
+  // 정적 페이지 데이터
+  const [pagesData, setPagesData] = useState({
+    aboutIntro: {
+      paragraph1: '정호그룹은 1982년 설립된 이래 조명제어, LED, 산업설비의 개발 · 제조 · 엔지니어링을 중심으로 사람과 공간, 에너지를 효율적으로 연결하는 종합기술 그룹으로 성장하여 왔으며, 국내는 물론 북미, 유럽, 아시아 시장에서도 그 기술력을 인정받고 있습니다.',
+      paragraph2: '빠르게 변화하는 미래 사회에 적극 대응하고자, 정호그룹은 스마트 빌딩, IoT, 에너지 관리 분야에서 혁신적인 솔루션을 제공하며, 지속 가능한 발전을 위해 끊임없이 노력하고 있습니다.',
+      paragraph3: '정호그룹의 계열사들은 각자의 전문 분야에서 탁월한 기술력과 경험을 바탕으로 시너지를 창출하며, 고객에게 최상의 가치를 제공하고 있습니다.'
+    },
+    subsidiaries: [
+      {
+        id: 'tlc',
+        name: '정호티엘씨',
+        role: '빌딩 자동화 및 전력 제어 솔루션',
+        description: '스마트 빌딩 자동화 시스템 전문 기업',
+        icon: '⚡'
+      },
+      {
+        id: 'clarus',
+        name: '클라루스',
+        role: '조명 제어 시스템 및 스마트 솔루션',
+        description: '첨단 조명 제어 기술 선도 기업',
+        icon: '💡'
+      },
+      {
+        id: 'illutech',
+        name: '일루텍',
+        role: '산업용 LED 조명 개발 및 제조',
+        description: '고효율 LED 조명 전문 제조사',
+        icon: '🔆'
+      },
+      {
+        id: 'texcom',
+        name: '정호텍스컴',
+        role: '섬유기계 및 패션 사업',
+        description: '40년 전통의 섬유기계 전문 기업',
+        icon: '🧵'
+      },
+      {
+        id: 'rss',
+        name: 'RSS 사업부',
+        role: '설비기계 및 산업 솔루션',
+        description: '산업용 설비 전문 사업부',
+        icon: '🔧'
+      }
+    ]
+  });
+
+  // 사용자 데이터
+  const [usersData, setUsersData] = useState([
+    {
+      id: 'user001',
+      username: 'admin123',
+      name: '관리자',
+      email: 'admin@jungho.com',
+      role: 'super_admin',
+      createdAt: '2024-01-01',
+      lastLogin: '2024-11-10 10:30'
+    }
+  ]);
+
+  // 세션에서 인증 상태 확인
+  useEffect(() => {
+    const authStatus = sessionStorage.getItem('admin_v2_authenticated');
+    if (authStatus === 'true') {
+      setIsAuthenticated(true);
+      loadData();
+    }
+  }, []);
+
+  // 데이터 로드
+  const loadData = () => {
+    // LocalStorage에서 V2 데이터 로드
+    const savedV2Home = localStorage.getItem('v2_homepage_data');
+    if (savedV2Home) {
+      try {
+        setV2HomeData(JSON.parse(savedV2Home));
+      } catch (error) {
+        console.error('V2 홈 데이터 로드 실패:', error);
+      }
+    }
+
+    const savedMedia = localStorage.getItem('v2_media_data');
+    if (savedMedia) {
+      try {
+        setMediaData(JSON.parse(savedMedia));
+      } catch (error) {
+        console.error('미디어 데이터 로드 실패:', error);
+      }
+    }
+
+    const savedPages = localStorage.getItem('v2_pages_data');
+    if (savedPages) {
+      try {
+        setPagesData(JSON.parse(savedPages));
+      } catch (error) {
+        console.error('페이지 데이터 로드 실패:', error);
+      }
+    }
+
+    const savedUsers = localStorage.getItem('v2_users_data');
+    if (savedUsers) {
+      try {
+        setUsersData(JSON.parse(savedUsers));
+      } catch (error) {
+        console.error('사용자 데이터 로드 실패:', error);
+      }
+    }
+
+    const savedI18n = localStorage.getItem('i18nTranslations');
+    if (savedI18n) {
+      try {
+        setI18nData(JSON.parse(savedI18n));
+      } catch (error) {
+        console.error('i18n 데이터 로드 실패:', error);
+      }
+    }
+  };
+
+  // 로그인 처리
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (password === 'admin123') {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('admin_v2_authenticated', 'true');
+      setAuthError('');
+      loadData();
+    } else {
+      setAuthError('비밀번호가 올바르지 않습니다.');
+      setPassword('');
+    }
+  };
+
+  // 로그아웃
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('admin_v2_authenticated');
+    setPassword('');
+  };
+
+  // V2 홈 데이터 저장
+  const saveV2HomeData = () => {
+    setSaveStatus('saving');
+    try {
+      localStorage.setItem('v2_homepage_data', JSON.stringify(v2HomeData));
+      setSaveStatus('success');
+      setTimeout(() => {
+        setSaveStatus('');
+      }, 3000);
+    } catch (error) {
+      console.error('저장 실패:', error);
+      setSaveStatus('error');
+    }
+  };
+
+  // 미디어 데이터 저장
+  const saveMediaData = () => {
+    setSaveStatus('saving');
+    try {
+      localStorage.setItem('v2_media_data', JSON.stringify(mediaData));
+      setSaveStatus('success');
+      setTimeout(() => {
+        setSaveStatus('');
+      }, 3000);
+    } catch (error) {
+      console.error('저장 실패:', error);
+      setSaveStatus('error');
+    }
+  };
+
+  // 페이지 데이터 저장
+  const savePagesData = () => {
+    setSaveStatus('saving');
+    try {
+      localStorage.setItem('v2_pages_data', JSON.stringify(pagesData));
+      setSaveStatus('success');
+      setTimeout(() => {
+        setSaveStatus('');
+      }, 3000);
+    } catch (error) {
+      console.error('저장 실패:', error);
+      setSaveStatus('error');
+    }
+  };
+
+  // 사용자 데이터 저장
+  const saveUsersData = () => {
+    setSaveStatus('saving');
+    try {
+      localStorage.setItem('v2_users_data', JSON.stringify(usersData));
+      setSaveStatus('success');
+      setTimeout(() => {
+        setSaveStatus('');
+      }, 3000);
+    } catch (error) {
+      console.error('저장 실패:', error);
+      setSaveStatus('error');
+    }
+  };
+
+  // i18n 데이터 저장
+  const saveI18nData = () => {
+    setSaveStatus('saving');
+    try {
+      localStorage.setItem('i18nTranslations', JSON.stringify(i18nData));
+      
+      // i18n 시스템에 데이터 업데이트 알림
+      window.dispatchEvent(new CustomEvent('i18nDataUpdated'));
+      
+      setSaveStatus('success');
+      setTimeout(() => {
+        setSaveStatus('');
+      }, 3000);
+    } catch (error) {
+      console.error('저장 실패:', error);
+      setSaveStatus('error');
+    }
+  };
+
+  // 로그인 화면
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md"
+        >
+          <div className="text-center mb-8">
+            <div className="mb-6">
+              <img 
+                src="/images/logos/jungho-logo.png" 
+                alt="정호그룹 로고" 
+                className="h-16 w-auto mx-auto object-contain"
+                onError={(e) => {
+                  // 이미지 로드 실패 시 대체 아이콘 표시
+                  e.target.style.display = 'none';
+                  e.target.nextElementSibling.style.display = 'inline-flex';
+                }}
+              />
+              <div className="hidden items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full mx-auto">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">V2 관리자 페이지</h2>
+            <p className="text-gray-600 dark:text-gray-400">정호그룹 V2 홈페이지 관리</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                비밀번호
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+                placeholder="비밀번호를 입력하세요"
+                autoFocus
+              />
+              {authError && (
+                <p className="mt-2 text-sm text-red-600 flex items-center">
+                  <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  {authError}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 rounded-lg font-semibold hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transform transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              로그인
+            </button>
+          </form>
+
+          <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+            <p>기본 비밀번호: admin123</p>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // 관리자 대시보드
+  const tabs = [
+    { id: 'dashboard', label: '대시보드', icon: '📊' },
+    { id: 'v2home', label: 'V2 홈페이지', icon: '🏠' },
+    { id: 'pages', label: '정적 페이지', icon: '📄' },
+    { id: 'media', label: '미디어 관리', icon: '🎬' },
+    { id: 'i18n', label: '다국어 관리', icon: '🌐' },
+    { id: 'users', label: '사용자 관리', icon: '👥' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* 헤더 */}
+      <header className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-4">
+              <button 
+                onClick={() => navigate('/')}
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity group"
+                title="홈페이지로 이동"
+              >
+                <img 
+                  src="/images/logos/jungho-logo.png" 
+                  alt="정호그룹 로고" 
+                  className="h-10 w-auto object-contain group-hover:scale-105 transition-transform"
+                  onError={(e) => {
+                    // 이미지 로드 실패 시 대체 로고 표시
+                    e.target.style.display = 'none';
+                    e.target.nextElementSibling.style.display = 'flex';
+                  }}
+                />
+                <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg items-center justify-center hidden">
+                  <span className="text-xl font-bold text-white">JH</span>
+                </div>
+                <div className="text-left">
+                  <h1 className="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+                    V2 관리자
+                    <svg className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </h1>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">정호그룹 V2 (클릭하여 홈으로)</p>
+                </div>
+              </button>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => window.open('/', '_blank')}
+                className="text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 flex items-center space-x-1"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                <span>홈페이지 미리보기</span>
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors flex items-center space-x-1"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                <span>로그아웃</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* 탭 네비게이션 */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md mb-6 p-2">
+          <div className="flex flex-wrap gap-2">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-semibold transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                }`}
+              >
+                <span className="mr-2">{tab.icon}</span>
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 저장 상태 알림 */}
+        {saveStatus && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`mb-6 p-4 rounded-lg ${
+              saveStatus === 'success' ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-700' :
+              saveStatus === 'error' ? 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-700' :
+              'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700'
+            }`}
+          >
+            {saveStatus === 'success' && '✅ 저장되었습니다!'}
+            {saveStatus === 'error' && '❌ 저장에 실패했습니다.'}
+            {saveStatus === 'saving' && '💾 저장 중...'}
+          </motion.div>
+        )}
+
+        {/* 컨텐츠 영역 */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          {activeTab === 'dashboard' && <DashboardTab />}
+          {activeTab === 'v2home' && <V2HomeTab data={v2HomeData} setData={setV2HomeData} onSave={saveV2HomeData} />}
+          {activeTab === 'pages' && <PagesTab data={pagesData} setData={setPagesData} onSave={savePagesData} />}
+          {activeTab === 'media' && <MediaTab data={mediaData} setData={setMediaData} onSave={saveMediaData} />}
+          {activeTab === 'i18n' && i18nData && <I18nTab data={i18nData} setData={setI18nData} onSave={saveI18nData} />}
+          {activeTab === 'users' && <UsersTab data={usersData} setData={setUsersData} onSave={saveUsersData} />}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// 대시보드 탭
+const DashboardTab = () => (
+  <div>
+    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">대시보드</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {[
+        { label: '페이지뷰', value: '12,345', icon: '👁️', color: 'blue' },
+        { label: '방문자', value: '1,234', icon: '👥', color: 'green' },
+        { label: '콘텐츠', value: '56', icon: '📄', color: 'purple' },
+        { label: '미디어', value: '23', icon: '🎬', color: 'orange' },
+      ].map((stat, index) => (
+        <div key={index} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+          <div className="text-3xl mb-2">{stat.icon}</div>
+          <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+    
+    <div className="mt-8 p-6 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
+      <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">💡 빠른 시작</h3>
+      <ul className="space-y-2 text-blue-800 dark:text-blue-200">
+        <li>• <strong>V2 홈페이지</strong>: IRGSHero와 Gateway 섹션을 관리하세요</li>
+        <li>• <strong>미디어 관리</strong>: 홍보영상과 SNS 링크를 업데이트하세요</li>
+        <li>• <strong>사용자 관리</strong>: 관리자 계정을 추가/수정하세요</li>
+      </ul>
+    </div>
+  </div>
+);
+
+// V2 홈페이지 탭
+const V2HomeTab = ({ data, setData, onSave }) => {
+  const [expandedSection, setExpandedSection] = useState('hero');
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">V2 홈페이지 관리</h2>
+        <button
+          onClick={onSave}
+          className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
+        >
+          💾 저장하기
+        </button>
+      </div>
+
+      {/* Hero 섹션 */}
+      <div className="mb-6 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+        <button
+          onClick={() => setExpandedSection(expandedSection === 'hero' ? null : 'hero')}
+          className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        >
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">🎨 Hero 섹션</h3>
+          <svg className={`w-5 h-5 transition-transform ${expandedSection === 'hero' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        
+        {expandedSection === 'hero' && (
+          <div className="p-6 space-y-6">
+            {/* 메인 문구 */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                메인 타이틀
+              </label>
+              <textarea
+                value={data.hero.mainTitle}
+                onChange={(e) => setData({...data, hero: {...data.hero, mainTitle: e.target.value}})}
+                rows="2"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  회사명
+                </label>
+                <input
+                  type="text"
+                  value={data.hero.companyName}
+                  onChange={(e) => setData({...data, hero: {...data.hero, companyName: e.target.value}})}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  설명
+                </label>
+                <input
+                  type="text"
+                  value={data.hero.description}
+                  onChange={(e) => setData({...data, hero: {...data.hero, description: e.target.value}})}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+            </div>
+
+            {/* IRGS 핵심가치 */}
+            <div>
+              <h4 className="text-md font-bold text-gray-900 dark:text-white mb-4">IRGS 핵심가치 (4개)</h4>
+              <div className="space-y-4">
+                {data.hero.irgsValues.map((value, index) => (
+                  <div key={value.id} className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center mb-3">
+                      <span className="text-3xl mr-3">{value.icon}</span>
+                      <h5 className="font-bold text-gray-900 dark:text-white">{value.title}</h5>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">부제</label>
+                        <input
+                          type="text"
+                          value={value.subtitle}
+                          onChange={(e) => {
+                            const newValues = [...data.hero.irgsValues];
+                            newValues[index].subtitle = e.target.value;
+                            setData({...data, hero: {...data.hero, irgsValues: newValues}});
+                          }}
+                          className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">설명</label>
+                        <textarea
+                          value={value.description}
+                          onChange={(e) => {
+                            const newValues = [...data.hero.irgsValues];
+                            newValues[index].description = e.target.value;
+                            setData({...data, hero: {...data.hero, irgsValues: newValues}});
+                          }}
+                          rows="2"
+                          className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Gateway 섹션 */}
+      <div className="mb-6 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+        <button
+          onClick={() => setExpandedSection(expandedSection === 'gateway' ? null : 'gateway')}
+          className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        >
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">🚪 Gateway 섹션</h3>
+          <svg className={`w-5 h-5 transition-transform ${expandedSection === 'gateway' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        
+        {expandedSection === 'gateway' && (
+          <div className="p-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">제목</label>
+                <input
+                  type="text"
+                  value={data.gateway.title}
+                  onChange={(e) => setData({...data, gateway: {...data.gateway, title: e.target.value}})}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">부제목</label>
+                <input
+                  type="text"
+                  value={data.gateway.subtitle}
+                  onChange={(e) => setData({...data, gateway: {...data.gateway, subtitle: e.target.value}})}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+            </div>
+
+            {/* Gateway 카드 */}
+            <div>
+              <h4 className="text-md font-bold text-gray-900 dark:text-white mb-4">Gateway 카드 (4개)</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {data.gateway.cards.map((card, index) => (
+                  <div key={card.id} className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center mb-3">
+                      <span className="text-2xl mr-2">{card.icon}</span>
+                      <input
+                        type="text"
+                        value={card.title}
+                        onChange={(e) => {
+                          const newCards = [...data.gateway.cards];
+                          newCards[index].title = e.target.value;
+                          setData({...data, gateway: {...data.gateway, cards: newCards}});
+                        }}
+                        className="flex-1 px-3 py-2 text-sm font-bold border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                      />
+                    </div>
+                    <textarea
+                      value={card.description}
+                      onChange={(e) => {
+                        const newCards = [...data.gateway.cards];
+                        newCards[index].description = e.target.value;
+                        setData({...data, gateway: {...data.gateway, cards: newCards}});
+                      }}
+                      rows="2"
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                      placeholder="설명"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// 미디어 관리 탭
+const MediaTab = ({ data, setData, onSave }) => (
+  <div>
+    <div className="flex items-center justify-between mb-6">
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">미디어 관리</h2>
+      <button
+        onClick={onSave}
+        className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
+      >
+        💾 저장하기
+      </button>
+    </div>
+
+    {/* SNS 링크 */}
+    <div className="mb-6">
+      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">🔗 SNS 링크</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {Object.entries(data.snsLinks).map(([key, value]) => (
+          <div key={key}>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 capitalize">
+              {key === 'naverBlog' ? '네이버 블로그' : key}
+            </label>
+            <input
+              type="url"
+              value={value}
+              onChange={(e) => setData({...data, snsLinks: {...data.snsLinks, [key]: e.target.value}})}
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              placeholder={`https://...`}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* 홍보영상 관리 */}
+    <div>
+      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">🎬 홍보영상 관리</h3>
+      <div className="p-6 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
+        <div className="text-6xl mb-4">🎬</div>
+        <p className="text-gray-600 dark:text-gray-400 mb-4">
+          홍보영상 관리 기능은 곧 추가될 예정입니다
+        </p>
+        <button className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-semibold cursor-not-allowed">
+          준비 중
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
+// 정적 페이지 관리 탭
+const PagesTab = ({ data, setData, onSave }) => {
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">정적 페이지 관리</h2>
+        <button
+          onClick={onSave}
+          className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
+        >
+          💾 저장하기
+        </button>
+      </div>
+
+      {/* About 소개 섹션 */}
+      <div className="mb-8 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+        <div className="p-4 bg-gray-50 dark:bg-gray-900">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">📖 정호그룹 소개</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">About > 정호소개 페이지 내용</p>
+        </div>
+        
+        <div className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              첫 번째 문단
+            </label>
+            <textarea
+              value={data.aboutIntro.paragraph1}
+              onChange={(e) => setData({
+                ...data,
+                aboutIntro: {...data.aboutIntro, paragraph1: e.target.value}
+              })}
+              rows="3"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              두 번째 문단
+            </label>
+            <textarea
+              value={data.aboutIntro.paragraph2}
+              onChange={(e) => setData({
+                ...data,
+                aboutIntro: {...data.aboutIntro, paragraph2: e.target.value}
+              })}
+              rows="3"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              세 번째 문단
+            </label>
+            <textarea
+              value={data.aboutIntro.paragraph3}
+              onChange={(e) => setData({
+                ...data,
+                aboutIntro: {...data.aboutIntro, paragraph3: e.target.value}
+              })}
+              rows="3"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 계열사 정보 섹션 */}
+      <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+        <div className="p-4 bg-gray-50 dark:bg-gray-900">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">🏢 계열사 정보</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">4개 계열사의 기본 정보</p>
+        </div>
+        
+        <div className="p-6 space-y-6">
+          {data.subsidiaries.map((sub, index) => (
+            <div key={sub.id} className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center mb-4">
+                <span className="text-3xl mr-3">{sub.icon}</span>
+                <h4 className="text-lg font-bold text-gray-900 dark:text-white">{sub.name}</h4>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
+                    역할 (한 줄 설명)
+                  </label>
+                  <input
+                    type="text"
+                    value={sub.role}
+                    onChange={(e) => {
+                      const newSubs = [...data.subsidiaries];
+                      newSubs[index].role = e.target.value;
+                      setData({...data, subsidiaries: newSubs});
+                    }}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
+                    상세 설명
+                  </label>
+                  <input
+                    type="text"
+                    value={sub.description}
+                    onChange={(e) => {
+                      const newSubs = [...data.subsidiaries];
+                      newSubs[index].description = e.target.value;
+                      setData({...data, subsidiaries: newSubs});
+                    }}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// 사용자 관리 탭
+const UsersTab = ({ data, setData, onSave }) => {
+  const [showAddModal, setShowAddModal] = React.useState(false);
+  const [editingUser, setEditingUser] = React.useState(null);
+  const [formData, setFormData] = React.useState({
+    username: '',
+    name: '',
+    email: '',
+    password: '',
+    role: 'editor'
+  });
+
+  const roles = [
+    { value: 'super_admin', label: '최고 관리자', color: 'bg-red-100 text-red-800', icon: '👑' },
+    { value: 'admin', label: '관리자', color: 'bg-blue-100 text-blue-800', icon: '⭐' },
+    { value: 'editor', label: '편집자', color: 'bg-green-100 text-green-800', icon: '✏️' },
+    { value: 'viewer', label: '열람자', color: 'bg-gray-100 text-gray-800', icon: '👁️' }
+  ];
+
+  // 사용자 추가
+  const handleAddUser = () => {
+    if (!formData.username || !formData.name || !formData.email || !formData.password) {
+      alert('모든 필드를 입력해주세요.');
+      return;
+    }
+
+    const newUser = {
+      id: 'user' + Date.now(),
+      username: formData.username,
+      name: formData.name,
+      email: formData.email,
+      role: formData.role,
+      createdAt: new Date().toISOString().split('T')[0],
+      lastLogin: '-'
+    };
+
+    setData([...data, newUser]);
+    setShowAddModal(false);
+    setFormData({ username: '', name: '', email: '', password: '', role: 'editor' });
+  };
+
+  // 사용자 수정
+  const handleUpdateUser = () => {
+    const updatedUsers = data.map(user => 
+      user.id === editingUser.id 
+        ? { ...user, name: formData.name, email: formData.email, role: formData.role }
+        : user
+    );
+    setData(updatedUsers);
+    setEditingUser(null);
+    setFormData({ username: '', name: '', email: '', password: '', role: 'editor' });
+  };
+
+  // 사용자 삭제
+  const handleDeleteUser = (userId) => {
+    if (userId === 'user001') {
+      alert('기본 관리자 계정은 삭제할 수 없습니다.');
+      return;
+    }
+    if (window.confirm('정말 이 사용자를 삭제하시겠습니까?')) {
+      setData(data.filter(user => user.id !== userId));
+    }
+  };
+
+  // 수정 모달 열기
+  const openEditModal = (user) => {
+    setEditingUser(user);
+    setFormData({
+      username: user.username,
+      name: user.name,
+      email: user.email,
+      password: '',
+      role: user.role
+    });
+  };
+
+  const getRoleInfo = (roleValue) => {
+    return roles.find(r => r.value === roleValue) || roles[2];
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">사용자 관리</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            관리자 계정을 추가하고 권한을 관리하세요
+          </p>
+        </div>
+        <div className="flex space-x-3">
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="px-6 py-2 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg font-semibold hover:from-primary-600 hover:to-primary-700 transition-all shadow-lg flex items-center space-x-2"
+          >
+            <span>➕</span>
+            <span>사용자 추가</span>
+          </button>
+          <button
+            onClick={onSave}
+            className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
+          >
+            💾 저장하기
+          </button>
+        </div>
+      </div>
+
+      {/* 사용자 목록 */}
+      <div className="overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-900">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                사용자 정보
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                권한
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                생성일
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                마지막 로그인
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                작업
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            {data.map((user) => {
+              const roleInfo = getRoleInfo(user.role);
+              return (
+                <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white font-bold">
+                        {user.name.charAt(0)}
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                          {user.name}
+                        </div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          @{user.username} • {user.email}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-semibold ${roleInfo.color}`}>
+                      <span>{roleInfo.icon}</span>
+                      <span>{roleInfo.label}</span>
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                    {user.createdAt}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                    {user.lastLogin}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button
+                      onClick={() => openEditModal(user)}
+                      className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 mr-4 font-semibold"
+                    >
+                      수정
+                    </button>
+                    {user.id !== 'user001' && (
+                      <button
+                        onClick={() => handleDeleteUser(user.id)}
+                        className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 font-semibold"
+                      >
+                        삭제
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* 권한 설명 */}
+      <div className="mt-6 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+          <span className="mr-2">ℹ️</span>
+          권한 레벨 설명
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {roles.map((role) => (
+            <div key={role.value} className="flex items-start space-x-3">
+              <span className="text-2xl">{role.icon}</span>
+              <div>
+                <p className="font-semibold text-gray-900 dark:text-white">{role.label}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {role.value === 'super_admin' && '모든 권한 (사용자 관리 포함)'}
+                  {role.value === 'admin' && '콘텐츠 및 설정 관리'}
+                  {role.value === 'editor' && '콘텐츠 편집 가능'}
+                  {role.value === 'viewer' && '열람만 가능'}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 사용자 추가/수정 모달 */}
+      {(showAddModal || editingUser) && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full p-6">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+              {editingUser ? '사용자 수정' : '새 사용자 추가'}
+            </h3>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  아이디
+                </label>
+                <input
+                  type="text"
+                  value={formData.username}
+                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                  disabled={!!editingUser}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white disabled:opacity-50"
+                  placeholder="admin_user"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  이름
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                  placeholder="홍길동"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  이메일
+                </label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                  placeholder="user@jungho.com"
+                />
+              </div>
+
+              {!editingUser && (
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    비밀번호
+                  </label>
+                  <input
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="비밀번호 입력"
+                  />
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  권한
+                </label>
+                <select
+                  value={formData.role}
+                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                >
+                  {roles.map((role) => (
+                    <option key={role.value} value={role.value}>
+                      {role.icon} {role.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="mt-6 flex space-x-3">
+              <button
+                onClick={() => {
+                  editingUser ? handleUpdateUser() : handleAddUser();
+                }}
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg font-semibold hover:from-primary-600 hover:to-primary-700 transition-all"
+              >
+                {editingUser ? '수정 완료' : '추가하기'}
+              </button>
+              <button
+                onClick={() => {
+                  setShowAddModal(false);
+                  setEditingUser(null);
+                  setFormData({ username: '', name: '', email: '', password: '', role: 'editor' });
+                }}
+                className="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-all"
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// 다국어 관리 탭
+const I18nTab = ({ data, setData, onSave }) => {
+  const [selectedLang, setSelectedLang] = React.useState('en');
+  
+  const languages = [
+    { code: 'ko', name: '한국어', flag: '🇰🇷', description: '기본 언어 (원본)' },
+    { code: 'en', name: 'English', flag: '🇺🇸', description: '영어 번역' }
+  ];
+
+  const translationSections = [
+    {
+      id: 'v2Home',
+      title: 'V2 홈페이지',
+      icon: '🏠',
+      fields: [
+        { key: 'home.hero.title', label: 'Hero 제목', type: 'textarea' },
+        { key: 'home.hero.subtitle', label: 'Hero 부제목', type: 'textarea' },
+        { key: 'home.hero.description', label: 'Hero 설명', type: 'textarea' },
+        { key: 'home.subsidiaries.title', label: '계열사 섹션 제목', type: 'textarea' },
+        { key: 'home.subsidiaries.description', label: '계열사 섹션 설명', type: 'text' },
+        { key: 'header.title', label: '회사명 (헤더)', type: 'text' },
+      ]
+    },
+    {
+      id: 'about',
+      title: 'ABOUT 페이지',
+      icon: '📖',
+      fields: [
+        { key: 'home.group.para1', label: '그룹 소개 - 첫 번째 문단', type: 'textarea' },
+        { key: 'home.group.para2', label: '그룹 소개 - 두 번째 문단', type: 'textarea' },
+        { key: 'home.group.para3', label: '그룹 소개 - 세 번째 문단', type: 'textarea' },
+      ]
+    },
+    {
+      id: 'subsidiaries',
+      title: '계열사',
+      icon: '🏢',
+      fields: [
+        { key: 'home.subsidiaries.clarus.title', label: '클라루스 - 제목', type: 'text' },
+        { key: 'home.subsidiaries.clarus.subtitle', label: '클라루스 - 부제목', type: 'text' },
+        { key: 'home.subsidiaries.clarus.description', label: '클라루스 - 설명', type: 'textarea' },
+        { key: 'home.subsidiaries.tlc.title', label: 'TLC - 제목', type: 'text' },
+        { key: 'home.subsidiaries.tlc.subtitle', label: 'TLC - 부제목', type: 'text' },
+        { key: 'home.subsidiaries.tlc.description', label: 'TLC - 설명', type: 'textarea' },
+        { key: 'home.subsidiaries.illutech.title', label: '일루텍 - 제목', type: 'text' },
+        { key: 'home.subsidiaries.illutech.subtitle', label: '일루텍 - 부제목', type: 'text' },
+        { key: 'home.subsidiaries.illutech.description', label: '일루텍 - 설명', type: 'textarea' },
+        { key: 'home.subsidiaries.texcom.title', label: '텍스컴 - 제목', type: 'text' },
+        { key: 'home.subsidiaries.texcom.subtitle', label: '텍스컴 - 부제목', type: 'text' },
+        { key: 'home.subsidiaries.texcom.description', label: '텍스컴 - 설명', type: 'textarea' },
+      ]
+    },
+    {
+      id: 'gateway',
+      title: 'Gateway 카드',
+      icon: '🚪',
+      fields: [
+        { key: 'home.group.title', label: 'Gateway - 그룹 소개 제목', type: 'text' },
+        { key: 'home.group.description', label: 'Gateway - 그룹 소개 설명', type: 'textarea' },
+        { key: 'footer.subsidiaries', label: 'Gateway - 계열사 제목', type: 'text' },
+        { key: 'common.news', label: 'Gateway - 미디어/PR 제목', type: 'text' },
+        { key: 'home.latestNews.description', label: 'Gateway - 미디어/PR 설명', type: 'text' },
+        { key: 'support.contactForm.description', label: 'Gateway - 문의하기 설명', type: 'textarea' },
+      ]
+    },
+    {
+      id: 'common',
+      title: '공통 UI',
+      icon: '🔤',
+      fields: [
+        { key: 'common.learnMore', label: '자세히 보기', type: 'text' },
+        { key: 'common.contact', label: '문의하기', type: 'text' },
+        { key: 'common.readMore', label: '더 보기', type: 'text' },
+        { key: 'buttons.contact', label: '버튼: 문의하기', type: 'text' },
+        { key: 'buttons.download', label: '버튼: 다운로드', type: 'text' },
+      ]
+    },
+    {
+      id: 'navigation',
+      title: '네비게이션 메뉴',
+      icon: '🧭',
+      fields: [
+        { key: 'nav.about.intro', label: 'ABOUT - 정호소개', type: 'text' },
+        { key: 'nav.about.vision', label: 'ABOUT - 그룹비전', type: 'text' },
+        { key: 'nav.about.management', label: 'ABOUT - 경영방침', type: 'text' },
+        { key: 'nav.about.location', label: 'ABOUT - 찾아오시는길', type: 'text' },
+        { key: 'nav.subsidiaries.main', label: '그룹사 (메인)', type: 'text' },
+        { key: 'nav.subsidiaries.tlc', label: '그룹사 - 정호티엘씨', type: 'text' },
+        { key: 'nav.subsidiaries.clarus', label: '그룹사 - 클라루스', type: 'text' },
+        { key: 'nav.subsidiaries.illutech', label: '그룹사 - 일루텍', type: 'text' },
+        { key: 'nav.subsidiaries.texcom', label: '그룹사 - 정호텍스컴', type: 'text' },
+        { key: 'nav.subsidiaries.rss', label: '그룹사 - RSS 사업부', type: 'text' },
+        { key: 'nav.media.main', label: '미디어/PR (메인)', type: 'text' },
+        { key: 'nav.media.projects', label: '미디어/PR - 프로젝트 영상', type: 'text' },
+        { key: 'nav.media.promotion', label: '미디어/PR - 홍보영상', type: 'text' },
+        { key: 'nav.support.main', label: '고객센터 (메인)', type: 'text' },
+        { key: 'nav.support.report', label: '고객센터 - 지원 제보', type: 'text' },
+        { key: 'nav.support.contact', label: '고객센터 - 문의하기', type: 'text' },
+        { key: 'nav.family', label: '패밀리 사이트', type: 'text' },
+      ]
+    }
+  ];
+
+  // 키 경로를 따라 값 가져오기
+  const getNestedValue = (obj, path) => {
+    if (!obj) return '';
+    const keys = path.split('.');
+    let value = obj;
+    for (const key of keys) {
+      if (value && typeof value === 'object' && key in value) {
+        value = value[key];
+      } else {
+        return '';
+      }
+    }
+    return value || '';
+  };
+
+  // 키 경로를 따라 값 설정하기
+  const setNestedValue = (obj, path, value) => {
+    const keys = path.split('.');
+    const newObj = JSON.parse(JSON.stringify(obj)); // deep clone
+    let target = newObj;
+    
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (!target[keys[i]]) {
+        target[keys[i]] = {};
+      }
+      target = target[keys[i]];
+    }
+    
+    target[keys[keys.length - 1]] = value;
+    return newObj;
+  };
+
+  const handleChange = (key, value) => {
+    const updatedData = setNestedValue(data, `${selectedLang}.${key}`, value);
+    setData(updatedData);
+  };
+
+  // 번역 진행률 계산
+  const calculateProgress = () => {
+    let total = 0;
+    let translated = 0;
+    
+    translationSections.forEach(section => {
+      section.fields.forEach(field => {
+        total++;
+        const value = getNestedValue(data[selectedLang], field.key);
+        if (value && value.trim() !== '') {
+          translated++;
+        }
+      });
+    });
+    
+    return { total, translated, percentage: total > 0 ? Math.round((translated / total) * 100) : 0 };
+  };
+
+  const progress = calculateProgress();
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">다국어 관리</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            웹사이트의 다국어 번역을 관리하세요
+          </p>
+        </div>
+        <button
+          onClick={onSave}
+          className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
+        >
+          💾 저장하기
+        </button>
+      </div>
+
+      {/* 언어 선택 탭 */}
+      <div className="mb-6 bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+        <div className="flex flex-wrap gap-3">
+          {languages.map((lang) => (
+            <button
+              key={lang.code}
+              onClick={() => setSelectedLang(lang.code)}
+              disabled={lang.code === 'ko'}
+              className={`flex-1 min-w-[200px] px-6 py-4 rounded-lg font-semibold transition-all ${
+                selectedLang === lang.code
+                  ? 'bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg'
+                  : lang.code === 'ko'
+                  ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-500 cursor-not-allowed'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              }`}
+            >
+              <div className="flex items-center justify-center space-x-2">
+                <span className="text-2xl">{lang.flag}</span>
+                <div className="text-left">
+                  <div className="font-bold">{lang.name}</div>
+                  <div className="text-xs opacity-75">{lang.description}</div>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+        
+        {/* 번역 진행률 */}
+        <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              {selectedLang === 'ko' ? '한국어 (원본)' : `${languages.find(l => l.code === selectedLang)?.name} 번역 진행률`}
+            </span>
+            <span className="text-sm font-bold text-primary-600 dark:text-primary-400">
+              {progress.translated} / {progress.total} ({progress.percentage}%)
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div
+              className="bg-gradient-to-r from-primary-500 to-primary-600 h-2 rounded-full transition-all duration-500"
+              style={{ width: `${progress.percentage}%` }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 번역 섹션들 */}
+      <div className="space-y-6">
+        {translationSections.map((section) => (
+          <div key={section.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+            <div className="p-4 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+                <span className="mr-2">{section.icon}</span>
+                {section.title}
+              </h3>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              {section.fields.map((field) => {
+                const koValue = getNestedValue(data.ko, field.key);
+                const translatedValue = getNestedValue(data[selectedLang], field.key);
+                
+                return (
+                  <div key={field.key} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      {field.label}
+                    </label>
+                    
+                    {/* 한국어 원본 (참고용) */}
+                    {selectedLang !== 'ko' && (
+                      <div className="mb-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+                        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
+                          🇰🇷 한국어 원본:
+                        </p>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                          {koValue || '(없음)'}
+                        </p>
+                      </div>
+                    )}
+                    
+                    {/* 번역 입력 필드 */}
+                    {field.type === 'textarea' ? (
+                      <textarea
+                        value={translatedValue}
+                        onChange={(e) => handleChange(field.key, e.target.value)}
+                        disabled={selectedLang === 'ko'}
+                        rows="4"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                        placeholder={selectedLang === 'ko' ? '원본 텍스트' : '번역을 입력하세요...'}
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        value={translatedValue}
+                        onChange={(e) => handleChange(field.key, e.target.value)}
+                        disabled={selectedLang === 'ko'}
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                        placeholder={selectedLang === 'ko' ? '원본 텍스트' : '번역을 입력하세요...'}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 도움말 */}
+      <div className="mt-6 p-6 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+          <span className="mr-2">💡</span>
+          번역 가이드
+        </h3>
+        <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+          <li>• 한국어 원본을 참고하여 정확하게 번역해주세요</li>
+          <li>• 개행 문자(\n)는 그대로 유지해주세요</li>
+          <li>• 전문 번역가의 검토를 권장합니다</li>
+          <li>• 저장 후 홈페이지에서 언어 전환하여 확인하세요</li>
+          <li>• 번역이 반영되지 않으면 페이지를 새로고침하세요</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default AdminPageV2;
+

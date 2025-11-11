@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { HeroSection } from '../../components/v2';
+import { useI18n } from '../../hooks/useI18n';
 
 const AboutHistoryPage = () => {
+  const { t, currentLanguage } = useI18n();
   // 애니메이션 variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -333,8 +335,7 @@ const AboutHistoryPage = () => {
       <motion.section 
         className="py-20 bg-white dark:bg-gray-900"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
+        animate="visible"
         variants={staggerContainer}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

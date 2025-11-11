@@ -9,7 +9,7 @@ import LanguageSelector from '../LanguageSelector';
  * + 부드러운 CSS 드롭다운 애니메이션
  */
 const MegaMenu = () => {
-  const { t } = useI18n();
+  const { t, currentLanguage } = useI18n();
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -18,46 +18,45 @@ const MegaMenu = () => {
   const menuStructure = [
     {
       id: 'about',
-      label: 'ABOUT',
-      path: '/v2/about',
+      label: currentLanguage === 'en' ? 'ABOUT' : 'ABOUT',
+      path: '/about',
       submenu: [
-        { label: '정호소개', path: '/v2/about/intro', icon: '👋' },
-        { label: '그룹비전 (IRGS)', path: '/v2/about/vision', icon: '🎯' },
-        { label: '경영방침', path: '/v2/about/management', icon: '📋' },
-        { label: 'CI/BI', path: '/v2/about/ci', icon: '🎨' },
-        { label: 'HISTORY', path: '/v2/about/history', icon: '📅' },
-        { label: '찾아오시는길', path: '/v2/about/location', icon: '📍' },
+        { label: t('nav.about.intro') || '정호소개', path: '/about/intro', icon: '👋' },
+        { label: t('nav.about.vision') || '그룹비전 (IRGS)', path: '/about/vision', icon: '🎯' },
+        { label: t('nav.about.management') || '경영방침', path: '/about/management', icon: '📋' },
+        { label: 'CI/BI', path: '/about/ci', icon: '🎨' },
+        { label: 'HISTORY', path: '/about/history', icon: '📅' },
+        { label: t('nav.about.location') || '찾아오시는길', path: '/about/location', icon: '📍' },
       ],
     },
     {
       id: 'subsidiaries',
-      label: '그룹사',
-      path: '/v2/subsidiaries',
+      label: t('nav.subsidiaries.main') || '그룹사',
+      path: '/subsidiaries',
       submenu: [
-        { label: '정호티엘씨', path: '/v2/subsidiaries/tlc', icon: '⚡', color: 'tlc' },
-        { label: '클라루스', path: '/v2/subsidiaries/clarus', icon: '💡', color: 'clarus' },
-        { label: '일루텍', path: '/v2/subsidiaries/illutech', icon: '🔆', color: 'illutech' },
-        { label: '정호텍스컴', path: '/v2/subsidiaries/texcom', icon: '🧵', color: 'texcom' },
-        { label: 'RSS 사업부', path: '/v2/subsidiaries/rss', icon: '🔧', color: 'rss' },
+        { label: t('nav.subsidiaries.tlc') || '정호티엘씨', path: '/subsidiaries/tlc', icon: '⚡', color: 'tlc' },
+        { label: t('nav.subsidiaries.clarus') || '클라루스', path: '/subsidiaries/clarus', icon: '💡', color: 'clarus' },
+        { label: t('nav.subsidiaries.illutech') || '일루텍', path: '/subsidiaries/illutech', icon: '🔆', color: 'illutech' },
+        { label: t('nav.subsidiaries.texcom') || '정호텍스컴', path: '/subsidiaries/texcom', icon: '🧵', color: 'texcom' },
       ],
     },
     {
       id: 'media',
-      label: '미디어/PR',
-      path: '/v2/projects', // 프로젝트 영상으로 바로 연결
+      label: t('nav.media.main') || '미디어/PR',
+      path: '/projects', // 프로젝트 영상으로 바로 연결
       submenu: [
-        { label: '프로젝트 영상', path: '/v2/projects', icon: '🏢' },
-        { label: '홍보영상', path: '/v2/media/promotion', icon: '📺' },
-        { label: 'SNS', path: '/v2/media/sns', icon: '📱' },
+        { label: t('nav.media.projects') || '프로젝트 영상', path: '/projects', icon: '🏢' },
+        { label: t('nav.media.promotion') || '홍보영상', path: '/media/promotion', icon: '📺' },
+        { label: 'SNS', path: '/media/sns', icon: '📱' },
       ],
     },
     {
       id: 'support',
-      label: '고객센터',
-      path: '/v2/support',
+      label: t('nav.support.main') || '고객센터',
+      path: '/support',
       submenu: [
-        { label: '지원 제보', path: '/v2/support/report', icon: '📝' },
-        { label: '문의하기', path: '/v2/support/contact', icon: '📧' },
+        { label: t('nav.support.report') || '지원 제보', path: '/support/report', icon: '📝' },
+        { label: t('nav.support.contact') || '문의하기', path: '/support/contact', icon: '📧' },
       ],
     },
   ];
@@ -92,13 +91,23 @@ const MegaMenu = () => {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* 로고 */}
-          <Link to="/v2" className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center">
+          <Link to="/" className="flex items-center space-x-3 group">
+            <img 
+              src="/images/logos/jungho-logo.png" 
+              alt="정호그룹 로고" 
+              className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              onError={(e) => {
+                // 이미지 로드 실패 시 대체 로고 표시
+                e.target.style.display = 'none';
+                e.target.nextElementSibling.style.display = 'flex';
+              }}
+            />
+            <div className="w-12 h-12 bg-primary-600 rounded-lg items-center justify-center hidden">
               <span className="text-2xl font-bold text-white">JH</span>
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-bold text-gray-900 dark:text-white">
-                정호그룹
+                {t('header.title') || '정호그룹'}
               </span>
               <span className="text-xs text-gray-600 dark:text-gray-400">
                 Jungho Group
@@ -181,7 +190,7 @@ const MegaMenu = () => {
                   }
                 `}
               >
-                패밀리 사이트
+                {t('nav.family') || '패밀리 사이트'}
               </button>
 
               <div

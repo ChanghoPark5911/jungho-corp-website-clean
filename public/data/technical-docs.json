@@ -1,0 +1,51 @@
+{
+  "documents": [
+    {
+      "id": 1762929453044,
+      "title": "클라루스 카탈로그 2025-2026",
+      "category": "product",
+      "description": "클라루스에서 개발 보급하고 있는 각종 장치, 솔루션의 카달로그 파일",
+      "thumbnail": "📄",
+      "fileUrl": "/documents/clarus/clarus-catalog-2025-2026-korea.pdf",
+      "fileName": "clarus-catalog-2025-2026-korea.pdf",
+      "fileSize": "2.5MB",
+      "subsidiary": "clarus",
+      "date": "2025-11-12",
+      "downloads": 0,
+      "language": "ko",
+      "tags": []
+    },
+    {
+      "id": 1762929784584,
+      "title": "Magic CLARUS 인테리어 솔루션",
+      "category": "technical",
+      "description": "(주)클라루스의 전략상품으로 개발된 제품으로, 기존 당시의 조명제어시스템과 매칭하여 사용하는 방법, 주요기능 설명과 다양한 적용사례를 소개하고 있습니다.",
+      "thumbnail": "📄",
+      "fileUrl": "/documents/clarus/magic-clarus-interior-solutions-250522.pdf",
+      "fileName": "magic-clarus-interior-solutions-250522.pdf",
+      "fileSize": "1.8MB",
+      "subsidiary": "clarus",
+      "date": "2025-11-12",
+      "downloads": 0,
+      "language": "ko",
+      "tags": []
+    },
+    {
+      "id": 1762930119282,
+      "title": "Parc.1 조명제어 기술서 (여의도)",
+      "category": "case-study",
+      "description": "정호TLC에서 시공한 대형 Site의 조명제어시스템 구축사례로써 구체적인 시공내용 등을 포함하고 있습니다.",
+      "thumbnail": "📄",
+      "fileUrl": "/documents/tlc/parc1-lighting-control-technical-210616.pdf",
+      "fileName": "parc1-lighting-control-technical-210616.pdf",
+      "fileSize": "3.2MB",
+      "subsidiary": "tlc",
+      "date": "2025-11-12",
+      "downloads": 0,
+      "language": "ko",
+      "tags": []
+    }
+  ],
+  "lastUpdated": "2025-11-12T16:00:00+09:00",
+  "version": "1.0.0"
+}

@@ -8,19 +8,43 @@ const SubsidiaryDetailTemplate = ({ data }) => {
   const { t, currentLanguage } = useI18n();
   const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
 
-  // localStorage에서 PDF 자료 로드 (해당 계열사 관련만)
+  // JSON 파일에서 PDF 자료 로드 (우선), localStorage는 백업 (해당 계열사 관련만)
   React.useEffect(() => {
-    const loadDocuments = () => {
+    const loadDocuments = async () => {
       try {
+        // 1. JSON 파일에서 로드 시도 (우선) - 캐시 방지
+        const timestamp = new Date().getTime();
+        const response = await fetch(`/data/technical-docs.json?v=${timestamp}`, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
+        
+        if (response.ok) {
+          const jsonData = await response.json();
+          if (jsonData.documents && Array.isArray(jsonData.documents) && data.subsidiaryId) {
+            // 해당 계열사 관련 자료만 필터링
+            const docs = jsonData.documents.filter(
+              doc => doc.subsidiary === data.subsidiaryId
+            );
+            setTechnicalDocuments(docs);
+            console.log(`✅ JSON 파일에서 ${data.subsidiaryId} 자료 로드:`, docs.length, '개');
+            return;
+          }
+        }
+        
+        // 2. JSON 파일 실패 시 localStorage에서 로드 (백업)
         const savedMediaData = localStorage.getItem('v2_media_data');
         if (savedMediaData) {
           const parsedData = JSON.parse(savedMediaData);
           if (parsedData.technicalDocuments && data.subsidiaryId) {
-            // 해당 계열사 관련 자료만 필터링
             const docs = parsedData.technicalDocuments.filter(
               doc => doc.subsidiary === data.subsidiaryId
             );
             setTechnicalDocuments(docs);
+            console.log(`✅ localStorage에서 ${data.subsidiaryId} 자료 로드:`, docs.length, '개');
           }
         }
       } catch (error) {

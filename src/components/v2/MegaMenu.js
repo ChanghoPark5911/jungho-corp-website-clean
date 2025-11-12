@@ -259,7 +259,7 @@ const MegaMenu = () => {
       )}
 
       {/* CSS 애니메이션 스타일 */}
-      <style jsx>{`
+      <style>{`
         .dropdown-menu {
           opacity: 0;
           visibility: hidden;

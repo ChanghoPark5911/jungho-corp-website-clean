@@ -272,7 +272,7 @@ const AdminPageV2 = () => {
     }
   };
 
-  // 미디어 데이터 저장
+  // 미디어 데이터 저장 (localStorage)
   const saveMediaData = () => {
     setSaveStatus('saving');
     try {
@@ -288,6 +288,52 @@ const AdminPageV2 = () => {
     } catch (error) {
       console.error('저장 실패:', error);
       setSaveStatus('error');
+    }
+  };
+
+  // JSON 파일로 내보내기 (배포용)
+  const exportToJSON = () => {
+    try {
+      const exportData = {
+        documents: mediaData.technicalDocuments || [],
+        lastUpdated: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
+      const jsonString = JSON.stringify(exportData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'technical-docs.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      alert('✅ JSON 파일 다운로드 완료!\n\n다운로드한 파일을:\n1. public/data/technical-docs.json 위치에 복사\n2. Git 커밋 & 푸시\n3. Vercel 자동 배포 대기\n\n그러면 영구적으로 저장됩니다!');
+    } catch (error) {
+      console.error('JSON 내보내기 실패:', error);
+      alert('❌ JSON 내보내기 실패: ' + error.message);
+    }
+  };
+
+  // 클립보드에 JSON 복사 (가장 쉬운 방법!)
+  const copyToClipboard = async () => {
+    try {
+      const exportData = {
+        documents: mediaData.technicalDocuments || [],
+        lastUpdated: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
+      const jsonString = JSON.stringify(exportData, null, 2);
+      await navigator.clipboard.writeText(jsonString);
+      
+      alert('✅ 클립보드에 복사되었습니다!\n\n다음 단계:\n1. VS Code에서 public/data/technical-docs.json 파일 열기\n2. Ctrl+A (전체 선택)\n3. Ctrl+V (붙여넣기)\n4. Ctrl+S (저장)\n5. Git 커밋 & 푸시\n\n그러면 영구적으로 저장됩니다!');
+    } catch (error) {
+      console.error('클립보드 복사 실패:', error);
+      alert('❌ 클립보드 복사 실패: ' + error.message + '\n\n브라우저가 클립보드 접근을 차단했을 수 있습니다.');
     }
   };
 
@@ -525,7 +571,7 @@ const AdminPageV2 = () => {
           {activeTab === 'dashboard' && <DashboardTab />}
           {activeTab === 'v2home' && <V2HomeTab data={v2HomeData} setData={setV2HomeData} onSave={saveV2HomeData} />}
           {activeTab === 'pages' && <PagesTab data={pagesData} setData={setPagesData} onSave={savePagesData} />}
-          {activeTab === 'media' && <MediaTab data={mediaData} setData={setMediaData} onSave={saveMediaData} />}
+          {activeTab === 'media' && <MediaTab data={mediaData} setData={setMediaData} onSave={saveMediaData} exportToJSON={exportToJSON} copyToClipboard={copyToClipboard} />}
           {activeTab === 'i18n' && i18nData && <I18nTab data={i18nData} setData={setI18nData} onSave={saveI18nData} />}
           {activeTab === 'users' && <UsersTab data={usersData} setData={setUsersData} onSave={saveUsersData} />}
         </div>
@@ -756,16 +802,30 @@ const V2HomeTab = ({ data, setData, onSave }) => {
 };
 
 // 미디어 관리 탭
-const MediaTab = ({ data, setData, onSave }) => (
+const MediaTab = ({ data, setData, onSave, exportToJSON, copyToClipboard }) => (
   <div>
     <div className="flex items-center justify-between mb-6">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white">미디어 관리</h2>
-      <button
-        onClick={onSave}
-        className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
-      >
-        💾 저장하기
-      </button>
+      <div className="flex gap-3">
+        <button
+          onClick={onSave}
+          className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg"
+        >
+          💾 임시 저장 (localStorage)
+        </button>
+        <button
+          onClick={copyToClipboard}
+          className="px-6 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg"
+        >
+          📋 클립보드에 복사 (추천!)
+        </button>
+        <button
+          onClick={exportToJSON}
+          className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
+        >
+          📥 JSON 파일 다운로드
+        </button>
+      </div>
     </div>
 
     {/* SNS 링크 */}
@@ -1451,7 +1511,7 @@ const PagesTab = ({ data, setData, onSave }) => {
       <div className="mb-8 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
         <div className="p-4 bg-gray-50 dark:bg-gray-900">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white">📖 정호그룹 소개</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">About > 정호소개 페이지 내용</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">About &gt; 정호소개 페이지 내용</p>
         </div>
         
         <div className="p-6 space-y-4">

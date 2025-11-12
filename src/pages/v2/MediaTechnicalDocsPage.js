@@ -15,27 +15,77 @@ const MediaTechnicalDocsPage = () => {
   const [selectedSubsidiary, setSelectedSubsidiary] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
 
-  // localStorage에서 PDF 자료 로드 (즉시 실행)
+  // JSON 파일에서 PDF 자료 로드 (우선), localStorage는 백업
   useEffect(() => {
-    const loadDocuments = () => {
+    const loadDocuments = async () => {
+      const startTime = performance.now();
+      console.log('🔄 [START] 기술자료 로딩 시작...');
       setIsLoading(true);
+      
       try {
+        // 1. JSON 파일에서 로드 시도 (우선) - 캐시 방지
+        console.log('⏰ [1] Fetch 시작...');
+        const timestamp = new Date().getTime();
+        const fetchStart = performance.now();
+        
+        const response = await fetch(`/data/technical-docs.json?v=${timestamp}`, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
+        
+        const fetchEnd = performance.now();
+        console.log(`⏰ [2] Fetch 완료: ${(fetchEnd - fetchStart).toFixed(0)}ms`);
+        console.log('📡 JSON 파일 요청:', response.status, response.ok ? 'OK' : 'FAIL');
+        
+        if (response.ok) {
+          console.log('⏰ [3] JSON 파싱 시작...');
+          const parseStart = performance.now();
+          const jsonData = await response.json();
+          const parseEnd = performance.now();
+          console.log(`⏰ [4] JSON 파싱 완료: ${(parseEnd - parseStart).toFixed(0)}ms`);
+          console.log('📊 JSON 파일 내용:', jsonData);
+          console.log('✅ JSON 파일 로드 성공:', jsonData.documents?.length || 0, '개');
+          
+          if (jsonData.documents && Array.isArray(jsonData.documents) && jsonData.documents.length > 0) {
+            console.log('⏰ [5] 데이터 설정 시작...');
+            const setStart = performance.now();
+            setTechnicalDocuments(jsonData.documents);
+            const setEnd = performance.now();
+            console.log(`⏰ [6] 데이터 설정 완료: ${(setEnd - setStart).toFixed(0)}ms`);
+            
+            console.log('⏰ [7] 로딩 종료...');
+            setIsLoading(false);
+            
+            const totalTime = performance.now() - startTime;
+            console.log(`✅ [COMPLETE] 총 소요 시간: ${(totalTime).toFixed(0)}ms (${(totalTime/1000).toFixed(2)}초)`);
+            return;
+          } else {
+            console.warn('⚠️ JSON 파일에 문서가 없음');
+          }
+        } else {
+          console.warn('⚠️ JSON 파일 로드 실패:', response.status);
+        }
+        
+        // 2. JSON 파일 실패 시 localStorage에서 로드 (백업)
+        console.log('⚠️ JSON 파일 없음, localStorage 확인...');
         const savedMediaData = localStorage.getItem('v2_media_data');
-        console.log('📄 기술자료 로딩 시작...', savedMediaData ? '데이터 있음' : '데이터 없음');
         
         if (savedMediaData) {
           const parsedData = JSON.parse(savedMediaData);
-          console.log('📊 파싱된 데이터:', parsedData);
+          console.log('📊 localStorage 데이터:', parsedData);
           
           if (parsedData.technicalDocuments && Array.isArray(parsedData.technicalDocuments)) {
-            console.log('✅ 기술자료 개수:', parsedData.technicalDocuments.length);
+            console.log('✅ localStorage에서 로드:', parsedData.technicalDocuments.length, '개');
             setTechnicalDocuments(parsedData.technicalDocuments);
           } else {
-            console.warn('⚠️ technicalDocuments가 없거나 배열이 아닙니다');
+            console.warn('⚠️ localStorage에 technicalDocuments 없음');
             setTechnicalDocuments([]);
           }
         } else {
-          console.warn('⚠️ v2_media_data가 localStorage에 없습니다');
+          console.warn('⚠️ localStorage에 v2_media_data 없음');
           setTechnicalDocuments([]);
         }
       } catch (error) {
@@ -49,7 +99,7 @@ const MediaTechnicalDocsPage = () => {
     // 즉시 로드
     loadDocuments();
 
-    // 데이터 업데이트 이벤트 리스너
+    // 데이터 업데이트 이벤트 리스너 (관리자 페이지에서 수정 시)
     const handleUpdate = () => {
       console.log('🔄 데이터 업데이트 이벤트 감지');
       loadDocuments();
@@ -79,7 +129,7 @@ const MediaTechnicalDocsPage = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15
+        staggerChildren: 0
       }
     }
   };
@@ -278,17 +328,10 @@ const MediaTechnicalDocsPage = () => {
               </button>
             </motion.div>
           ) : (
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              initial="hidden"
-              animate="visible"
-              variants={staggerContainer}
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredDocuments.map((doc, index) => (
-                <motion.div
+                <div
                   key={doc.id}
-                  variants={fadeInUp}
-                  whileHover={{ y: -5 }}
                   className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700"
                 >
                   {/* 카드 헤더 */}
@@ -389,9 +432,9 @@ const MediaTechnicalDocsPage = () => {
                       📥 {currentLanguage === 'en' ? 'View / Download' : '보기 / 다운로드'}
                     </button>
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           )}
         </div>
       </section>

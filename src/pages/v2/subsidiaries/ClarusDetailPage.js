@@ -6,6 +6,35 @@ import { useI18n } from '../../../hooks/useI18n';
 const ClarusDetailPage = () => {
   const navigate = useNavigate();
   const { t, currentLanguage } = useI18n();
+  const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
+
+  // localStorage에서 PDF 자료 로드 (클라루스 관련만)
+  React.useEffect(() => {
+    const loadDocuments = () => {
+      try {
+        const savedMediaData = localStorage.getItem('v2_media_data');
+        if (savedMediaData) {
+          const parsedData = JSON.parse(savedMediaData);
+          if (parsedData.technicalDocuments) {
+            // 클라루스 관련 자료만 필터링
+            const clarusDocs = parsedData.technicalDocuments.filter(
+              doc => doc.subsidiary === 'clarus'
+            );
+            setTechnicalDocuments(clarusDocs);
+          }
+        }
+      } catch (error) {
+        console.error('PDF 자료 로드 실패:', error);
+      }
+    };
+
+    loadDocuments();
+
+    // 데이터 업데이트 이벤트 리스너
+    const handleUpdate = () => loadDocuments();
+    window.addEventListener('v2MediaDataUpdated', handleUpdate);
+    return () => window.removeEventListener('v2MediaDataUpdated', handleUpdate);
+  }, []);
 
   // 애니메이션 variants
   const fadeInUp = {
@@ -437,6 +466,86 @@ const ClarusDetailPage = () => {
           </motion.div>
         </div>
       </motion.section>
+
+      {/* PDF 자료 다운로드 섹션 */}
+      {technicalDocuments.length > 0 && (
+        <motion.section
+          className="py-20 bg-white dark:bg-gray-900"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div className="text-center mb-12" variants={fadeInUp}>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                {currentLanguage === 'en' ? '📥 Technical Documents' : '📥 기술자료 다운로드'}
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400">
+                {currentLanguage === 'en' 
+                  ? 'Download technical specifications and product catalogs'
+                  : '제품 사양서 및 기술 카탈로그를 다운로드하세요'}
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {technicalDocuments.map((doc, index) => (
+                <motion.div
+                  key={doc.id}
+                  variants={fadeInUp}
+                  whileHover={{ y: -5 }}
+                  className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border border-gray-200 dark:border-gray-700"
+                >
+                  {/* 썸네일 */}
+                  <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-100 to-blue-100 dark:from-cyan-900 dark:to-blue-900 mb-4">
+                    <span className="text-4xl">{doc.thumbnail}</span>
+                  </div>
+
+                  {/* 제목 */}
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    {doc.title}
+                  </h3>
+
+                  {/* 설명 */}
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
+                    {doc.description}
+                  </p>
+
+                  {/* 정보 */}
+                  <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    <span>📄 {doc.fileSize}</span>
+                    <span>{doc.language === 'ko' ? '🇰🇷' : doc.language === 'en' ? '🇺🇸' : '🌐'}</span>
+                  </div>
+
+                  {/* 다운로드 버튼 */}
+                  <a
+                    href={doc.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-lg font-semibold text-center transition-all duration-300"
+                    onClick={(e) => {
+                      // 파일이 없는 경우 경고
+                      if (!doc.fileUrl) {
+                        e.preventDefault();
+                        alert(currentLanguage === 'en' ? 'File URL is not set' : '파일 URL이 설정되지 않았습니다');
+                        return;
+                      }
+                      
+                      // 한글/공백이 있는 경우 인코딩된 URL로 열기
+                      if (/[\u3131-\uD79D\s]/.test(doc.fileUrl)) {
+                        e.preventDefault();
+                        const encodedUrl = doc.fileUrl.split('/').map(part => encodeURIComponent(part)).join('/');
+                        window.open(encodedUrl, '_blank');
+                      }
+                    }}
+                  >
+                    📥 {currentLanguage === 'en' ? 'View / Download' : '보기 / 다운로드'}
+                  </a>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.section>
+      )}
 
       {/* 연락처 */}
       <motion.section 

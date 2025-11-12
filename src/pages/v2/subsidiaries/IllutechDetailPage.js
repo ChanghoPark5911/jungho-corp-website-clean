@@ -6,8 +6,10 @@ const IllutechDetailPage = () => {
   const { currentLanguage } = useI18n();
   
   const data = {
+    subsidiaryId: 'illutech', // PDF 자료 필터링용
     name: '일루텍',
     nameEn: 'ILLUTECH',
+    logoUrl: '/images/logos/junghoillutech.png', // 로고 추가
     slogan: currentLanguage === 'en'
       ? 'Specialist in Industrial & Special LED Lighting'
       : '산업·특수 LED 조명의 전문가',

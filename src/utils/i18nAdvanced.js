@@ -235,7 +235,7 @@ class I18nAdvanced {
         // 네비게이션 메뉴
         nav: {
           about: {
-            intro: '정호소개',
+            intro: '정호그룹 소개',
             vision: '그룹비전 (IRGS)',
             management: '경영방침',
             location: '찾아오시는길'
@@ -251,7 +251,8 @@ class I18nAdvanced {
           media: {
             main: '미디어/PR',
             projects: '프로젝트 영상',
-            promotion: '홍보영상'
+            promotion: '홍보영상',
+            technicalDocs: '기술자료실'
           },
           support: {
             main: '고객센터',
@@ -457,6 +458,80 @@ class I18nAdvanced {
             primaryAction: '사업영역 보기',
             secondaryAction: '문의하기'
           },
+          gateway: {
+            title: '정호그룹 GATEWAY',
+            subtitle: '정호그룹의 다양한 소식을 전해드립니다',
+            group: {
+              title: '그룹 소개',
+              description: '정호그룹의 비전과 역사를 확인하세요'
+            },
+            subsidiaries: {
+              title: '계열사',
+              description: '4개 전문 계열사가 함께합니다'
+            },
+            media: {
+              title: '미디어/PR',
+              description: '최신 소식과 영상을 만나보세요'
+            },
+            contact: {
+              title: '문의하기',
+              description: '궁금하신 사항은 언제든지 문의하세요'
+            }
+          },
+          philosophy: {
+            title: '경영철학',
+            subtitle: '정호그룹이 끊임없이 추구하는 경영의 방향',
+            customerSatisfaction: {
+              title: '고객 만족',
+              description: '고객의 니즈를 정확히 파악하고 최고의 품질로 응답합니다'
+            },
+            innovation: {
+              title: '기술 혁신',
+              description: '지속적인 R&D를 통해 업계 선도 기술을 확보합니다'
+            },
+            growth: {
+              title: '지속 가능한 성장',
+              description: '장기적 관점에서 기업과 사회가 함께 성장하는 미래를 만듭니다'
+            }
+          },
+          numbers: {
+            title: '숫자로 보는 정호그룹',
+            subtitle: '40년간 쌓아온 경험과 성과',
+            established: '창립',
+            subsidiaries: '계열사',
+            projects: '프로젝트',
+            clients: '고객사'
+          },
+          irgs: {
+            title: 'IRGS - 정호그룹의 핵심가치',
+            subtitle: '정밀함이 담긴 기술, 아름다움이 담긴 경험',
+            innovation: {
+              title: '혁신',
+              subtitle: 'Innovation',
+              description: '새로운 아이디어와 기술로 더 나은 "경험"을 만듭니다'
+            },
+            reliability: {
+              title: '신뢰',
+              subtitle: 'Reliability',
+              description: '품질과 약속을 지켜 "관계의 가치"를 높입니다'
+            },
+            global: {
+              title: '글로벌',
+              subtitle: 'Global',
+              description: '선도적인 기술과 서비스로 글로벌 "경쟁력"을 확대합니다'
+            },
+            sustainability: {
+              title: '지속가능성',
+              subtitle: 'Sustainability',
+              description: '인간과 자연이 공존하는 지속가능한 "내일"을 설계합니다'
+            }
+          },
+          cta: {
+            title: '정호그룹과 함께하세요',
+            subtitle: '혁신적인 기술과 40년 경험으로 밝은 미래를 만들어갑니다',
+            aboutButton: '회사 소개',
+            contactButton: '문의하기'
+          },
           stats: {
             years: {
               suffix: '년',
@@ -539,6 +614,30 @@ class I18nAdvanced {
               subtitle: '섬유기계의 전통과 첨단패션을 주도하는 온라인 사업',
               description: '40년간 축적된 섬유기계 전문성과 패션브랜드 론칭을 통해 새로운 가치를 창출하는 전문업체',
               feature: '섬유기계 및 패션 브랜드'
+            }
+          },
+          // 계열사 페이지
+          subsidiariesPage: {
+            badge: '🏢 4개 전문 계열사',
+            title: '정호그룹 계열사',
+            subtitle: '각 분야 전문성을 바탕으로',
+            subtitleHighlight: '함께 성장하는 정호그룹 계열사',
+            stats: {
+              subsidiaries: '계열사',
+              history: '연혁',
+              employees: '임직원'
+            },
+            card: {
+              established: '설립',
+              year: '년',
+              businessField: '사업분야',
+              visitWebsite: '🌐 웹사이트 방문',
+              learnMore: '자세히 보기'
+            },
+            cta: {
+              title: '함께 성장하는 정호그룹',
+              description: '4개 전문 계열사가 각 분야에서 최고의 기술과 서비스를 제공합니다.\n정호그룹과 함께 더 밝은 미래를 만들어갑니다.',
+              contactButton: '문의하기'
             }
           },
           // 프로젝트 갤러리
@@ -759,7 +858,7 @@ class I18nAdvanced {
         // Navigation Menu
         nav: {
           about: {
-            intro: 'Company Introduction',
+            intro: 'Jungho Group Introduction',
             vision: 'Group Vision (IRGS)',
             management: 'Management Policy',
             location: 'Location'
@@ -775,7 +874,8 @@ class I18nAdvanced {
           media: {
             main: 'Media/PR',
             projects: 'Project Videos',
-            promotion: 'Promotional Videos'
+            promotion: 'Promotional Videos',
+            technicalDocs: 'Technical Documents'
           },
           support: {
             main: 'Customer Service',

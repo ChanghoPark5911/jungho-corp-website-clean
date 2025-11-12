@@ -6,8 +6,10 @@ const TlcDetailPage = () => {
   const { currentLanguage } = useI18n();
   
   const data = {
+    subsidiaryId: 'tlc', // PDF 자료 필터링용
     name: '정호티엘씨',
     nameEn: 'Jungho TLC',
+    logoUrl: '/images/logos/junghotlc.png', // 로고 추가
     slogan: currentLanguage === 'en' 
       ? 'Partner for Stable Building Automation'
       : '안정적인 빌딩 자동화의 파트너',

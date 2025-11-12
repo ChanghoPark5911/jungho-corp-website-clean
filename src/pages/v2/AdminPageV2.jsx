@@ -93,6 +93,7 @@ const AdminPageV2 = () => {
   // 미디어 데이터
   const [mediaData, setMediaData] = useState({
     promotionVideos: [],
+    technicalDocuments: [], // PDF 기술자료
     snsLinks: {
       youtube: 'https://www.youtube.com/@JunghoGroup',
       instagram: 'https://www.instagram.com/jungho_group/',
@@ -184,10 +185,27 @@ const AdminPageV2 = () => {
     const savedMedia = localStorage.getItem('v2_media_data');
     if (savedMedia) {
       try {
-        setMediaData(JSON.parse(savedMedia));
+        const parsedMedia = JSON.parse(savedMedia);
+        // promotionVideos가 없으면 빈 배열로 초기화
+        if (!parsedMedia.promotionVideos) {
+          parsedMedia.promotionVideos = [];
+        }
+        // technicalDocuments가 없으면 빈 배열로 초기화
+        if (!parsedMedia.technicalDocuments) {
+          parsedMedia.technicalDocuments = [];
+        }
+        setMediaData(parsedMedia);
       } catch (error) {
         console.error('미디어 데이터 로드 실패:', error);
       }
+    } else {
+      // 최초 실행 시 기본값 저장
+      const defaultMediaData = {
+        ...mediaData,
+        promotionVideos: [],
+        technicalDocuments: []
+      };
+      localStorage.setItem('v2_media_data', JSON.stringify(defaultMediaData));
     }
 
     const savedPages = localStorage.getItem('v2_pages_data');
@@ -259,6 +277,10 @@ const AdminPageV2 = () => {
     setSaveStatus('saving');
     try {
       localStorage.setItem('v2_media_data', JSON.stringify(mediaData));
+      
+      // 미디어 페이지에 실시간 반영을 위한 이벤트 발생
+      window.dispatchEvent(new Event('v2MediaDataUpdated'));
+      
       setSaveStatus('success');
       setTimeout(() => {
         setSaveStatus('');
@@ -769,15 +791,643 @@ const MediaTab = ({ data, setData, onSave }) => (
 
     {/* 홍보영상 관리 */}
     <div>
-      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">🎬 홍보영상 관리</h3>
-      <div className="p-6 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
-        <div className="text-6xl mb-4">🎬</div>
-        <p className="text-gray-600 dark:text-gray-400 mb-4">
-          홍보영상 관리 기능은 곧 추가될 예정입니다
-        </p>
-        <button className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-semibold cursor-not-allowed">
-          준비 중
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white">🎬 홍보영상 관리</h3>
+        <button
+          onClick={() => {
+            const newVideo = {
+              id: Date.now(),
+              title: '새 홍보영상',
+              category: 'company',
+              description: '영상 설명을 입력하세요',
+              thumbnail: '🎬',
+              videoType: 'youtube', // 'youtube' | 'mp4'
+              videoUrl: '',
+              youtubeUrl: '',
+              mp4Url: '',
+              mp4File: null,
+              duration: '0:00',
+              date: new Date().toISOString().split('T')[0],
+              views: '0'
+            };
+            setData({
+              ...data,
+              promotionVideos: [...(data.promotionVideos || []), newVideo]
+            });
+          }}
+          className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all"
+        >
+          ➕ 새 영상 추가
         </button>
+      </div>
+
+      <div className="space-y-4">
+        {(data.promotionVideos || []).length === 0 ? (
+          <div className="p-8 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
+            <div className="text-6xl mb-4">🎬</div>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              등록된 홍보영상이 없습니다
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-500">
+              위의 "새 영상 추가" 버튼을 클릭하여 홍보영상을 추가하세요
+            </p>
+          </div>
+        ) : (
+          (data.promotionVideos || []).map((video, index) => (
+            <div key={video.id} className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center space-x-3">
+                  <span className="text-3xl">{video.thumbnail}</span>
+                  <div>
+                    <input
+                      type="text"
+                      value={video.title}
+                      onChange={(e) => {
+                        const updated = [...data.promotionVideos];
+                        updated[index] = { ...updated[index], title: e.target.value };
+                        setData({ ...data, promotionVideos: updated });
+                      }}
+                      className="text-lg font-bold text-gray-900 dark:text-white bg-transparent border-b border-gray-300 dark:border-gray-600 focus:border-primary-500 outline-none"
+                      placeholder="영상 제목"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    if (window.confirm('이 영상을 삭제하시겠습니까?')) {
+                      setData({
+                        ...data,
+                        promotionVideos: data.promotionVideos.filter((_, i) => i !== index)
+                      });
+                    }
+                  }}
+                  className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
+                >
+                  🗑️ 삭제
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* 영상 소스 타입 선택 */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    영상 소스 타입
+                  </label>
+                  <select
+                    value={video.videoType || 'youtube'}
+                    onChange={(e) => {
+                      const updated = [...data.promotionVideos];
+                      updated[index] = { ...updated[index], videoType: e.target.value };
+                      setData({ ...data, promotionVideos: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value="youtube">📺 YouTube</option>
+                    <option value="mp4">🎬 MP4 파일</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    카테고리
+                  </label>
+                  <select
+                    value={video.category}
+                    onChange={(e) => {
+                      const updated = [...data.promotionVideos];
+                      updated[index] = { ...updated[index], category: e.target.value };
+                      setData({ ...data, promotionVideos: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value="company">기업 소개</option>
+                    <option value="subsidiaries">계열사</option>
+                    <option value="technology">기술 소개</option>
+                    <option value="awards">수상 및 인증</option>
+                    <option value="events">이벤트</option>
+                  </select>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    썸네일 이모지
+                  </label>
+                  <input
+                    type="text"
+                    value={video.thumbnail}
+                    onChange={(e) => {
+                      const updated = [...data.promotionVideos];
+                      updated[index] = { ...updated[index], thumbnail: e.target.value };
+                      setData({ ...data, promotionVideos: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                    placeholder="🎬"
+                  />
+                </div>
+
+                {/* YouTube 타입일 때 */}
+                {(!video.videoType || video.videoType === 'youtube') && (
+                  <>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        YouTube URL (임베드용)
+                      </label>
+                      <input
+                        type="text"
+                        value={video.videoUrl}
+                        onChange={(e) => {
+                          const updated = [...data.promotionVideos];
+                          updated[index] = { ...updated[index], videoUrl: e.target.value };
+                          setData({ ...data, promotionVideos: updated });
+                        }}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                        placeholder="https://www.youtube.com/embed/VIDEO_ID"
+                      />
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        💡 YouTube 영상에서 "공유" → "퍼가기" → URL 복사
+                      </p>
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        YouTube URL (공유용)
+                      </label>
+                      <input
+                        type="text"
+                        value={video.youtubeUrl || ''}
+                        onChange={(e) => {
+                          const updated = [...data.promotionVideos];
+                          updated[index] = { ...updated[index], youtubeUrl: e.target.value };
+                          setData({ ...data, promotionVideos: updated });
+                        }}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                        placeholder="https://youtu.be/VIDEO_ID"
+                      />
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        💡 YouTube 영상에서 "공유" → 짧은 URL 복사
+                      </p>
+                    </div>
+                  </>
+                )}
+
+                {/* MP4 타입일 때 */}
+                {video.videoType === 'mp4' && (
+                  <>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        MP4 파일 URL (권장)
+                      </label>
+                      <input
+                        type="text"
+                        value={video.mp4Url || ''}
+                        onChange={(e) => {
+                          const updated = [...data.promotionVideos];
+                          updated[index] = { 
+                            ...updated[index], 
+                            mp4Url: e.target.value,
+                            videoUrl: e.target.value // 재생용
+                          };
+                          setData({ ...data, promotionVideos: updated });
+                        }}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                        placeholder="https://your-cloud-storage.com/video.mp4"
+                      />
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        💡 Google Drive, Dropbox, AWS S3 등에 업로드한 MP4 파일의 직접 링크를 입력하세요
+                      </p>
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        또는 파일 직접 업로드 (작은 파일만, 최대 5MB)
+                      </label>
+                      <input
+                        type="file"
+                        accept="video/mp4,video/webm,video/ogg"
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          if (file) {
+                            // 파일 크기 체크 (5MB = 5 * 1024 * 1024 bytes)
+                            if (file.size > 5 * 1024 * 1024) {
+                              alert('파일 크기가 너무 큽니다. 5MB 이하의 파일만 업로드할 수 있습니다.\n\n큰 파일은 클라우드 스토리지에 업로드 후 URL을 입력하세요.');
+                              e.target.value = '';
+                              return;
+                            }
+
+                            // FileReader로 파일을 base64로 변환
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                              const updated = [...data.promotionVideos];
+                              updated[index] = { 
+                                ...updated[index], 
+                                mp4File: file.name,
+                                mp4Url: event.target.result,
+                                videoUrl: event.target.result
+                              };
+                              setData({ ...data, promotionVideos: updated });
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                      />
+                      <div className="flex items-start space-x-2 mt-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                        <span className="text-yellow-600 dark:text-yellow-400">⚠️</span>
+                        <div className="text-xs text-yellow-700 dark:text-yellow-300">
+                          <p className="font-semibold mb-1">주의사항:</p>
+                          <ul className="list-disc list-inside space-y-1">
+                            <li>직접 업로드는 5MB 이하의 작은 파일만 가능합니다</li>
+                            <li>큰 파일은 YouTube나 클라우드 스토리지 사용을 권장합니다</li>
+                            <li>브라우저 캐시를 지우면 업로드한 파일이 삭제될 수 있습니다</li>
+                          </ul>
+                        </div>
+                      </div>
+                      {video.mp4File && (
+                        <p className="text-xs text-green-600 dark:text-green-400 mt-2">
+                          ✅ 업로드된 파일: {video.mp4File}
+                        </p>
+                      )}
+                    </div>
+                  </>
+                )}
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    영상 설명
+                  </label>
+                  <textarea
+                    value={video.description}
+                    onChange={(e) => {
+                      const updated = [...data.promotionVideos];
+                      updated[index] = { ...updated[index], description: e.target.value };
+                      setData({ ...data, promotionVideos: updated });
+                    }}
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                    placeholder="영상 설명을 입력하세요"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    영상 길이
+                  </label>
+                  <input
+                    type="text"
+                    value={video.duration}
+                    onChange={(e) => {
+                      const updated = [...data.promotionVideos];
+                      updated[index] = { ...updated[index], duration: e.target.value };
+                      setData({ ...data, promotionVideos: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                    placeholder="5:20"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    업로드 날짜
+                  </label>
+                  <input
+                    type="date"
+                    value={video.date}
+                    onChange={(e) => {
+                      const updated = [...data.promotionVideos];
+                      updated[index] = { ...updated[index], date: e.target.value };
+                      setData({ ...data, promotionVideos: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                </div>
+              </div>
+
+              {/* 미리보기 */}
+              {video.videoUrl && (
+                <div className="mt-4">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    미리보기
+                  </label>
+                  <div className="aspect-video bg-black rounded-lg overflow-hidden">
+                    {(!video.videoType || video.videoType === 'youtube') ? (
+                      <iframe
+                        src={video.videoUrl}
+                        title={video.title}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                      />
+                    ) : (
+                      <video
+                        controls
+                        className="w-full h-full"
+                        src={video.videoUrl}
+                      >
+                        <source src={video.videoUrl} type="video/mp4" />
+                        브라우저가 비디오 재생을 지원하지 않습니다.
+                      </video>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+
+    {/* PDF 기술자료 관리 */}
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white">📄 PDF 기술자료 관리</h3>
+        <button
+          onClick={() => {
+            const newDoc = {
+              id: Date.now(),
+              title: '새 기술자료',
+              category: 'technical',
+              description: '자료 설명을 입력하세요',
+              thumbnail: '📄',
+              fileUrl: '',
+              fileName: '',
+              fileSize: '',
+              subsidiary: 'clarus',
+              date: new Date().toISOString().split('T')[0],
+              downloads: 0,
+              language: 'ko',
+              tags: []
+            };
+            setData({
+              ...data,
+              technicalDocuments: [...(data.technicalDocuments || []), newDoc]
+            });
+          }}
+          className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all"
+        >
+          ➕ 새 자료 추가
+        </button>
+      </div>
+
+      <div className="space-y-4">
+        {(data.technicalDocuments || []).length === 0 ? (
+          <div className="p-8 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
+            <div className="text-6xl mb-4">📄</div>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              등록된 PDF 기술자료가 없습니다
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-500">
+              위의 "새 자료 추가" 버튼을 클릭하여 PDF 자료를 추가하세요
+            </p>
+          </div>
+        ) : (
+          (data.technicalDocuments || []).map((doc, index) => (
+            <div key={doc.id} className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center space-x-3">
+                  <span className="text-3xl">{doc.thumbnail}</span>
+                  <div>
+                    <input
+                      type="text"
+                      value={doc.title}
+                      onChange={(e) => {
+                        const updated = [...data.technicalDocuments];
+                        updated[index] = { ...updated[index], title: e.target.value };
+                        setData({ ...data, technicalDocuments: updated });
+                      }}
+                      className="text-lg font-bold text-gray-900 dark:text-white bg-transparent border-b border-gray-300 dark:border-gray-600 focus:border-primary-500 outline-none"
+                      placeholder="자료 제목"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    if (window.confirm('이 자료를 삭제하시겠습니까?')) {
+                      setData({
+                        ...data,
+                        technicalDocuments: data.technicalDocuments.filter((_, i) => i !== index)
+                      });
+                    }
+                  }}
+                  className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
+                >
+                  🗑️ 삭제
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* 카테고리 */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    카테고리
+                  </label>
+                  <select
+                    value={doc.category}
+                    onChange={(e) => {
+                      const updated = [...data.technicalDocuments];
+                      updated[index] = { ...updated[index], category: e.target.value };
+                      setData({ ...data, technicalDocuments: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value="technical">기술서</option>
+                    <option value="product">제품 카탈로그</option>
+                    <option value="case-study">시공 사례</option>
+                    <option value="manual">매뉴얼</option>
+                    <option value="solution">솔루션 가이드</option>
+                  </select>
+                </div>
+
+                {/* 계열사 */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    관련 계열사
+                  </label>
+                  <select
+                    value={doc.subsidiary}
+                    onChange={(e) => {
+                      const updated = [...data.technicalDocuments];
+                      updated[index] = { ...updated[index], subsidiary: e.target.value };
+                      setData({ ...data, technicalDocuments: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value="group">정호그룹</option>
+                    <option value="clarus">클라루스</option>
+                    <option value="tlc">정호티엘씨</option>
+                    <option value="illutech">일루텍</option>
+                    <option value="texcom">정호텍스컴</option>
+                  </select>
+                </div>
+
+                {/* PDF 파일 URL */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    PDF 파일 URL
+                  </label>
+                  <input
+                    type="text"
+                    value={doc.fileUrl || ''}
+                    onChange={(e) => {
+                      const updated = [...data.technicalDocuments];
+                      updated[index] = { ...updated[index], fileUrl: e.target.value };
+                      setData({ ...data, technicalDocuments: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                    placeholder="/documents/clarus/filename.pdf"
+                  />
+                  {doc.fileUrl && /[\u3131-\uD79D\s()]/.test(doc.fileUrl) && (
+                    <p className="text-xs text-orange-600 dark:text-orange-400 mt-1 font-semibold">
+                      ⚠️ 경고: 파일명에 한글, 공백, 괄호가 있습니다. 영문 소문자와 하이픈(-)만 사용하는 것을 권장합니다.
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    💡 권장 형식: /documents/clarus/clarus-catalog-2024.pdf
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    📂 로컬 파일: public/documents 폴더에 파일 추가 후 /documents/계열사/파일명.pdf 형식으로 입력
+                  </p>
+                </div>
+
+                {/* 파일 정보 */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    파일명
+                  </label>
+                  <input
+                    type="text"
+                    value={doc.fileName || ''}
+                    onChange={(e) => {
+                      const updated = [...data.technicalDocuments];
+                      updated[index] = { ...updated[index], fileName: e.target.value };
+                      setData({ ...data, technicalDocuments: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                    placeholder="lighting-control-technical.pdf"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    파일 크기
+                  </label>
+                  <input
+                    type="text"
+                    value={doc.fileSize || ''}
+                    onChange={(e) => {
+                      const updated = [...data.technicalDocuments];
+                      updated[index] = { ...updated[index], fileSize: e.target.value };
+                      setData({ ...data, technicalDocuments: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                    placeholder="15MB"
+                  />
+                </div>
+
+                {/* 설명 */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    자료 설명
+                  </label>
+                  <textarea
+                    value={doc.description}
+                    onChange={(e) => {
+                      const updated = [...data.technicalDocuments];
+                      updated[index] = { ...updated[index], description: e.target.value };
+                      setData({ ...data, technicalDocuments: updated });
+                    }}
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                    placeholder="자료 설명을 입력하세요"
+                  />
+                </div>
+
+                {/* 언어 & 날짜 */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    언어
+                  </label>
+                  <select
+                    value={doc.language}
+                    onChange={(e) => {
+                      const updated = [...data.technicalDocuments];
+                      updated[index] = { ...updated[index], language: e.target.value };
+                      setData({ ...data, technicalDocuments: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value="ko">한국어</option>
+                    <option value="en">English</option>
+                    <option value="both">한/영 병기</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    등록 날짜
+                  </label>
+                  <input
+                    type="date"
+                    value={doc.date}
+                    onChange={(e) => {
+                      const updated = [...data.technicalDocuments];
+                      updated[index] = { ...updated[index], date: e.target.value };
+                      setData({ ...data, technicalDocuments: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                </div>
+
+                {/* 썸네일 이모지 */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    썸네일 이모지
+                  </label>
+                  <input
+                    type="text"
+                    value={doc.thumbnail}
+                    onChange={(e) => {
+                      const updated = [...data.technicalDocuments];
+                      updated[index] = { ...updated[index], thumbnail: e.target.value };
+                      setData({ ...data, technicalDocuments: updated });
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                    placeholder="📄"
+                  />
+                </div>
+              </div>
+
+              {/* 미리보기 링크 */}
+              {doc.fileUrl && (
+                <div className="mt-4 flex items-center space-x-2">
+                  <a
+                    href={doc.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors inline-flex items-center space-x-2"
+                  >
+                    <span>👁</span>
+                    <span>파일 열기 / 다운로드</span>
+                  </a>
+                  <button
+                    onClick={() => {
+                      // 경로 검증
+                      if (doc.fileUrl.startsWith('/documents/')) {
+                        alert('✅ 경로가 올바릅니다!\n\n실제 파일이 있는지 확인:\n' + window.location.origin + doc.fileUrl);
+                      } else {
+                        alert('⚠️ 경로 확인\n\n현재: ' + doc.fileUrl + '\n권장: /documents/계열사/파일명.pdf');
+                      }
+                    }}
+                    className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors inline-flex items-center space-x-2"
+                  >
+                    <span>🔍</span>
+                    <span>경로 검증</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          ))
+        )}
       </div>
     </div>
   </div>

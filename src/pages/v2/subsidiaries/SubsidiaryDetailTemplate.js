@@ -6,6 +6,35 @@ import { useI18n } from '../../../hooks/useI18n';
 const SubsidiaryDetailTemplate = ({ data }) => {
   const navigate = useNavigate();
   const { t, currentLanguage } = useI18n();
+  const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
+
+  // localStorage에서 PDF 자료 로드 (해당 계열사 관련만)
+  React.useEffect(() => {
+    const loadDocuments = () => {
+      try {
+        const savedMediaData = localStorage.getItem('v2_media_data');
+        if (savedMediaData) {
+          const parsedData = JSON.parse(savedMediaData);
+          if (parsedData.technicalDocuments && data.subsidiaryId) {
+            // 해당 계열사 관련 자료만 필터링
+            const docs = parsedData.technicalDocuments.filter(
+              doc => doc.subsidiary === data.subsidiaryId
+            );
+            setTechnicalDocuments(docs);
+          }
+        }
+      } catch (error) {
+        console.error('PDF 자료 로드 실패:', error);
+      }
+    };
+
+    loadDocuments();
+
+    // 데이터 업데이트 이벤트 리스너
+    const handleUpdate = () => loadDocuments();
+    window.addEventListener('v2MediaDataUpdated', handleUpdate);
+    return () => window.removeEventListener('v2MediaDataUpdated', handleUpdate);
+  }, [data.subsidiaryId]);
 
   // 애니메이션 variants
   const fadeInUp = {
@@ -69,33 +98,60 @@ const SubsidiaryDetailTemplate = ({ data }) => {
             animate="visible"
             variants={staggerContainer}
           >
-            <motion.div variants={fadeInUp}>
-              <span className="text-6xl mb-6 inline-block">{data.icon}</span>
-            </motion.div>
+            {/* 로고와 회사명을 나란히 배치 (로고가 있는 경우) */}
+            {data.logoUrl ? (
+              <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4">
+                <img 
+                  src={data.logoUrl} 
+                  alt={`${data.name} 로고`} 
+                  className="h-10 w-auto object-contain"
+                  onError={(e) => {
+                    // 이미지 로드 실패 시 대체 아이콘 표시
+                    e.target.style.display = 'none';
+                    e.target.nextElementSibling.style.display = 'inline-block';
+                  }}
+                />
+                <span className="text-6xl hidden">{data.icon}</span>
+                <div className="flex flex-col items-center -space-y-2">
+                  <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight">
+                    {currentLanguage === 'en' ? data.nameEn : data.name}
+                  </h1>
+                  <p className="text-lg text-gray-600 dark:text-gray-400">
+                    {currentLanguage === 'en' ? data.name : data.nameEn}
+                  </p>
+                </div>
+              </motion.div>
+            ) : (
+              <>
+                <motion.div variants={fadeInUp}>
+                  <span className="text-6xl mb-6 inline-block">{data.icon}</span>
+                </motion.div>
 
-            <motion.h1 
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white"
-              variants={fadeInUp}
-            >
-              {currentLanguage === 'en' ? data.nameEn : data.name}
-            </motion.h1>
+                <motion.h1 
+                  className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white"
+                  variants={fadeInUp}
+                >
+                  {currentLanguage === 'en' ? data.nameEn : data.name}
+                </motion.h1>
+
+                <motion.p 
+                  className="text-xl text-gray-600 dark:text-gray-400"
+                  variants={fadeInUp}
+                >
+                  {currentLanguage === 'en' ? data.name : data.nameEn}
+                </motion.p>
+              </>
+            )}
 
             <motion.p 
-              className="text-xl text-gray-600 dark:text-gray-400"
-              variants={fadeInUp}
-            >
-              {currentLanguage === 'en' ? data.name : data.nameEn}
-            </motion.p>
-
-            <motion.p 
-              className={`text-2xl sm:text-3xl ${data.textColor} dark:${data.darkTextColor} font-semibold max-w-3xl mx-auto`}
+              className={`text-2xl sm:text-3xl ${data.textColor} dark:${data.darkTextColor} font-semibold max-w-3xl mx-auto pt-12`}
               variants={fadeInUp}
             >
               {data.slogan}
             </motion.p>
 
             <motion.div 
-              className="flex flex-wrap items-center justify-center gap-6 pt-6"
+              className="flex flex-wrap items-center justify-center gap-6 pt-10"
               variants={fadeInUp}
             >
               <div className="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-md">
@@ -231,6 +287,86 @@ const SubsidiaryDetailTemplate = ({ data }) => {
                 </motion.div>
               ))}
             </motion.div>
+          </div>
+        </motion.section>
+      )}
+
+      {/* PDF 자료 다운로드 섹션 */}
+      {technicalDocuments.length > 0 && (
+        <motion.section
+          className="py-20 bg-white dark:bg-gray-900"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div className="text-center mb-12" variants={fadeInUp}>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                {currentLanguage === 'en' ? '📥 Technical Documents' : '📥 기술자료 다운로드'}
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400">
+                {currentLanguage === 'en' 
+                  ? 'Download technical specifications and product catalogs'
+                  : '제품 사양서 및 기술 카탈로그를 다운로드하세요'}
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {technicalDocuments.map((doc, index) => (
+                <motion.div
+                  key={doc.id}
+                  variants={fadeInUp}
+                  whileHover={{ y: -5 }}
+                  className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border border-gray-200 dark:border-gray-700"
+                >
+                  {/* 썸네일 */}
+                  <div className={`flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br ${data.cardFrom} ${data.cardTo} dark:from-gray-700 dark:to-gray-800 mb-4`}>
+                    <span className="text-4xl">{doc.thumbnail}</span>
+                  </div>
+
+                  {/* 제목 */}
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    {doc.title}
+                  </h3>
+
+                  {/* 설명 */}
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
+                    {doc.description}
+                  </p>
+
+                  {/* 정보 */}
+                  <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    <span>📄 {doc.fileSize}</span>
+                    <span>{doc.language === 'ko' ? '🇰🇷' : doc.language === 'en' ? '🇺🇸' : '🌐'}</span>
+                  </div>
+
+                  {/* 다운로드 버튼 */}
+                  <a
+                    href={doc.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`block w-full py-3 ${data.buttonBg} ${data.buttonHover} text-white rounded-lg font-semibold text-center transition-all duration-300`}
+                    onClick={(e) => {
+                      // 파일이 없는 경우 경고
+                      if (!doc.fileUrl) {
+                        e.preventDefault();
+                        alert(currentLanguage === 'en' ? 'File URL is not set' : '파일 URL이 설정되지 않았습니다');
+                        return;
+                      }
+                      
+                      // 한글/공백이 있는 경우 인코딩된 URL로 열기
+                      if (/[\u3131-\uD79D\s]/.test(doc.fileUrl)) {
+                        e.preventDefault();
+                        const encodedUrl = doc.fileUrl.split('/').map(part => encodeURIComponent(part)).join('/');
+                        window.open(encodedUrl, '_blank');
+                      }
+                    }}
+                  >
+                    📥 {currentLanguage === 'en' ? 'View / Download' : '보기 / 다운로드'}
+                  </a>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.section>
       )}

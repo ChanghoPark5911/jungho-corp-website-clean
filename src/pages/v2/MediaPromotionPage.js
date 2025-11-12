@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
@@ -50,8 +50,8 @@ const MediaPromotionPage = () => {
     software: 20
   };
 
-  // 홍보영상 데이터 (실제로는 관리자 페이지에서 관리)
-  const promotionVideos = [
+  // 기본 홍보영상 데이터 (최초 실행시 사용)
+  const defaultPromotionVideos = [
     {
       id: 1,
       title: '정호그룹 2024 기업 소개',
@@ -120,6 +120,47 @@ const MediaPromotionPage = () => {
       views: '11.8K'
     }
   ];
+
+  // localStorage에서 홍보영상 데이터 로드 (관리자 페이지에서 관리)
+  const [promotionVideos, setPromotionVideos] = useState(defaultPromotionVideos);
+
+  useEffect(() => {
+    const loadPromotionVideos = () => {
+      try {
+        const savedMediaData = localStorage.getItem('v2_media_data');
+        if (savedMediaData) {
+          const parsedData = JSON.parse(savedMediaData);
+          if (parsedData.promotionVideos && parsedData.promotionVideos.length > 0) {
+            setPromotionVideos(parsedData.promotionVideos);
+          } else {
+            // 저장된 데이터가 없으면 기본값 사용
+            setPromotionVideos(defaultPromotionVideos);
+          }
+        } else {
+          // localStorage에 데이터가 없으면 기본값 사용
+          setPromotionVideos(defaultPromotionVideos);
+        }
+      } catch (error) {
+        console.error('홍보영상 데이터 로드 실패:', error);
+        setPromotionVideos(defaultPromotionVideos);
+      }
+    };
+
+    loadPromotionVideos();
+
+    // localStorage 변경 감지 (관리자 페이지에서 수정시 실시간 반영)
+    const handleStorageChange = () => {
+      loadPromotionVideos();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('v2MediaDataUpdated', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('v2MediaDataUpdated', handleStorageChange);
+    };
+  }, []);
 
   // 주요 지적재산권 인증서 (샘플)
   const intellectualPropertyCertificates = [
@@ -525,16 +566,28 @@ const MediaPromotionPage = () => {
               <p className="text-white/90">{selectedVideo.description}</p>
             </div>
 
-            {/* YouTube 영상 */}
+            {/* 영상 플레이어 */}
             <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-              <iframe
-                className="absolute top-0 left-0 w-full h-full"
-                src={`${selectedVideo.videoUrl}?autoplay=1`}
-                title={selectedVideo.title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+              {(!selectedVideo.videoType || selectedVideo.videoType === 'youtube') ? (
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src={`${selectedVideo.videoUrl}?autoplay=1`}
+                  title={selectedVideo.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <video
+                  className="absolute top-0 left-0 w-full h-full"
+                  controls
+                  autoPlay
+                  src={selectedVideo.videoUrl}
+                >
+                  <source src={selectedVideo.videoUrl} type="video/mp4" />
+                  브라우저가 비디오 재생을 지원하지 않습니다.
+                </video>
+              )}
             </div>
 
             {/* 하단 정보 */}

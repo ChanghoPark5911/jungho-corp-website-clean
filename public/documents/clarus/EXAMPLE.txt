@@ -1,0 +1,17 @@
+📄 예시: 클라루스 PDF 파일 추가 방법
+
+1. 이 폴더에 PDF 파일을 추가하세요:
+   예: clarus-catalog-2024.pdf
+
+2. 관리자 페이지에서 등록:
+   - URL: /documents/clarus/clarus-catalog-2024.pdf
+   - 제목: 클라루스 제품 카탈로그 2024
+   - 계열사: 클라루스
+   - 카테고리: 제품 카탈로그
+
+3. 저장 후 확인:
+   - http://localhost:3000/v2/media/technical-docs
+   - http://localhost:3000/subsidiaries/clarus
+
+이 예시 파일은 삭제해도 됩니다.
+

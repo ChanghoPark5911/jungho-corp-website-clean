@@ -35,6 +35,7 @@ const AboutIntroPage = lazy(() => import('./pages/v2/AboutIntroPage'));
 const AboutVisionPage = lazy(() => import('./pages/v2/AboutVisionPage'));
 const AboutManagementPage = lazy(() => import('./pages/v2/AboutManagementPage'));
 const AboutHistoryPage = lazy(() => import('./pages/v2/AboutHistoryPage'));
+const AboutCIBIPage = lazy(() => import('./pages/v2/AboutCIBIPage'));
 const AboutLocationPage = lazy(() => import('./pages/v2/AboutLocationPage'));
 const SubsidiariesPage = lazy(() => import('./pages/v2/SubsidiariesPage'));
 const ClarusDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/ClarusDetailPage'));
@@ -44,6 +45,7 @@ const TexcomDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/TexcomDeta
 const ProjectsPageV2 = lazy(() => import('./pages/v2/ProjectsPage'));
 const MediaSNSPage = lazy(() => import('./pages/v2/MediaSNSPage'));
 const MediaPromotionPage = lazy(() => import('./pages/v2/MediaPromotionPage'));
+const MediaTechnicalDocsPage = lazy(() => import('./pages/v2/MediaTechnicalDocsPage'));
 const SupportPageV2 = lazy(() => import('./pages/v2/SupportPage'));
 const AdminPageV2 = lazy(() => import('./pages/v2/AdminPageV2'));
 
@@ -104,6 +106,7 @@ function App() {
           <Routes>
             {/* v2 관리자 페이지 (레이아웃 없음) - 최우선 */}
             <Route path="/admin" element={<AdminPageV2 />} />
+            <Route path="/v2/admin" element={<AdminPageV2 />} />
             
             {/* v1 라우트 (이전 버전) */}
             <Route path="/v1/*" element={
@@ -137,7 +140,7 @@ function App() {
                   <Route path="/about/vision" element={<AboutVisionPage />} />
                   <Route path="/about/management" element={<AboutManagementPage />} />
                   <Route path="/about/history" element={<AboutHistoryPage />} />
-                  <Route path="/about/ci" element={<div className="p-20 text-center">CI/BI (준비 중)</div>} />
+                  <Route path="/about/ci" element={<AboutCIBIPage />} />
                   <Route path="/about/location" element={<AboutLocationPage />} />
                   <Route path="/subsidiaries" element={<SubsidiariesPage />} />
                   <Route path="/subsidiaries/clarus" element={<ClarusDetailPageV2 />} />
@@ -147,6 +150,7 @@ function App() {
                   <Route path="/projects" element={<ProjectsPageV2 />} />
                   <Route path="/media/sns" element={<MediaSNSPage />} />
                   <Route path="/media/promotion" element={<MediaPromotionPage />} />
+                  <Route path="/media/technical-docs" element={<MediaTechnicalDocsPage />} />
                   <Route path="/support" element={<SupportPageV2 />} />
                   <Route path="/support/report" element={<SupportPageV2 />} />
                   <Route path="/support/contact" element={<SupportPageV2 />} />

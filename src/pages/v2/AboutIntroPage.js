@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
 
 /**
  * 정호그룹 소개 페이지
  */
 const AboutIntroPage = () => {
+  const navigate = useNavigate();
   const { t, currentLanguage } = useI18n();
   const [pagesData, setPagesData] = React.useState(null);
 
@@ -49,7 +51,8 @@ const AboutIntroPage = () => {
       role: currentLanguage === 'en' ? 'Building Automation & Power Control Solutions' : '빌딩 자동화 및 전력 제어 솔루션',
       description: currentLanguage === 'en' ? 'Smart Building Automation Systems Specialist' : '스마트 빌딩 자동화 시스템 전문 기업',
       icon: '⚡',
-      color: 'from-green-500 to-emerald-500'
+      color: 'from-green-500 to-emerald-500',
+      path: '/subsidiaries/tlc'
     },
     {
       id: 'clarus',
@@ -57,7 +60,8 @@ const AboutIntroPage = () => {
       role: currentLanguage === 'en' ? 'Lighting Control Systems & Smart Solutions' : '조명 제어 시스템 및 스마트 솔루션',
       description: currentLanguage === 'en' ? 'Leading Company in Advanced Lighting Control Technology' : '첨단 조명 제어 기술 선도 기업',
       icon: '💡',
-      color: 'from-cyan-500 to-blue-500'
+      color: 'from-cyan-500 to-blue-500',
+      path: '/subsidiaries/clarus'
     },
     {
       id: 'illutech',
@@ -65,7 +69,8 @@ const AboutIntroPage = () => {
       role: currentLanguage === 'en' ? 'Industrial LED Lighting Development & Manufacturing' : '산업용 LED 조명 개발 및 제조',
       description: currentLanguage === 'en' ? 'High-Efficiency LED Lighting Manufacturer' : '고효율 LED 조명 전문 제조사',
       icon: '🔆',
-      color: 'from-orange-500 to-amber-500'
+      color: 'from-orange-500 to-amber-500',
+      path: '/subsidiaries/illutech'
     },
     {
       id: 'texcom',
@@ -73,7 +78,8 @@ const AboutIntroPage = () => {
       role: currentLanguage === 'en' ? 'Textile Machinery & Fashion Business' : '섬유기계 및 패션 사업',
       description: currentLanguage === 'en' ? '40 Years of Textile Machinery Expertise' : '40년 전통의 섬유기계 전문 기업',
       icon: '🧵',
-      color: 'from-purple-500 to-pink-500'
+      color: 'from-purple-500 to-pink-500',
+      path: '/subsidiaries/texcom'
     },
     {
       id: 'rss',
@@ -201,7 +207,8 @@ const AboutIntroPage = () => {
                 key={index}
                 variants={fadeInUp}
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group"
+                onClick={() => company.path && navigate(company.path)}
+                className="bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer"
               >
                 <div className="p-6">
                   {/* 아이콘 */}

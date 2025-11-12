@@ -47,6 +47,7 @@ const MegaMenu = () => {
       submenu: [
         { label: t('nav.media.projects') || '프로젝트 영상', path: '/projects', icon: '🏢' },
         { label: t('nav.media.promotion') || '홍보영상', path: '/media/promotion', icon: '📺' },
+        { label: t('nav.media.technicalDocs') || '기술자료실', path: '/media/technical-docs', icon: '📄' },
         { label: 'SNS', path: '/media/sns', icon: '📱' },
       ],
     },

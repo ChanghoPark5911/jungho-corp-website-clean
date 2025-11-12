@@ -69,26 +69,31 @@ const TexcomDetailPage = () => {
             animate="visible"
             variants={staggerContainer}
           >
-            <motion.div variants={fadeInUp}>
-              <span className="text-6xl mb-6 inline-block">👔</span>
+            {/* 로고와 회사명을 나란히 배치 */}
+            <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4">
+              <img 
+                src="/images/logos/junghotexcom.png" 
+                alt="정호텍스컴 로고" 
+                className="h-10 w-auto object-contain"
+                onError={(e) => {
+                  // 이미지 로드 실패 시 대체 아이콘 표시
+                  e.target.style.display = 'none';
+                  e.target.nextElementSibling.style.display = 'inline-block';
+                }}
+              />
+              <span className="text-6xl hidden">👔</span>
+              <div className="flex flex-col items-center -space-y-2">
+                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight">
+                  {currentLanguage === 'en' ? 'Jungho TEXCOM' : '정호텍스컴'}
+                </h1>
+                <p className="text-lg text-gray-600 dark:text-gray-400">
+                  {currentLanguage === 'en' ? '정호텍스컴' : 'Jungho TEXCOM'}
+                </p>
+              </div>
             </motion.div>
 
-            <motion.h1 
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white"
-              variants={fadeInUp}
-            >
-              {currentLanguage === 'en' ? 'Jungho TEXCOM' : '정호텍스컴'}
-            </motion.h1>
-
             <motion.p 
-              className="text-xl text-gray-600 dark:text-gray-400"
-              variants={fadeInUp}
-            >
-              {currentLanguage === 'en' ? '정호텍스컴' : 'Jungho TEXCOM'}
-            </motion.p>
-
-            <motion.p 
-              className="text-2xl sm:text-3xl text-purple-600 dark:text-purple-400 font-semibold max-w-3xl mx-auto"
+              className="text-2xl sm:text-3xl text-purple-600 dark:text-purple-400 font-semibold max-w-3xl mx-auto pt-12"
               variants={fadeInUp}
             >
               {currentLanguage === 'en'
@@ -97,7 +102,7 @@ const TexcomDetailPage = () => {
             </motion.p>
 
             <motion.div 
-              className="flex flex-wrap items-center justify-center gap-6 pt-6"
+              className="flex flex-wrap items-center justify-center gap-6 pt-10"
               variants={fadeInUp}
             >
               <div className="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-md">

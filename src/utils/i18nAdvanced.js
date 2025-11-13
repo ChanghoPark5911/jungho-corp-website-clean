@@ -305,6 +305,72 @@ class I18nAdvanced {
           followUs: 'Follow us',
           copyright: '모든 권리 보유'
         },
+        // ABOUT - HISTORY
+        history: {
+          pageTitle: 'HISTORY',
+          currentPage: 'Current Page',
+          yearRange: '📅 1982 - 2025',
+          mainTitle: '정호그룹의 발자취',
+          subtitle: '1982년부터 현재까지',
+          subtitleHighlight: '43년의 혁신과 성장의 여정',
+          statYears: '역사',
+          statMilestones: '마일스톤',
+          statSubsidiaries: '계열사',
+          ctaTitle: '함께 만들어갈 미래',
+          ctaDescription: '43년의 경험과 혁신을 바탕으로\n정호그룹은 더 밝은 내일을 향해 나아갑니다',
+          ctaButton: '정호그룹과 함께하기',
+          foundingMark: '정호물산 창립',
+          foundingSubtitle: '정호그룹의 시작'
+        },
+        // Media/PR
+        media: {
+          promotion: {
+            pageTitle: '홍보영상',
+            subtitle: '정호그룹과 계열사의 다양한 홍보영상을 만나보세요',
+            categories: {
+              all: '전체',
+              company: '기업 소개',
+              subsidiaries: '계열사',
+              technology: '기술 혁신',
+              awards: '수상 및 인증'
+            },
+            duration: '재생시간',
+            views: '조회수',
+            uploadDate: '업로드',
+            watchVideo: '영상 보기',
+            noVideos: '등록된 영상이 없습니다',
+            ipTitle: '정호그룹 지적재산권 현황',
+            ipSubtitle: '정호그룹의 기술력을 입증하는 140여 개의 지적재산권',
+            ipTotal: '총 지적재산권',
+            ipPatents: '특허',
+            ipDesigns: '디자인',
+            ipSoftware: '소프트웨어',
+            bannerTitle: '더 많은 영상을 준비하고 있습니다',
+            bannerSubtitle: '정호그룹의 다양한 이야기를 영상으로 만나보세요',
+            subscribeButton: 'YouTube 채널 구독하기'
+          }
+        },
+        // Projects
+        projects: {
+          badge: '🏆 2,152+ 프로젝트',
+          pageTitle: '프로젝트 포트폴리오',
+          subtitle: '정호그룹의 대표 프로젝트를 소개합니다',
+          subtitleHighlight: '40년의 경험과 기술력',
+          statTotal: '총 프로젝트',
+          statFeatured: '대표 프로젝트',
+          statCategories: '카테고리',
+          categories: {
+            all: '전체',
+            office: '업무시설',
+            public: '공공시설',
+            residential: '주거시설',
+            commercial: '상업시설',
+            cultural: '문화·의료·교육',
+            industrial: '생산·물류·데이터센터'
+          },
+          filterAll: '전체 {{total}}건 중 대표 {{featured}}건 표시',
+          filterCategory: '{{category}} 전체 {{total}}건 중 {{count}}건 표시'
+        },
         // 고객지원 페이지
         support: {
           loading: '고객지원 페이지를 불러오는 중...',
@@ -927,6 +993,72 @@ class I18nAdvanced {
           terms: 'Terms of Service',
           followUs: 'Follow us',
           copyright: 'All Rights Reserved'
+        },
+        // ABOUT - HISTORY
+        history: {
+          pageTitle: 'HISTORY',
+          currentPage: 'Current Page',
+          yearRange: '📅 1982 - 2025',
+          mainTitle: 'Jungho Group Journey',
+          subtitle: 'From 1982 to Present',
+          subtitleHighlight: '43 Years of Innovation and Growth',
+          statYears: 'Years',
+          statMilestones: 'Milestones',
+          statSubsidiaries: 'Subsidiaries',
+          ctaTitle: 'Building the Future Together',
+          ctaDescription: 'With 43 years of experience and innovation\nJungho Group moves forward towards a brighter tomorrow',
+          ctaButton: 'Join Jungho Group',
+          foundingMark: 'Jungho Mulsan Founded',
+          foundingSubtitle: 'The Beginning of Jungho Group'
+        },
+        // Media/PR
+        media: {
+          promotion: {
+            pageTitle: 'Promotional Videos',
+            subtitle: 'Discover various promotional videos of Jungho Group and its subsidiaries',
+            categories: {
+              all: 'All',
+              company: 'Company Introduction',
+              subsidiaries: 'Subsidiaries',
+              technology: 'Technology Innovation',
+              awards: 'Awards & Certifications'
+            },
+            duration: 'Duration',
+            views: 'Views',
+            uploadDate: 'Uploaded',
+            watchVideo: 'Watch Video',
+            noVideos: 'No videos available',
+            ipTitle: 'Jungho Group Intellectual Property Status',
+            ipSubtitle: 'Over 140 intellectual properties demonstrating Jungho Group\'s technological capabilities',
+            ipTotal: 'Total Intellectual Property',
+            ipPatents: 'Patents',
+            ipDesigns: 'Designs',
+            ipSoftware: 'Software',
+            bannerTitle: 'More videos are coming soon',
+            bannerSubtitle: 'Discover Jungho Group\'s diverse stories through videos',
+            subscribeButton: 'Subscribe to YouTube Channel'
+          }
+        },
+        // Projects
+        projects: {
+          badge: '🏆 2,152+ Projects',
+          pageTitle: 'Project Portfolio',
+          subtitle: 'Showcasing Jungho Group\'s Representative Projects',
+          subtitleHighlight: '40 Years of Experience and Expertise',
+          statTotal: 'Total Projects',
+          statFeatured: 'Featured Projects',
+          statCategories: 'Categories',
+          categories: {
+            all: 'All',
+            office: 'Office Buildings',
+            public: 'Public Facilities',
+            residential: 'Residential',
+            commercial: 'Commercial',
+            cultural: 'Cultural·Medical·Education',
+            industrial: 'Industrial·Logistics·Data Center'
+          },
+          filterAll: 'Showing {{featured}} featured projects out of {{total}} total',
+          filterCategory: 'Showing {{count}} projects out of {{total}} {{category}}'
         },
         // Support Page
         support: {

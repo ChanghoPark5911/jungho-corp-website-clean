@@ -1021,3 +1021,260 @@ section p.hero-subtitle {
 .swiper-fade .swiper-slide-active {
   opacity: 1 !important;
 }
+
+/* ===== 모바일 터치 최적화 ===== */
+/* 터치 영역 최소 크기 확보 (Apple 권장: 44x44px, Google 권장: 48x48px) */
+@media (max-width: 1023px) {
+  /* 모든 버튼과 링크의 최소 터치 영역 */
+  button,
+  a,
+  [role="button"],
+  [type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    position: relative;
+  }
+
+  /* 터치 영역 확대를 위한 가상 요소 */
+  button::before,
+  a::before,
+  [role="button"]::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* 입력 필드 터치 최적화 */
+  input,
+  textarea,
+  select {
+    min-height: 44px;
+    font-size: 16px; /* iOS에서 자동 확대 방지 */
+    padding: 12px 16px;
+  }
+
+  /* 모바일 텍스트 가독성 향상 */
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* 제목 크기 조정 */
+  h1 {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    line-height: 1.3;
+    margin-bottom: 0.875rem;
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  h4 {
+    font-size: clamp(1.125rem, 3vw, 1.5rem);
+    line-height: 1.4;
+  }
+
+  /* 본문 텍스트 */
+  p {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  /* 버튼 크기 최적화 */
+  .btn,
+  button[class*="btn"] {
+    padding: 12px 24px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+
+  /* 카드 간격 최적화 */
+  .card,
+  [class*="card"] {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* 섹션 여백 최적화 */
+  section {
+    padding: 40px 16px;
+  }
+
+  /* 컨테이너 여백 */
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* 네비게이션 메뉴 항목 간격 */
+  nav button,
+  nav a {
+    padding: 12px 16px;
+    margin: 4px 0;
+  }
+
+  /* 스크롤 영역 터치 개선 */
+  .overflow-x-auto,
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* 작은 모바일 기기 (iPhone SE, 소형 안드로이드) */
+@media (max-width: 374px) {
+  body {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+  }
+
+  button,
+  .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  section {
+    padding: 32px 12px;
+  }
+
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+/* 태블릿 최적화 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* 태블릿에서는 조금 더 큰 터치 영역 */
+  button,
+  a,
+  [role="button"] {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  h2 {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+
+  section {
+    padding: 60px 32px;
+  }
+}
+
+/* 터치 피드백 개선 */
+@media (hover: none) and (pointer: coarse) {
+  button:active,
+  a:active,
+  [role="button"]:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  /* 터치 하이라이트 제거 (사용자 정의 피드백 사용) */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  /* 링크와 버튼은 터치 하이라이트 허용 */
+  a,
+  button,
+  [role="button"] {
+    -webkit-tap-highlight-color: rgba(16, 185, 129, 0.2);
+  }
+}
+
+/* 모바일 헤더 최적화 */
+@media (max-width: 1023px) {
+  header {
+    height: 64px;
+  }
+
+  /* 모바일 메뉴 항목 터치 최적화 */
+  header nav button,
+  header nav a {
+    min-height: 48px;
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+
+  /* 모바일 드롭다운 메뉴 */
+  .dropdown-menu {
+    width: 100%;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+  }
+}
+
+/* Safe Area Inset 지원 (아이폰 노치 대응) */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+
+  header {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  footer {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+}
+
+/* 가로 모드 최적화 */
+@media (max-width: 1023px) and (orientation: landscape) {
+  /* 헤더 높이 축소 */
+  header {
+    height: 56px;
+  }
+
+  /* 섹션 상하 여백 축소 */
+  section {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  /* Hero 섹션 높이 조정 */
+  .hero-section,
+  section.hero-section {
+    min-height: 70vh;
+  }
+}

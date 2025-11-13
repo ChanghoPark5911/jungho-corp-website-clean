@@ -28,18 +28,18 @@ const MediaPromotionPage = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15
+        staggerChildren: 0
       }
     }
   };
 
   // 카테고리
   const categories = [
-    { id: 'all', label: '전체', icon: '📺' },
-    { id: 'company', label: '기업 소개', icon: '🏢' },
-    { id: 'subsidiaries', label: '계열사', icon: '🏭' },
-    { id: 'technology', label: '기술 혁신', icon: '💡' },
-    { id: 'awards', label: '수상 및 인증', icon: '🏆' }
+    { id: 'all', label: t('media.promotion.categories.all'), icon: '📺' },
+    { id: 'company', label: t('media.promotion.categories.company'), icon: '🏢' },
+    { id: 'subsidiaries', label: t('media.promotion.categories.subsidiaries'), icon: '🏭' },
+    { id: 'technology', label: t('media.promotion.categories.technology'), icon: '💡' },
+    { id: 'awards', label: t('media.promotion.categories.awards'), icon: '🏆' }
   ];
 
   // 지적재산권 통계
@@ -233,13 +233,13 @@ const MediaPromotionPage = () => {
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
             variants={fadeInUp}
           >
-            홍보영상
+            {t('media.promotion.pageTitle')}
           </motion.h1>
           <motion.p 
             className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto"
             variants={fadeInUp}
           >
-            정호그룹의 혁신과 성장을 영상으로 만나보세요
+            {t('media.promotion.subtitle')}
           </motion.p>
         </motion.div>
       </section>
@@ -291,10 +291,10 @@ const MediaPromotionPage = () => {
                 <span className="text-3xl">🏆</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                지적재산권 보유 현황
+                {t('media.promotion.ipTitle')}
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-400">
-                정호그룹의 기술력을 입증하는 140여 개의 지적재산권
+                {t('media.promotion.ipSubtitle')}
               </p>
             </motion.div>
 
@@ -315,7 +315,7 @@ const MediaPromotionPage = () => {
                   {intellectualPropertyStats.total}+
                 </div>
                 <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
-                  총 지적재산권
+                  {t('media.promotion.ipTotal')}
                 </div>
               </motion.div>
 
@@ -328,7 +328,7 @@ const MediaPromotionPage = () => {
                   {intellectualPropertyStats.patents}
                 </div>
                 <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
-                  특허
+                  {t('media.promotion.ipPatents')}
                 </div>
               </motion.div>
 
@@ -341,7 +341,7 @@ const MediaPromotionPage = () => {
                   {intellectualPropertyStats.designs}
                 </div>
                 <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
-                  디자인
+                  {t('media.promotion.ipDesigns')}
                 </div>
               </motion.div>
 
@@ -354,7 +354,7 @@ const MediaPromotionPage = () => {
                   {intellectualPropertyStats.software}
                 </div>
                 <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
-                  소프트웨어
+                  {t('media.promotion.ipSoftware')}
                 </div>
               </motion.div>
             </motion.div>
@@ -444,16 +444,10 @@ const MediaPromotionPage = () => {
               </p>
             </motion.div>
           ) : (
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              initial="hidden"
-              animate="visible"
-              variants={staggerContainer}
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredVideos.map((video) => (
-                <motion.div
+                <div
                   key={video.id}
-                  variants={fadeInUp}
                   className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer"
                   onClick={() => handleVideoClick(video)}
                 >
@@ -508,9 +502,9 @@ const MediaPromotionPage = () => {
                       </button>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           )}
         </div>
       </section>
@@ -526,13 +520,13 @@ const MediaPromotionPage = () => {
         >
           <div className="text-5xl mb-6">📢</div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            더 많은 영상을 준비하고 있습니다
+            {t('media.promotion.bannerTitle')}
           </h2>
           <p className="text-xl text-white/90 mb-8">
-            정호그룹의 다양한 이야기를 영상으로 만나보세요
+            {t('media.promotion.bannerSubtitle')}
           </p>
           <button className="bg-white text-primary-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors duration-300">
-            YouTube 채널 구독하기
+            {t('media.promotion.subscribeButton')}
           </button>
         </motion.div>
       </section>

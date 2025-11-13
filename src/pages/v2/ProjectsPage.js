@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useI18n } from '../../hooks/useI18n';
 
 const ProjectsPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState('전체');
+  const { t, currentLanguage } = useI18n();
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedProject, setSelectedProject] = useState(null);
 
   // 애니메이션 variants
@@ -37,14 +39,25 @@ const ProjectsPage = () => {
 
   // 카테고리 정의
   const categories = [
-    { id: '전체', name: '전체', count: 58, total: 2152 },
-    { id: '업무시설', name: '업무시설', count: 8, total: 517 },
-    { id: '공공시설', name: '공공시설', count: 10, total: 364 },
-    { id: '주거시설', name: '주거시설', count: 10, total: 349 },
-    { id: '상업시설', name: '상업시설', count: 9, total: 298 },
-    { id: '문화·의료·교육', name: '문화·의료·교육', count: 10, total: 416 },
-    { id: '생산·물류·데이터센터', name: '생산·물류·데이터센터', count: 10, total: 198 }
+    { id: 'all', key: 'all', count: 58, total: 2152 },
+    { id: 'office', key: 'office', count: 8, total: 517 },
+    { id: 'public', key: 'public', count: 10, total: 364 },
+    { id: 'residential', key: 'residential', count: 10, total: 349 },
+    { id: 'commercial', key: 'commercial', count: 9, total: 298 },
+    { id: 'cultural', key: 'cultural', count: 10, total: 416 },
+    { id: 'industrial', key: 'industrial', count: 10, total: 198 }
   ];
+  
+  // 카테고리 ID를 실제 한글 이름으로 매핑 (프로젝트 필터링용)
+  const categoryIdToKorean = {
+    'all': '전체',
+    'office': '업무시설',
+    'public': '공공시설',
+    'residential': '주거시설',
+    'commercial': '상업시설',
+    'cultural': '문화·의료·교육',
+    'industrial': '생산·물류·데이터센터'
+  };
 
   // 프로젝트 데이터 (50개) - 실제 파일명과 일치
   const projects = [
@@ -119,9 +132,9 @@ const ProjectsPage = () => {
   ];
 
   // 필터링된 프로젝트
-  const filteredProjects = selectedCategory === '전체' 
+  const filteredProjects = selectedCategory === 'all' 
     ? projects 
-    : projects.filter(p => p.category === selectedCategory);
+    : projects.filter(p => p.category === categoryIdToKorean[selectedCategory]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 pt-20">
@@ -164,7 +177,7 @@ const ProjectsPage = () => {
           >
             <motion.div variants={fadeInUp}>
               <span className="inline-block px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-semibold mb-4">
-                🏆 2,152+ 프로젝트
+                {t('projects.badge')}
               </span>
             </motion.div>
 
@@ -172,15 +185,15 @@ const ProjectsPage = () => {
               className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white"
               variants={fadeInUp}
             >
-              프로젝트 포트폴리오
+              {t('projects.pageTitle')}
             </motion.h1>
 
             <motion.p 
               className="text-xl sm:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
               variants={fadeInUp}
             >
-              정호그룹의 대표 프로젝트를 소개합니다<br />
-              <span className="text-primary-600 dark:text-primary-400 font-semibold">40년의 경험과 기술력</span>
+              {t('projects.subtitle')}<br />
+              <span className="text-primary-600 dark:text-primary-400 font-semibold">{t('projects.subtitleHighlight')}</span>
             </motion.p>
 
             <motion.div 
@@ -189,17 +202,17 @@ const ProjectsPage = () => {
             >
               <div className="text-center">
                 <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">2,152</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">총 프로젝트</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('projects.statTotal')}</div>
               </div>
               <div className="h-12 w-px bg-gray-300 dark:bg-gray-600" />
               <div className="text-center">
                 <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">58</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">대표 프로젝트</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('projects.statFeatured')}</div>
               </div>
               <div className="h-12 w-px bg-gray-300 dark:bg-gray-600" />
               <div className="text-center">
                 <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">6</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">카테고리</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('projects.statCategories')}</div>
               </div>
             </motion.div>
           </motion.div>
@@ -227,7 +240,7 @@ const ProjectsPage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <span>{cat.name}</span>
+                <span>{t(`projects.categories.${cat.key}`)}</span>
                 <span className="ml-2 text-sm opacity-75">({cat.count})</span>
               </motion.button>
             ))}
@@ -236,10 +249,14 @@ const ProjectsPage = () => {
           {/* 선택된 카테고리 통계 */}
           <div className="text-center mt-6">
             <p className="text-gray-600 dark:text-gray-400">
-              {selectedCategory === '전체' ? (
-                <span>전체 <span className="font-bold text-primary-600 dark:text-primary-400">2,152건</span> 중 대표 <span className="font-bold">50건</span> 표시</span>
+              {selectedCategory === 'all' ? (
+                t('projects.filterAll', { total: '2,152', featured: '50' })
               ) : (
-                <span>{selectedCategory} 전체 <span className="font-bold text-primary-600 dark:text-primary-400">{categories.find(c => c.id === selectedCategory)?.total}건</span> 중 <span className="font-bold">{filteredProjects.length}건</span> 표시</span>
+                t('projects.filterCategory', { 
+                  category: t(`projects.categories.${selectedCategory}`),
+                  total: categories.find(c => c.id === selectedCategory)?.total,
+                  count: filteredProjects.length
+                })
               )}
             </p>
           </div>

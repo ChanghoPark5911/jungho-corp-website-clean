@@ -130,31 +130,31 @@ const ClarusDetailPage = () => {
   // 핵심 기술
   const technologies = [
     {
-      title: currentLanguage === 'en' ? 'IoT-based Smart Lighting' : 'IoT 기반 스마트 조명',
+      title: currentLanguage === 'en' ? 'IoT-based Smart Lighting Control' : 'IoT기반 스마트 조명제어',
       description: currentLanguage === 'en'
-        ? 'Intelligent lighting control system utilizing Internet of Things technology'
-        : '사물인터넷 기술을 활용한 지능형 조명 제어 시스템',
+        ? 'Smart lighting management solution for efficient energy savings'
+        : '효율적 에너지 절감을 위한 스마트 조명 관리 솔루션',
       icon: '🌐'
     },
     {
-      title: currentLanguage === 'en' ? 'Energy Saving Solution' : '에너지 절감 솔루션',
+      title: currentLanguage === 'en' ? 'Power Monitoring and Control Solution' : '전력감시 및 제어 솔루션',
       description: currentLanguage === 'en'
-        ? 'Optimization algorithm enabling up to 40% energy savings'
-        : '최대 40% 에너지 절감 가능한 최적화 알고리즘',
+        ? 'Stable monitoring and operation of distribution panels through power monitoring'
+        : '전력 모니터링을 통한 안정적인 수배전반 감시운영',
       icon: '⚡'
     },
     {
-      title: currentLanguage === 'en' ? '40 Years of Expertise' : '40년 노하우',
+      title: currentLanguage === 'en' ? 'Integrated Building Resource Management Solution' : '빌딩 자원관리 종합 솔루션',
       description: currentLanguage === 'en'
-        ? 'Lighting control technology and experience accumulated since 1982'
-        : '1982년부터 축적된 조명 제어 기술과 경험',
+        ? 'Integrated building management platform providing comfortable and safe operating environment'
+        : '쾌적하고 안전한 운영 환경을 제공하는 통합 빌딩 관리 플랫폼',
       icon: '🏆'
     },
     {
-      title: currentLanguage === 'en' ? 'Integrated Management System' : '통합 관리 시스템',
+      title: currentLanguage === 'en' ? 'Electrical Safety Management Solution' : '전기안전관리 솔루션',
       description: currentLanguage === 'en'
-        ? 'Cloud-based remote monitoring and control'
-        : '클라우드 기반 원격 모니터링 및 제어',
+        ? 'Safety IoT device technology that detects electrical hazards such as fire and electric shock in advance'
+        : '화재·감전 등 전기 재해를 사전에 감지하는 안전IoT장치 기술',
       icon: '☁️'
     }
   ];
@@ -277,7 +277,7 @@ const ClarusDetailPage = () => {
               className="flex flex-wrap items-center justify-center gap-6 pt-10"
               variants={fadeInUp}
             >
-              <div className="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+              <div className="px-6 py-3 bg-white dark:bg-gray-800 rounded-lg shadow-md">
                 <span className="text-sm text-gray-600 dark:text-gray-400">
                   {currentLanguage === 'en' ? 'Established' : '설립'}
                 </span>
@@ -285,27 +285,22 @@ const ClarusDetailPage = () => {
                   {currentLanguage === 'en' ? '2009' : '2009년'}
                 </div>
               </div>
-              <div className="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+              <div className="px-6 py-3 bg-white dark:bg-gray-800 rounded-lg shadow-md">
                 <span className="text-sm text-gray-600 dark:text-gray-400">
-                  {currentLanguage === 'en' ? 'Business Field' : '사업 분야'}
+                  {currentLanguage === 'en' ? 'Business Field 1' : '사업분야 1'}
                 </span>
                 <div className="text-xl font-bold text-cyan-600 dark:text-cyan-400">
-                  {currentLanguage === 'en' ? 'Lighting Control · IoT' : '조명 제어 · IoT'}
+                  {currentLanguage === 'en' ? 'Lighting Control · IoT' : '조명제어 · IoT'}
                 </div>
               </div>
-              <motion.a
-                href="https://www.magicclarus.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 dark:bg-cyan-500 dark:hover:bg-cyan-600 text-white rounded-lg shadow-md transition-all duration-300 flex items-center gap-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                🌐 {currentLanguage === 'en' ? 'Visit Website' : '웹사이트 방문'}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </motion.a>
+              <div className="px-6 py-3 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  {currentLanguage === 'en' ? 'Business Field 2' : '사업분야 2'}
+                </span>
+                <div className="text-xl font-bold text-cyan-600 dark:text-cyan-400">
+                  {currentLanguage === 'en' ? 'Power Control, Electrical Safety' : '전력제어, 전기안전'}
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         </div>
@@ -361,6 +356,191 @@ const ClarusDetailPage = () => {
                 </>
               )}
             </div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* MAGIC CLARUS 브랜드 소개 */}
+      <motion.section 
+        className="py-20 bg-gradient-to-br from-red-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-850 dark:to-gray-900 relative overflow-hidden"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        {/* 배경 패턴 */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
+            backgroundSize: '50px 50px'
+          }} />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* 브랜드 헤더 */}
+          <motion.div variants={fadeInUp} className="text-center mb-16">
+            <div className="inline-block mb-6 px-6 py-2 bg-red-100 dark:bg-red-900/30 rounded-full">
+              <span className="text-sm font-bold text-red-600 dark:text-red-400">
+                {currentLanguage === 'en' ? '🛍️ Brand Product' : '🛍️ 브랜드 제품'}
+              </span>
+            </div>
+            
+            {/* MAGIC CLARUS 로고 */}
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <img 
+                src="/images/logos/magic-clarus-logo.png" 
+                alt="MAGIC CLARUS 로고" 
+                className="h-16 w-auto object-contain"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
+                {currentLanguage === 'en' ? 'MAGIC CLARUS' : '브랜드 MAGIC CLARUS'}
+              </h2>
+            </div>
+
+            <p className="text-2xl font-semibold text-red-600 dark:text-red-400 mb-4">
+              {currentLanguage === 'en' 
+                ? 'Easy Install & Easy Control'
+                : '쉽게 설치하고, 앱으로 직관적으로 제어하세요'}
+            </p>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              {currentLanguage === 'en'
+                ? 'Experience a more convenient and efficient smart lighting solution'
+                : '가정의 조명·전력을 더 똑똑하고 편하게 바꿉니다'}
+            </p>
+          </motion.div>
+
+          {/* 특징 카드 */}
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+            variants={staggerContainer}
+          >
+            <motion.div
+              variants={fadeInUp}
+              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-red-200 dark:border-red-800"
+            >
+              <div className="text-4xl mb-4">🔧</div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                {currentLanguage === 'en' ? 'Easy Installation' : '간편설치'}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                {currentLanguage === 'en'
+                  ? 'Quick setup without complicated wiring or configuration'
+                  : '복잡한 배선/설정 없이 빠르게 셋업'}
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-red-200 dark:border-red-800"
+            >
+              <div className="text-4xl mb-4">📱</div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                {currentLanguage === 'en' ? 'Easy Control' : '쉬운 제어'}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                {currentLanguage === 'en'
+                  ? 'Intuitive with one switch, convenient with app'
+                  : '스위치 하나로 직관적, 앱으로 편리하게'}
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-red-200 dark:border-red-800"
+            >
+              <div className="text-4xl mb-4">🏠</div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                {currentLanguage === 'en' ? 'Expandability' : '확장성'}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                {currentLanguage === 'en'
+                  ? 'Gradual upgrade from one room to entire home'
+                  : '방 하나부터 집 전체까지 단계적으로 업그레이드'}
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-red-200 dark:border-red-800"
+            >
+              <div className="text-4xl mb-4">✅</div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                {currentLanguage === 'en' ? 'Reliable Quality' : '안심 품질'}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                {currentLanguage === 'en'
+                  ? '40 years of CLARUS tradition for everyday use'
+                  : '일상에서 매일 쓰는 제품이니까, 40년 전통의 클라루스로'}
+              </p>
+            </motion.div>
+          </motion.div>
+
+          {/* 타겟 고객 */}
+          <motion.div 
+            variants={fadeInUp}
+            className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl mb-12"
+          >
+            <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">
+              {currentLanguage === 'en' ? '🎯 Perfect For' : '🎯 이런 분들께 추천합니다'}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+              <div className="p-4">
+                <div className="text-3xl mb-3">🌟</div>
+                <p className="text-gray-700 dark:text-gray-300">
+                  {currentLanguage === 'en'
+                    ? 'Starting your first smart home'
+                    : '첫 스마트홈을 시작하려는 분'}
+                </p>
+              </div>
+              <div className="p-4">
+                <div className="text-3xl mb-3">🎁</div>
+                <p className="text-gray-700 dark:text-gray-300">
+                  {currentLanguage === 'en'
+                    ? 'Want to gift convenient lighting/power control to parents'
+                    : '부모님 댁에 편한 조명/전원 제어를 선물하고 싶은 분'}
+                </p>
+              </div>
+              <div className="p-4">
+                <div className="text-3xl mb-3">💰</div>
+                <p className="text-gray-700 dark:text-gray-300">
+                  {currentLanguage === 'en'
+                    ? 'Want to save on electricity bills and time'
+                    : '집안 전기요금과 시간을 아끼고 싶은 분'}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* CTA 버튼 */}
+          <motion.div 
+            variants={fadeInUp}
+            className="text-center"
+          >
+            <motion.a
+              href="https://www.magicclarus.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white text-lg font-bold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span>🛒</span>
+              <span>
+                {currentLanguage === 'en' 
+                  ? 'Visit MAGIC CLARUS Online Store'
+                  : 'MAGIC CLARUS 온라인 쇼핑몰 방문하기'}
+              </span>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </motion.a>
+            <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+              {currentLanguage === 'en'
+                ? 'Check product details, purchase, and technical support'
+                : '제품 상세정보, 구매 및 기술지원 안내'}
+            </p>
           </motion.div>
         </div>
       </motion.section>

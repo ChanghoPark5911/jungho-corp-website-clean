@@ -273,10 +273,10 @@ const AboutHistoryPage = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
-            Current Page
+            {t('history.currentPage')}
           </div>
           <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-            HISTORY
+            {t('history.pageTitle')}
           </div>
         </motion.div>
 
@@ -289,7 +289,7 @@ const AboutHistoryPage = () => {
           >
             <motion.div variants={fadeInUp}>
               <span className="inline-block px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-semibold mb-4">
-                📅 1982 - 2025
+                {t('history.yearRange')}
               </span>
             </motion.div>
 
@@ -297,15 +297,15 @@ const AboutHistoryPage = () => {
               className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white"
               variants={fadeInUp}
             >
-              정호그룹의 발자취
+              {t('history.mainTitle')}
             </motion.h1>
 
             <motion.p 
               className="text-xl sm:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
               variants={fadeInUp}
             >
-              1982년부터 현재까지<br />
-              <span className="text-primary-600 dark:text-primary-400 font-semibold">43년의 혁신과 성장의 여정</span>
+              {t('history.subtitle')}<br />
+              <span className="text-primary-600 dark:text-primary-400 font-semibold">{t('history.subtitleHighlight')}</span>
             </motion.p>
 
             <motion.div 
@@ -313,18 +313,22 @@ const AboutHistoryPage = () => {
               variants={fadeInUp}
             >
               <div>
-                <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">43년+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">역사</div>
+                <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">
+                  {currentLanguage === 'ko' ? '43년+' : '43+'}
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('history.statYears')}</div>
               </div>
               <div className="h-12 w-px bg-gray-300 dark:bg-gray-600" />
               <div>
                 <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">100+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">마일스톤</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('history.statMilestones')}</div>
               </div>
               <div className="h-12 w-px bg-gray-300 dark:bg-gray-600" />
               <div>
-                <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">5개</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">계열사</div>
+                <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">
+                  {currentLanguage === 'ko' ? '4개' : '4'}
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('history.statSubsidiaries')}</div>
               </div>
             </motion.div>
           </motion.div>
@@ -395,8 +399,8 @@ const AboutHistoryPage = () => {
             <div className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-500 dark:to-primary-600 rounded-full shadow-xl">
               <span className="text-3xl">🏢</span>
               <div className="text-left">
-                <div className="text-white font-bold text-xl">1982년 정호물산 창립</div>
-                <div className="text-primary-100 text-sm">정호그룹의 시작</div>
+                <div className="text-white font-bold text-xl">1982년 {t('history.foundingMark')}</div>
+                <div className="text-primary-100 text-sm">{t('history.foundingSubtitle')}</div>
               </div>
             </div>
           </motion.div>
@@ -419,18 +423,17 @@ const AboutHistoryPage = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-              함께 만들어갈 미래
+              {t('history.ctaTitle')}
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-              43년의 경험과 혁신을 바탕으로<br />
-              정호그룹은 더 밝은 내일을 향해 나아갑니다
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 whitespace-pre-line">
+              {t('history.ctaDescription')}
             </p>
             <motion.button
               className="px-8 py-4 bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-300"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
-              정호그룹과 함께하기
+              {t('history.ctaButton')}
             </motion.button>
           </motion.div>
         </div>

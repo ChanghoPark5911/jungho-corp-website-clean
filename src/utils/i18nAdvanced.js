@@ -350,8 +350,8 @@ class I18nAdvanced {
             subscribeButton: 'YouTube 채널 구독하기'
           }
         },
-        // Projects
-        projects: {
+        // Project Portfolio (프로젝트 포트폴리오 페이지)
+        portfolio: {
           badge: '🏆 2,152+ 프로젝트',
           pageTitle: '프로젝트 포트폴리오',
           subtitle: '정호그룹의 대표 프로젝트를 소개합니다',
@@ -1039,8 +1039,8 @@ class I18nAdvanced {
             subscribeButton: 'Subscribe to YouTube Channel'
           }
         },
-        // Projects
-        projects: {
+        // Project Portfolio
+        portfolio: {
           badge: '🏆 2,152+ Projects',
           pageTitle: 'Project Portfolio',
           subtitle: 'Showcasing Jungho Group\'s Representative Projects',

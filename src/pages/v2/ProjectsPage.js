@@ -177,7 +177,7 @@ const ProjectsPage = () => {
           >
             <motion.div variants={fadeInUp}>
               <span className="inline-block px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-semibold mb-4">
-                {t('projects.badge')}
+                {t('portfolio.badge')}
               </span>
             </motion.div>
 
@@ -185,15 +185,15 @@ const ProjectsPage = () => {
               className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white"
               variants={fadeInUp}
             >
-              {t('projects.pageTitle')}
+              {t('portfolio.pageTitle')}
             </motion.h1>
 
             <motion.p 
               className="text-xl sm:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
               variants={fadeInUp}
             >
-              {t('projects.subtitle')}<br />
-              <span className="text-primary-600 dark:text-primary-400 font-semibold">{t('projects.subtitleHighlight')}</span>
+              {t('portfolio.subtitle')}<br />
+              <span className="text-primary-600 dark:text-primary-400 font-semibold">{t('portfolio.subtitleHighlight')}</span>
             </motion.p>
 
             <motion.div 
@@ -202,17 +202,17 @@ const ProjectsPage = () => {
             >
               <div className="text-center">
                 <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">2,152</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('projects.statTotal')}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('portfolio.statTotal')}</div>
               </div>
               <div className="h-12 w-px bg-gray-300 dark:bg-gray-600" />
               <div className="text-center">
                 <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">58</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('projects.statFeatured')}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('portfolio.statFeatured')}</div>
               </div>
               <div className="h-12 w-px bg-gray-300 dark:bg-gray-600" />
               <div className="text-center">
                 <div className="text-4xl font-bold text-primary-600 dark:text-primary-400">6</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('projects.statCategories')}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('portfolio.statCategories')}</div>
               </div>
             </motion.div>
           </motion.div>
@@ -240,7 +240,7 @@ const ProjectsPage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <span>{t(`projects.categories.${cat.key}`)}</span>
+                <span>{t(`portfolio.categories.${cat.key}`)}</span>
                 <span className="ml-2 text-sm opacity-75">({cat.count})</span>
               </motion.button>
             ))}
@@ -250,10 +250,10 @@ const ProjectsPage = () => {
           <div className="text-center mt-6">
             <p className="text-gray-600 dark:text-gray-400">
               {selectedCategory === 'all' ? (
-                t('projects.filterAll', { total: '2,152', featured: '50' })
+                t('portfolio.filterAll', { total: '2,152', featured: '50' })
               ) : (
-                t('projects.filterCategory', { 
-                  category: t(`projects.categories.${selectedCategory}`),
+                t('portfolio.filterCategory', { 
+                  category: t(`portfolio.categories.${selectedCategory}`),
                   total: categories.find(c => c.id === selectedCategory)?.total,
                   count: filteredProjects.length
                 })

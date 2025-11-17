@@ -218,14 +218,6 @@ class I18nAdvanced {
           create: '생성',
           update: '업데이트'
         },
-        // V2 홈페이지
-        home: {
-          hero: {
-            title: '사람과 공간을\n밝히는 기술',
-            subtitle: '정호그룹',
-            description: '40년의 혁신으로 내일의 빛을 밝힙니다'
-          }
-        },
         // 헤더
         header: {
           title: '정호그룹',
@@ -959,14 +951,6 @@ class I18nAdvanced {
           add: 'Add',
           create: 'Create',
           update: 'Update'
-        },
-        // V2 Homepage
-        home: {
-          hero: {
-            title: 'Lighting technology that\nilluminates people and spaces',
-            subtitle: 'Jungho Group',
-            description: 'Lighting tomorrow with 40 years of innovation'
-          }
         },
         // Header
         header: {

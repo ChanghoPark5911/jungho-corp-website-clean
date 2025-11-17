@@ -22,8 +22,8 @@ const SubsidiariesPage = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
+        staggerChildren: 0,
+        delayChildren: 0
       }
     }
   };
@@ -207,22 +207,12 @@ const SubsidiariesPage = () => {
       </motion.section>
 
       {/* 계열사 카드 섹션 */}
-      <motion.section 
-        className="py-20 bg-white dark:bg-gray-900"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
-      >
+      <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            variants={staggerContainer}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {subsidiaries.map((company, index) => (
-              <motion.div
+              <div
                 key={company.id}
-                variants={fadeInUp}
-                whileHover={{ y: -8, scale: 1.02 }}
                 className="group cursor-pointer"
                 onClick={() => navigate(`/subsidiaries/${company.id}`)}
               >
@@ -299,11 +289,11 @@ const SubsidiariesPage = () => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* CTA Section */}
       <motion.section 

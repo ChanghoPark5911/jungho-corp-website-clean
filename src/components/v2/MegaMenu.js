@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
 import LanguageSelector from '../LanguageSelector';
@@ -79,24 +79,24 @@ const MegaMenu = () => {
     { label: 'REDSSOCKSOO', url: 'https://www.redssocksoo.com/', icon: '👕' },
   ];
 
-  const handleMenuHover = (menuId) => {
+  const handleMenuHover = useCallback((menuId) => {
     setActiveMenu(menuId);
-  };
+  }, []);
 
-  const handleMenuLeave = () => {
+  const handleMenuLeave = useCallback(() => {
     setActiveMenu(null);
-  };
+  }, []);
 
-  const handleNavigation = (path) => {
+  const handleNavigation = useCallback((path) => {
     navigate(path);
     setActiveMenu(null);
     setMobileMenuOpen(false);
-  };
+  }, [navigate]);
 
-  const handleExternalLink = (url) => {
+  const handleExternalLink = useCallback((url) => {
     window.open(url, '_blank', 'noopener,noreferrer');
     setActiveMenu(null);
-  };
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] bg-white dark:bg-gray-900 shadow-md">
@@ -143,7 +143,7 @@ const MegaMenu = () => {
                     onClick={() => handleNavigation(menu.path)}
                     className={`
                       px-4 py-2 text-sm font-semibold rounded-lg
-                      transition-colors duration-200
+                      transition-colors duration-150
                       ${
                         activeMenu === menu.id
                           ? 'text-primary-600 bg-primary-50'
@@ -171,13 +171,12 @@ const MegaMenu = () => {
                           className="
                             w-full flex items-center space-x-3 px-4 py-2
                             text-left text-sm
-                            transition-all duration-200
+                            transition-all duration-150
                             text-gray-700 dark:text-gray-300
                             hover:text-primary-600 dark:hover:text-primary-300
                             hover:bg-primary-50 dark:hover:bg-primary-900/20
                             hover:translate-x-1
                           "
-                          style={{ animationDelay: `${index * 50}ms` }}
                         >
                           <span className="text-xl">{item.icon}</span>
                           <span className="font-medium">{item.label}</span>
@@ -197,7 +196,7 @@ const MegaMenu = () => {
                 <button
                   className={`
                     px-4 py-2 text-sm font-semibold rounded-lg
-                    transition-colors duration-200
+                    transition-colors duration-150
                     ${
                       activeMenu === 'family'
                         ? 'text-primary-600 bg-primary-50'
@@ -223,13 +222,12 @@ const MegaMenu = () => {
                       className="
                         w-full flex items-center justify-between px-4 py-2
                         text-left text-sm
-                        transition-all duration-200
+                        transition-all duration-150
                         text-gray-700 dark:text-gray-300
                         hover:text-primary-600 dark:hover:text-primary-300
                         hover:bg-primary-50 dark:hover:bg-primary-900/20
                         hover:translate-x-1
                       "
-                      style={{ animationDelay: `${index * 50}ms` }}
                     >
                       <div className="flex items-center space-x-3">
                         <span className="text-xl">{site.icon}</span>
@@ -348,36 +346,31 @@ const MegaMenu = () => {
         </div>
       )}
 
-      {/* 메가메뉴 오버레이 (데스크톱) */}
-      {activeMenu && (
-        <div
-          className="fixed inset-0 bg-black/20 z-40 hidden lg:block fade-in"
-          onMouseEnter={handleMenuLeave}
-        />
-      )}
+      {/* 메가메뉴 오버레이 제거 - 깜박임 방지 */}
 
-      {/* CSS 애니메이션 스타일 */}
+      {/* CSS 애니메이션 스타일 - 최적화 버전 */}
       <style>{`
         .dropdown-menu {
           opacity: 0;
           visibility: hidden;
-          transform: translateY(-10px) scale(0.96);
-          transition: all 0.3s cubic-bezier(0.04, 0.62, 0.23, 0.98);
+          transform: translateY(-8px);
+          transition: opacity 0.15s ease-out, visibility 0.15s ease-out, transform 0.15s ease-out;
           pointer-events: none;
           margin-top: 4px;
+          will-change: opacity, transform;
         }
 
         .dropdown-menu-show {
           opacity: 1;
           visibility: visible;
-          transform: translateY(0) scale(1);
+          transform: translateY(0);
           pointer-events: auto;
         }
 
         .dropdown-container:hover .dropdown-menu {
           opacity: 1;
           visibility: visible;
-          transform: translateY(0) scale(1);
+          transform: translateY(0);
           pointer-events: auto;
         }
 
@@ -393,7 +386,7 @@ const MegaMenu = () => {
         }
 
         .fade-in {
-          animation: fadeIn 0.3s ease-out;
+          animation: fadeIn 0.2s ease-out;
         }
 
         /* 모바일 메뉴 슬라이드 애니메이션 */

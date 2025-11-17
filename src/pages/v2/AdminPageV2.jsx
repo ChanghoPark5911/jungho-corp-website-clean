@@ -105,9 +105,10 @@ const AdminPageV2 = () => {
   // 정적 페이지 데이터
   const [pagesData, setPagesData] = useState({
     aboutIntro: {
-      paragraph1: '정호그룹은 1982년 설립된 이래 조명제어, LED, 산업설비의 개발 · 제조 · 엔지니어링을 중심으로 사람과 공간, 에너지를 효율적으로 연결하는 종합기술 그룹으로 성장하여 왔으며, 국내는 물론 북미, 유럽, 아시아 시장에서도 그 기술력을 인정받고 있습니다.',
-      paragraph2: '빠르게 변화하는 미래 사회에 적극 대응하고자, 정호그룹은 스마트 빌딩, IoT, 에너지 관리 분야에서 혁신적인 솔루션을 제공하며, 지속 가능한 발전을 위해 끊임없이 노력하고 있습니다.',
-      paragraph3: '정호그룹의 계열사들은 각자의 전문 분야에서 탁월한 기술력과 경험을 바탕으로 시너지를 창출하며, 고객에게 최상의 가치를 제공하고 있습니다.'
+      paragraph1: '저희 정호그룹은\n1982년 창립하여 유럽의 섬유기계 장비를 수입, 판매를 시작으로 1986년 조명제어 시스템 사업에 진출하여 국내 최초로 One-Shot System, Full 2-Way System을 국내 시장에 도입하였습니다.',
+      paragraph2: '또한 국내 최고의 연구 인력 확보와 지속적인 투자를 통해 신제품 개발 및 독자적인 Software 체계를 구축하는 등 국내 조명제어 산업을 선도해 왔습니다. 2003년 조명 제어의 미국 수출을 시작으로 캐나다, 중국, 대만, 동남아시아 시장 등 글로벌 매출을 확대해 왔으며, 5년간의 개발기간을 거쳐 완성된 독립적인 컨트롤러부터 LCD Touch Screen까지 Full Line Up을 구축하여 글로벌 경쟁력을 확보하였습니다.',
+      paragraph3: '저희 정호그룹은 각 산업분야에서 우수한 인재를 통하여 앞선 기술개발과 경쟁력을 바탕으로 사업영역을 확대하고 획기적인 성장과 발전을 이룩해 왔으며, 4차 산업의 핵심인 IoT와 융합된 제품으로 조명제어, 전력제어 산업의 Total Solution Leader로서의 역할을 다 해 나갈 것입니다.',
+      paragraph4: '저희 정호는 베풀어 주신 고객 여러분의 신뢰를 바탕으로 환경을 생각하고, 에너지의 가치를 존중하는 기업으로서 변화와 혁신을 추구하여 최고의 품질과 최고의 서비스로 언제나 고객 여러분과 함께할 것을 약속드립니다.'
     },
     subsidiaries: [
       {
@@ -137,13 +138,6 @@ const AdminPageV2 = () => {
         role: '섬유기계 및 패션 사업',
         description: '40년 전통의 섬유기계 전문 기업',
         icon: '🧵'
-      },
-      {
-        id: 'rss',
-        name: 'RSS 사업부',
-        role: '설비기계 및 산업 솔루션',
-        description: '산업용 설비 전문 사업부',
-        icon: '🔧'
       }
     ]
   });
@@ -341,14 +335,35 @@ const AdminPageV2 = () => {
   const savePagesData = () => {
     setSaveStatus('saving');
     try {
+      // localStorage에 저장
       localStorage.setItem('v2_pages_data', JSON.stringify(pagesData));
-      setSaveStatus('success');
-      setTimeout(() => {
-        setSaveStatus('');
-      }, 3000);
+      
+      // 저장된 데이터를 다시 읽어서 확인
+      const savedData = localStorage.getItem('v2_pages_data');
+      const parsedData = JSON.parse(savedData);
+      
+      // 저장 확인
+      if (parsedData && parsedData.aboutIntro && parsedData.subsidiaries) {
+        console.log('✅ 페이지 데이터 저장 성공:', parsedData);
+        
+        // 이벤트 발생하여 AboutIntroPage 실시간 업데이트
+        window.dispatchEvent(new Event('v2PagesDataUpdated'));
+        
+        setSaveStatus('success');
+        
+        // 사용자에게 저장 완료 알림
+        alert(`✅ 저장되었습니다!\n\n저장된 내용:\n• 정호그룹 소개: ${Object.keys(parsedData.aboutIntro).length}개 문단\n• 계열사 정보: ${parsedData.subsidiaries.length}개\n\n정호그룹 소개 페이지를 새로고침하여 변경사항을 확인하세요.`);
+        
+        setTimeout(() => {
+          setSaveStatus('');
+        }, 3000);
+      } else {
+        throw new Error('저장된 데이터 검증 실패');
+      }
     } catch (error) {
       console.error('저장 실패:', error);
       setSaveStatus('error');
+      alert(`❌ 저장에 실패했습니다.\n\n오류: ${error.message}\n\n브라우저 설정에서 localStorage가 비활성화되어 있는지 확인하세요.`);
     }
   };
 
@@ -1495,16 +1510,91 @@ const MediaTab = ({ data, setData, onSave, exportToJSON, copyToClipboard }) => (
 
 // 정적 페이지 관리 탭
 const PagesTab = ({ data, setData, onSave }) => {
+  // JSON 파일로 내보내기
+  const exportToJSON = () => {
+    try {
+      const exportData = {
+        aboutIntro: data.aboutIntro,
+        subsidiaries: data.subsidiaries,
+        lastUpdated: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
+      const jsonString = JSON.stringify(exportData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'pages-data.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      alert('✅ JSON 파일 다운로드 완료!\n\n다운로드한 파일을:\n1. public/data/pages-data.json 위치에 복사\n2. Git 커밋 & 푸시\n3. Vercel 자동 배포 대기\n\n그러면 영구적으로 저장됩니다!');
+    } catch (error) {
+      console.error('JSON 내보내기 실패:', error);
+      alert('❌ JSON 내보내기 실패: ' + error.message);
+    }
+  };
+
+  // 클립보드에 JSON 복사
+  const copyToClipboard = async () => {
+    try {
+      const exportData = {
+        aboutIntro: data.aboutIntro,
+        subsidiaries: data.subsidiaries,
+        lastUpdated: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
+      const jsonString = JSON.stringify(exportData, null, 2);
+      await navigator.clipboard.writeText(jsonString);
+      
+      alert('✅ 클립보드에 복사되었습니다!\n\n다음 단계:\n1. VS Code에서 public/data/pages-data.json 파일 열기\n2. Ctrl+A (전체 선택)\n3. Ctrl+V (붙여넣기)\n4. Ctrl+S (저장)\n5. Git 커밋 & 푸시\n\n그러면 영구적으로 저장됩니다!');
+    } catch (error) {
+      console.error('클립보드 복사 실패:', error);
+      alert('❌ 클립보드 복사 실패: ' + error.message);
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">정적 페이지 관리</h2>
-        <button
-          onClick={onSave}
-          className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
-        >
-          💾 저장하기
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={onSave}
+            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg"
+          >
+            💾 임시 저장 (localStorage)
+          </button>
+          <button
+            onClick={copyToClipboard}
+            className="px-6 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg"
+          >
+            📋 클립보드에 복사 (추천!)
+          </button>
+          <button
+            onClick={exportToJSON}
+            className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
+          >
+            📥 JSON 파일 다운로드
+          </button>
+        </div>
+      </div>
+
+      {/* 안내 메시지 */}
+      <div className="mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+        <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2 flex items-center">
+          <span className="mr-2">💡</span>
+          영구 저장 방법
+        </h3>
+        <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+          <li>• <strong>임시 저장</strong>: localStorage에 저장 (브라우저 캐시 지우면 삭제됨)</li>
+          <li>• <strong>영구 저장</strong>: "클립보드에 복사" 또는 "JSON 다운로드" → public/data/pages-data.json에 저장 → Git 커밋</li>
+          <li>• 영구 저장 후에는 JSON 파일의 데이터가 우선 적용됩니다</li>
+        </ul>
       </div>
 
       {/* About 소개 섹션 */}
@@ -1554,6 +1644,21 @@ const PagesTab = ({ data, setData, onSave }) => {
               onChange={(e) => setData({
                 ...data,
                 aboutIntro: {...data.aboutIntro, paragraph3: e.target.value}
+              })}
+              rows="3"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              네 번째 문단
+            </label>
+            <textarea
+              value={data.aboutIntro.paragraph4 || ''}
+              onChange={(e) => setData({
+                ...data,
+                aboutIntro: {...data.aboutIntro, paragraph4: e.target.value}
               })}
               rows="3"
               className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
@@ -1949,9 +2054,9 @@ const I18nTab = ({ data, setData, onSave }) => {
       title: 'V2 홈페이지',
       icon: '🏠',
       fields: [
-        { key: 'home.hero.title', label: 'Hero 제목', type: 'textarea' },
-        { key: 'home.hero.subtitle', label: 'Hero 부제목', type: 'textarea' },
-        { key: 'home.hero.description', label: 'Hero 설명', type: 'textarea' },
+        { key: 'home.hero.title', label: '메인 타이틀', type: 'textarea' },
+        { key: 'home.hero.subtitle', label: '회사명', type: 'textarea' },
+        { key: 'home.hero.description', label: '설명', type: 'textarea' },
         { key: 'home.subsidiaries.title', label: '계열사 섹션 제목', type: 'textarea' },
         { key: 'home.subsidiaries.description', label: '계열사 섹션 설명', type: 'text' },
         { key: 'header.title', label: '회사명 (헤더)', type: 'text' },
@@ -1962,9 +2067,12 @@ const I18nTab = ({ data, setData, onSave }) => {
       title: 'ABOUT 페이지',
       icon: '📖',
       fields: [
-        { key: 'home.group.para1', label: '그룹 소개 - 첫 번째 문단', type: 'textarea' },
-        { key: 'home.group.para2', label: '그룹 소개 - 두 번째 문단', type: 'textarea' },
-        { key: 'home.group.para3', label: '그룹 소개 - 세 번째 문단', type: 'textarea' },
+        { key: 'aboutIntro.paragraph1', label: '정호그룹 소개 - 첫 번째 문단', type: 'textarea' },
+        { key: 'aboutIntro.paragraph2', label: '정호그룹 소개 - 두 번째 문단', type: 'textarea' },
+        { key: 'aboutIntro.paragraph3', label: '정호그룹 소개 - 세 번째 문단', type: 'textarea' },
+        { key: 'aboutIntro.paragraph4', label: '정호그룹 소개 - 네 번째 문단', type: 'textarea' },
+        { key: 'aboutIntro.closing', label: '마무리 인사', type: 'text' },
+        { key: 'aboutIntro.signature', label: '서명', type: 'text' },
       ]
     },
     {

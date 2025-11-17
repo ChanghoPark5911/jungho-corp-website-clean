@@ -7,7 +7,7 @@ import { useI18n } from '../../hooks/useI18n';
  * 롯데/SK 스타일의 소셜미디어 통합 페이지
  */
 const MediaSNSPage = () => {
-  const { t } = useI18n();
+  const { t, currentLanguage } = useI18n();
   const [snsLinks, setSnsLinks] = React.useState(null);
 
   // LocalStorage에서 SNS 링크 로드
@@ -47,8 +47,8 @@ const MediaSNSPage = () => {
   const defaultSnsChannels = [
     {
       id: 'youtube',
-      name: 'YouTube',
-      description: '정호그룹의 다양한 프로젝트와 기술 혁신을 영상으로 만나보세요',
+      name: t('media.sns.channels.youtube.name'),
+      description: t('media.sns.channels.youtube.description'),
       icon: '🎥',
       color: 'from-red-500 to-red-600',
       url: 'https://www.youtube.com/@JunghoGroup',
@@ -59,8 +59,8 @@ const MediaSNSPage = () => {
     },
     {
       id: 'instagram',
-      name: 'Instagram',
-      description: '일상 속 정호그룹의 모습과 직원들의 이야기를 공유합니다',
+      name: t('media.sns.channels.instagram.name'),
+      description: t('media.sns.channels.instagram.description'),
       icon: '📸',
       color: 'from-pink-500 via-purple-500 to-orange-500',
       url: 'https://www.instagram.com/jungho_group/',
@@ -71,8 +71,8 @@ const MediaSNSPage = () => {
     },
     {
       id: 'naverBlog',
-      name: '네이버 블로그',
-      description: '정호그룹의 기술 인사이트와 산업 트렌드를 심층 분석합니다',
+      name: t('media.sns.channels.naverBlog.name'),
+      description: t('media.sns.channels.naverBlog.description'),
       icon: '📝',
       color: 'from-green-500 to-green-600',
       url: 'https://blog.naver.com/jungho_group',
@@ -83,8 +83,8 @@ const MediaSNSPage = () => {
     },
     {
       id: 'facebook',
-      name: 'Facebook',
-      description: '정호그룹의 소식과 업계 뉴스를 가장 먼저 확인하세요',
+      name: t('media.sns.channels.facebook.name'),
+      description: t('media.sns.channels.facebook.description'),
       icon: '👍',
       color: 'from-blue-500 to-blue-600',
       url: 'https://www.facebook.com/JunghoGroup',
@@ -157,13 +157,13 @@ const MediaSNSPage = () => {
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
             variants={fadeInUp}
           >
-            정호그룹 SNS
+            {t('media.sns.pageTitle')}
           </motion.h1>
           <motion.p 
             className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto"
             variants={fadeInUp}
           >
-            다양한 소셜미디어를 통해 정호그룹과 소통하세요
+            {t('media.sns.subtitle')}
           </motion.p>
         </motion.div>
       </section>
@@ -207,7 +207,7 @@ const MediaSNSPage = () => {
                       {channel.stats.followers}
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
-                      팔로워
+                      {t('media.sns.stats.followers')}
                     </div>
                   </div>
                   <div className="w-px h-12 bg-gray-300 dark:bg-gray-600"></div>
@@ -216,7 +216,7 @@ const MediaSNSPage = () => {
                       {channel.stats.posts}
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
-                      게시물
+                      {t('media.sns.stats.posts')}
                     </div>
                   </div>
                 </div>
@@ -227,7 +227,7 @@ const MediaSNSPage = () => {
                     onClick={() => handleSocialClick(channel.url)}
                     className={`w-full ${channel.buttonColor} text-white py-3 px-6 rounded-lg font-semibold transition-all duration-300 transform group-hover:scale-105 flex items-center justify-center space-x-2`}
                   >
-                    <span>방문하기</span>
+                    <span>{t('media.sns.visitButton')}</span>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
@@ -250,10 +250,10 @@ const MediaSNSPage = () => {
           >
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                최근 SNS 활동
+                {t('media.sns.recentActivity.title')}
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-400">
-                정호그룹의 최신 소식을 확인하세요
+                {t('media.sns.recentActivity.subtitle')}
               </p>
             </div>
 
@@ -298,10 +298,10 @@ const MediaSNSPage = () => {
           variants={fadeInUp}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            정호그룹과 함께하세요
+            {t('media.sns.cta.title')}
           </h2>
           <p className="text-xl text-gray-300 mb-8">
-            다양한 채널에서 정호그룹의 소식을 가장 먼저 만나보세요
+            {t('media.sns.cta.subtitle')}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             {snsChannels.map((channel) => (

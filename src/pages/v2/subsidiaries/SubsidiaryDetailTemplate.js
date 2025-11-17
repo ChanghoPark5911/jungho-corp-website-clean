@@ -2,10 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../../../hooks/useI18n';
+import { useTheme } from '../../../contexts/ThemeContext';
 
 const SubsidiaryDetailTemplate = ({ data }) => {
   const navigate = useNavigate();
   const { t, currentLanguage } = useI18n();
+  const { isDarkMode } = useTheme();
   const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
 
   // JSON 파일에서 PDF 자료 로드 (우선), localStorage는 백업 (해당 계열사 관련만)
@@ -124,23 +126,23 @@ const SubsidiaryDetailTemplate = ({ data }) => {
           >
             {/* 로고와 회사명을 나란히 배치 (로고가 있는 경우) */}
             {data.logoUrl ? (
-              <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4">
+              <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
                 <img 
                   src={data.logoUrl} 
                   alt={`${data.name} 로고`} 
-                  className="h-10 w-auto object-contain"
+                  className="h-8 sm:h-10 w-auto object-contain"
                   onError={(e) => {
                     // 이미지 로드 실패 시 대체 아이콘 표시
                     e.target.style.display = 'none';
                     e.target.nextElementSibling.style.display = 'inline-block';
                   }}
                 />
-                <span className="text-6xl hidden">{data.icon}</span>
-                <div className="flex flex-col items-center -space-y-2">
-                  <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight">
+                <span className="text-4xl sm:text-6xl hidden">{data.icon}</span>
+                <div className="flex flex-col items-center -space-y-1 sm:-space-y-2">
+                  <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
                     {currentLanguage === 'en' ? data.nameEn : data.name}
                   </h1>
-                  <p className="text-lg text-gray-600 dark:text-gray-400">
+                  <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-400 whitespace-nowrap">
                     {currentLanguage === 'en' ? data.name : data.nameEn}
                   </p>
                 </div>
@@ -148,18 +150,18 @@ const SubsidiaryDetailTemplate = ({ data }) => {
             ) : (
               <>
                 <motion.div variants={fadeInUp}>
-                  <span className="text-6xl mb-6 inline-block">{data.icon}</span>
+                  <span className="text-4xl sm:text-5xl lg:text-6xl mb-4 sm:mb-6 inline-block">{data.icon}</span>
                 </motion.div>
 
                 <motion.h1 
-                  className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white"
+                  className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white whitespace-nowrap"
                   variants={fadeInUp}
                 >
                   {currentLanguage === 'en' ? data.nameEn : data.name}
                 </motion.h1>
 
                 <motion.p 
-                  className="text-xl text-gray-600 dark:text-gray-400"
+                  className="text-sm sm:text-base lg:text-xl text-gray-600 dark:text-gray-400 whitespace-nowrap"
                   variants={fadeInUp}
                 >
                   {currentLanguage === 'en' ? data.name : data.nameEn}
@@ -168,14 +170,14 @@ const SubsidiaryDetailTemplate = ({ data }) => {
             )}
 
             <motion.p 
-              className={`text-2xl sm:text-3xl ${data.textColor} dark:${data.darkTextColor} font-semibold max-w-3xl mx-auto pt-12`}
+              className={`text-lg sm:text-2xl lg:text-3xl ${data.textColor} dark:${data.darkTextColor} font-semibold max-w-3xl mx-auto pt-8 sm:pt-12 px-4`}
               variants={fadeInUp}
             >
               {data.slogan}
             </motion.p>
 
             <motion.div 
-              className="flex flex-wrap items-center justify-center gap-6 pt-10"
+              className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 pt-6 sm:pt-10"
               variants={fadeInUp}
             >
               <div className="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-md">
@@ -226,9 +228,9 @@ const SubsidiaryDetailTemplate = ({ data }) => {
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
               {currentLanguage === 'en' ? 'Company Introduction' : '회사 소개'}
             </h2>
-            <div className="space-y-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed text-left">
+            <div className="space-y-4 text-lg leading-relaxed text-left">
               {data.description.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
+                <p key={index} className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>{paragraph}</p>
               ))}
             </div>
           </motion.div>
@@ -265,7 +267,7 @@ const SubsidiaryDetailTemplate = ({ data }) => {
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     {product.name}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-gray-600 dark:text-gray-100 product-description">
                     {product.description}
                   </p>
                 </motion.div>
@@ -305,7 +307,7 @@ const SubsidiaryDetailTemplate = ({ data }) => {
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
                     {strength.title}
                   </h3>
-                  <p className="text-gray-700 dark:text-gray-300 text-lg">
+                  <p className="text-gray-700 dark:text-white text-lg tech-description">
                     {strength.description}
                   </p>
                 </motion.div>

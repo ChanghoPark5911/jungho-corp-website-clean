@@ -2,10 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../../../hooks/useI18n';
+import { useTheme } from '../../../contexts/ThemeContext';
 
 const TexcomDetailPage = () => {
   const navigate = useNavigate();
   const { t, currentLanguage } = useI18n();
+  const { isDarkMode } = useTheme();
 
   // 애니메이션 variants
   const fadeInUp = {
@@ -70,30 +72,30 @@ const TexcomDetailPage = () => {
             variants={staggerContainer}
           >
             {/* 로고와 회사명을 나란히 배치 */}
-            <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4">
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
               <img 
                 src="/images/logos/junghotexcom.png" 
                 alt="정호텍스컴 로고" 
-                className="h-10 w-auto object-contain"
+                className="h-8 sm:h-10 w-auto object-contain"
                 onError={(e) => {
                   // 이미지 로드 실패 시 대체 아이콘 표시
                   e.target.style.display = 'none';
                   e.target.nextElementSibling.style.display = 'inline-block';
                 }}
               />
-              <span className="text-6xl hidden">👔</span>
-              <div className="flex flex-col items-center -space-y-2">
-                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight">
+              <span className="text-4xl sm:text-6xl hidden">👔</span>
+              <div className="flex flex-col items-center -space-y-1 sm:-space-y-2">
+                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
                   {currentLanguage === 'en' ? 'Jungho TEXCOM' : '정호텍스컴'}
                 </h1>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
+                <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-400 whitespace-nowrap">
                   {currentLanguage === 'en' ? '정호텍스컴' : 'Jungho TEXCOM'}
                 </p>
               </div>
             </motion.div>
 
             <motion.p 
-              className="text-2xl sm:text-3xl text-purple-600 dark:text-purple-400 font-semibold max-w-3xl mx-auto pt-12"
+              className="text-lg sm:text-2xl lg:text-3xl text-purple-600 dark:text-purple-400 font-semibold max-w-3xl mx-auto pt-8 sm:pt-12 px-4"
               variants={fadeInUp}
             >
               {currentLanguage === 'en'
@@ -102,7 +104,7 @@ const TexcomDetailPage = () => {
             </motion.p>
 
             <motion.div 
-              className="flex flex-wrap items-center justify-center gap-6 pt-10"
+              className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 pt-6 sm:pt-10"
               variants={fadeInUp}
             >
               <div className="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-md">
@@ -138,18 +140,18 @@ const TexcomDetailPage = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
               {currentLanguage === 'en' ? 'Company Introduction' : '회사 소개'}
             </h2>
-            <div className="space-y-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed text-left">
+            <div className="space-y-4 text-lg leading-relaxed text-left">
               {currentLanguage === 'en' ? (
                 <>
-                  <p>Since its establishment in 1982, Jungho TEXCOM has been contributing to the development of the textile industry by exclusively supplying world-class textile machinery and testing equipment in Korea.</p>
-                  <p>Now, based on our B2B experience, we are expanding into the fashion B2C sector, creating the future of textiles and fashion together.</p>
-                  <p>Jungho TEXCOM consists of the <strong>Textile Machinery Division</strong> and <strong>RSS Division</strong> under Jungho Group, contributing to improving customer productivity and quality through global technology and domestic networks.</p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>Since its establishment in 1982, Jungho TEXCOM has been contributing to the development of the textile industry by exclusively supplying world-class textile machinery and testing equipment in Korea.</p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>Now, based on our B2B experience, we are expanding into the fashion B2C sector, creating the future of textiles and fashion together.</p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>Jungho TEXCOM consists of the <strong>Textile Machinery Division</strong> and <strong>RSS Division</strong> under Jungho Group, contributing to improving customer productivity and quality through global technology and domestic networks.</p>
                 </>
               ) : (
                 <>
-                  <p>1982년 설립 이후, 세계적인 섬유기계 및 시험기를 국내에 독점 공급하며 섬유 산업의 발전에 기여해온 ㈜정호텍스컴입니다.</p>
-                  <p>이제 B2B 경험을 바탕으로 패션 B2C 분야까지 확장하며, 섬유와 패션의 미래를 함께 만들어갑니다.</p>
-                  <p>정호텍스컴은 정호그룹 산하의 <strong>섬유기계 사업부</strong>와 <strong>RSS 사업부</strong>로 구성되며, 글로벌 기술력과 국내 연결망을 통해 고객의 생산성과 품질 향상에 기여합니다.</p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>1982년 설립 이후, 세계적인 섬유기계 및 시험기를 국내에 독점 공급하며 섬유 산업의 발전에 기여해온 ㈜정호텍스컴입니다.</p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>이제 B2B 경험을 바탕으로 패션 B2C 분야까지 확장하며, 섬유와 패션의 미래를 함께 만들어갑니다.</p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>정호텍스컴은 정호그룹 산하의 <strong>섬유기계 사업부</strong>와 <strong>RSS 사업부</strong>로 구성되며, 글로벌 기술력과 국내 연결망을 통해 고객의 생산성과 품질 향상에 기여합니다.</p>
                 </>
               )}
             </div>
@@ -184,7 +186,7 @@ const TexcomDetailPage = () => {
                   ? 'Connecting Global Technology to Korea'
                   : '글로벌 기술, 국내에 연결하다'}
               </h3>
-              <div className="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
+              <div className="space-y-4 text-gray-700 dark:text-white leading-relaxed">
                 {currentLanguage === 'en' ? (
                   <>
                     <p>Jungho TEXCOM is a specialized textile equipment distribution division under Jungho Group, importing and supplying excellent textile-related equipment, testing instruments, and parts from around the world to domestic textile industry customers.</p>
@@ -227,7 +229,7 @@ const TexcomDetailPage = () => {
                     {currentLanguage === 'en' ? 'Germany' : '독일'}
                   </span>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
                   {currentLanguage === 'en' 
                     ? 'Industrial textile twisting machines for tire cords'
                     : '타이어코드 등 산업용 섬유 연사기'}
@@ -252,7 +254,7 @@ const TexcomDetailPage = () => {
                     {currentLanguage === 'en' ? 'Germany' : '독일'}
                   </span>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
                   {currentLanguage === 'en' 
                     ? 'Fabric heat treatment line'
                     : '직물 열처리 Line'}
@@ -277,7 +279,7 @@ const TexcomDetailPage = () => {
                     {currentLanguage === 'en' ? 'Switzerland' : '스위스'}
                   </span>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
                   {currentLanguage === 'en' 
                     ? 'Air conditioning equipment for cotton & synthetic fiber spinning'
                     : '면방, 합성용 공조 설비'}
@@ -302,7 +304,7 @@ const TexcomDetailPage = () => {
                     {currentLanguage === 'en' ? 'Switzerland' : '스위스'}
                   </span>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
                   {currentLanguage === 'en' 
                     ? 'Rings and Travellers for spinning frames'
                     : '정방기용 Ring, Traveller'}
@@ -327,7 +329,7 @@ const TexcomDetailPage = () => {
                     {currentLanguage === 'en' ? 'UK' : '영국'}
                   </span>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
                   {currentLanguage === 'en' 
                     ? 'Loom creel'
                     : '직기 Creel'}
@@ -362,7 +364,7 @@ const TexcomDetailPage = () => {
                     {currentLanguage === 'en' ? 'Germany' : '독일'}
                   </span>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
                   {currentLanguage === 'en' 
                     ? 'Various textile testing equipment'
                     : '섬유용 각종 시험장비'}
@@ -387,7 +389,7 @@ const TexcomDetailPage = () => {
                     {currentLanguage === 'en' ? 'Austria' : '오스트리아'}
                   </span>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
                   {currentLanguage === 'en' 
                     ? 'Various textile testing equipment'
                     : '섬유용 각종 시험장비'}
@@ -412,7 +414,7 @@ const TexcomDetailPage = () => {
                     {currentLanguage === 'en' ? 'Japan' : '일본'}
                   </span>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 mb-3">
+                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
                   {currentLanguage === 'en' 
                     ? 'Various testing instruments'
                     : '각종 시험기기'}

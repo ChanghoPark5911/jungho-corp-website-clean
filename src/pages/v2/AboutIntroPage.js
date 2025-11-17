@@ -11,16 +11,49 @@ const AboutIntroPage = () => {
   const { t, currentLanguage } = useI18n();
   const [pagesData, setPagesData] = React.useState(null);
 
-  // LocalStorage에서 데이터 로드
+  // JSON 파일 및 LocalStorage에서 데이터 로드
   React.useEffect(() => {
-    const savedData = localStorage.getItem('v2_pages_data');
-    if (savedData) {
+    const loadData = async () => {
       try {
-        setPagesData(JSON.parse(savedData));
+        // 1순위: JSON 파일에서 로드 (영구 저장된 데이터)
+        const response = await fetch('/data/pages-data.json');
+        if (response.ok) {
+          const jsonData = await response.json();
+          setPagesData(jsonData);
+          console.log('✅ JSON 파일에서 페이지 데이터 로드됨:', jsonData);
+          return;
+        }
       } catch (error) {
-        console.error('페이지 데이터 로드 실패:', error);
+        console.log('📄 JSON 파일 로드 실패, localStorage 확인 중...', error);
       }
-    }
+
+      // 2순위: localStorage에서 로드 (관리자 페이지에서 임시 저장한 데이터)
+      const savedData = localStorage.getItem('v2_pages_data');
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          setPagesData(parsedData);
+          console.log('✅ localStorage에서 페이지 데이터 로드됨:', parsedData);
+        } catch (error) {
+          console.error('페이지 데이터 로드 실패:', error);
+        }
+      }
+    };
+
+    // 초기 로드
+    loadData();
+
+    // 관리자 페이지에서 저장 시 실시간 업데이트
+    const handleUpdate = () => {
+      console.log('📡 페이지 데이터 업데이트 이벤트 수신');
+      loadData();
+    };
+
+    window.addEventListener('v2PagesDataUpdated', handleUpdate);
+
+    return () => {
+      window.removeEventListener('v2PagesDataUpdated', handleUpdate);
+    };
   }, []);
 
   // 애니메이션 variants
@@ -80,27 +113,74 @@ const AboutIntroPage = () => {
       icon: '🧵',
       color: 'from-purple-500 to-pink-500',
       path: '/subsidiaries/texcom'
-    },
-    {
-      id: 'rss',
-      name: 'RSS',
-      role: currentLanguage === 'en' ? 'Equipment Machinery & Industrial Solutions' : '설비기계 및 산업 솔루션',
-      description: currentLanguage === 'en' ? 'Industrial Equipment Specialist Division' : '산업용 설비 전문 사업부',
-      icon: '🔧',
-      color: 'from-gray-600 to-gray-800'
-    },
+    }
   ];
 
-  // 관리자 데이터와 기본 데이터 병합 (RSS 제외 - 4개 계열사만)
-  const subsidiaries = pagesData?.subsidiaries ? pagesData.subsidiaries.slice(0, 4).map((savedSub, index) => ({
-    ...defaultSubsidiaries[index],
-    ...savedSub
-  })) : defaultSubsidiaries.slice(0, 4);
+  // 언어별 계열사 데이터 처리: 영어는 항상 기본값 사용, 한국어는 관리자 수정 데이터 우선
+  const subsidiaries = currentLanguage === 'ko' && pagesData?.subsidiaries 
+    ? pagesData.subsidiaries.map((savedSub, index) => ({
+        ...defaultSubsidiaries[index],
+        ...savedSub
+      }))
+    : defaultSubsidiaries;
 
-  const aboutIntro = pagesData?.aboutIntro || {
-    paragraph1: '정호그룹은 1982년 설립된 이래 조명제어, LED, 산업설비의 개발 · 제조 · 엔지니어링을 중심으로 사람과 공간, 에너지를 효율적으로 연결하는 종합기술 그룹으로 성장하여 왔으며, 국내는 물론 북미, 유럽, 아시아 시장에서도 그 기술력을 인정받고 있습니다.',
-    paragraph2: '빠르게 변화하는 미래 사회에 적극 대응하고자, 정호그룹은 스마트 빌딩, IoT, 에너지 관리 분야에서 혁신적인 솔루션을 제공하며, 지속 가능한 발전을 위해 끊임없이 노력하고 있습니다.',
-    paragraph3: '정호그룹의 계열사들은 각자의 전문 분야에서 탁월한 기술력과 경험을 바탕으로 시너지를 창출하며, 고객에게 최상의 가치를 제공하고 있습니다.'
+  // 언어별 데이터 처리: 영어는 항상 i18n 사용, 한국어는 관리자 수정 데이터 우선
+  const aboutIntro = currentLanguage === 'ko' && pagesData?.aboutIntro 
+    ? pagesData.aboutIntro 
+    : {
+        paragraph1: t('aboutIntro.paragraph1'),
+        paragraph2: t('aboutIntro.paragraph2'),
+        paragraph3: t('aboutIntro.paragraph3'),
+        paragraph4: t('aboutIntro.paragraph4')
+      };
+
+  // 강조할 키워드 정의 (언어별)
+  const highlightKeywords = {
+    ko: [
+      '정호그룹',
+      '4차 산업의 핵심인 IoT와 융합된 제품',
+      '조명제어, 전력제어 산업의 Total Solution Leader',
+      '최고의 품질과 최고의 서비스'
+    ],
+    en: [
+      'Jungho Group',
+      'products integrated with IoT',
+      'Total Solution Leader',
+      'highest quality and best service'
+    ]
+  };
+
+  // 텍스트에서 키워드를 찾아 강조하는 함수
+  const highlightText = (text) => {
+    if (!text) return null;
+    
+    const keywords = highlightKeywords[currentLanguage] || highlightKeywords.ko;
+    let parts = [text];
+    
+    // 각 키워드를 순차적으로 처리
+    keywords.forEach((keyword) => {
+      const newParts = [];
+      parts.forEach((part) => {
+        if (typeof part === 'string') {
+          const splitParts = part.split(keyword);
+          for (let i = 0; i < splitParts.length; i++) {
+            newParts.push(splitParts[i]);
+            if (i < splitParts.length - 1) {
+              newParts.push(
+                <span key={`${keyword}-${i}`} className="text-green-700 dark:text-green-500 font-bold">
+                  {keyword}
+                </span>
+              );
+            }
+          }
+        } else {
+          newParts.push(part);
+        }
+      });
+      parts = newParts;
+    });
+    
+    return parts;
   };
 
   return (
@@ -126,7 +206,7 @@ const AboutIntroPage = () => {
             variants={fadeInUp}
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              {currentLanguage === 'en' ? 'Company Introduction' : '정호그룹 소개'}
+              {t('aboutIntro.pageTitle')}
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-primary-600 to-cyan-500 mx-auto rounded-full" />
           </motion.div>
@@ -138,40 +218,26 @@ const AboutIntroPage = () => {
           >
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                {currentLanguage === 'en' 
-                  ? 'Since its establishment in 1982, Jungho Group has grown into a comprehensive technology group that efficiently connects people, spaces, and energy, focusing on the development, manufacturing, and engineering of lighting control, LED, and industrial equipment, and its technological prowess is recognized not only in Korea but also in North America, Europe, and Asian markets.'
-                  : aboutIntro.paragraph1}
+                {highlightText(aboutIntro.paragraph1)}
               </p>
 
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                {currentLanguage === 'en' ? (
-                  <>
-                    Furthermore, beyond being just a technology company, we are focusing on developing future-oriented technologies such as Zero Energy Building, IoT-based lighting control, and Energy Harvesting to lead <strong className="text-primary-600 dark:text-primary-400">sustainable energy management and smart building ecosystem construction</strong>, and we are striving to realize smart spaces where people and the environment coexist through providing various solutions.
-                  </>
-                ) : (
-                  <>
-                    또한, 저희는 단순한 기술기업을 넘어, <strong className="text-primary-600 dark:text-primary-400">지속 가능한 에너지 관리와 스마트 빌딩 생태계 구축</strong>을 선도하기 위해 Zero Energy Building, IoT 기반 조명제어, Energy Harvesting 등 미래형 기술 개발에 집중하고 있으며, 다양한 솔루션 제공을 통해 사람과 환경이 공존하는 스마트한 공간을 실현하고자 노력하고 있습니다.
-                  </>
-                )}
+                {highlightText(aboutIntro.paragraph2)}
+              </p>
+
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                {highlightText(aboutIntro.paragraph3)}
               </p>
 
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-8">
-                {currentLanguage === 'en' ? (
-                  <>
-                    Jungho Group will continue to repay the trust of our customers with innovative technology and sincere service, and leap forward to the global market as a <strong className="text-primary-600 dark:text-primary-400">leading comprehensive solution specialist group representing Korea</strong>.
-                  </>
-                ) : (
-                  <>
-                    앞으로도 정호그룹은 혁신적인 기술력과 진정성 있는 서비스로 고객의 신뢰에 보답하며, <strong className="text-primary-600 dark:text-primary-400">대한민국을 대표하는 종합 솔루션 전문 그룹</strong>으로서 세계 시장을 향해 도약하겠습니다.
-                  </>
-                )}
+                {highlightText(aboutIntro.paragraph4)}
               </p>
 
               <p className="text-right text-gray-600 dark:text-gray-400 font-medium">
-                {currentLanguage === 'en' ? 'Thank you.' : '감사합니다.'}
+                {t('aboutIntro.closing')}
                 <br />
                 <span className="text-primary-600 dark:text-primary-400 font-bold">
-                  {currentLanguage === 'en' ? 'All employees of Jungho Group' : '정호그룹 임직원 일동'}
+                  {t('aboutIntro.signature')}
                 </span>
               </p>
             </div>

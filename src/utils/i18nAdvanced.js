@@ -218,6 +218,14 @@ class I18nAdvanced {
           create: '생성',
           update: '업데이트'
         },
+        // V2 홈페이지
+        home: {
+          hero: {
+            title: '사람과 공간을\n밝히는 기술',
+            subtitle: '정호그룹',
+            description: '40년의 혁신으로 내일의 빛을 밝힙니다'
+          }
+        },
         // 헤더
         header: {
           title: '정호그룹',
@@ -305,6 +313,16 @@ class I18nAdvanced {
           followUs: 'Follow us',
           copyright: '모든 권리 보유'
         },
+        // ABOUT - 정호그룹 소개
+        aboutIntro: {
+          pageTitle: '정호그룹 소개',
+          paragraph1: '저희 정호그룹은\n1982년 창립하여 유럽의 섬유기계 장비를 수입, 판매를 시작으로 1986년 조명제어 시스템 사업에 진출하여 국내 최초로 One-Shot System, Full 2-Way System을 국내 시장에 도입하였습니다.',
+          paragraph2: '또한 국내 최고의 연구 인력 확보와 지속적인 투자를 통해 신제품 개발 및 독자적인 Software 체계를 구축하는 등 국내 조명제어 산업을 선도해 왔습니다. 2003년 조명 제어의 미국 수출을 시작으로 캐나다, 중국, 대만, 동남아시아 시장 등 글로벌 매출을 확대해 왔으며, 5년간의 개발기간을 거쳐 완성된 독립적인 컨트롤러부터 LCD Touch Screen까지 Full Line Up을 구축하여 글로벌 경쟁력을 확보하였습니다.',
+          paragraph3: '저희 정호그룹은 각 산업분야에서 우수한 인재를 통하여 앞선 기술개발과 경쟁력을 바탕으로 사업영역을 확대하고 획기적인 성장과 발전을 이룩해 왔으며, 4차 산업의 핵심인 IoT와 융합된 제품으로 조명제어, 전력제어 산업의 Total Solution Leader로서의 역할을 다 해 나갈 것입니다.',
+          paragraph4: '저희 정호는 베풀어 주신 고객 여러분의 신뢰를 바탕으로 환경을 생각하고, 에너지의 가치를 존중하는 기업으로서 변화와 혁신을 추구하여 최고의 품질과 최고의 서비스로 언제나 고객 여러분과 함께할 것을 약속드립니다.',
+          closing: '감사합니다.',
+          signature: '정호그룹 임직원 일동'
+        },
         // ABOUT - HISTORY
         history: {
           pageTitle: 'HISTORY',
@@ -348,6 +366,41 @@ class I18nAdvanced {
             bannerTitle: '더 많은 영상을 준비하고 있습니다',
             bannerSubtitle: '정호그룹의 다양한 이야기를 영상으로 만나보세요',
             subscribeButton: 'YouTube 채널 구독하기'
+          },
+          sns: {
+            pageTitle: '정호그룹 SNS',
+            subtitle: '다양한 소셜미디어를 통해 정호그룹과 소통하세요',
+            channels: {
+              youtube: {
+                name: 'YouTube',
+                description: '정호그룹의 다양한 프로젝트와 기술 혁신을 영상으로 만나보세요'
+              },
+              instagram: {
+                name: 'Instagram',
+                description: '일상 속 정호그룹의 모습과 직원들의 이야기를 공유합니다'
+              },
+              naverBlog: {
+                name: '네이버 블로그',
+                description: '정호그룹의 기술 인사이트와 산업 트렌드를 심층 분석합니다'
+              },
+              facebook: {
+                name: 'Facebook',
+                description: '정호그룹의 소식과 업계 뉴스를 가장 먼저 확인하세요'
+              }
+            },
+            stats: {
+              followers: '팔로워',
+              posts: '게시물'
+            },
+            visitButton: '방문하기',
+            recentActivity: {
+              title: '최근 SNS 활동',
+              subtitle: '정호그룹의 최신 소식을 확인하세요'
+            },
+            cta: {
+              title: '정호그룹과 함께하세요',
+              subtitle: '다양한 채널에서 정호그룹의 소식을 가장 먼저 만나보세요'
+            }
           }
         },
         // Project Portfolio (프로젝트 포트폴리오 페이지)
@@ -518,9 +571,9 @@ class I18nAdvanced {
         // 홈페이지
         home: {
           hero: {
-            title: '40년 축적된 기술력으로\n조명의 미래를 혁신합니다',
-            subtitle: '정호그룹은 조명제어 전문 기업으로서, 혁신적인 기술과 완벽한 서비스로 고객의 성공을 지원합니다',
-            description: '150개 이상의 프로젝트와 85,000개 이상의 제어 포인트 운영 경험을 바탕으로 최고의 솔루션을 제공합니다.',
+            title: '사람과 공간을\n밝히는 기술',
+            subtitle: '정호그룹',
+            description: '40년의 혁신으로 내일의 빛을 밝힙니다',
             primaryAction: '사업영역 보기',
             secondaryAction: '문의하기'
           },
@@ -907,6 +960,14 @@ class I18nAdvanced {
           create: 'Create',
           update: 'Update'
         },
+        // V2 Homepage
+        home: {
+          hero: {
+            title: 'Lighting technology that\nilluminates people and spaces',
+            subtitle: 'Jungho Group',
+            description: 'Lighting tomorrow with 40 years of innovation'
+          }
+        },
         // Header
         header: {
           title: 'Jungho Group',
@@ -994,6 +1055,16 @@ class I18nAdvanced {
           followUs: 'Follow us',
           copyright: 'All Rights Reserved'
         },
+        // ABOUT - Company Introduction
+        aboutIntro: {
+          pageTitle: 'Company Introduction',
+          paragraph1: 'Since our founding in 1982, Jungho Group started by importing and selling European textile machinery equipment. In 1986, we entered the lighting control system business and introduced the first One-Shot System and Full 2-Way System to the Korean market.',
+          paragraph2: 'We have led the domestic lighting control industry by securing top-tier research talent and continuous investment in new product development and establishing an independent software system. Starting with exports to the United States in 2003, we have expanded our global sales to Canada, China, Taiwan, and Southeast Asian markets. Through five years of development, we have established a full line-up from independent controllers to LCD Touch Screens, securing global competitiveness.',
+          paragraph3: 'Jungho Group has achieved remarkable growth and development by expanding business areas based on advanced technology development and competitiveness through excellent talent in each industry sector. We will fulfill our role as a Total Solution Leader in the lighting control and power control industries with products integrated with IoT, the core of the 4th industrial revolution.',
+          paragraph4: 'Based on the trust bestowed by our valued customers, we promise to always be with you through the highest quality and best service, pursuing change and innovation as a company that thinks about the environment and respects the value of energy.',
+          closing: 'Thank you.',
+          signature: 'All employees of Jungho Group'
+        },
         // ABOUT - HISTORY
         history: {
           pageTitle: 'HISTORY',
@@ -1037,6 +1108,41 @@ class I18nAdvanced {
             bannerTitle: 'More videos are coming soon',
             bannerSubtitle: 'Discover Jungho Group\'s diverse stories through videos',
             subscribeButton: 'Subscribe to YouTube Channel'
+          },
+          sns: {
+            pageTitle: 'Jungho Group SNS',
+            subtitle: 'Connect with Jungho Group through various social media platforms',
+            channels: {
+              youtube: {
+                name: 'YouTube',
+                description: 'Discover various projects and technological innovations of Jungho Group through videos'
+              },
+              instagram: {
+                name: 'Instagram',
+                description: 'Share the daily moments of Jungho Group and employee stories'
+              },
+              naverBlog: {
+                name: 'Naver Blog',
+                description: 'In-depth analysis of Jungho Group\'s technical insights and industry trends'
+              },
+              facebook: {
+                name: 'Facebook',
+                description: 'Be the first to check Jungho Group\'s news and industry updates'
+              }
+            },
+            stats: {
+              followers: 'Followers',
+              posts: 'Posts'
+            },
+            visitButton: 'Visit',
+            recentActivity: {
+              title: 'Recent SNS Activity',
+              subtitle: 'Check out the latest news from Jungho Group'
+            },
+            cta: {
+              title: 'Join Jungho Group',
+              subtitle: 'Be the first to receive Jungho Group\'s news through various channels'
+            }
           }
         },
         // Project Portfolio
@@ -1207,9 +1313,9 @@ class I18nAdvanced {
         // Homepage
         home: {
           hero: {
-            title: 'Innovating the Future of Lighting\nwith 40 Years of Technology',
-            subtitle: 'Jungho Group is a lighting control specialist company that supports customer success with innovative technology and perfect service',
-            description: 'We provide the best solutions based on experience in operating more than 150 projects and 85,000 control points.',
+            title: 'Lighting technology that\nilluminates people and spaces',
+            subtitle: 'Jungho Group',
+            description: 'Lighting tomorrow with 40 years of innovation',
             primaryAction: 'View Business Areas',
             secondaryAction: 'Contact Us'
           },

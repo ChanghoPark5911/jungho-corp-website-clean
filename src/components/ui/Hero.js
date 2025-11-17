@@ -168,27 +168,29 @@ const Hero = ({
           {/* 메인 콘텐츠 */}
           <div className="mb-16">
                  <h1 
-                   className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white drop-shadow-2xl w-full"
-                   data-i18n-key="home.hero.title"
-                   style={{ 
-                     width: '100%', 
-                     maxWidth: '100%',
-                     wordWrap: 'break-word',
-                     overflowWrap: 'break-word'
-                   }}
-                 >
-                   {(() => {
-                    // heroData state 우선 사용!
-                    const title = heroData.mainTitle || mainCopy || t('home.hero.title', { fallback: "40년 축적된 기술력으로\n조명의 미래를 혁신합니다" });
-                    // \n을 실제 줄바꿈으로 변환
-                    const processedTitle = title.replace(/\\n/g, '\n');
-                    return processedTitle.split('\n').map((line, index) => (
-                      <span key={index} className="block">
-                        {line}
-                      </span>
-                    ));
-                  })()}
-                 </h1>
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white drop-shadow-2xl w-full"
+                  data-i18n-key="home.hero.title"
+                  style={{ 
+                    width: '100%', 
+                    maxWidth: '100%',
+                    wordWrap: 'break-word',
+                    overflowWrap: 'break-word'
+                  }}
+                >
+                  {(() => {
+                   // 영어일 때는 i18n 번역 사용, 한국어일 때는 관리자 데이터 우선
+                   const title = currentLanguage === 'en' 
+                     ? t('home.hero.title')
+                     : (heroData.mainTitle || mainCopy || t('home.hero.title') || '사람과 공간을\n밝히는 기술');
+                   // \n을 실제 줄바꿈으로 변환
+                   const processedTitle = title.replace(/\\n/g, '\n');
+                   return processedTitle.split('\n').map((line, index) => (
+                     <span key={index} className="block">
+                       {line}
+                     </span>
+                   ));
+                 })()}
+                </h1>
                  <p
                    className="hero-subtitle w-full"
                    data-i18n-key="home.hero.subtitle"

@@ -83,18 +83,18 @@ const IRGSHero = () => {
     ...savedValue
   })) : defaultIrgsValues;
 
-  // 영어일 때는 번역 우선, 한국어일 때는 관리자 데이터 우선
+  // 영어일 때는 항상 i18n 번역 사용, 한국어일 때는 관리자 데이터 우선
   const mainTitle = currentLanguage === 'en' 
-    ? (t('home.hero.title') || heroData?.mainTitle || 'Illuminating People and Spaces\nwith Technology')
-    : (heroData?.mainTitle || '사람과 공간을\n밝히는 기술');
+    ? t('home.hero.title')
+    : (heroData?.mainTitle || t('home.hero.title') || '사람과 공간을\n밝히는 기술');
   
   const companyName = currentLanguage === 'en'
-    ? (t('header.title') || heroData?.companyName || 'Jungho Group')
-    : (heroData?.companyName || '정호그룹');
+    ? t('home.hero.subtitle')
+    : (heroData?.companyName || t('home.hero.subtitle') || '정호그룹');
   
   const description = currentLanguage === 'en'
-    ? (t('home.hero.description') || heroData?.description || 'Lighting tomorrow with 40 years of innovation')
-    : (heroData?.description || '40년의 혁신으로 내일의 빛을 밝힙니다');
+    ? t('home.hero.description')
+    : (heroData?.description || t('home.hero.description') || '40년의 혁신으로 내일의 빛을 밝힙니다');
 
   // 자동 슬라이드
   useEffect(() => {
@@ -108,7 +108,7 @@ const IRGSHero = () => {
   const currentValue = irgsValues[activeIndex];
 
   return (
-    <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900 py-20 sm:py-24">
       {/* 배경 빌딩 이미지 - 선명하게 */}
       <div className="absolute inset-0">
         <div 
@@ -149,7 +149,7 @@ const IRGSHero = () => {
 
       {/* 메인 컨텐츠 */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
           {/* 왼쪽: IRGS 애니메이션 */}
           <div className="flex items-center justify-center">
             <div className="relative w-full max-w-md flex flex-col items-center">
@@ -158,11 +158,11 @@ const IRGSHero = () => {
                 <div className={`absolute inset-0 rounded-full ${currentValue.bgColor} blur-3xl animate-pulse-slow`} />
                 <div className="relative flex flex-col items-center justify-center">
                   {/* IRGS 텍스트 - 아이콘 바로 위 */}
-                  <div className="mb-4 text-center">
-                    <div className={`text-4xl sm:text-5xl font-bold bg-gradient-to-r ${currentValue.color} bg-clip-text text-transparent animate-fade-in`}>
+                  <div className="mb-2 sm:mb-4 text-center">
+                    <div className={`text-2xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r ${currentValue.color} bg-clip-text text-transparent animate-fade-in`}>
                       {currentValue.title}
                     </div>
-                    <div className="text-xl sm:text-2xl font-semibold text-gray-700 dark:text-gray-300 mt-1 animate-fade-in-delay">
+                    <div className="text-base sm:text-xl lg:text-2xl font-semibold text-gray-700 dark:text-gray-300 mt-1 animate-fade-in-delay">
                       {currentLanguage === 'en' 
                         ? currentValue.title
                         : (currentValue.subtitle || defaultIrgsValues[activeIndex].subtitle)
@@ -171,17 +171,17 @@ const IRGSHero = () => {
                   </div>
                   
                   {/* 아이콘 */}
-                  <div className="text-[200px] leading-none animate-bounce-slow transition-all duration-1000">
+                  <div className="text-[120px] sm:text-[160px] lg:text-[200px] leading-none animate-bounce-slow transition-all duration-1000">
                     {currentValue.icon}
                   </div>
                 </div>
               </div>
 
-              {/* 원형 파티클 */}
-              <div className="absolute inset-0 flex items-center justify-center" style={{ marginTop: '140px' }}>
+              {/* 원형 파티클 - 작은 화면에서는 숨김 */}
+              <div className="hidden sm:flex absolute inset-0 items-center justify-center" style={{ marginTop: '100px' }}>
                 {[...Array(8)].map((_, i) => {
                   const angle = (i * 360) / 8;
-                  const radius = 180;
+                  const radius = 140;
                   const x = Math.cos((angle * Math.PI) / 180) * radius;
                   const y = Math.sin((angle * Math.PI) / 180) * radius;
                   
@@ -203,37 +203,56 @@ const IRGSHero = () => {
           </div>
 
           {/* 오른쪽: 텍스트 컨텐츠 */}
-          <div className="text-center lg:text-left space-y-6">
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 dark:text-white animate-slide-up leading-tight whitespace-pre-line">
+          <div className={`text-center lg:text-left ${currentLanguage === 'en' ? 'space-y-4' : 'space-y-6'}`}>
+            <div className={currentLanguage === 'en' ? 'space-y-2' : 'space-y-4'}>
+              <h1 className={`
+                ${currentLanguage === 'en' 
+                  ? 'text-3xl sm:text-4xl lg:text-5xl xl:text-6xl' 
+                  : 'text-4xl sm:text-5xl lg:text-6xl xl:text-7xl'
+                }
+                font-bold text-gray-900 dark:text-white animate-slide-up 
+                ${currentLanguage === 'en' ? 'leading-snug' : 'leading-tight'}
+                whitespace-pre-line
+              `}>
                 {mainTitle}
               </h1>
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-600 dark:text-primary-400 animate-fade-in-delay">
+              <div className={`
+                ${currentLanguage === 'en'
+                  ? 'text-2xl sm:text-3xl lg:text-4xl'
+                  : 'text-3xl sm:text-4xl lg:text-5xl'
+                }
+                font-bold text-primary-600 dark:text-primary-400 animate-fade-in-delay
+              `}>
                 {companyName}
               </div>
             </div>
 
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed animate-fade-in-delay whitespace-pre-line">
+            <p className={`
+              ${currentLanguage === 'en' ? 'text-base sm:text-lg' : 'text-lg sm:text-xl'}
+              text-gray-600 dark:text-gray-300 
+              ${currentLanguage === 'en' ? 'leading-normal' : 'leading-relaxed'}
+              animate-fade-in-delay whitespace-pre-line
+            `}>
               {description}
             </p>
 
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start pt-4 animate-fade-in-delay-2">
+            <div className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start pt-2 sm:pt-4 animate-fade-in-delay-2">
               <button
                 onClick={() => navigate('/about')}
-                className="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="px-6 py-3 sm:px-8 sm:py-4 bg-primary-600 hover:bg-primary-700 text-white text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 {currentLanguage === 'en' ? 'Learn More About Us' : '그룹 소개 보기'}
               </button>
               <button
                 onClick={() => navigate('/subsidiaries')}
-                className="px-8 py-4 bg-white hover:bg-gray-100 text-primary-600 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-2 border-primary-600"
+                className="px-6 py-3 sm:px-8 sm:py-4 bg-white hover:bg-gray-100 text-primary-600 text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-2 border-primary-600"
               >
                 {currentLanguage === 'en' ? 'View Business Areas' : '사업분야 보기'}
               </button>
             </div>
 
             {/* 진행 표시기 */}
-            <div className="flex gap-2 justify-center lg:justify-start pt-8">
+            <div className="flex gap-2 justify-center lg:justify-start pt-4 sm:pt-6 lg:pt-8">
               {irgsValues.map((value, index) => (
                 <button
                   key={value.id}
@@ -251,7 +270,7 @@ const IRGSHero = () => {
       </div>
 
       {/* 스크롤 인디케이터 */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce-slow">
+      <div className="absolute bottom-4 sm:bottom-6 lg:bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce-slow">
         <div className="flex flex-col items-center space-y-2 text-gray-600 dark:text-gray-400">
           <span className="text-sm font-medium tracking-wider">SCROLL</span>
           <svg

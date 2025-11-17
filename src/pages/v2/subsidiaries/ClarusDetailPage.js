@@ -2,10 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../../../hooks/useI18n';
+import { useTheme } from '../../../contexts/ThemeContext';
 
 const ClarusDetailPage = () => {
   const navigate = useNavigate();
   const { t, currentLanguage } = useI18n();
+  const { isDarkMode } = useTheme();
   const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
 
   // JSON 파일에서 PDF 자료 로드 (우선), localStorage는 백업 (클라루스 관련만)
@@ -242,30 +244,30 @@ const ClarusDetailPage = () => {
             variants={staggerContainer}
           >
             {/* 로고와 회사명을 나란히 배치 */}
-            <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4">
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
               <img 
                 src="/images/logos/clarus-logo.png" 
                 alt="클라루스 로고" 
-                className="h-10 w-auto object-contain"
+                className="h-8 sm:h-10 w-auto object-contain"
                 onError={(e) => {
                   // 이미지 로드 실패 시 대체 아이콘 표시
                   e.target.style.display = 'none';
                   e.target.nextElementSibling.style.display = 'inline-block';
                 }}
               />
-              <span className="text-6xl hidden">🔆</span>
-              <div className="flex flex-col items-center -space-y-2">
-                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight">
+              <span className="text-4xl sm:text-6xl hidden">🔆</span>
+              <div className="flex flex-col items-center -space-y-1 sm:-space-y-2">
+                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
                   {currentLanguage === 'en' ? 'CLARUS' : '클라루스'}
                 </h1>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
+                <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-400 whitespace-nowrap">
                   {currentLanguage === 'en' ? '클라루스' : 'CLARUS Co., Ltd.'}
                 </p>
               </div>
             </motion.div>
 
             <motion.p 
-              className="text-2xl sm:text-3xl text-cyan-600 dark:text-cyan-400 font-semibold max-w-3xl mx-auto pt-12"
+              className="text-lg sm:text-2xl lg:text-3xl text-cyan-600 dark:text-cyan-400 font-semibold max-w-3xl mx-auto pt-8 sm:pt-12 px-4"
               variants={fadeInUp}
             >
               {currentLanguage === 'en'
@@ -274,7 +276,7 @@ const ClarusDetailPage = () => {
             </motion.p>
 
             <motion.div 
-              className="flex flex-wrap items-center justify-center gap-6 pt-10"
+              className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 pt-6 sm:pt-10"
               variants={fadeInUp}
             >
               <div className="px-6 py-3 bg-white dark:bg-gray-800 rounded-lg shadow-md">
@@ -318,39 +320,39 @@ const ClarusDetailPage = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
               {currentLanguage === 'en' ? 'Company Introduction' : '회사 소개'}
             </h2>
-            <div className="space-y-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+            <div className="space-y-4 text-lg leading-relaxed">
               {currentLanguage === 'en' ? (
                 <>
-                  <p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
                     <span className="font-semibold text-cyan-600 dark:text-cyan-400">CLARUS</span> provides 
                     lighting and power control solutions optimized for field environments based on a wide product lineup.
                   </p>
-                  <p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
                     We have continuously developed core technologies for smart building management and energy savings, including 
                     <span className="font-semibold"> E/F2-BUS-based integrated control technology</span>, IoT and wired/wireless communication technologies, 
                     energy management software, and electrical safety IoT devices.
                   </p>
-                  <p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
                     We have maximized scalability and maintainability by developing our own system software, and supply products that meet rapidly changing global standards.
                   </p>
-                  <p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
                     CLARUS will continue to <span className="font-semibold text-cyan-600 dark:text-cyan-400">create customer value and future together with innovative technology and quality.</span>
                   </p>
                 </>
               ) : (
                 <>
-                  <p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
                     <span className="font-semibold text-cyan-600 dark:text-cyan-400">클라루스</span>는 
                     폭넓은 제품 라인업을 바탕으로 현장 환경에 최적화된 조명·전력 제어 솔루션을 제공합니다.
                   </p>
-                  <p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
                     <span className="font-semibold">E/F2-BUS 기반의 통합제어 기술</span>과 IoT 및 유·무선 통신 기술, 
                     에너지 관리 소프트웨어, 전기안전 IoT 장치 등 스마트 빌딩 관리와 에너지 절감을 위한 핵심 기술을 지속적으로 발전시켜 왔습니다.
                   </p>
-                  <p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
                     자체 시스템 소프트웨어를 개발하여 확장성과 유지관리성을 극대화하였으며, 급변하는 글로벌 기준에 부합하는 제품을 공급하고 있습니다.
                   </p>
-                  <p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
                     앞으로도 클라루스는 <span className="font-semibold text-cyan-600 dark:text-cyan-400">혁신적인 기술과 품질로 고객의 가치와 미래를 함께 만들어 가겠습니다.</span>
                   </p>
                 </>
@@ -579,9 +581,9 @@ const ClarusDetailPage = () => {
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   {product.name}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {product.description}
-                </p>
+                  <p className="text-gray-600 dark:text-gray-100 product-description">
+                    {product.description}
+                  </p>
               </motion.div>
             ))}
           </motion.div>
@@ -622,7 +624,7 @@ const ClarusDetailPage = () => {
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
                   {tech.title}
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300 text-lg">
+                <p className="text-gray-700 dark:text-white text-lg tech-description">
                   {tech.description}
                 </p>
               </motion.div>
@@ -662,7 +664,7 @@ const ClarusDetailPage = () => {
                 <div className="flex-shrink-0 w-8 h-8 bg-cyan-100 dark:bg-cyan-900/30 rounded-full flex items-center justify-center">
                   <span className="text-cyan-600 dark:text-cyan-400 font-bold">{index + 1}</span>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300 text-lg flex-1">
+                <p className="text-gray-700 dark:text-white text-lg flex-1 tech-description">
                   {achievement}
                 </p>
               </motion.div>

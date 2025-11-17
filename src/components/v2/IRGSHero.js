@@ -83,18 +83,10 @@ const IRGSHero = () => {
     ...savedValue
   })) : defaultIrgsValues;
 
-  // 영어일 때는 항상 i18n 번역 사용, 한국어일 때는 관리자 데이터 우선
-  const mainTitle = currentLanguage === 'en' 
-    ? t('home.hero.title')
-    : (heroData?.mainTitle || t('home.hero.title') || '사람과 공간을\n밝히는 기술');
-  
-  const companyName = currentLanguage === 'en'
-    ? t('home.hero.subtitle')
-    : (heroData?.companyName || t('home.hero.subtitle') || '정호그룹');
-  
-  const description = currentLanguage === 'en'
-    ? t('home.hero.description')
-    : (heroData?.description || t('home.hero.description') || '40년의 혁신으로 내일의 빛을 밝힙니다');
+  // i18n 번역을 최우선으로 사용 (localStorage는 백업용)
+  const mainTitle = t('home.hero.title') || heroData?.mainTitle || '사람과 공간을\n밝히는 기술';
+  const companyName = t('home.hero.subtitle') || heroData?.companyName || '정호그룹';
+  const description = t('home.hero.description') || heroData?.description || '40년의 혁신으로 내일의 빛을 밝힙니다';
 
   // 자동 슬라이드
   useEffect(() => {

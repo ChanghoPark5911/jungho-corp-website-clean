@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import ImageUploader from '../../components/ImageUploader';
+import FirebaseStorageTest from '../../components/FirebaseStorageTest';
 
 /**
  * V2 관리자 페이지
@@ -478,6 +480,7 @@ const AdminPageV2 = () => {
     { id: 'v2home', label: 'V2 홈페이지', icon: '🏠' },
     { id: 'pages', label: '정적 페이지', icon: '📄' },
     { id: 'media', label: '미디어 관리', icon: '🎬' },
+    // { id: 'images', label: '이미지 관리', icon: '🖼️' }, // Firebase Storage 사용 시 활성화
     { id: 'i18n', label: '다국어 관리', icon: '🌐' },
     { id: 'users', label: '사용자 관리', icon: '👥' },
   ];
@@ -587,6 +590,7 @@ const AdminPageV2 = () => {
           {activeTab === 'v2home' && <V2HomeTab data={v2HomeData} setData={setV2HomeData} onSave={saveV2HomeData} />}
           {activeTab === 'pages' && <PagesTab data={pagesData} setData={setPagesData} onSave={savePagesData} />}
           {activeTab === 'media' && <MediaTab data={mediaData} setData={setMediaData} onSave={saveMediaData} exportToJSON={exportToJSON} copyToClipboard={copyToClipboard} />}
+          {activeTab === 'images' && <ImagesTab />}
           {activeTab === 'i18n' && i18nData && <I18nTab data={i18nData} setData={setI18nData} onSave={saveI18nData} />}
           {activeTab === 'users' && <UsersTab data={usersData} setData={setUsersData} onSave={saveUsersData} />}
         </div>
@@ -2340,6 +2344,225 @@ const I18nTab = ({ data, setData, onSave }) => {
           <li>• 저장 후 홈페이지에서 언어 전환하여 확인하세요</li>
           <li>• 번역이 반영되지 않으면 페이지를 새로고침하세요</li>
         </ul>
+      </div>
+    </div>
+  );
+};
+
+// 이미지 관리 탭
+const ImagesTab = () => {
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('projects');
+
+  const categories = [
+    { id: 'projects', label: '프로젝트 이미지', path: 'projects' },
+    { id: 'subsidiaries', label: '계열사 로고', path: 'subsidiaries' },
+    { id: 'team', label: '팀원 사진', path: 'team' },
+    { id: 'products', label: '제품 이미지', path: 'products' },
+    { id: 'banners', label: '배너 이미지', path: 'banners' },
+    { id: 'general', label: '일반 이미지', path: 'images' },
+  ];
+
+  const currentCategory = categories.find(c => c.id === selectedCategory);
+
+  const handleUploadSuccess = (url, file) => {
+    console.log('✅ 업로드 성공:', url);
+    setUploadedImages(prev => [...prev, {
+      url,
+      name: file.name,
+      size: file.size,
+      uploadedAt: new Date().toISOString(),
+      category: selectedCategory
+    }]);
+    
+    // 성공 알림
+    alert(`이미지가 성공적으로 업로드되었습니다!\n\nURL: ${url}\n\n이 URL을 복사하여 콘텐츠에 사용하세요.`);
+  };
+
+  const handleUploadError = (error) => {
+    console.error('❌ 업로드 실패:', error);
+    alert(`업로드 실패: ${error.message}`);
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    alert('URL이 클립보드에 복사되었습니다!');
+  };
+
+  return (
+    <div>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          🖼️ 이미지 관리
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          이미지를 업로드하고 관리합니다. 업로드된 이미지 URL을 복사하여 콘텐츠에 사용하세요.
+        </p>
+      </div>
+
+      {/* Firebase Storage 연결 테스트 */}
+      <div className="mb-8 p-6 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border-2 border-yellow-300 dark:border-yellow-700">
+        <div className="flex items-start space-x-3 mb-4">
+          <div className="text-2xl">⚠️</div>
+          <div>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+              업로드가 멈춰있나요?
+            </h3>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+              Firebase Storage가 활성화되지 않았을 수 있습니다. 아래 버튼을 클릭하여 연결 상태를 확인하세요.
+            </p>
+          </div>
+        </div>
+        <FirebaseStorageTest />
+      </div>
+
+      {/* 카테고리 선택 */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+          📁 이미지 카테고리
+        </label>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`
+                px-4 py-3 rounded-lg font-medium transition-all
+                ${selectedCategory === category.id
+                  ? 'bg-primary-600 text-white shadow-lg'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                }
+              `}
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 업로드 영역 */}
+      <div className="mb-8">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+          ⬆️ 이미지 업로드
+        </label>
+        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 mb-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <strong>현재 카테고리:</strong> {currentCategory?.label}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-500">
+            Firebase Storage 경로: <code className="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">{currentCategory?.path}/</code>
+          </p>
+        </div>
+        
+        <ImageUploader
+          onUploadSuccess={handleUploadSuccess}
+          onUploadError={handleUploadError}
+          path={currentCategory?.path}
+          maxSize={10 * 1024 * 1024}
+          resize={true}
+          showPreview={true}
+        />
+      </div>
+
+      {/* 업로드된 이미지 목록 */}
+      {uploadedImages.length > 0 && (
+        <div>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            📋 최근 업로드된 이미지
+          </h3>
+          <div className="space-y-4">
+            {uploadedImages.map((image, index) => (
+              <div
+                key={index}
+                className="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600 shadow-sm"
+              >
+                <div className="flex items-start space-x-4">
+                  {/* 썸네일 */}
+                  <img
+                    src={image.url}
+                    alt={image.name}
+                    className="w-24 h-24 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                  />
+                  
+                  {/* 정보 */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate mb-1">
+                      {image.name}
+                    </h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                      크기: {(image.size / 1024).toFixed(1)} KB | 카테고리: {categories.find(c => c.id === image.category)?.label}
+                    </p>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        value={image.url}
+                        readOnly
+                        className="flex-1 px-3 py-1.5 text-xs bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded text-gray-700 dark:text-gray-300"
+                      />
+                      <button
+                        onClick={() => copyToClipboard(image.url)}
+                        className="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-medium rounded transition-colors"
+                      >
+                        📋 복사
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 도움말 */}
+      <div className="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+          <span className="mr-2">💡</span>
+          이미지 업로드 가이드
+        </h3>
+        <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+          <li>• <strong>지원 형식:</strong> JPG, PNG, WebP (최대 10MB)</li>
+          <li>• <strong>자동 리사이즈:</strong> 큰 이미지는 자동으로 최적화됩니다 (1920x1080)</li>
+          <li>• <strong>카테고리별 저장:</strong> 프로젝트, 계열사, 팀원 등 카테고리별로 분류됩니다</li>
+          <li>• <strong>URL 복사:</strong> 업로드 후 URL을 복사하여 콘텐츠에 붙여넣으세요</li>
+          <li>• <strong>Firebase Storage:</strong> 모든 이미지는 Firebase Storage에 안전하게 저장됩니다</li>
+          <li>• <strong>CDN 배포:</strong> 업로드된 이미지는 자동으로 CDN을 통해 빠르게 제공됩니다</li>
+        </ul>
+      </div>
+
+      {/* 사용 예시 */}
+      <div className="mt-6 p-6 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+          <span className="mr-2">💻</span>
+          사용 예시
+        </h3>
+        <div className="space-y-4">
+          <div>
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              1. JSON 데이터에 이미지 URL 추가:
+            </p>
+            <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg text-xs overflow-x-auto">
+{`{
+  "id": "project-001",
+  "title": "프로젝트 제목",
+  "imageUrl": "https://firebasestorage.googleapis.com/...",
+  ...
+}`}
+            </pre>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              2. React 컴포넌트에서 사용:
+            </p>
+            <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg text-xs overflow-x-auto">
+{`<img 
+  src={project.imageUrl} 
+  alt={project.title}
+  className="w-full h-auto rounded-lg"
+/>`}
+            </pre>
+          </div>
+        </div>
       </div>
     </div>
   );

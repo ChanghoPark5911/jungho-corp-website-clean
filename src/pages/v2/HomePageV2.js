@@ -43,7 +43,7 @@ const HomePageV2 = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
+        staggerChildren: 0
       }
     }
   };

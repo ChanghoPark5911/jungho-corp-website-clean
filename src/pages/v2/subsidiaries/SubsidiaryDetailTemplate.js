@@ -77,8 +77,8 @@ const SubsidiaryDetailTemplate = ({ data }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
+        staggerChildren: 0,
+        delayChildren: 0
       }
     }
   };

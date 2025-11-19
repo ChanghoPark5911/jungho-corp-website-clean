@@ -30,6 +30,16 @@ const DesignSystem = lazy(() => import('./components/design-system/DesignSystem'
 // v2 페이지 및 레이아웃
 const LayoutV2 = lazy(() => import('./components/v2/LayoutV2'));
 const HomePageV2 = lazy(() => import('./pages/v2/HomePageV2'));
+const HomePageClassic = lazy(() => import('./pages/v2/HomePageClassic')); // 전통적 스타일
+const HomePageHybrid = lazy(() => import('./pages/v2/HomePageHybrid')); // 하이브리드 스타일
+const AboutIntroHybrid = lazy(() => import('./pages/v2/AboutIntroHybrid')); // 하이브리드: 회사소개
+const SubsidiariesListHybrid = lazy(() => import('./pages/v2/SubsidiariesListHybrid')); // 하이브리드: 계열사 목록
+const AboutIntroClassic = lazy(() => import('./pages/v2/AboutIntroClassic')); // 클래식: 회사소개
+const SubsidiariesListClassic = lazy(() => import('./pages/v2/SubsidiariesListClassic')); // 클래식: 계열사 목록
+const ClarusDetailClassic = lazy(() => import('./pages/v2/ClarusDetailClassic')); // 클래식: 클라루스 상세
+const TLCDetailClassic = lazy(() => import('./pages/v2/TLCDetailClassic')); // 클래식: 정호티엘씨 상세
+const IllutechDetailClassic = lazy(() => import('./pages/v2/IllutechDetailClassic')); // 클래식: 일루텍 상세
+const TexcomDetailClassic = lazy(() => import('./pages/v2/TexcomDetailClassic')); // 클래식: 정호텍스컴 상세
 const AboutPage = lazy(() => import('./pages/v2/AboutPage'));
 const AboutIntroPage = lazy(() => import('./pages/v2/AboutIntroPage'));
 const AboutVisionPage = lazy(() => import('./pages/v2/AboutVisionPage'));
@@ -107,6 +117,21 @@ function App() {
             {/* v2 관리자 페이지 (레이아웃 없음) - 최우선 */}
             <Route path="/admin" element={<AdminPageV2 />} />
             <Route path="/v2/admin" element={<AdminPageV2 />} />
+            
+            {/* 클래식 버전 (전통적 스타일) - 레이아웃 없음 ⭐ */}
+            <Route path="/classic" element={<HomePageClassic />} />
+            
+            {/* 하이브리드 버전 (전통 구조 + 현대 디자인) 🎨 */}
+            <Route path="/hybrid" element={<HomePageHybrid />} />
+            <Route path="/hybrid/about/intro" element={<AboutIntroHybrid />} />
+            <Route path="/hybrid/subsidiaries" element={<SubsidiariesListHybrid />} />
+            
+            <Route path="/classic/about/intro" element={<AboutIntroClassic />} />
+            <Route path="/classic/subsidiaries" element={<SubsidiariesListClassic />} />
+            <Route path="/classic/subsidiaries/clarus" element={<ClarusDetailClassic />} />
+            <Route path="/classic/subsidiaries/jungho-tlc" element={<TLCDetailClassic />} />
+            <Route path="/classic/subsidiaries/illutech" element={<IllutechDetailClassic />} />
+            <Route path="/classic/subsidiaries/jungho-texcom" element={<TexcomDetailClassic />} />
             
             {/* v1 라우트 (이전 버전) */}
             <Route path="/v1/*" element={

@@ -578,9 +578,63 @@ const TexcomDetailPage = () => {
         </div>
       </motion.section>
 
-      {/* 핵심 강점 */}
+      {/* 연혁 및 성과 */}
       <motion.section 
         className="py-20 bg-white dark:bg-gray-900"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div variants={fadeInUp} className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              {currentLanguage === 'en' ? 'History & Achievements' : '연혁 및 성과'}
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400">
+              {currentLanguage === 'en' ? 'Global partnership history' : '글로벌 파트너십의 역사'}
+            </p>
+          </motion.div>
+
+          <motion.div 
+            className="space-y-4"
+            variants={staggerContainer}
+          >
+            {(currentLanguage === 'en' ? [
+              '2017.11: Agency contract with Lindauer Dornier GmbH (Germany) - Tire cord weaving machine',
+              '2007.01: Jungho TEXCOM separated from Jungho Group',
+              '2005.01: Agency contract with Lenzing Instruments (Austria) - Textile Testing instruments, Agency contract with Mesdan S.p.A (Italy) - Yarn jointing Splicer & Textile Testing Instruments',
+              '2002.01: Agency contract with Benninger Zell GmbH (Germany) - Dip and Hot Stretch Unit',
+              '2001.09: Agency contract with Texkimp Limited (UK) - Unwinding Creel for tire cord',
+              '2001.06: Agency contract with Temafa (Germany) - Recycling Machine'
+            ] : [
+              '2017년 11월: 독일 Lindauer Dornier GmbH와 Agency 계약 - Tire cord weaving machine',
+              '2007년 1월: 주식회사 정호텍스컴 정호그룹 분사',
+              '2005년 1월: 오스트리아 Lenzing Instruments와 Agency 계약 - Textile Testing instruments, 이탈리아 Mesdan S.p.A와 Agency 계약 - Yarn jointing Splicer & Textile Testing Instruments',
+              '2002년 1월: 독일 Benninger Zell GmbH와 Agency 계약 - Dip and Hot Stretch Unit',
+              '2001년 9월: 영국 Texkimp Limited와 Agency 계약 - Unwinding Creel for tire cord',
+              '2001년 6월: 독일 Temafa와 Agency 계약 - Recycling Machine'
+            ]).map((achievement, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                whileHover={{ x: 5 }}
+                className="flex items-start gap-4 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300"
+              >
+                <div className="flex-shrink-0 w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
+                  <span className="text-purple-600 dark:text-purple-400 font-bold">{index + 1}</span>
+                </div>
+                <p className="text-gray-700 dark:text-white text-lg flex-1">
+                  {achievement}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* 핵심 강점 */}
+      <motion.section 
+        className="py-20 bg-gray-50 dark:bg-gray-800"
         initial="hidden"
         animate="visible"
         variants={staggerContainer}

@@ -633,7 +633,7 @@ const ClarusDetailPage = () => {
         </div>
       </motion.section>
 
-      {/* 주요 실적 */}
+      {/* 연혁 및 성과 */}
       <motion.section 
         className="py-20 bg-gray-50 dark:bg-gray-800"
         initial="hidden"
@@ -643,7 +643,7 @@ const ClarusDetailPage = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div variants={fadeInUp} className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {currentLanguage === 'en' ? 'Major Achievements' : '주요 실적'}
+              {currentLanguage === 'en' ? 'History & Achievements' : '연혁 및 성과'}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
               {currentLanguage === 'en' ? 'Continuous innovation and growth' : '지속적인 혁신과 성장'}

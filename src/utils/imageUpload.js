@@ -156,6 +156,9 @@ class ImageUploadService {
               case 'storage/unknown':
                 errorMessage = '알 수 없는 오류가 발생했습니다.';
                 break;
+              default:
+                errorMessage = '이미지 업로드 중 오류가 발생했습니다.';
+                break;
             }
             
             reject(new Error(errorMessage));
@@ -195,13 +198,14 @@ class ImageUploadService {
 
     for (const file of fileArray) {
       try {
+        const currentFileIndex = completedFiles; // 현재 인덱스를 미리 저장
         const url = await this.uploadImage(
           file,
           path,
           (fileProgress) => {
             // 개별 파일 진행률을 전체 진행률로 변환
             const overallProgress = Math.round(
-              ((completedFiles + fileProgress / 100) / totalFiles) * 100
+              ((currentFileIndex + fileProgress / 100) / totalFiles) * 100
             );
             if (onProgress) {
               onProgress(overallProgress);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
 import TraditionalNav from '../../components/v2/TraditionalNav';
@@ -11,52 +11,16 @@ import SmallBanner from '../../components/v2/SmallBanner';
 const IllutechDetailClassic = () => {
   const navigate = useNavigate();
   const { currentLanguage } = useI18n();
+  const [showAllAchievements, setShowAllAchievements] = useState(false);
 
   const sidebarItems = [
     { id: 'intro', label: currentLanguage === 'en' ? 'Company Info' : '회사 소개', path: '#intro', active: true },
     { id: 'products', label: currentLanguage === 'en' ? 'Products' : '제품/서비스', path: '#products' },
-    { id: 'achievements', label: currentLanguage === 'en' ? 'Achievements' : '실적 및 성과', path: '#achievements' },
+    { id: 'achievements', label: currentLanguage === 'en' ? 'History & Achievements' : '연혁 및 성과', path: '#achievements' },
     { id: 'contact', label: currentLanguage === 'en' ? 'Contact' : '연락처', path: '#contact' }
   ];
 
-  const companyInfo = [
-    { 
-      label: currentLanguage === 'en' ? 'Company Name' : '회사명',
-      value: currentLanguage === 'en' ? 'ILLUTECH Co., Ltd.' : '(주)일루텍'
-    },
-    { 
-      label: currentLanguage === 'en' ? 'Established' : '설립일',
-      value: currentLanguage === 'en' ? 'March 2010' : '2010년 3월'
-    },
-    { 
-      label: currentLanguage === 'en' ? 'CEO' : '대표이사',
-      value: currentLanguage === 'en' ? 'Kim Jung-ho' : '김정호'
-    },
-    { 
-      label: currentLanguage === 'en' ? 'Business' : '주요 사업',
-      value: currentLanguage === 'en'
-        ? 'Industrial & Special LED Lighting'
-        : '산업·특수 LED 조명'
-    },
-    { 
-      label: currentLanguage === 'en' ? 'Address' : '주소',
-      value: currentLanguage === 'en'
-        ? '435, Apgujeong-ro, Gangnam-gu, Seoul'
-        : '서울특별시 강남구 압구정로 435 (청담동)'
-    },
-    { 
-      label: currentLanguage === 'en' ? 'Phone' : '전화',
-      value: '02-553-3631'
-    },
-    { 
-      label: currentLanguage === 'en' ? 'Email' : '이메일',
-      value: 'info@illutech.co.kr'
-    },
-    { 
-      label: currentLanguage === 'en' ? 'Website' : '웹사이트',
-      value: 'www.illutech.co.kr'
-    }
-  ];
+  // 회사 정보 (삭제됨 - Hybrid 버전과 동기화)
 
   const products = [
     {
@@ -88,21 +52,26 @@ const IllutechDetailClassic = () => {
     }
   ];
 
-  const achievements = currentLanguage === 'en' ? [
-    { year: '2015', content: 'LED/OLED International Exhibition Convention Company Award, Passed new LED product evaluation' },
-    { year: '2014', content: 'Startup Company Award (Small Business Administration), Completed integrated product development' },
-    { year: '2013', content: 'Startup Company Award (Small Business Administration)' },
-    { year: '2012', content: 'LED safety light (8 types) Electrical Appliance Safety Certification, Registered with Korea Electric Power' },
-    { year: '2011', content: 'LED street light "LuBlo" Electrical Appliance Safety Certification, LED security light development and overseas export' },
-    { year: '2010', content: 'LED security light KS certification, Supplied products to hospitals, hotels, and industrial sites' }
+  // 연혁 및 성과 (최신순 정렬)
+  const allAchievements = currentLanguage === 'en' ? [
+    { year: '2009', content: 'Registered as qualified supplier for nuclear power plants, Selected as 7th Korea Green Energy Excellent Company, Established corporate research institute, Supplied to Gori, Yeonggwang, Shin-Gori, and Ulchin nuclear power plants' },
+    { year: '2008', content: 'Selected as excellent nuclear power cooperation company, Developed LED lighting for nuclear power plants (first in Korea) and exclusive supply, Received 12th Energy Winner Award, Developed industrial LED lighting, Established corporate research institute' },
+    { year: '2007', content: 'Patented solar-powered bus stop lighting system, Completed Korea Hydro & Nuclear Power research project' },
+    { year: '2006', content: 'Designated as LED specialized venture company, Developed LED power bulb' },
+    { year: '2005', content: 'Patented solar LED street light and SMPS temperature compensation furnace, Completed SMPS reliability improvement project' },
+    { year: '2004', content: 'Participated in Chonnam National University Regional Cooperation Center (RRC) semiconductor consortium' },
+    { year: '2003', content: 'Established ILLUTECH Co., Ltd., Established LED specialized research institute and production plant, Developed LED traffic lights' }
   ] : [
-    { year: '2015년', content: 'LED/OLED 국제 전시회 참가/국제전시컨벤션기업상, 신제품 LED 평가품 합격' },
-    { year: '2014년', content: '창업기업상 수상 (중소기업청), 통합 제품개발 완료' },
-    { year: '2013년', content: '창업기업상 수상 (중소기업청)' },
-    { year: '2012년', content: 'LED 안전등(8종) 전기용품안전인증 획득, 한국전력 제품 등록' },
-    { year: '2011년', content: 'LED 가로등 \'LuBlo\' 전기용품안전인증 획득, LED 보안등 개발 및 해외수출 달성' },
-    { year: '2010년', content: 'LED 보안등 KS인증 획득, 병원·호텔·산업용 제품 공급' }
+    { year: '2009년', content: '원자력발전소 유자격 공급자 등록, 제7회 대한민국 녹색 에너지우수 기업대상 선정, 기업 부설 연구소 설립, 고리, 영광, 신고리, 울진 원자력발전소 등 납품' },
+    { year: '2008년', content: '상생협력 우수원자력 기업인 선정, 원자력 발전소용 LED 조명등 국내 최초 개발 및 독점 공급, 제12회 에너지위너상 수상, 산업용 LED 등기구 개발, 기업 부설 연구소 설립' },
+    { year: '2007년', content: '태양광을 이용한 버스 승강장 조명장치 특허 등록, 한국수력원자력 연구 과제 수행 완료' },
+    { year: '2006년', content: 'LED 전문 벤처기업 지정, LED 파워 전구 개발' },
+    { year: '2005년', content: '태양광 LED 가로등, SMPS 온도보상화로 특허 등록, SMPS 신뢰성 개선사업 수행 완료' },
+    { year: '2004년', content: '전남대 지역협력센터(RRC) 반도체 컨소시엄 참여' },
+    { year: '2003년', content: '(주)일루텍 설립, LED 전문 연구소 및 생산 공장 설립, LED 교통신호등 개발' }
   ];
+
+  const displayedAchievements = showAllAchievements ? allAchievements : allAchievements.slice(0, 8);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -127,11 +96,11 @@ const IllutechDetailClassic = () => {
             </h2>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-6 shadow-md">
+          <div className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-md">
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 text-base">
               {currentLanguage === 'en'
-                ? 'Established in 2010, ILLUTECH specializes in industrial and special LED lighting. We develop and supply high-quality lighting solutions for nuclear plants, hospitals, factories, and public facilities.'
-                : '2010년 설립된 일루텍은 산업용 및 특수 LED 조명 전문 기업입니다. 원전, 병원, 공장, 공공시설 등을 위한 고품질 조명 솔루션을 개발 및 공급합니다.'
+                ? 'Established in 2003, ILLUTECH specializes in industrial and special LED lighting. We develop and supply high-quality lighting solutions for nuclear plants, hospitals, factories, and public facilities.'
+                : '2003년 설립된 일루텍은 산업용 및 특수 LED 조명 전문 기업입니다. 원전, 병원, 공장, 공공시설 등을 위한 고품질 조명 솔루션을 개발 및 공급합니다.'
               }
             </p>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
@@ -141,28 +110,7 @@ const IllutechDetailClassic = () => {
               }
             </p>
           </div>
-
-          <div className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md">
-            <table className="w-full">
-              <tbody>
-                {companyInfo.map((item, index) => (
-                  <tr 
-                    key={index}
-                    className={`border-b border-gray-200 dark:border-gray-700 last:border-b-0 ${
-                      index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800/50' : 'bg-white dark:bg-gray-800'
-                    }`}
-                  >
-                    <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700/50 w-1/3">
-                      {item.label}
-                    </td>
-                    <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
-                      {item.value}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {/* 회사 개요 섹션 삭제됨 - Hybrid 버전과 동기화 */}
         </section>
 
         <section id="products" className="mb-10">
@@ -227,7 +175,7 @@ const IllutechDetailClassic = () => {
                 </tr>
               </thead>
               <tbody>
-                {achievements.map((item, index) => (
+                {displayedAchievements.map((item, index) => (
                   <tr 
                     key={index}
                     className={`border-b border-gray-200 dark:border-gray-700 last:border-b-0 ${
@@ -245,6 +193,21 @@ const IllutechDetailClassic = () => {
               </tbody>
             </table>
           </div>
+
+          {/* 전체보기 버튼 */}
+          {allAchievements.length > 8 && (
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => setShowAllAchievements(!showAllAchievements)}
+                className="px-8 py-3 border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-bold rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 hover:text-white dark:hover:text-white shadow-md hover:shadow-lg transition-all duration-200"
+              >
+                {showAllAchievements
+                  ? (currentLanguage === 'en' ? 'View Less ▲' : '접기 ▲')
+                  : (currentLanguage === 'en' ? `View All (${allAchievements.length}) ▼` : `전체보기 (${allAchievements.length}) ▼`)
+                }
+              </button>
+            </div>
+          )}
         </section>
 
         <section id="contact" className="mb-10">

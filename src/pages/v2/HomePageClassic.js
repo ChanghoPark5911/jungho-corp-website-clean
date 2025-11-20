@@ -104,7 +104,7 @@ const HomePageClassic = () => {
       business: currentLanguage === 'en'
         ? 'Lighting Control, Power Monitoring'
         : '조명제어, 전력감시제어',
-      path: '/subsidiaries/clarus'
+      path: '/classic/subsidiaries/clarus'
     },
     {
       id: 'tlc',
@@ -117,7 +117,7 @@ const HomePageClassic = () => {
       business: currentLanguage === 'en'
         ? 'Integrated Lighting & Power Control'
         : '조명·전력 통합 제어',
-      path: '/subsidiaries/jungho-tlc'
+      path: '/classic/subsidiaries/jungho-tlc'
     },
     {
       id: 'illutech',
@@ -130,7 +130,7 @@ const HomePageClassic = () => {
       business: currentLanguage === 'en'
         ? 'Industrial & Special LED Lighting'
         : '산업·특수 LED 조명',
-      path: '/subsidiaries/illutech'
+      path: '/classic/subsidiaries/illutech'
     },
     {
       id: 'texcom',
@@ -143,7 +143,7 @@ const HomePageClassic = () => {
       business: currentLanguage === 'en'
         ? 'Textile Machinery & Testers / RSS'
         : '섬유기계·시험기 / RSS',
-      path: '/subsidiaries/jungho-texcom'
+      path: '/classic/subsidiaries/jungho-texcom'
     }
   ];
 

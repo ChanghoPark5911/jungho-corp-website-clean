@@ -1,29 +1,33 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useI18n } from '../../hooks/useI18n';
 import TraditionalNav from '../../components/v2/TraditionalNav';
 import TraditionalLayout from '../../components/v2/TraditionalLayout';
 import SmallBanner from '../../components/v2/SmallBanner';
 
 /**
- * 정호텍스컴 상세 페이지 - 클래식 버전
+ * 정호텍스컴 상세 페이지 - 하이브리드 버전 (전통적 구조 + 현대적 디자인)
  */
-const TexcomDetailClassic = () => {
+const TexcomDetailHybrid = () => {
   const navigate = useNavigate();
   const { currentLanguage } = useI18n();
   const [showAllAchievements, setShowAllAchievements] = useState(false);
 
+  // 사이드바 메뉴
   const sidebarItems = [
-    { id: 'intro', label: currentLanguage === 'en' ? 'Company Info' : '회사 소개', path: '#intro', active: true },
-    { id: 'products', label: currentLanguage === 'en' ? 'Products' : '제품/서비스', path: '#products' },
-    { id: 'achievements', label: currentLanguage === 'en' ? 'History & Achievements' : '연혁 및 성과', path: '#achievements' },
-    { id: 'contact', label: currentLanguage === 'en' ? 'Contact' : '연락처', path: '#contact' }
+    { id: 'intro', label: currentLanguage === 'en' ? 'Group Intro' : '그룹소개', path: '/hybrid/about/intro' },
+    { id: 'subsidiaries', label: currentLanguage === 'en' ? 'Subsidiaries' : '계열사', path: '/hybrid/subsidiaries' },
+    { id: 'media', label: currentLanguage === 'en' ? 'Media/PR' : '미디어/PR', path: '/media/promotion' },
+    { id: 'support', label: currentLanguage === 'en' ? 'Support' : '고객지원', path: '/support' }
   ];
 
   // 사업부별 제품/서비스
   const businessDivisions = [
     {
       division: currentLanguage === 'en' ? 'Textile Machinery Division' : '섬유기계사업부',
+      icon: '🏭',
+      gradient: 'from-green-500 to-teal-500',
       description: currentLanguage === 'en'
         ? 'Import and distribution of advanced textile machinery and testing equipment'
         : '섬유 기계장비 및 시험기기 수입 및 유통',
@@ -50,6 +54,8 @@ const TexcomDetailClassic = () => {
     },
     {
       division: currentLanguage === 'en' ? 'RSS Solutions Division' : 'RSS 사업부',
+      icon: '♻️',
+      gradient: 'from-emerald-500 to-green-500',
       description: currentLanguage === 'en'
         ? 'Sustainable recycling solutions for textile industry'
         : '지속 가능한 섬유 산업을 위한 재활용 솔루션',
@@ -68,7 +74,7 @@ const TexcomDetailClassic = () => {
   ];
 
   // 연혁 및 성과 (최신순 정렬)
-  const allAchievements = currentLanguage === 'en' ? [
+  const achievements = currentLanguage === 'en' ? [
     { year: '2017.11', content: 'Agency contract with Lindauer Dornier GmbH (Germany) - Tire cord weaving machine' },
     { year: '2007.01', content: 'Changed company name to Jungho TEXCOM Co., Ltd.' },
     { year: '2005.01', content: 'Agency contract with Lenzing Instruments (Austria) - Textile Testing instruments, Agency contract with Mesdan S.p.A (Italy) - Yarn jointing Splicer & Textile Testing Instruments' },
@@ -83,10 +89,10 @@ const TexcomDetailClassic = () => {
     { year: '1988', content: 'Agency contract with Vouk (Italy) - Drawframe & Combing machine for cotton spinning, Agency contract with Textechno (Germany) - Textile Testing instrument' },
     { year: '1985.05', content: 'Agency contract with Kato (Japan) - Tester of Textile' },
     { year: '1984.07', content: 'Agency contract with Saurer-Allma (Germany) - Twisting machine' },
-    { year: '1982', content: 'Established Jungho Corporation' }
+    { year: '1982', content: 'Established Jungho Trading Co.' }
   ] : [
     { year: '2017년 11월', content: '독일 Lindauer Dornier GmbH와 Agency 협약 - Tire cord weaving machine' },
-    { year: '2007년 1월', content: '㈜ 정호텍스컴 상호 변경' },
+    { year: '2007년 1월', content: '(주)정호텍스컴 상호 변경' },
     { year: '2005년 1월', content: '오스트리아 Lenzing Instruments와 Agency 협약 - Textile Testing instruments, 이탈리아 Mesdan S.p.A와 Agency 협약 - Yarn jointing Splicer & Textile Testing Instruments' },
     { year: '2002년 1월', content: '독일 Benninger Zell GmbH와 Agency 협약 - Dip and Hot Stretch Unit for treating tyre & single cord' },
     { year: '2001년 9월', content: '영국 Texkimp Limited와 Agency 협약 - Unwinding Creel for tire cord, composite, etc.' },
@@ -102,10 +108,8 @@ const TexcomDetailClassic = () => {
     { year: '1982년', content: '정호물산 설립' }
   ];
 
-  const displayedAchievements = showAllAchievements ? allAchievements : allAchievements.slice(0, 8);
-
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <TraditionalNav />
 
       <SmallBanner
@@ -120,195 +124,223 @@ const TexcomDetailClassic = () => {
       />
 
       <TraditionalLayout showSidebar={true} sidebarItems={sidebarItems}>
-        <section id="intro" className="mb-10">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        {/* 회사 소개 */}
+        <motion.section 
+          className="mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'Company Introduction' : '회사 소개'}
             </h2>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-md">
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 text-base">
+          <div className="bg-gradient-to-br from-white to-green-50 dark:from-gray-800 dark:to-green-900/20 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 text-lg">
               {currentLanguage === 'en'
                 ? 'Since 1982, Jungho TEXCOM has been Korea\'s exclusive importer and distributor of world-class textile machinery and testing equipment, contributing to the development of the domestic textile industry.'
                 : '㈜정호텍스컴은 1982년부터 현재까지 세계적인 섬유 기계장비 및 시험기기 해외 메이커들의 한국 독점수입판매社로서 국내 섬유업계 발전과정에 한 축을 기여해 온 기업입니다.'
               }
             </p>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 text-base">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 text-lg">
               {currentLanguage === 'en'
                 ? 'With over 40 years of B2B experience in textile and apparel manufacturing, we have accumulated expertise and insights into the ever-changing consumer psychology in textile, apparel, and fashion trends.'
                 : '㈜정호텍스컴은 섬유, 의류 제조 시장에서 B2B로 다져진 축적된 경험과 노하우를 축적하고 있으며, 지난 40년간 시시각각 변화되어온 섬유, 의류, 패션 트렌드의 \'소비심리 변화\'를 정확히 파악하고 있음으로 앞으로의 변화 흐름 역시 미리 예측하는 역량을 스스로 갖게 되었습니다.'
               }
             </p>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
               {currentLanguage === 'en'
                 ? 'Since 2021, Jungho TEXCOM has expanded into B2C apparel and fashion business, aiming to become a central opinion leader in the fashion industry.'
                 : '이에 ㈜정호텍스컴은 2021년~ 실소비자들을 직접 만나는 의류, 패션 B2C로도 사업을 새롭게 전개함으로써, 패션 흐름의 오피니언 리더를 이끄는 중심축이 되고자 합니다.'
               }
             </p>
           </div>
-          {/* 회사 개요 섹션 삭제됨 - Hybrid 버전과 동기화 */}
-        </section>
+        </motion.section>
 
-        <section id="products" className="mb-10">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        {/* 사업부별 제품/서비스 */}
+        <motion.section 
+          className="mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'Products & Services' : '제품 및 서비스'}
             </h2>
           </div>
 
           <div className="space-y-8">
             {businessDivisions.map((division, divIndex) => (
-              <div key={divIndex} className="bg-white dark:bg-gray-800 border-2 border-blue-600 dark:border-blue-500 rounded-lg overflow-hidden shadow-lg">
+              <motion.div 
+                key={divIndex}
+                className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow-xl"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: divIndex * 0.15 }}
+              >
                 {/* 사업부 헤더 */}
-                <div className="bg-blue-600 dark:bg-blue-700 text-white p-6">
-                  <h3 className="text-xl font-bold mb-2">{division.division}</h3>
-                  <p className="text-blue-100">{division.description}</p>
+                <div className={`bg-gradient-to-r ${division.gradient} p-6`}>
+                  <div className="flex items-center gap-4 text-white">
+                    <div className="text-5xl">{division.icon}</div>
+                    <div>
+                      <h3 className="text-2xl font-bold mb-2">{division.division}</h3>
+                      <p className="text-green-50 text-lg">{division.description}</p>
+                    </div>
+                  </div>
                 </div>
 
                 {/* 제품 목록 */}
                 <div className="p-6 space-y-6">
                   {division.products.map((product, prodIndex) => (
-                    <div key={prodIndex} className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-5">
-                      <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                    <motion.div 
+                      key={prodIndex}
+                      className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                      whileHover={{ scale: 1.01, x: 10 }}
+                    >
+                      <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                         {product.name}
                       </h4>
-                      <p className="text-gray-700 dark:text-gray-300 text-base mb-4">
+                      <p className="text-gray-700 dark:text-gray-300 text-lg mb-4 leading-relaxed">
                         {product.description}
                       </p>
                       
-                      <div className="mt-4 pt-4 border-t border-gray-300 dark:border-gray-600">
-                        <h5 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <h5 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
                           {currentLanguage === 'en' ? '▪ Key Features:' : '▪ 주요 기능:'}
                         </h5>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-2 gap-3">
                           {product.features.map((feature, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-gray-700 dark:text-gray-300 text-sm">
-                              <span className="text-blue-600 dark:text-blue-400 font-bold">✓</span>
+                            <div key={idx} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                              <span className={`text-lg bg-gradient-to-r ${division.gradient} bg-clip-text text-transparent font-bold`}>✓</span>
                               <span>{feature}</span>
                             </div>
                           ))}
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        <section id="achievements" className="mb-10">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        {/* 연혁 및 성과 */}
+        <motion.section 
+          className="mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'History & Achievements' : '연혁 및 성과'}
             </h2>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-blue-600 dark:bg-blue-700">
-                  <th className="px-6 py-4 text-left text-white font-bold w-1/6">
-                    {currentLanguage === 'en' ? 'Year' : '연도'}
-                  </th>
-                  <th className="px-6 py-4 text-left text-white font-bold">
-                    {currentLanguage === 'en' ? 'Details' : '내용'}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {displayedAchievements.map((item, index) => (
-                  <tr 
-                    key={index}
-                    className={`border-b border-gray-200 dark:border-gray-700 last:border-b-0 ${
-                      index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800/50' : 'bg-white dark:bg-gray-800'
-                    }`}
-                  >
-                    <td className="px-6 py-4 font-bold text-blue-600 dark:text-blue-400">
-                      {item.year}
-                    </td>
-                    <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
-                      {item.content}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-xl">
+            <ul className="space-y-4">
+              {(showAllAchievements ? achievements : achievements.slice(0, 8)).map((item, index) => (
+                <motion.li 
+                  key={index}
+                  className="group flex items-start gap-4 p-4 rounded-xl hover:bg-gradient-to-r hover:from-green-50 hover:to-teal-50 dark:hover:from-green-900/20 dark:hover:to-teal-900/20 transition-all duration-300"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.03 }}
+                  whileHover={{ x: 10 }}
+                >
+                  <div className="flex-shrink-0 w-24 h-16 bg-gradient-to-br from-green-500 to-teal-500 text-white rounded-lg flex items-center justify-center font-bold text-sm shadow-lg group-hover:scale-110 transition-transform duration-300 px-2">
+                    {item.year}
+                  </div>
+                  <span className="flex-1 text-gray-700 dark:text-gray-300 text-lg pt-3 leading-relaxed">{item.content}</span>
+                </motion.li>
+              ))}
+            </ul>
+            
+            {/* 더보기/접기 버튼 */}
+            {achievements.length > 8 && (
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => setShowAllAchievements(!showAllAchievements)}
+                  className="px-6 py-3 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+                >
+                  {showAllAchievements 
+                    ? (currentLanguage === 'en' ? 'Show Less ▲' : '접기 ▲')
+                    : (currentLanguage === 'en' ? `View All (${achievements.length}) ▼` : `전체보기 (${achievements.length}개) ▼`)
+                  }
+                </button>
+              </div>
+            )}
           </div>
+        </motion.section>
 
-          {/* 전체보기 버튼 */}
-          {allAchievements.length > 8 && (
-            <div className="mt-6 text-center">
-              <button
-                onClick={() => setShowAllAchievements(!showAllAchievements)}
-                className="px-8 py-3 border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-bold rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 hover:text-white dark:hover:text-white shadow-md hover:shadow-lg transition-all duration-200"
-              >
-                {showAllAchievements
-                  ? (currentLanguage === 'en' ? 'View Less ▲' : '접기 ▲')
-                  : (currentLanguage === 'en' ? `View All (${allAchievements.length}) ▼` : `전체보기 (${allAchievements.length}) ▼`)
-                }
-              </button>
-            </div>
-          )}
-        </section>
-
-        <section id="contact" className="mb-10">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        {/* 연락처 */}
+        <motion.section 
+          className="mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <div className="bg-gradient-to-r from-green-600 via-green-700 to-teal-600 dark:from-green-700 dark:via-green-800 dark:to-teal-700 text-white rounded-2xl p-8 shadow-2xl">
+            <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
+              <span>📞</span>
               {currentLanguage === 'en' ? 'Contact Information' : '연락처'}
-            </h2>
-          </div>
-
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 text-white rounded-lg p-8 shadow-md">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <h3 className="text-lg font-bold mb-4">{currentLanguage === 'en' ? '📞 Contact Us' : '📞 연락처'}</h3>
-                <div className="space-y-2 text-blue-100">
+                <h4 className="text-lg font-bold mb-3">{currentLanguage === 'en' ? 'Contact Us' : '문의하기'}</h4>
+                <div className="space-y-2 text-green-100">
                   <p><strong className="text-white">{currentLanguage === 'en' ? 'Phone:' : '전화:'}</strong> 02-553-3631</p>
                   <p><strong className="text-white">{currentLanguage === 'en' ? 'Email:' : '이메일:'}</strong> info@junghocorp.com</p>
                   <p><strong className="text-white">{currentLanguage === 'en' ? 'Website:' : '웹사이트:'}</strong> www.junghocorp.com</p>
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-bold mb-4">{currentLanguage === 'en' ? '📍 Location' : '📍 오시는 길'}</h3>
-                <p className="text-blue-100">
+                <h4 className="text-lg font-bold mb-3">{currentLanguage === 'en' ? 'Location' : '오시는 길'}</h4>
+                <p className="text-green-100 mb-4">
                   {currentLanguage === 'en'
                     ? '435, Apgujeong-ro, Gangnam-gu, Seoul, Korea'
                     : '서울특별시 강남구 압구정로 435 (청담동)'
                   }
                 </p>
                 <button
-                  onClick={() => navigate('/classic/about/location')}
-                  className="mt-4 px-5 py-2 bg-white text-blue-700 font-semibold rounded hover:bg-blue-50 transition-colors duration-200"
+                  onClick={() => navigate('/about/location')}
+                  className="px-5 py-2 bg-white text-green-700 font-semibold rounded-lg hover:bg-green-50 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
                 >
                   {currentLanguage === 'en' ? 'View Map →' : '지도 보기 →'}
                 </button>
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
-        <section>
-          <div className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center">
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
+        {/* 다른 계열사 보기 */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <div className="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 border border-gray-300 dark:border-gray-600 rounded-2xl p-8 text-center shadow-lg">
+            <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg">
               {currentLanguage === 'en'
                 ? 'Want to learn about other subsidiaries of JUNGHO Group?'
                 : '정호그룹의 다른 계열사도 알아보세요'
               }
             </p>
             <button
-              onClick={() => navigate('/classic/subsidiaries')}
-              className="px-6 py-3 bg-blue-600 dark:bg-blue-700 text-white font-semibold rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-200"
+              onClick={() => navigate('/hybrid/subsidiaries')}
+              className="px-8 py-4 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
             >
               {currentLanguage === 'en' ? 'View All Subsidiaries →' : '전체 계열사 보기 →'}
             </button>
           </div>
-        </section>
+        </motion.section>
       </TraditionalLayout>
     </div>
   );
 };
 
-export default TexcomDetailClassic;
-
+export default TexcomDetailHybrid;

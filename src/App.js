@@ -34,12 +34,23 @@ const HomePageClassic = lazy(() => import('./pages/v2/HomePageClassic')); // 전
 const HomePageHybrid = lazy(() => import('./pages/v2/HomePageHybrid')); // 하이브리드 스타일
 const AboutIntroHybrid = lazy(() => import('./pages/v2/AboutIntroHybrid')); // 하이브리드: 회사소개
 const SubsidiariesListHybrid = lazy(() => import('./pages/v2/SubsidiariesListHybrid')); // 하이브리드: 계열사 목록
+const ClarusDetailHybrid = lazy(() => import('./pages/v2/ClarusDetailHybrid')); // 하이브리드: 클라루스 상세
+const TLCDetailHybrid = lazy(() => import('./pages/v2/TLCDetailHybrid')); // 하이브리드: 정호티엘씨 상세
+const IllutechDetailHybrid = lazy(() => import('./pages/v2/IllutechDetailHybrid')); // 하이브리드: 일루텍 상세
+const TexcomDetailHybrid = lazy(() => import('./pages/v2/TexcomDetailHybrid')); // 하이브리드: 정호텍스컴 상세
 const AboutIntroClassic = lazy(() => import('./pages/v2/AboutIntroClassic')); // 클래식: 회사소개
 const SubsidiariesListClassic = lazy(() => import('./pages/v2/SubsidiariesListClassic')); // 클래식: 계열사 목록
 const ClarusDetailClassic = lazy(() => import('./pages/v2/ClarusDetailClassic')); // 클래식: 클라루스 상세
 const TLCDetailClassic = lazy(() => import('./pages/v2/TLCDetailClassic')); // 클래식: 정호티엘씨 상세
 const IllutechDetailClassic = lazy(() => import('./pages/v2/IllutechDetailClassic')); // 클래식: 일루텍 상세
 const TexcomDetailClassic = lazy(() => import('./pages/v2/TexcomDetailClassic')); // 클래식: 정호텍스컴 상세
+const AboutPageHybrid = lazy(() => import('./pages/v2/AboutPageHybrid')); // 하이브리드: About 허브 페이지
+const AboutPageClassic = lazy(() => import('./pages/v2/AboutPageClassic')); // 클래식: About 허브 페이지
+const AboutVisionHybrid = lazy(() => import('./pages/v2/AboutVisionHybrid')); // 하이브리드: 그룹비전
+const AboutManagementHybrid = lazy(() => import('./pages/v2/AboutManagementHybrid')); // 하이브리드: 경영방침
+const BusinessPageHybrid = lazy(() => import('./pages/v2/BusinessPageHybrid')); // 하이브리드: 사업분야
+const MediaPageHybrid = lazy(() => import('./pages/v2/MediaPageHybrid')); // 하이브리드: 미디어센터
+const ProjectsPageHybrid = lazy(() => import('./pages/v2/ProjectsPageHybrid')); // 하이브리드: 프로젝트
 const AboutPage = lazy(() => import('./pages/v2/AboutPage'));
 const AboutIntroPage = lazy(() => import('./pages/v2/AboutIntroPage'));
 const AboutVisionPage = lazy(() => import('./pages/v2/AboutVisionPage'));
@@ -123,10 +134,33 @@ function App() {
             
             {/* 하이브리드 버전 (전통 구조 + 현대 디자인) 🎨 */}
             <Route path="/hybrid" element={<HomePageHybrid />} />
+            <Route path="/hybrid/about" element={<AboutPageHybrid />} />
             <Route path="/hybrid/about/intro" element={<AboutIntroHybrid />} />
+            <Route path="/hybrid/about/vision" element={<AboutVisionHybrid />} />
+            <Route path="/hybrid/about/management" element={<AboutManagementHybrid />} />
+            <Route path="/hybrid/about/history" element={<AboutHistoryPage />} />
+            <Route path="/hybrid/about/ci" element={<AboutCIBIPage />} />
+            <Route path="/hybrid/about/location" element={<AboutLocationPage />} />
+            <Route path="/hybrid/business" element={<BusinessPageHybrid />} />
+            <Route path="/hybrid/media" element={<MediaPageHybrid />} />
+            <Route path="/hybrid/media/news" element={<NewsPage />} />
+            <Route path="/hybrid/projects" element={<ProjectsPageHybrid />} />
             <Route path="/hybrid/subsidiaries" element={<SubsidiariesListHybrid />} />
+            <Route path="/hybrid/subsidiaries/clarus" element={<ClarusDetailHybrid />} />
+            <Route path="/hybrid/subsidiaries/jungho-tlc" element={<TLCDetailHybrid />} />
+            <Route path="/hybrid/subsidiaries/illutech" element={<IllutechDetailHybrid />} />
+            <Route path="/hybrid/subsidiaries/jungho-texcom" element={<TexcomDetailHybrid />} />
             
+            <Route path="/classic/about" element={<AboutPageClassic />} />
             <Route path="/classic/about/intro" element={<AboutIntroClassic />} />
+            <Route path="/classic/about/vision" element={<AboutVisionPage />} />
+            <Route path="/classic/about/management" element={<AboutManagementPage />} />
+            <Route path="/classic/about/history" element={<AboutHistoryPage />} />
+            <Route path="/classic/about/ci" element={<AboutCIBIPage />} />
+            <Route path="/classic/about/location" element={<AboutLocationPage />} />
+            <Route path="/classic/business" element={<BusinessPage />} />
+            <Route path="/classic/media" element={<MediaPageHybrid />} />
+            <Route path="/classic/projects" element={<ProjectsPage />} />
             <Route path="/classic/subsidiaries" element={<SubsidiariesListClassic />} />
             <Route path="/classic/subsidiaries/clarus" element={<ClarusDetailClassic />} />
             <Route path="/classic/subsidiaries/jungho-tlc" element={<TLCDetailClassic />} />

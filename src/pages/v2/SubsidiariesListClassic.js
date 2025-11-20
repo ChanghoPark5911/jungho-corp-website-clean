@@ -28,21 +28,15 @@ const SubsidiariesListClassic = () => {
     {
       id: 'clarus',
       name: 'CLARUS Korea Co., Ltd.',
-      nameKo: '(주)클라루스코리아',
+      nameKo: '(주)클라루스',
       logo: '💡',
       established: '2009',
       business: currentLanguage === 'en' 
         ? 'IoT-based Smart Lighting Control, Power Monitoring'
         : 'IoT 기반 스마트 조명 제어, 전력 감시 제어',
-      description: currentLanguage === 'en'
-        ? 'Specialized in smart lighting control systems using IoT technology. Provides integrated solutions for building automation and energy management.'
-        : 'IoT 기술을 활용한 스마트 조명 제어 시스템 전문 기업. 빌딩 자동화 및 에너지 관리 통합 솔루션 제공.',
-      ceo: currentLanguage === 'en' ? 'Kim Jung-ho' : '김정호',
-      address: currentLanguage === 'en'
-        ? 'Seoul, Gangnam-gu, Apgujeong-ro 435'
-        : '서울시 강남구 압구정로 435',
-      phone: '02-553-3631',
-      website: 'www.clarus.co.kr',
+      businessDetails: currentLanguage === 'en'
+        ? ['Specialized in smart lighting control systems using IoT technology', 'Provides integrated solutions for building automation and energy management', 'Export business']
+        : ['IoT 기술을 활용한 스마트 조명 제어 시스템 전문 기업. 빌딩 자동화 및 에너지 관리 통합 솔루션 제공', '해외사업(수출)'],
       path: '/classic/subsidiaries/clarus'
     },
     {
@@ -54,15 +48,9 @@ const SubsidiariesListClassic = () => {
       business: currentLanguage === 'en'
         ? 'Integrated Lighting & Power Control, Building Automation'
         : '조명·전력 통합 제어, 빌딩 자동화',
-      description: currentLanguage === 'en'
-        ? 'A pioneer in building automation since 1982. Provides stable and efficient control systems for large buildings and facilities.'
-        : '1982년부터 빌딩 자동화 분야의 선구자. 대형 건물 및 시설물에 안정적이고 효율적인 제어 시스템 제공.',
-      ceo: currentLanguage === 'en' ? 'Kim Jung-ho' : '김정호',
-      address: currentLanguage === 'en'
-        ? 'Seoul, Gangnam-gu, Apgujeong-ro 435'
-        : '서울시 강남구 압구정로 435',
-      phone: '02-553-3631',
-      website: 'www.junghocorp.com',
+      businessDetails: currentLanguage === 'en'
+        ? ['Pioneer in building automation since 1982', 'Provides stable and efficient control systems for large buildings and facilities']
+        : ['1982년부터 빌딩 자동화 분야의 선구자. 대형 건물 및 시설물에 안정적이고 효율적인 제어 시스템 제공'],
       path: '/classic/subsidiaries/jungho-tlc'
     },
     {
@@ -74,15 +62,9 @@ const SubsidiariesListClassic = () => {
       business: currentLanguage === 'en'
         ? 'Industrial & Special LED Lighting'
         : '산업·특수 LED 조명',
-      description: currentLanguage === 'en'
-        ? 'Specialist in industrial and special LED lighting. Develops and supplies lighting solutions for nuclear plants, hospitals, and public facilities.'
-        : '산업용 및 특수 LED 조명 전문 기업. 원전, 병원, 공공시설 등을 위한 조명 솔루션 개발 및 공급.',
-      ceo: currentLanguage === 'en' ? 'Kim Jung-ho' : '김정호',
-      address: currentLanguage === 'en'
-        ? 'Seoul, Gangnam-gu, Apgujeong-ro 435'
-        : '서울시 강남구 압구정로 435',
-      phone: '02-553-3631',
-      website: 'www.illutech.co.kr',
+      businessDetails: currentLanguage === 'en'
+        ? ['Specialist in industrial and special LED lighting', 'Develops and supplies lighting solutions for nuclear plants, hospitals, and public facilities']
+        : ['산업용 및 특수 LED 조명 전문 기업. 원전, 병원, 공공시설 등을 위한 조명 솔루션 개발 및 공급'],
       path: '/classic/subsidiaries/illutech'
     },
     {
@@ -94,15 +76,9 @@ const SubsidiariesListClassic = () => {
       business: currentLanguage === 'en'
         ? 'Textile Machinery, Testing Equipment, RSS'
         : '섬유기계·시험기, RSS',
-      description: currentLanguage === 'en'
-        ? 'Bridge between textile industry and fashion. Imports and distributes textile machinery and testing equipment from Europe.'
-        : '섬유 산업과 패션을 잇는 가교 역할. 유럽산 섬유 기계 및 시험기 수입 및 유통.',
-      ceo: currentLanguage === 'en' ? 'Kim Jung-ho' : '김정호',
-      address: currentLanguage === 'en'
-        ? 'Seoul, Gangnam-gu, Apgujeong-ro 435'
-        : '서울시 강남구 압구정로 435',
-      phone: '02-553-3631',
-      website: 'www.junghocorp.com',
+      businessDetails: currentLanguage === 'en'
+        ? ['Bridge between textile industry and fashion', 'Imports and distributes textile machinery and testing equipment from Europe']
+        : ['섬유 산업과 패션을 잇는 가교 역할. 유럽산 섬유 기계 및 시험기 수입 및 유통'],
       path: '/classic/subsidiaries/jungho-texcom'
     }
   ];
@@ -168,56 +144,21 @@ const SubsidiariesListClassic = () => {
 
               {/* 본문 */}
               <div className="p-6">
-                {/* 설명 */}
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6 text-base">
-                  {company.description}
-                </p>
-
-                {/* 정보 표 */}
-                <table className="w-full border border-gray-200 dark:border-gray-700">
-                  <tbody>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <td className="px-4 py-3 font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700/50 w-1/4">
-                        {currentLanguage === 'en' ? 'Business' : '사업 분야'}
-                      </td>
-                      <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
-                        {company.business}
-                      </td>
-                    </tr>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <td className="px-4 py-3 font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700/50">
-                        {currentLanguage === 'en' ? 'CEO' : '대표이사'}
-                      </td>
-                      <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
-                        {company.ceo}
-                      </td>
-                    </tr>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <td className="px-4 py-3 font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700/50">
-                        {currentLanguage === 'en' ? 'Address' : '주소'}
-                      </td>
-                      <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
-                        {company.address}
-                      </td>
-                    </tr>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <td className="px-4 py-3 font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700/50">
-                        {currentLanguage === 'en' ? 'Phone' : '전화'}
-                      </td>
-                      <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
-                        {company.phone}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3 font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700/50">
-                        {currentLanguage === 'en' ? 'Website' : '웹사이트'}
-                      </td>
-                      <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
-                        {company.website}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                {/* 사업 분야 */}
+                <div className="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-lg p-5">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <span className="mr-2">ㅇ</span>
+                    {company.business}
+                  </h3>
+                  <div className="space-y-2 ml-6">
+                    {company.businessDetails.map((detail, idx) => (
+                      <p key={idx} className="text-gray-700 dark:text-gray-300 leading-relaxed text-base flex items-start">
+                        <span className="mr-2 mt-1">-</span>
+                        <span>{detail}</span>
+                      </p>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </section>

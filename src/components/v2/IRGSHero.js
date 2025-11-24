@@ -6,7 +6,7 @@ import { useI18n } from '../../hooks/useI18n';
  * IRGS 핵심가치 Hero Section
  * 세련된 애니메이션으로 정호그룹의 4가지 핵심가치를 표현
  */
-const IRGSHero = () => {
+const IRGSHero = ({ backgroundImage }) => {
   const navigate = useNavigate();
   const { t, currentLanguage } = useI18n();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -101,16 +101,18 @@ const IRGSHero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900 py-20 sm:py-24">
-      {/* 배경 빌딩 이미지 - 선명하게 */}
+      {/* 배경 이미지 - 선명하게, 부드러운 전환 효과 */}
       <div className="absolute inset-0">
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-35"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 transition-all duration-1000 ease-in-out"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`
+            backgroundImage: backgroundImage 
+              ? `url('${backgroundImage}')` 
+              : `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`
           }}
         />
-        {/* 청색 오버레이 - 배경 이미지와 조화 */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/25 via-cyan-400/15 to-blue-500/25" />
+        {/* 청색 오버레이 - 배경 이미지와 조화 (밝기 개선) */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-cyan-400/10 to-blue-500/20" />
       </div>
 
       {/* 배경 패턴 */}

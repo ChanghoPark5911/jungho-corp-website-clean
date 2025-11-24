@@ -13,18 +13,13 @@ const AboutIntroHybrid = () => {
   const navigate = useNavigate();
   const { currentLanguage } = useI18n();
 
-  const sidebarItems = [
-    { id: 'intro', label: currentLanguage === 'en' ? 'Group Intro' : '그룹소개', path: '/hybrid/about/intro', active: true },
-    { id: 'subsidiaries', label: currentLanguage === 'en' ? 'Subsidiaries' : '계열사', path: '/hybrid/subsidiaries' },
-    { id: 'media', label: currentLanguage === 'en' ? 'Media/PR' : '미디어/PR', path: '/media/promotion' },
-    { id: 'support', label: currentLanguage === 'en' ? 'Support' : '고객지원', path: '/support' }
-  ];
+  // 사이드바는 TraditionalLayout에서 자동 생성 (category="about")
 
   const companyInfo = [
     { label: currentLanguage === 'en' ? 'Company Name' : '회사명', value: currentLanguage === 'en' ? 'JUNGHO Group' : '정호그룹' },
     { label: currentLanguage === 'en' ? 'Established' : '설립일', value: currentLanguage === 'en' ? 'March 1982' : '1982년 3월' },
-    { label: currentLanguage === 'en' ? 'CEO' : '대표이사', value: currentLanguage === 'en' ? 'Kim Jung-ho' : '김정호' },
-    { label: currentLanguage === 'en' ? 'Headquarters' : '본사 소재지', value: currentLanguage === 'en' ? '435, Apgujeong-ro, Gangnam-gu, Seoul' : '서울시 강남구 압구정로 435' },
+    { label: currentLanguage === 'en' ? 'CEO' : '대표이사', value: currentLanguage === 'en' ? 'Ryu Jae-man' : '류재만' },
+    { label: currentLanguage === 'en' ? 'Headquarters' : '본사 소재지', value: currentLanguage === 'en' ? '17, Nonhyeon-ro 116-gil, Gangnam-gu, Seoul, Jungho Building' : '서울시 강남구 논현로116길 17 정호빌딩' },
     { label: currentLanguage === 'en' ? 'Phone' : '대표전화', value: '02-553-3631' },
     { label: currentLanguage === 'en' ? 'Email' : '이메일', value: 'info@junghocorp.com' },
     { label: currentLanguage === 'en' ? 'Business Areas' : '사업 분야', value: currentLanguage === 'en' ? 'AI/IoT, Smart Lighting, Logistics, Textiles' : 'AI/IoT, 스마트 조명, 물류, 섬유' }
@@ -46,7 +41,7 @@ const AboutIntroHybrid = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <TraditionalNav />
+      <TraditionalNav version="hybrid" />
       
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'About JUNGHO' : '정호그룹 소개'}
@@ -56,7 +51,7 @@ const AboutIntroHybrid = () => {
         height="400px"
       />
 
-      <TraditionalLayout showSidebar={true} sidebarItems={sidebarItems}>
+      <TraditionalLayout showSidebar={true} category="about" version="hybrid">
         {/* 정호그룹 소개 */}
         <motion.section 
           className="mb-10"
@@ -176,7 +171,7 @@ const AboutIntroHybrid = () => {
           </div>
         </motion.section>
 
-        {/* 주요 계열사 */}
+        {/* 계열사 */}
         <motion.section 
           className="mb-10"
           initial={{ opacity: 0, y: 20 }}
@@ -185,7 +180,7 @@ const AboutIntroHybrid = () => {
         >
           <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              {currentLanguage === 'en' ? 'Our Subsidiaries' : '주요 계열사'}
+              {currentLanguage === 'en' ? 'Our Subsidiaries' : '계열사'}
             </h2>
           </div>
 

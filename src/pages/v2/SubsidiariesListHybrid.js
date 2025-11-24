@@ -10,12 +10,7 @@ const SubsidiariesListHybrid = () => {
   const navigate = useNavigate();
   const { currentLanguage } = useI18n();
 
-  const sidebarItems = [
-    { id: 'intro', label: currentLanguage === 'en' ? 'Group Intro' : '그룹소개', path: '/hybrid/about/intro' },
-    { id: 'subsidiaries', label: currentLanguage === 'en' ? 'Subsidiaries' : '계열사', path: '/hybrid/subsidiaries', active: true },
-    { id: 'media', label: currentLanguage === 'en' ? 'Media/PR' : '미디어/PR', path: '/media/promotion' },
-    { id: 'support', label: currentLanguage === 'en' ? 'Support' : '고객지원', path: '/support' }
-  ];
+  // 사이드바는 TraditionalLayout에서 자동 생성 (category="subsidiaries")
 
   const subsidiaries = [
     {
@@ -46,17 +41,17 @@ const SubsidiariesListHybrid = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <TraditionalNav />
+      <TraditionalNav version="hybrid" />
       
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'Our Companies' : '우리의 계열사'}
-        title={currentLanguage === 'en' ? 'Subsidiaries' : '계열사 소개'}
+        title={currentLanguage === 'en' ? 'Subsidiaries Overview' : '계열사 개요'}
         description={currentLanguage === 'en' ? 'Four specialized companies creating synergy' : '4개의 전문 기업이 만들어내는 시너지'}
         backgroundImage="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80"
         height="400px"
       />
 
-      <TraditionalLayout showSidebar={true} sidebarItems={sidebarItems}>
+      <TraditionalLayout showSidebar={true} category="subsidiaries" version="hybrid">
         <motion.section 
           className="mb-10"
           initial={{ opacity: 0, y: 20 }}
@@ -78,12 +73,15 @@ const SubsidiariesListHybrid = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
           >
-            <div className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-transparent rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300">
+            <div 
+              onClick={() => navigate(company.path)}
+              className="group bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-transparent rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-300 cursor-pointer"
+            >
               <div className={`h-2 bg-gradient-to-r ${company.gradient}`}></div>
               
               <div className={`bg-gradient-to-r ${company.gradient} px-6 py-5 flex items-center justify-between`}>
                 <div className="flex items-center gap-4">
-                  <span className="text-5xl">{company.icon}</span>
+                  <span className="text-5xl transform group-hover:scale-110 transition-transform duration-300">{company.icon}</span>
                   <div>
                     <h2 className="text-2xl font-bold text-white mb-1">
                       {currentLanguage === 'en' ? company.name : company.nameKo}
@@ -93,12 +91,9 @@ const SubsidiariesListHybrid = () => {
                     </p>
                   </div>
                 </div>
-                <button
-                  onClick={() => navigate(company.path)}
-                  className="px-6 py-3 bg-white text-gray-900 font-bold rounded-lg hover:bg-gray-100 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-                >
-                  {currentLanguage === 'en' ? 'Details →' : '상세보기 →'}
-                </button>
+                <div className="text-white text-4xl opacity-70 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-300">
+                  →
+                </div>
               </div>
 
               <div className="p-6">
@@ -125,7 +120,7 @@ const SubsidiariesListHybrid = () => {
         >
           <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-purple-600 dark:from-blue-700 dark:via-blue-800 dark:to-purple-700 text-white rounded-2xl p-8 shadow-2xl text-center">
             <p className="text-lg mb-6 text-blue-100">
-              {currentLanguage === 'en' ? 'For more information, please click the "Details" button.' : '자세한 정보는 "상세보기" 버튼을 클릭해주세요.'}
+              {currentLanguage === 'en' ? 'Click on each card above to view detailed information about the subsidiary.' : '각 계열사 카드를 클릭하시면 상세 정보를 확인하실 수 있습니다.'}
             </p>
             <button
               onClick={() => navigate('/support')}

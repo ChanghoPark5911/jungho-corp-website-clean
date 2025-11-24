@@ -16,13 +16,7 @@ const ClarusDetailClassic = () => {
   const [showAllAchievements, setShowAllAchievements] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // 사이드바 메뉴 (클라루스 관련)
-  const sidebarItems = [
-    { id: 'intro', label: currentLanguage === 'en' ? 'Company Info' : '회사 소개', path: '#intro', active: true },
-    { id: 'products', label: currentLanguage === 'en' ? 'Products' : '제품/서비스', path: '#products' },
-    { id: 'achievements', label: currentLanguage === 'en' ? 'History & Achievements' : '연혁 및 성과', path: '#achievements' },
-    { id: 'contact', label: currentLanguage === 'en' ? 'Contact' : '연락처', path: '#contact' }
-  ];
+  // 사이드바는 TraditionalLayout에서 자동 생성 (category="subsidiaries")
 
   // 회사 정보 (삭제됨 - Hybrid 버전과 동기화)
 
@@ -106,7 +100,7 @@ const ClarusDetailClassic = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* 전통적 네비게이션 */}
-      <TraditionalNav />
+      <TraditionalNav version="classic" />
 
       {/* 작은 배너 */}
       <SmallBanner
@@ -124,7 +118,7 @@ const ClarusDetailClassic = () => {
       />
 
       {/* 메인 콘텐츠 - 전통적 레이아웃 */}
-      <TraditionalLayout showSidebar={true} sidebarItems={sidebarItems}>
+      <TraditionalLayout showSidebar={true} category="subsidiaries" version="classic">
         {/* 회사 소개 */}
         <section id="intro" className="mb-10">
           <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useI18n } from '../../hooks/useI18n';
 import TraditionalNav from '../../components/v2/TraditionalNav';
+import TraditionalLayout from '../../components/v2/TraditionalLayout';
 import SmallBanner from '../../components/v2/SmallBanner';
 
 /**
@@ -81,7 +82,7 @@ const AboutVisionHybrid = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* 전통적 네비게이션 */}
-      <TraditionalNav />
+      <TraditionalNav version="hybrid" />
 
       {/* 작은 배너 */}
       <SmallBanner

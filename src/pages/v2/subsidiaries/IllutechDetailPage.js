@@ -90,42 +90,48 @@ const IllutechDetailPage = () => {
         description: currentLanguage === 'en'
           ? 'Special LED lighting for nuclear power plants'
           : '원자력 발전소용 특수 LED 조명',
-        icon: '⚛️'
+        icon: '⚛️',
+        image: '/images/products/illutech-nuclear.jpg' // 이미지 경로 추가
       },
       {
         name: currentLanguage === 'en' ? 'Explosion-proof LED Lighting' : '방폭형 LED 조명',
         description: currentLanguage === 'en'
           ? 'Explosion-proof certified lighting for hazardous areas'
           : '위험 지역용 방폭 인증 조명',
-        icon: '🔥'
+        icon: '🔥',
+        image: '/images/products/illutech-explosion-proof.jpg' // 이미지 경로 추가
       },
       {
         name: currentLanguage === 'en' ? 'Public Infrastructure LED' : '공공 인프라용 LED',
         description: currentLanguage === 'en'
           ? 'Lighting for public facilities such as tunnels and roads'
           : '터널, 도로 등 공공시설 조명',
-        icon: '🏗️'
+        icon: '🏗️',
+        image: '/images/products/illutech-infrastructure.jpg' // 이미지 경로 추가
     },
     {
       name: currentLanguage === 'en' ? 'Industrial LED Lighting' : '산업용 LED 조명',
       description: currentLanguage === 'en'
         ? 'Lighting solutions for factories and industrial sites'
         : '공장 및 산업 현장용 조명 솔루션',
-      icon: '🏭'
+      icon: '🏭',
+      image: '/images/products/illutech-industrial.jpg' // 이미지 경로 추가
     },
     {
       name: currentLanguage === 'en' ? 'Security LED Lighting' : 'LED 보안등',
       description: currentLanguage === 'en'
         ? 'High-efficiency security lighting'
         : '고효율 보안 조명',
-      icon: '🔦'
+      icon: '🔦',
+      image: '/images/products/illutech-security.jpg' // 이미지 경로 추가
     },
     {
       name: currentLanguage === 'en' ? 'Street LED Lighting' : 'LED 가로등',
       description: currentLanguage === 'en'
         ? 'Energy-efficient street lighting'
         : '에너지 절약형 가로등',
-      icon: '💡'
+      icon: '💡',
+      image: '/images/products/illutech-street.jpg' // 이미지 경로 추가
     }
   ];
 
@@ -340,23 +346,46 @@ const IllutechDetailPage = () => {
           </motion.div>
 
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="space-y-8"
             variants={staggerContainer}
           >
             {products.map((product, index) => (
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                whileHover={{ y: -5 }}
-                className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                whileHover={{ scale: 1.02 }}
+                className="bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden"
               >
-                <div className="text-4xl mb-4">{product.icon}</div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                  {product.name}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-100 product-description">
-                  {product.description}
-                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                  {/* 왼쪽: 텍스트 내용 */}
+                  <div className="p-8 flex flex-col justify-center">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="text-5xl">{product.icon}</div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {product.name}
+                      </h3>
+                    </div>
+                    <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                      {product.description}
+                    </p>
+                  </div>
+                  
+                  {/* 오른쪽: 이미지 */}
+                  <div className="relative h-64 md:h-auto">
+                    {product.image && (
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          // 이미지 로드 실패 시 대체 배경
+                          e.target.style.display = 'none';
+                          e.target.parentElement.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                        }}
+                      />
+                    )}
+                  </div>
+                </div>
               </motion.div>
             ))}
           </motion.div>

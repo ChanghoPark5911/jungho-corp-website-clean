@@ -139,7 +139,7 @@ function App() {
             <Route path="/hybrid/about/vision" element={<AboutVisionHybrid />} />
             <Route path="/hybrid/about/management" element={<AboutManagementHybrid />} />
             <Route path="/hybrid/about/history" element={<AboutHistoryPage />} />
-            <Route path="/hybrid/about/ci" element={<AboutCIBIPage />} />
+            <Route path="/hybrid/about/cibi" element={<AboutCIBIPage />} />
             <Route path="/hybrid/about/location" element={<AboutLocationPage />} />
             <Route path="/hybrid/business" element={<BusinessPageHybrid />} />
             <Route path="/hybrid/media" element={<MediaPageHybrid />} />
@@ -156,7 +156,7 @@ function App() {
             <Route path="/classic/about/vision" element={<AboutVisionPage />} />
             <Route path="/classic/about/management" element={<AboutManagementPage />} />
             <Route path="/classic/about/history" element={<AboutHistoryPage />} />
-            <Route path="/classic/about/ci" element={<AboutCIBIPage />} />
+            <Route path="/classic/about/cibi" element={<AboutCIBIPage />} />
             <Route path="/classic/about/location" element={<AboutLocationPage />} />
             <Route path="/classic/business" element={<BusinessPage />} />
             <Route path="/classic/media" element={<MediaPageHybrid />} />

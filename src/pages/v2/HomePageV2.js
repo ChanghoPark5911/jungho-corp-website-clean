@@ -14,6 +14,54 @@ const HomePageV2 = () => {
   const { t, currentLanguage } = useI18n();
   const [gatewayData, setGatewayData] = React.useState(null);
 
+  // 배경 이미지 옵션 (정호그룹 사업 관련 이미지)
+  const backgroundImages = [
+    {
+      id: 1,
+      name: currentLanguage === 'en' ? 'City Night View' : '도시 야경',
+      url: '/images/city_night_view.png',
+      description: currentLanguage === 'en' ? 'Beautiful city lights at night' : '화려한 도시 조명'
+    },
+    {
+      id: 2,
+      name: currentLanguage === 'en' ? 'Smart Building Control' : '스마트 빌딩 제어',
+      url: '/images/light_control.png',
+      description: currentLanguage === 'en' ? 'Building automation system' : '빌딩 자동화 시스템'
+    },
+    {
+      id: 3,
+      name: currentLanguage === 'en' ? 'Warehouse Control' : '창고 조명 제어',
+      url: '/images/warehouse_control.png',
+      description: currentLanguage === 'en' ? 'Smart warehouse lighting' : '스마트 창고 조명'
+    },
+    {
+      id: 4,
+      name: currentLanguage === 'en' ? 'Smart Home' : '스마트 홈',
+      url: '/images/warm_home.png',
+      description: currentLanguage === 'en' ? 'Warm home lighting control' : '따뜻한 가정 조명 제어'
+    }
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+  const [selectedBackground, setSelectedBackground] = React.useState(backgroundImages[0].url);
+  const [showImageSelector, setShowImageSelector] = React.useState(false);
+  const [isAutoPlay, setIsAutoPlay] = React.useState(true);
+
+  // 자동 슬라이드쇼 - 5초마다 이미지 전환
+  React.useEffect(() => {
+    if (!isAutoPlay) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % backgroundImages.length;
+        setSelectedBackground(backgroundImages[nextIndex].url);
+        return nextIndex;
+      });
+    }, 5000); // 5초마다 전환
+
+    return () => clearInterval(interval);
+  }, [isAutoPlay, backgroundImages]);
+
   // LocalStorage에서 Gateway 데이터 로드
   React.useEffect(() => {
     const savedData = localStorage.getItem('v2_homepage_data');
@@ -55,8 +103,95 @@ const HomePageV2 = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 pt-20">
-      {/* IRGS Hero Section - 핵심가치 애니메이션 (청색 배경) */}
-      <IRGSHero />
+      {/* 배경 이미지 컨트롤 - 우측 하단 고정 */}
+      <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-3">
+        {/* 자동재생/일시정지 버튼 */}
+        <button
+          onClick={() => setIsAutoPlay(!isAutoPlay)}
+          className="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-primary-600 dark:text-primary-400 p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110"
+          title={isAutoPlay 
+            ? (currentLanguage === 'en' ? 'Pause Slideshow' : '슬라이드쇼 일시정지')
+            : (currentLanguage === 'en' ? 'Play Slideshow' : '슬라이드쇼 재생')
+          }
+        >
+          {isAutoPlay ? (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          ) : (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          )}
+        </button>
+
+        {/* 이미지 선택 버튼 */}
+        <button
+          onClick={() => setShowImageSelector(!showImageSelector)}
+          className="bg-primary-600 hover:bg-primary-700 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110"
+          title={currentLanguage === 'en' ? 'Change Background Image' : '배경 이미지 변경'}
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </button>
+
+        {/* 현재 이미지 인디케이터 */}
+        <div className="bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-lg text-center">
+          <span className="text-sm font-semibold text-primary-600 dark:text-primary-400">
+            {currentImageIndex + 1} / {backgroundImages.length}
+          </span>
+        </div>
+      </div>
+
+      {/* 배경 이미지 선택 패널 */}
+      {showImageSelector && (
+        <div className="fixed bottom-24 right-8 z-50 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 w-96 max-h-[70vh] overflow-y-auto">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+              {currentLanguage === 'en' ? 'Select Background' : '배경 이미지 선택'}
+            </h3>
+            <button
+              onClick={() => setShowImageSelector(false)}
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-1 gap-4">
+            {backgroundImages.map((image) => (
+              <div
+                key={image.id}
+                onClick={() => {
+                  const index = backgroundImages.findIndex(img => img.id === image.id);
+                  setCurrentImageIndex(index);
+                  setSelectedBackground(image.url);
+                  setIsAutoPlay(false); // 수동 선택 시 자동재생 일시정지
+                  setShowImageSelector(false);
+                }}
+                className={`cursor-pointer rounded-xl overflow-hidden border-4 transition-all duration-300 ${
+                  selectedBackground === image.url
+                    ? 'border-primary-600 shadow-lg scale-105'
+                    : 'border-transparent hover:border-primary-300'
+                }`}
+              >
+                <div className="aspect-video bg-cover bg-center" style={{ backgroundImage: `url('${image.url}')` }} />
+                <div className="p-3 bg-gray-50 dark:bg-gray-700">
+                  <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{image.name}</h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{image.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* IRGS Hero Section - 핵심가치 애니메이션 (선택된 배경) */}
+      <IRGSHero backgroundImage={selectedBackground} />
 
       {/* Gateway 빠른 접근 섹션 (SK 스타일) */}
       <motion.section 

@@ -14,14 +14,7 @@ const AboutIntroClassic = () => {
   const navigate = useNavigate();
   const { currentLanguage } = useI18n();
 
-  // 사이드바 메뉴 (회사소개 관련)
-  const sidebarItems = [
-    { id: 'intro', label: currentLanguage === 'en' ? 'Company Intro' : '회사 소개', path: '/classic/about/intro', active: true },
-    { id: 'vision', label: currentLanguage === 'en' ? 'Vision' : '비전/미션', path: '/classic/about/vision' },
-    { id: 'history', label: currentLanguage === 'en' ? 'History' : '연혁', path: '/classic/about/history' },
-    { id: 'ci', label: currentLanguage === 'en' ? 'CI/BI' : 'CI/BI', path: '/classic/about/ci' },
-    { id: 'location', label: currentLanguage === 'en' ? 'Location' : '찾아오시는 길', path: '/classic/about/location' }
-  ];
+  // 사이드바는 TraditionalLayout에서 자동 생성 (category="about")
 
   // 회사 개요 정보
   const companyInfo = [
@@ -35,13 +28,13 @@ const AboutIntroClassic = () => {
     },
     { 
       label: currentLanguage === 'en' ? 'CEO' : '대표이사',
-      value: currentLanguage === 'en' ? 'Kim Jung-ho' : '김정호'
+      value: currentLanguage === 'en' ? 'Ryu Jae-man' : '류재만'
     },
     { 
       label: currentLanguage === 'en' ? 'Headquarters' : '본사 소재지',
       value: currentLanguage === 'en' 
-        ? '435, Apgujeong-ro, Gangnam-gu, Seoul, Korea'
-        : '서울특별시 강남구 압구정로 435 (청담동)'
+        ? '17, Nonhyeon-ro 116-gil, Gangnam-gu, Seoul, Jungho Building'
+        : '서울시 강남구 논현로116길 17 정호빌딩'
     },
     { 
       label: currentLanguage === 'en' ? 'Phone' : '대표전화',
@@ -81,7 +74,7 @@ const AboutIntroClassic = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* 전통적 네비게이션 */}
-      <TraditionalNav />
+      <TraditionalNav version="classic" />
 
       {/* 작은 배너 */}
       <SmallBanner
@@ -99,7 +92,7 @@ const AboutIntroClassic = () => {
       />
 
       {/* 메인 콘텐츠 - 전통적 레이아웃 */}
-      <TraditionalLayout showSidebar={true} sidebarItems={sidebarItems}>
+      <TraditionalLayout showSidebar={true} category="about" version="classic">
         {/* 인사말 */}
         <section className="mb-10">
           <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
@@ -129,7 +122,7 @@ const AboutIntroClassic = () => {
             </p>
             <div className="mt-6 text-right">
               <p className="text-gray-900 dark:text-white font-bold text-lg">
-                {currentLanguage === 'en' ? 'CEO Kim Jung-ho' : '대표이사 김정호'}
+                {currentLanguage === 'en' ? 'CEO Ryu Jae-man' : '대표이사 류재만'}
               </p>
             </div>
           </div>
@@ -199,11 +192,11 @@ const AboutIntroClassic = () => {
           </div>
         </section>
 
-        {/* 주요 계열사 */}
+        {/* 계열사 */}
         <section className="mb-10">
           <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              {currentLanguage === 'en' ? 'Our Subsidiaries' : '주요 계열사'}
+              {currentLanguage === 'en' ? 'Our Subsidiaries' : '계열사'}
             </h2>
           </div>
 

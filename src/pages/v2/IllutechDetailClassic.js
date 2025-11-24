@@ -13,12 +13,7 @@ const IllutechDetailClassic = () => {
   const { currentLanguage } = useI18n();
   const [showAllAchievements, setShowAllAchievements] = useState(false);
 
-  const sidebarItems = [
-    { id: 'intro', label: currentLanguage === 'en' ? 'Company Info' : '회사 소개', path: '#intro', active: true },
-    { id: 'products', label: currentLanguage === 'en' ? 'Products' : '제품/서비스', path: '#products' },
-    { id: 'achievements', label: currentLanguage === 'en' ? 'History & Achievements' : '연혁 및 성과', path: '#achievements' },
-    { id: 'contact', label: currentLanguage === 'en' ? 'Contact' : '연락처', path: '#contact' }
-  ];
+  // 사이드바는 TraditionalLayout에서 자동 생성 (category="subsidiaries")
 
   // 회사 정보 (삭제됨 - Hybrid 버전과 동기화)
 
@@ -75,7 +70,7 @@ const IllutechDetailClassic = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <TraditionalNav />
+      <TraditionalNav version="classic" />
 
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'JUNGHO Group Subsidiary' : '정호그룹 계열사'}
@@ -88,7 +83,7 @@ const IllutechDetailClassic = () => {
         height="400px"
       />
 
-      <TraditionalLayout showSidebar={true} sidebarItems={sidebarItems}>
+      <TraditionalLayout showSidebar={true} category="subsidiaries" version="classic">
         <section id="intro" className="mb-10">
           <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">

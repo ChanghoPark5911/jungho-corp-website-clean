@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useI18n } from '../../hooks/useI18n';
+import TraditionalNav from '../../components/v2/TraditionalNav';
+import TraditionalLayout from '../../components/v2/TraditionalLayout';
+import SmallBanner from '../../components/v2/SmallBanner';
 
 /**
  * V2 CI/BI 페이지
  * 정호그룹의 CI(Corporate Identity)와 BI(Brand Identity) 소개
  */
 const AboutCIBIPage = () => {
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
   const [selectedTab, setSelectedTab] = useState('ci');
+  
+  // 현재 경로가 classic 또는 hybrid인지 확인
+  const isClassic = location.pathname.startsWith('/classic');
+  const isHybrid = location.pathname.startsWith('/hybrid');
+  const isTraditional = isClassic || isHybrid;
+  const version = isHybrid ? 'hybrid' : isClassic ? 'classic' : 'v2';
 
   // 애니메이션 variants
   const fadeInUp = {
@@ -141,29 +152,32 @@ const AboutCIBIPage = () => {
     document.body.removeChild(link);
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
-      {/* Hero Section */}
-      <motion.section
-        className="py-20 bg-gradient-to-br from-blue-600 to-primary-700 text-white"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div variants={fadeInUp}>
-            <div className="text-6xl mb-6">🎨</div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-              {currentLanguage === 'en' ? 'CI / BI' : 'CI / BI'}
-            </h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-              {currentLanguage === 'en'
-                ? 'Jungho Group Corporate Identity & Brand Identity'
-                : '정호그룹 기업 아이덴티티 및 브랜드 아이덴티티'}
-            </p>
-          </motion.div>
-        </div>
-      </motion.section>
+  // Traditional 버전용 콘텐츠
+  const pageContent = (
+    <div className={isTraditional ? '' : 'min-h-screen bg-gray-50 dark:bg-gray-900 pt-20'}>
+      {/* Hero Section - V2 버전에서만 표시 */}
+      {!isTraditional && (
+        <motion.section
+          className="py-20 bg-gradient-to-br from-blue-600 to-primary-700 text-white"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <motion.div variants={fadeInUp}>
+              <div className="text-6xl mb-6">🎨</div>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+                {currentLanguage === 'en' ? 'CI / BI' : 'CI / BI'}
+              </h1>
+              <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+                {currentLanguage === 'en'
+                  ? 'Jungho Group Corporate Identity & Brand Identity'
+                  : '정호그룹 기업 아이덴티티 및 브랜드 아이덴티티'}
+              </p>
+            </motion.div>
+          </div>
+        </motion.section>
+      )}
 
       {/* 탭 네비게이션 */}
       <section className="bg-white dark:bg-gray-800 shadow-sm sticky top-20 z-10">
@@ -422,6 +436,32 @@ const AboutCIBIPage = () => {
       </section>
     </div>
   );
+
+  // Traditional 버전일 때는 TraditionalNav와 TraditionalLayout으로 감싸기
+  if (isTraditional) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+        <TraditionalNav version={version} />
+        
+        <SmallBanner
+          subtitle={currentLanguage === 'en' ? 'About JUNGHO' : '정호그룹 소개'}
+          title="CI / BI"
+          description={currentLanguage === 'en'
+            ? 'Corporate Identity & Brand Identity'
+            : '기업 아이덴티티 및 브랜드 아이덴티티'}
+          backgroundImage="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1920&q=80"
+          height="400px"
+        />
+
+        <TraditionalLayout showSidebar={true} category="about" version={version}>
+          {pageContent}
+        </TraditionalLayout>
+      </div>
+    );
+  }
+
+  // V2 버전은 기존 그대로
+  return pageContent;
 };
 
 export default AboutCIBIPage;

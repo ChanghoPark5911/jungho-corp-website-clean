@@ -15,12 +15,7 @@ const IllutechDetailHybrid = () => {
   const [showAllAchievements, setShowAllAchievements] = useState(false);
 
   // 사이드바 메뉴
-  const sidebarItems = [
-    { id: 'intro', label: currentLanguage === 'en' ? 'Group Intro' : '그룹소개', path: '/hybrid/about/intro' },
-    { id: 'subsidiaries', label: currentLanguage === 'en' ? 'Subsidiaries' : '계열사', path: '/hybrid/subsidiaries' },
-    { id: 'media', label: currentLanguage === 'en' ? 'Media/PR' : '미디어/PR', path: '/media/promotion' },
-    { id: 'support', label: currentLanguage === 'en' ? 'Support' : '고객지원', path: '/support' }
-  ];
+  // 사이드바는 TraditionalLayout에서 자동 생성 (category="subsidiaries")
 
   // 주요 제품/서비스
   const products = [
@@ -92,7 +87,7 @@ const IllutechDetailHybrid = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <TraditionalNav />
+      <TraditionalNav version="hybrid" />
 
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'JUNGHO Group Subsidiary' : '정호그룹 계열사'}
@@ -105,7 +100,7 @@ const IllutechDetailHybrid = () => {
         height="400px"
       />
 
-      <TraditionalLayout showSidebar={true} sidebarItems={sidebarItems}>
+      <TraditionalLayout showSidebar={true} category="subsidiaries" version="hybrid">
         {/* 회사 소개 */}
         <motion.section 
           className="mb-10"

@@ -8,44 +8,49 @@ import LanguageSelector from '../LanguageSelector';
  * 전통적 스타일의 네비게이션 컴포넌트
  * - 단순한 드롭다운 메뉴
  * - 기존 정호그룹 웹사이트 스타일
+ * 
+ * @param {string} version - 'classic' 또는 'hybrid'
  */
-const TraditionalNav = () => {
+const TraditionalNav = ({ version = 'classic' }) => {
   const navigate = useNavigate();
   const { currentLanguage } = useI18n();
   const { isDarkMode, toggleTheme } = useTheme();
   const [activeDropdown, setActiveDropdown] = useState(null);
 
-  // 메뉴 구조
+  // 버전별 경로 prefix
+  const prefix = version === 'hybrid' ? '/hybrid' : '/classic';
+
+  // 메뉴 구조 (버전별 경로 자동 생성)
   const menuItems = [
     {
       id: 'home',
       label: currentLanguage === 'en' ? 'HOME' : '홈',
-      path: '/classic',
+      path: prefix,
       dropdownItems: null
     },
     {
       id: 'about',
       label: currentLanguage === 'en' ? 'COMPANY' : '회사소개',
-      path: '/about',
+      path: `${prefix}/about`,
       dropdownItems: [
-        { label: currentLanguage === 'en' ? 'Company Intro' : '정호소개', path: '/about/intro' },
-        { label: currentLanguage === 'en' ? 'Vision & Mission' : '비전/미션', path: '/about/vision' },
-        { label: currentLanguage === 'en' ? 'Management' : '경영방침', path: '/about/management' },
-        { label: currentLanguage === 'en' ? 'History' : '연혁', path: '/about/history' },
-        { label: currentLanguage === 'en' ? 'CI/BI' : 'CI/BI', path: '/about/cibi' },
-        { label: currentLanguage === 'en' ? 'Location' : '찾아오시는 길', path: '/about/location' }
+        { label: currentLanguage === 'en' ? 'Company Intro' : '정호소개', path: `${prefix}/about/intro` },
+        { label: currentLanguage === 'en' ? 'Vision & Mission' : '비전/미션', path: `${prefix}/about/vision` },
+        { label: currentLanguage === 'en' ? 'Management' : '경영방침', path: `${prefix}/about/management` },
+        { label: currentLanguage === 'en' ? 'History' : '연혁', path: `${prefix}/about/history` },
+        { label: currentLanguage === 'en' ? 'CI/BI' : 'CI/BI', path: `${prefix}/about/cibi` },
+        { label: currentLanguage === 'en' ? 'Location' : '찾아오시는 길', path: `${prefix}/about/location` }
       ]
     },
     {
       id: 'subsidiaries',
       label: currentLanguage === 'en' ? 'SUBSIDIARIES' : '계열사',
-      path: '/subsidiaries',
+      path: `${prefix}/subsidiaries`,
       dropdownItems: [
-        { label: currentLanguage === 'en' ? 'Overview' : '계열사 소개', path: '/subsidiaries' },
-        { label: currentLanguage === 'en' ? 'CLARUS' : '클라루스', path: '/subsidiaries/clarus' },
-        { label: currentLanguage === 'en' ? 'Jungho TLC' : '정호티엘씨', path: '/subsidiaries/jungho-tlc' },
-        { label: currentLanguage === 'en' ? 'ILLUTECH' : '일루텍', path: '/subsidiaries/illutech' },
-        { label: currentLanguage === 'en' ? 'Jungho TEXCOM' : '정호텍스컴', path: '/subsidiaries/jungho-texcom' }
+        { label: currentLanguage === 'en' ? 'Overview' : '계열사 개요', path: `${prefix}/subsidiaries` },
+        { label: currentLanguage === 'en' ? 'CLARUS' : '클라루스', path: `${prefix}/subsidiaries/clarus` },
+        { label: currentLanguage === 'en' ? 'Jungho TLC' : '정호티엘씨', path: `${prefix}/subsidiaries/jungho-tlc` },
+        { label: currentLanguage === 'en' ? 'ILLUTECH' : '일루텍', path: `${prefix}/subsidiaries/illutech` },
+        { label: currentLanguage === 'en' ? 'Jungho TEXCOM' : '정호텍스컴', path: `${prefix}/subsidiaries/jungho-texcom` }
       ]
     },
     {
@@ -86,7 +91,7 @@ const TraditionalNav = () => {
           {/* 로고 */}
           <div 
             className="flex items-center cursor-pointer"
-            onClick={() => navigate('/classic')}
+            onClick={() => navigate(prefix)}
           >
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded flex items-center justify-center text-white font-bold">
@@ -158,12 +163,15 @@ const TraditionalNav = () => {
               {isDarkMode ? '☀️' : '🌙'}
             </button>
 
-            {/* 비교 버튼 */}
+            {/* 버전 전환 버튼 */}
             <button
-              onClick={() => navigate('/')}
-              className="px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+              onClick={() => navigate(version === 'hybrid' ? '/classic' : '/hybrid')}
+              className="px-3 py-1.5 text-xs font-medium text-green-600 dark:text-green-400 border border-green-600 dark:border-green-400 rounded hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors"
             >
-              {currentLanguage === 'en' ? 'Modern Ver.' : '현대적 버전'}
+              {version === 'hybrid' 
+                ? (currentLanguage === 'en' ? 'Classic' : '클래식')
+                : (currentLanguage === 'en' ? 'Hybrid' : '하이브리드')
+              }
             </button>
           </div>
         </div>

@@ -1,10 +1,19 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { HeroSection } from '../../components/v2';
 import { useI18n } from '../../hooks/useI18n';
+import TraditionalNav from '../../components/v2/TraditionalNav';
+import TraditionalLayout from '../../components/v2/TraditionalLayout';
+import SmallBanner from '../../components/v2/SmallBanner';
 
 const AboutHistoryPage = () => {
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
+  
+  // 현재 경로가 classic 또는 hybrid인지 확인
+  const isClassic = location.pathname.startsWith('/classic');
+  const isHybrid = location.pathname.startsWith('/hybrid');
+  const version = isHybrid ? 'hybrid' : isClassic ? 'classic' : 'v2';
   // 애니메이션 variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -249,7 +258,22 @@ const AboutHistoryPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 pt-20">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <TraditionalNav version={version} />
+      
+      <SmallBanner
+        subtitle={currentLanguage === 'en' ? 'JUNGHO Group' : '정호그룹'}
+        title={currentLanguage === 'en' ? 'History' : '연혁'}
+        description={currentLanguage === 'en' 
+          ? '40+ years of innovation and growth since 1982'
+          : '1982년부터 이어온 40년의 혁신과 성장'
+        }
+        backgroundImage="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1920&q=80"
+        height="400px"
+      />
+      
+      <TraditionalLayout showSidebar={true} category="about" version={version}>
+        <div>
       {/* Hero Section */}
       <motion.section 
         className="relative py-20 bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden"
@@ -438,6 +462,8 @@ const AboutHistoryPage = () => {
           </motion.div>
         </div>
       </motion.section>
+        </div>
+      </TraditionalLayout>
     </div>
   );
 };

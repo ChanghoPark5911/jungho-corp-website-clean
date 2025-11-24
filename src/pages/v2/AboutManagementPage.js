@@ -1,12 +1,22 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useI18n } from '../../hooks/useI18n';
+import TraditionalNav from '../../components/v2/TraditionalNav';
+import TraditionalLayout from '../../components/v2/TraditionalLayout';
+import SmallBanner from '../../components/v2/SmallBanner';
 
 /**
- * 경영방침 페이지
+ * 경영방침 페이지 - Classic/Hybrid 공용
  */
 const AboutManagementPage = () => {
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
+  
+  // 현재 경로가 classic 또는 hybrid인지 확인
+  const isClassic = location.pathname.startsWith('/classic');
+  const isHybrid = location.pathname.startsWith('/hybrid');
+  const version = isHybrid ? 'hybrid' : isClassic ? 'classic' : 'v2';
   // 애니메이션 variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -88,7 +98,22 @@ const AboutManagementPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 pt-20">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <TraditionalNav version={version} />
+      
+      <SmallBanner
+        subtitle={currentLanguage === 'en' ? 'JUNGHO Group' : '정호그룹'}
+        title={currentLanguage === 'en' ? 'Management Policy' : '경영방침'}
+        description={currentLanguage === 'en' 
+          ? 'Our core management principles guiding sustainable growth'
+          : '지속가능한 성장을 이끄는 핵심 경영 원칙'
+        }
+        backgroundImage="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1920&q=80"
+        height="400px"
+      />
+      
+      <TraditionalLayout showSidebar={true} category="about" version={version}>
+        <div>
       {/* Hero Section */}
       <motion.section 
         className="relative py-20 bg-gradient-to-br from-primary-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
@@ -197,6 +222,8 @@ const AboutManagementPage = () => {
           </p>
         </div>
       </motion.section>
+        </div>
+      </TraditionalLayout>
     </div>
   );
 };

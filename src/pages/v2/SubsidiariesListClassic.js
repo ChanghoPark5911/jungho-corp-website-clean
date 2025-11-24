@@ -14,14 +14,7 @@ const SubsidiariesListClassic = () => {
   const navigate = useNavigate();
   const { currentLanguage } = useI18n();
 
-  // 사이드바 메뉴
-  const sidebarItems = [
-    { id: 'all', label: currentLanguage === 'en' ? 'All Subsidiaries' : '전체 계열사', path: '/classic/subsidiaries', active: true },
-    { id: 'clarus', label: currentLanguage === 'en' ? 'CLARUS' : '클라루스', path: '/classic/subsidiaries/clarus' },
-    { id: 'tlc', label: currentLanguage === 'en' ? 'Jungho TLC' : '정호티엘씨', path: '/classic/subsidiaries/jungho-tlc' },
-    { id: 'illutech', label: currentLanguage === 'en' ? 'ILLUTECH' : '일루텍', path: '/classic/subsidiaries/illutech' },
-    { id: 'texcom', label: currentLanguage === 'en' ? 'Jungho TEXCOM' : '정호텍스컴', path: '/classic/subsidiaries/jungho-texcom' }
-  ];
+  // 사이드바는 TraditionalLayout에서 자동 생성 (category="subsidiaries")
 
   // 계열사 목록
   const subsidiaries = [
@@ -86,14 +79,14 @@ const SubsidiariesListClassic = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* 전통적 네비게이션 */}
-      <TraditionalNav />
+      <TraditionalNav version="classic" />
 
       {/* 작은 배너 */}
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'Our Companies' : '우리의 계열사'}
         title={currentLanguage === 'en' 
-          ? 'Subsidiaries'
-          : '계열사 소개'
+          ? 'Subsidiaries Overview'
+          : '계열사 개요'
         }
         description={currentLanguage === 'en'
           ? 'Four specialized companies creating synergy'
@@ -104,7 +97,7 @@ const SubsidiariesListClassic = () => {
       />
 
       {/* 메인 콘텐츠 - 전통적 레이아웃 */}
-      <TraditionalLayout showSidebar={true} sidebarItems={sidebarItems}>
+      <TraditionalLayout showSidebar={true} category="subsidiaries" version="classic">
         {/* 개요 */}
         <section className="mb-10">
           <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-600 dark:border-blue-500 p-6 rounded-r-lg">
@@ -117,29 +110,29 @@ const SubsidiariesListClassic = () => {
           </div>
         </section>
 
-        {/* 계열사 목록 */}
+        {/* 계열사 목록 - 클릭 가능한 카드 */}
         {subsidiaries.map((company, index) => (
           <section key={company.id} className="mb-8">
-            <div className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-200">
+            <div 
+              onClick={() => navigate(company.path)}
+              className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-2xl hover:border-green-500 dark:hover:border-green-600 transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+            >
               {/* 헤더 */}
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 px-6 py-4 flex items-center justify-between">
+              <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 px-6 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <span className="text-4xl">{company.logo}</span>
                   <div>
                     <h2 className="text-2xl font-bold text-white mb-1">
                       {currentLanguage === 'en' ? company.name : company.nameKo}
                     </h2>
-                    <p className="text-blue-100 text-sm">
+                    <p className="text-green-100 text-sm">
                       {currentLanguage === 'en' ? 'Est.' : '설립'} {company.established}
                     </p>
                   </div>
                 </div>
-                <button
-                  onClick={() => navigate(company.path)}
-                  className="px-5 py-2 bg-white text-blue-700 font-semibold rounded hover:bg-blue-50 transition-colors duration-200 shadow-md"
-                >
-                  {currentLanguage === 'en' ? 'Details →' : '상세보기 →'}
-                </button>
+                <div className="text-white text-3xl opacity-70 group-hover:opacity-100 transition-opacity">
+                  →
+                </div>
               </div>
 
               {/* 본문 */}
@@ -169,13 +162,13 @@ const SubsidiariesListClassic = () => {
           <div className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center">
             <p className="text-gray-700 dark:text-gray-300 mb-4">
               {currentLanguage === 'en'
-                ? 'For more information about each subsidiary, please click the "Details" button.'
-                : '각 계열사에 대한 자세한 정보는 "상세보기" 버튼을 클릭해주세요.'
+                ? 'Click on each card above to view detailed information about the subsidiary.'
+                : '각 계열사 카드를 클릭하시면 상세 정보를 확인하실 수 있습니다.'
               }
             </p>
             <button
               onClick={() => navigate('/classic/support')}
-              className="px-6 py-3 bg-blue-600 dark:bg-blue-700 text-white font-semibold rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-200"
+              className="px-6 py-3 bg-green-600 dark:bg-green-700 text-white font-semibold rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors duration-200"
             >
               {currentLanguage === 'en' ? 'Contact Us →' : '문의하기 →'}
             </button>

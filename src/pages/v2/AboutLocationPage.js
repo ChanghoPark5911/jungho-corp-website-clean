@@ -1,9 +1,20 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useI18n } from '../../hooks/useI18n';
+import TraditionalNav from '../../components/v2/TraditionalNav';
+import TraditionalLayout from '../../components/v2/TraditionalLayout';
+import SmallBanner from '../../components/v2/SmallBanner';
 
 const AboutLocationPage = () => {
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
+  
+  // 현재 경로가 classic 또는 hybrid인지 확인
+  const isClassic = location.pathname.startsWith('/classic');
+  const isHybrid = location.pathname.startsWith('/hybrid');
+  const isTraditional = isClassic || isHybrid;
+  const version = isHybrid ? 'hybrid' : isClassic ? 'classic' : 'v2';
   // 애니메이션 variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -101,15 +112,17 @@ const AboutLocationPage = () => {
     mapUrl: 'https://map.kakao.com/link/map/클라루스빌딩,37.5769,127.0816'
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 pt-20">
-      {/* Hero Section */}
-      <motion.section 
-        className="relative py-20 bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
+  // Traditional 버전용 콘텐츠
+  const pageContent = (
+    <div className={isTraditional ? '' : 'min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 pt-20'}>
+      {/* Hero Section - V2 버전에서만 표시 */}
+      {!isTraditional && (
+        <motion.section 
+          className="relative py-20 bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
         {/* 배경 패턴 */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
@@ -174,6 +187,7 @@ const AboutLocationPage = () => {
           </motion.div>
         </div>
       </motion.section>
+      )}
 
       {/* 본사 섹션 */}
       <motion.section 
@@ -493,6 +507,32 @@ const AboutLocationPage = () => {
       </motion.section>
     </div>
   );
+
+  // Traditional 버전일 때는 TraditionalNav와 TraditionalLayout으로 감싸기
+  if (isTraditional) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+        <TraditionalNav version={version} />
+        
+        <SmallBanner
+          subtitle={currentLanguage === 'en' ? 'About JUNGHO' : '정호그룹 소개'}
+          title={currentLanguage === 'en' ? 'Location' : '찾아오시는 길'}
+          description={currentLanguage === 'en'
+            ? 'Jungho Group headquarters location'
+            : '정호그룹 본사 위치 및 연락처 정보'}
+          backgroundImage="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1920&q=80"
+          height="400px"
+        />
+
+        <TraditionalLayout showSidebar={true} category="about" version={version}>
+          {pageContent}
+        </TraditionalLayout>
+      </div>
+    );
+  }
+
+  // V2 버전은 기존 그대로
+  return pageContent;
 };
 
 export default AboutLocationPage;

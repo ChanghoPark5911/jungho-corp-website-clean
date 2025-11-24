@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
 import TraditionalNav from '../../components/v2/TraditionalNav';
@@ -14,82 +14,56 @@ const HomePageClassic = () => {
   const navigate = useNavigate();
   const { currentLanguage } = useI18n();
 
-  // 배경 이미지 옵션 (조명 관련)
+  // 배경 이미지 옵션 (정호그룹 사업 관련 이미지)
   const backgroundImages = [
     {
       id: 1,
-      name: currentLanguage === 'en' ? 'Modern LED Lighting' : '현대적 LED 조명',
-      url: 'https://images.unsplash.com/photo-1524230572899-a752b3835840?w=1920&q=80',
-      description: currentLanguage === 'en' ? 'Warm LED light bulbs' : '따뜻한 LED 전구'
+      name: currentLanguage === 'en' ? 'City Night View' : '도시 야경',
+      url: '/images/city_night_view.png',
+      description: currentLanguage === 'en' ? 'Beautiful city lights at night' : '화려한 도시 조명'
     },
     {
       id: 2,
-      name: currentLanguage === 'en' ? 'Industrial Lighting' : '산업용 조명',
-      url: 'https://images.unsplash.com/photo-1565008576549-57569a49371d?w=1920&q=80',
-      description: currentLanguage === 'en' ? 'Industrial lighting system' : '산업용 조명 시스템'
+      name: currentLanguage === 'en' ? 'Smart Building Control' : '스마트 빌딩 제어',
+      url: '/images/light_control.png',
+      description: currentLanguage === 'en' ? 'Building automation system' : '빌딩 자동화 시스템'
     },
     {
       id: 3,
-      name: currentLanguage === 'en' ? 'Smart City Lighting' : '스마트 시티 조명',
-      url: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1920&q=80',
-      description: currentLanguage === 'en' ? 'City lights at night' : '야간 도시 조명'
+      name: currentLanguage === 'en' ? 'Warehouse Control' : '창고 조명 제어',
+      url: '/images/warehouse_control.png',
+      description: currentLanguage === 'en' ? 'Smart warehouse lighting' : '스마트 창고 조명'
     },
     {
       id: 4,
-      name: currentLanguage === 'en' ? 'Architectural Lighting' : '건축 조명',
-      url: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80',
-      description: currentLanguage === 'en' ? 'Modern building with lighting' : '조명이 있는 현대 건물'
-    },
-    {
-      id: 5,
-      name: currentLanguage === 'en' ? 'LED Technology' : 'LED 기술',
-      url: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1920&q=80',
-      description: currentLanguage === 'en' ? 'Close-up LED lights' : 'LED 조명 클로즈업'
-    },
-    {
-      id: 6,
-      name: currentLanguage === 'en' ? 'Commercial Lighting' : '상업용 조명',
-      url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80',
-      description: currentLanguage === 'en' ? 'Office lighting system' : '사무실 조명 시스템'
-    },
-    {
-      id: 7,
-      name: currentLanguage === 'en' ? 'Street Lighting' : '가로등 조명',
-      url: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=1920&q=80',
-      description: currentLanguage === 'en' ? 'Street lights at dusk' : '황혼의 가로등'
-    },
-    {
-      id: 8,
-      name: currentLanguage === 'en' ? 'IoT Lighting Control' : 'IoT 조명 제어',
-      url: 'https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=1920&q=80',
-      description: currentLanguage === 'en' ? 'Smart home control' : '스마트 홈 제어'
-    },
-    {
-      id: 9,
-      name: currentLanguage === 'en' ? 'Lighting Design' : '조명 디자인',
-      url: 'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=1920&q=80',
-      description: currentLanguage === 'en' ? 'Creative lighting design' : '창의적 조명 디자인'
-    },
-    {
-      id: 10,
-      name: currentLanguage === 'en' ? 'Energy Efficient Lighting' : '에너지 효율 조명',
-      url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1920&q=80',
-      description: currentLanguage === 'en' ? 'Sustainable lighting solution' : '지속 가능한 조명 솔루션'
+      name: currentLanguage === 'en' ? 'Smart Home' : '스마트 홈',
+      url: '/images/warm_home.png',
+      description: currentLanguage === 'en' ? 'Warm home lighting control' : '따뜻한 가정 조명 제어'
     }
   ];
 
-  // 배경 이미지 상태 - 6번(상업용 조명)으로 고정 ⭐
-  const [selectedBackground, setSelectedBackground] = useState(backgroundImages[5].url); // 6번 = index 5
-  const [showImageSelector, setShowImageSelector] = useState(false); // 숨김 (필요시 우측 하단 버튼으로 표시)
+  // 배경 이미지 상태 - 기본적으로 첫 번째 이미지 선택
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedBackground, setSelectedBackground] = useState(backgroundImages[0].url);
+  const [showImageSelector, setShowImageSelector] = useState(false);
+  const [isAutoPlay, setIsAutoPlay] = useState(true);
 
-  // 사이드바 메뉴
-  const sidebarItems = [
-    { id: 'intro', label: currentLanguage === 'en' ? 'Company Intro' : '회사 소개', path: '/about/intro' },
-    { id: 'vision', label: currentLanguage === 'en' ? 'Vision' : '비전/미션', path: '/about/vision' },
-    { id: 'subsidiaries', label: currentLanguage === 'en' ? 'Subsidiaries' : '계열사', path: '/subsidiaries' },
-    { id: 'media', label: currentLanguage === 'en' ? 'Media/PR' : '미디어/PR', path: '/media/promotion' },
-    { id: 'support', label: currentLanguage === 'en' ? 'Support' : '고객지원', path: '/support' }
-  ];
+  // 자동 슬라이드쇼 - 5초마다 이미지 전환
+  useEffect(() => {
+    if (!isAutoPlay) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % backgroundImages.length;
+        setSelectedBackground(backgroundImages[nextIndex].url);
+        return nextIndex;
+      });
+    }, 5000); // 5초마다 전환
+
+    return () => clearInterval(interval);
+  }, [isAutoPlay, backgroundImages]);
+
+  // 사이드바는 TraditionalLayout에서 자동 생성 (category="home")
 
   // 계열사 목록
   const subsidiaries = [
@@ -182,7 +156,7 @@ const HomePageClassic = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* 전통적 네비게이션 */}
-      <TraditionalNav />
+      <TraditionalNav version="classic" />
 
       {/* 배너 - 6번 이미지(상업용 조명) 적용 ⭐ */}
       <SmallBanner
@@ -224,7 +198,12 @@ const HomePageClassic = () => {
               {backgroundImages.map((image) => (
                 <button
                   key={image.id}
-                  onClick={() => setSelectedBackground(image.url)}
+                  onClick={() => {
+                    const index = backgroundImages.findIndex(img => img.id === image.id);
+                    setCurrentImageIndex(index);
+                    setSelectedBackground(image.url);
+                    setIsAutoPlay(false); // 수동 선택 시 자동재생 일시정지
+                  }}
                   className={`group relative overflow-hidden rounded-lg border-4 transition-all duration-200 ${
                     selectedBackground === image.url
                       ? 'border-blue-600 dark:border-blue-500 ring-4 ring-blue-400 dark:ring-blue-600 shadow-xl'
@@ -271,23 +250,55 @@ const HomePageClassic = () => {
         </div>
       )}
 
-      {/* 이미지 선택기 다시 표시 버튼 (개발/테스트용) */}
+      {/* 배경 이미지 컨트롤 - 우측 하단 고정 */}
       {!showImageSelector && (
-        <button
-          onClick={() => setShowImageSelector(true)}
-          className="fixed bottom-8 right-8 z-50 px-5 py-3 bg-blue-600 dark:bg-blue-700 text-white rounded-full shadow-xl hover:bg-blue-700 dark:hover:bg-blue-600 hover:scale-110 transition-all duration-200 flex items-center gap-2 group"
-          title={currentLanguage === 'en' ? 'Show image selector (Dev tool)' : '이미지 선택기 표시 (개발 도구)'}
-        >
-          <span className="text-xl">💡</span>
-          <span className="font-semibold text-sm">{currentLanguage === 'en' ? 'Dev: Change BG' : '개발: 배경변경'}</span>
-        </button>
+        <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-3">
+          {/* 자동재생/일시정지 버튼 */}
+          <button
+            onClick={() => setIsAutoPlay(!isAutoPlay)}
+            className="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-blue-600 dark:text-blue-400 p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110"
+            title={isAutoPlay 
+              ? (currentLanguage === 'en' ? 'Pause Slideshow' : '슬라이드쇼 일시정지')
+              : (currentLanguage === 'en' ? 'Play Slideshow' : '슬라이드쇼 재생')
+            }
+          >
+            {isAutoPlay ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            )}
+          </button>
+
+          {/* 이미지 선택 버튼 */}
+          <button
+            onClick={() => setShowImageSelector(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110"
+            title={currentLanguage === 'en' ? 'Change Background Image' : '배경 이미지 변경'}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </button>
+
+          {/* 현재 이미지 인디케이터 */}
+          <div className="bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-lg text-center">
+            <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+              {currentImageIndex + 1} / {backgroundImages.length}
+            </span>
+          </div>
+        </div>
       )}
 
       {/* 메인 콘텐츠 - 전통적 레이아웃 */}
-      <TraditionalLayout showSidebar={true} sidebarItems={sidebarItems}>
+      <TraditionalLayout showSidebar={true} category="home" version="classic">
         {/* 회사 소개 */}
         <section className="mb-12">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'Company Introduction' : '회사 소개'}
             </h2>
@@ -322,7 +333,7 @@ const HomePageClassic = () => {
 
         {/* 주요 성과 지표 */}
         <section className="mb-12">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'Key Achievements' : '주요 성과'}
             </h2>
@@ -338,8 +349,8 @@ const HomePageClassic = () => {
               { number: '200+', label: currentLanguage === 'en' ? 'Projects' : '개 프로젝트' },
               { number: '50+', label: currentLanguage === 'en' ? 'Billion KRW Sales' : '억원 매출' }
             ].map((stat, index) => (
-              <div key={index} className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded p-4 text-center">
-                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
+              <div key={index} className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded p-4 text-center">
+                <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-1">
                   {stat.number}
                 </div>
                 <div className="text-sm text-gray-700 dark:text-gray-300">
@@ -352,7 +363,7 @@ const HomePageClassic = () => {
 
         {/* 주요 사업 분야 */}
         <section className="mb-12">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'Business Areas' : '주요 사업 분야'}
             </h2>
@@ -363,9 +374,9 @@ const HomePageClassic = () => {
 
           <div className="space-y-3">
             {businessAreas.map((area, index) => (
-              <div key={index} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded p-5 hover:border-blue-400 dark:hover:border-blue-600 transition-colors duration-200">
+              <div key={index} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded p-5 hover:border-green-400 dark:hover:border-green-600 hover:shadow-md transition-all duration-200">
                 <div className="flex items-start gap-4">
-                  <div className="text-4xl">{area.icon}</div>
+                  <div className="text-3xl flex-shrink-0">{area.icon}</div>
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
                       {area.title}
@@ -380,9 +391,101 @@ const HomePageClassic = () => {
           </div>
         </section>
 
-        {/* 계열사 소개 */}
+        {/* 주요 연혁 타임라인 */}
         <section className="mb-12">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              {currentLanguage === 'en' ? 'Major Milestones' : '주요 연혁'}
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              {currentLanguage === 'en' ? 'Our Growth Journey' : '정호그룹의 성장 여정'}
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded p-6">
+            <div className="space-y-4">
+              {/* 2018 */}
+              <div className="flex gap-4 pb-4 border-b border-gray-200 dark:border-gray-700 last:border-0">
+                <div className="flex-shrink-0 w-20 text-right">
+                  <span className="inline-block px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-bold rounded">
+                    2018
+                  </span>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                    {currentLanguage === 'en' ? 'Clarus Foundation' : '클라루스 설립'}
+                  </h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {currentLanguage === 'en' 
+                      ? 'Launch of AI-powered smart office technology'
+                      : 'AI 기반 스마트 오피스 기술 출시'}
+                  </p>
+                </div>
+              </div>
+
+              {/* 2010 */}
+              <div className="flex gap-4 pb-4 border-b border-gray-200 dark:border-gray-700 last:border-0">
+                <div className="flex-shrink-0 w-20 text-right">
+                  <span className="inline-block px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-bold rounded">
+                    2010
+                  </span>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                    {currentLanguage === 'en' ? 'ILLUTECH Foundation' : '일루텍 설립'}
+                  </h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {currentLanguage === 'en' 
+                      ? 'Entry into industrial & special LED lighting market'
+                      : '산업·특수 LED 조명 시장 진출'}
+                  </p>
+                </div>
+              </div>
+
+              {/* 2000 */}
+              <div className="flex gap-4 pb-4 border-b border-gray-200 dark:border-gray-700 last:border-0">
+                <div className="flex-shrink-0 w-20 text-right">
+                  <span className="inline-block px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-bold rounded">
+                    2000
+                  </span>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                    {currentLanguage === 'en' ? 'Business Expansion' : '사업 확장'}
+                  </h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {currentLanguage === 'en' 
+                      ? 'Expansion into building automation systems'
+                      : '빌딩 자동화 시스템 사업 확대'}
+                  </p>
+                </div>
+              </div>
+
+              {/* 1982 */}
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-20 text-right">
+                  <span className="inline-block px-3 py-1 bg-green-600 dark:bg-green-700 text-white text-sm font-bold rounded">
+                    1982
+                  </span>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                    {currentLanguage === 'en' ? 'Company Foundation' : '정호그룹 설립'}
+                  </h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {currentLanguage === 'en' 
+                      ? 'Start of lighting control business'
+                      : '조명 제어 사업 시작'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 계열사 소개 - 테이블 형식 (Traditional Style) */}
+        <section className="mb-12">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'Our Subsidiaries' : '계열사 소개'}
             </h2>
@@ -391,54 +494,73 @@ const HomePageClassic = () => {
             </p>
           </div>
 
-          <div className="space-y-4">
-            {subsidiaries.map((company, index) => (
-              <div 
-                key={company.id}
-                className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded hover:border-blue-400 dark:hover:border-blue-600 transition-all duration-200 overflow-hidden"
-              >
-                <div className="p-5">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
-                        {company.name}
-                      </h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-500">
-                        {company.nameEn}
-                      </p>
-                    </div>
-                    <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium rounded">
-                      {currentLanguage === 'en' ? 'Est.' : '설립'} {company.established}
-                    </span>
-                  </div>
-
-                  <p className="text-gray-700 dark:text-gray-300 mb-3 leading-relaxed">
-                    {company.description}
-                  </p>
-
-                  <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      <strong className="text-gray-900 dark:text-white">
-                        {currentLanguage === 'en' ? 'Business:' : '사업분야:'}
-                      </strong>{' '}
+          {/* 테이블 형식 */}
+          <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-green-600 dark:bg-green-700 text-white">
+                  <th className="px-4 py-3 text-left text-sm font-semibold w-1/5">
+                    {currentLanguage === 'en' ? 'Company' : '회사명'}
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-semibold w-1/6">
+                    {currentLanguage === 'en' ? 'Established' : '설립연도'}
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-semibold w-1/4">
+                    {currentLanguage === 'en' ? 'Business' : '사업분야'}
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-semibold w-1/3">
+                    {currentLanguage === 'en' ? 'Description' : '설명'}
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm font-semibold w-1/12">
+                    {currentLanguage === 'en' ? 'Details' : '상세'}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {subsidiaries.map((company, index) => (
+                  <tr 
+                    key={company.id}
+                    className={`border-t border-gray-200 dark:border-gray-700 hover:bg-green-50 dark:hover:bg-green-900/10 transition-colors duration-150 ${
+                      index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800/50' : 'bg-white dark:bg-gray-800'
+                    }`}
+                  >
+                    <td className="px-4 py-4">
+                      <div>
+                        <div className="font-semibold text-gray-900 dark:text-white">
+                          {company.name}
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-500">
+                          {company.nameEn}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 text-sm text-gray-700 dark:text-gray-300">
+                      {company.established}
+                    </td>
+                    <td className="px-4 py-4 text-sm text-gray-700 dark:text-gray-300">
                       {company.business}
-                    </div>
-                    <button
-                      onClick={() => navigate(company.path)}
-                      className="px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white text-sm font-medium rounded hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-200"
-                    >
-                      {currentLanguage === 'en' ? 'Details →' : '상세보기 →'}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+                    </td>
+                    <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {company.description}
+                    </td>
+                    <td className="px-4 py-4 text-center">
+                      <button
+                        onClick={() => navigate(company.path)}
+                        className="px-3 py-1.5 bg-green-600 dark:bg-green-700 text-white text-xs font-medium rounded hover:bg-green-700 dark:hover:bg-green-600 transition-colors duration-200"
+                      >
+                        {currentLanguage === 'en' ? 'View' : '보기'}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
           <div className="mt-6 text-center">
             <button
               onClick={() => navigate('/subsidiaries')}
-              className="px-6 py-3 border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-medium rounded hover:bg-blue-600 dark:hover:bg-blue-700 hover:text-white dark:hover:text-white transition-all duration-200"
+              className="px-6 py-3 border-2 border-green-600 dark:border-green-500 text-green-600 dark:text-green-400 font-medium rounded hover:bg-green-600 dark:hover:bg-green-700 hover:text-white dark:hover:text-white transition-all duration-200"
             >
               {currentLanguage === 'en' ? 'View All Subsidiaries →' : '계열사 전체보기 →'}
             </button>
@@ -447,29 +569,37 @@ const HomePageClassic = () => {
 
         {/* 고객지원 안내 */}
         <section className="mb-8">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 text-white rounded p-6">
+          <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 text-white rounded p-6">
             <h3 className="text-xl font-bold mb-3">
               {currentLanguage === 'en' ? '📞 Customer Support' : '📞 고객지원'}
             </h3>
-            <p className="mb-4 text-blue-100">
+            <p className="mb-4 text-green-100">
               {currentLanguage === 'en'
                 ? 'For product inquiries and technical support, please contact us.'
                 : '제품 문의 및 기술 지원이 필요하시면 연락 주세요.'}
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div className="flex items-center gap-2">
                 <span className="font-medium">{currentLanguage === 'en' ? 'Tel:' : '전화:'}</span>
                 <span>02-553-3631</span>
               </div>
               <div className="flex items-center gap-2">
+                <span className="font-medium">{currentLanguage === 'en' ? 'Fax:' : '팩스:'}</span>
+                <span>02-553-3632</span>
+              </div>
+              <div className="flex items-center gap-2">
                 <span className="font-medium">{currentLanguage === 'en' ? 'Email:' : '이메일:'}</span>
                 <span>info@junghocorp.com</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-medium">{currentLanguage === 'en' ? 'Address:' : '주소:'}</span>
+                <span>{currentLanguage === 'en' ? 'Seoul, Korea' : '서울특별시'}</span>
               </div>
             </div>
             <div className="mt-4">
               <button
                 onClick={() => navigate('/support')}
-                className="px-5 py-2 bg-white text-blue-600 font-medium rounded hover:bg-blue-50 transition-colors duration-200"
+                className="px-5 py-2 bg-white text-green-600 font-medium rounded hover:bg-green-50 transition-colors duration-200"
               >
                 {currentLanguage === 'en' ? 'Go to Support Center →' : '고객지원센터 바로가기 →'}
               </button>

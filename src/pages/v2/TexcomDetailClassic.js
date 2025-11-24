@@ -104,9 +104,85 @@ const TexcomDetailClassic = () => {
 
   const displayedAchievements = showAllAchievements ? allAchievements : allAchievements.slice(0, 8);
 
+  // 파트너사 정보
+  const partnerCompanies = [
+    {
+      name: 'SAURER.',
+      nameColor: 'text-red-600',
+      country: currentLanguage === 'en' ? 'Germany' : '독일',
+      flag: '🇩🇪',
+      website: 'https://www.saurer.com',
+      logo: '/images/logos/partners/saurer-logo.png',
+      description: currentLanguage === 'en' ? 'Industrial textile twisting machines for tire cords' : '타이어코드, 카페트, 방적사, 우리섬유, 산업용 섬유 연사기 제조업체'
+    },
+    {
+      name: 'BENNINGER',
+      nameColor: '#0066CC',
+      country: currentLanguage === 'en' ? 'Germany' : '독일',
+      flag: '🇩🇪',
+      website: 'https://www.benningergroup.com',
+      logo: '/images/logos/partners/benninger-logo.png',
+      description: currentLanguage === 'en' ? 'Fabric heat treatment line' : '직물 열처리 Line 제조업체(타이어 코드用)'
+    },
+    {
+      name: 'Luwa',
+      nameColor: '#0099CC',
+      country: currentLanguage === 'en' ? 'Switzerland' : '스위스',
+      flag: '🇨🇭',
+      website: 'https://www.luwa.com',
+      logo: '/images/logos/partners/luwa-logo.png',
+      description: currentLanguage === 'en' ? 'Air conditioning equipment for cotton & synthetic fiber spinning' : '면방, 합성용 공조 설비 제조업체'
+    },
+    {
+      name: 'Bräcker',
+      nameColor: '#CC0000',
+      country: currentLanguage === 'en' ? 'Switzerland' : '스위스',
+      flag: '🇨🇭',
+      website: 'https://www.braecker.ch',
+      logo: '/images/logos/partners/braecker-logo.png',
+      description: currentLanguage === 'en' ? 'Rings and Travellers for spinning frames' : '정방기用 Ring, Traveller 제조 BERKOL Cots, Apron 및 유지보수 기계류 제조'
+    },
+    {
+      name: 'CYGNET TEKKIMP',
+      nameColor: 'text-gray-700',
+      country: currentLanguage === 'en' ? 'UK' : '영국',
+      flag: '🇬🇧',
+      website: 'https://www.cygnet-tekkimp.com',
+      logo: '/images/logos/partners/tekkimp-logo.png',
+      description: currentLanguage === 'en' ? 'Loom creel' : '직기 Creel 제조업체(타이어코드, 유리섬유, Carbon fiber)'
+    },
+    {
+      name: 'TEXTECHNO',
+      nameColor: 'text-gray-700',
+      country: currentLanguage === 'en' ? 'Germany' : '독일',
+      flag: '🇩🇪',
+      website: 'https://www.textechno.com',
+      logo: '/images/logos/partners/textechno-logo.png',
+      description: currentLanguage === 'en' ? 'Various textile testing equipment' : '섬유용 각종 시험장비'
+    },
+    {
+      name: 'LENZING',
+      nameColor: 'text-gray-700',
+      country: currentLanguage === 'en' ? 'Austria' : '오스트리아',
+      flag: '🇦🇹',
+      website: 'https://www.lenzing-instruments.com',
+      logo: '/images/logos/partners/lenzing-logo.png',
+      description: currentLanguage === 'en' ? 'Various textile testing equipment' : '섬유용 각종 시험장비'
+    },
+    {
+      name: 'KATO TECH',
+      nameColor: 'text-gray-700',
+      country: currentLanguage === 'en' ? 'Japan' : '일본',
+      flag: '🇯🇵',
+      website: 'https://www.keskato.co.jp',
+      logo: '/images/logos/partners/katotech-logo.png',
+      description: currentLanguage === 'en' ? 'Various testing instruments' : '각종 시험기기'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <TraditionalNav />
+      <TraditionalNav version="classic" />
 
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'JUNGHO Group Subsidiary' : '정호그룹 계열사'}
@@ -119,9 +195,9 @@ const TexcomDetailClassic = () => {
         height="400px"
       />
 
-      <TraditionalLayout showSidebar={true} sidebarItems={sidebarItems}>
+      <TraditionalLayout showSidebar={true} category="subsidiaries" version="classic">
         <section id="intro" className="mb-10">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'Company Introduction' : '회사 소개'}
             </h2>
@@ -151,7 +227,7 @@ const TexcomDetailClassic = () => {
         </section>
 
         <section id="products" className="mb-10">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'Products & Services' : '제품 및 서비스'}
             </h2>
@@ -159,11 +235,11 @@ const TexcomDetailClassic = () => {
 
           <div className="space-y-8">
             {businessDivisions.map((division, divIndex) => (
-              <div key={divIndex} className="bg-white dark:bg-gray-800 border-2 border-blue-600 dark:border-blue-500 rounded-lg overflow-hidden shadow-lg">
+              <div key={divIndex} className="bg-white dark:bg-gray-800 border-2 border-green-600 dark:border-green-500 rounded-lg overflow-hidden shadow-lg">
                 {/* 사업부 헤더 */}
-                <div className="bg-blue-600 dark:bg-blue-700 text-white p-6">
+                <div className="bg-green-600 dark:bg-green-700 text-white p-6">
                   <h3 className="text-xl font-bold mb-2">{division.division}</h3>
-                  <p className="text-blue-100">{division.description}</p>
+                  <p className="text-green-100">{division.description}</p>
                 </div>
 
                 {/* 제품 목록 */}
@@ -184,7 +260,7 @@ const TexcomDetailClassic = () => {
                         <div className="grid grid-cols-2 gap-2">
                           {product.features.map((feature, idx) => (
                             <div key={idx} className="flex items-center gap-2 text-gray-700 dark:text-gray-300 text-sm">
-                              <span className="text-blue-600 dark:text-blue-400 font-bold">✓</span>
+                              <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
                               <span>{feature}</span>
                             </div>
                           ))}
@@ -198,8 +274,73 @@ const TexcomDetailClassic = () => {
           </div>
         </section>
 
+        {/* 주요 파트너사 섹션 */}
+        <section className="mb-10">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              {currentLanguage === 'en' ? 'Partner Companies' : '주요 파트너사'}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">
+              {currentLanguage === 'en' 
+                ? 'World-class textile machinery manufacturers we work with' 
+                : '함께하고 있는 세계적인 섬유기계 제조업체들'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {partnerCompanies.map((company, index) => (
+              <div key={index} className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
+                <div className="p-4">
+                  {/* 국가명 + 로고 */}
+                  <div className="flex items-center gap-3 mb-3" style={{ minHeight: '70px' }}>
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap text-center" style={{ minWidth: '50px' }}>
+                      {company.flag}<br/>{company.country}
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <img 
+                        src={company.logo}
+                        alt={`${company.name} Logo`} 
+                        className="max-h-14 max-w-full object-contain"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                      <div style={{ display: 'none' }} className={`text-2xl font-bold ${company.nameColor.startsWith('#') ? '' : company.nameColor}`}>
+                        <span style={company.nameColor.startsWith('#') ? { color: company.nameColor } : {}}>{company.name}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 웹사이트 링크 */}
+                  <div className="mb-2">
+                    <a 
+                      href={company.website} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-blue-600 dark:text-blue-400 hover:underline text-sm block"
+                    >
+                      {company.website.replace('https://', '').replace('http://', '')}
+                    </a>
+                  </div>
+
+                  {/* 사업분야 */}
+                  <div>
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
+                    </h6>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {company.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section id="achievements" className="mb-10">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'History & Achievements' : '연혁 및 성과'}
             </h2>
@@ -208,7 +349,7 @@ const TexcomDetailClassic = () => {
           <div className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md">
             <table className="w-full">
               <thead>
-                <tr className="bg-blue-600 dark:bg-blue-700">
+                <tr className="bg-green-600 dark:bg-green-700">
                   <th className="px-6 py-4 text-left text-white font-bold w-1/6">
                     {currentLanguage === 'en' ? 'Year' : '연도'}
                   </th>
@@ -225,7 +366,7 @@ const TexcomDetailClassic = () => {
                       index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800/50' : 'bg-white dark:bg-gray-800'
                     }`}
                   >
-                    <td className="px-6 py-4 font-bold text-blue-600 dark:text-blue-400">
+                    <td className="px-6 py-4 font-bold text-green-600 dark:text-green-400">
                       {item.year}
                     </td>
                     <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
@@ -242,7 +383,7 @@ const TexcomDetailClassic = () => {
             <div className="mt-6 text-center">
               <button
                 onClick={() => setShowAllAchievements(!showAllAchievements)}
-                className="px-8 py-3 border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-bold rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 hover:text-white dark:hover:text-white shadow-md hover:shadow-lg transition-all duration-200"
+                className="px-8 py-3 border-2 border-green-600 dark:border-green-500 text-green-600 dark:text-green-400 font-bold rounded-lg hover:bg-green-600 dark:hover:bg-green-700 hover:text-white dark:hover:text-white shadow-md hover:shadow-lg transition-all duration-200"
               >
                 {showAllAchievements
                   ? (currentLanguage === 'en' ? 'View Less ▲' : '접기 ▲')
@@ -254,17 +395,17 @@ const TexcomDetailClassic = () => {
         </section>
 
         <section id="contact" className="mb-10">
-          <div className="border-l-4 border-blue-600 dark:border-blue-500 pl-4 mb-6">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'Contact Information' : '연락처'}
             </h2>
           </div>
 
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 text-white rounded-lg p-8 shadow-md">
+          <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 text-white rounded-lg p-8 shadow-md">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h3 className="text-lg font-bold mb-4">{currentLanguage === 'en' ? '📞 Contact Us' : '📞 연락처'}</h3>
-                <div className="space-y-2 text-blue-100">
+                <div className="space-y-2 text-green-100">
                   <p><strong className="text-white">{currentLanguage === 'en' ? 'Phone:' : '전화:'}</strong> 02-553-3631</p>
                   <p><strong className="text-white">{currentLanguage === 'en' ? 'Email:' : '이메일:'}</strong> info@junghocorp.com</p>
                   <p><strong className="text-white">{currentLanguage === 'en' ? 'Website:' : '웹사이트:'}</strong> www.junghocorp.com</p>
@@ -272,7 +413,7 @@ const TexcomDetailClassic = () => {
               </div>
               <div>
                 <h3 className="text-lg font-bold mb-4">{currentLanguage === 'en' ? '📍 Location' : '📍 오시는 길'}</h3>
-                <p className="text-blue-100">
+                <p className="text-green-100">
                   {currentLanguage === 'en'
                     ? '435, Apgujeong-ro, Gangnam-gu, Seoul, Korea'
                     : '서울특별시 강남구 압구정로 435 (청담동)'
@@ -280,7 +421,7 @@ const TexcomDetailClassic = () => {
                 </p>
                 <button
                   onClick={() => navigate('/classic/about/location')}
-                  className="mt-4 px-5 py-2 bg-white text-blue-700 font-semibold rounded hover:bg-blue-50 transition-colors duration-200"
+                  className="mt-4 px-5 py-2 bg-white text-green-700 font-semibold rounded hover:bg-green-50 transition-colors duration-200"
                 >
                   {currentLanguage === 'en' ? 'View Map →' : '지도 보기 →'}
                 </button>
@@ -299,7 +440,7 @@ const TexcomDetailClassic = () => {
             </p>
             <button
               onClick={() => navigate('/classic/subsidiaries')}
-              className="px-6 py-3 bg-blue-600 dark:bg-blue-700 text-white font-semibold rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-200"
+              className="px-6 py-3 bg-green-600 dark:bg-green-700 text-white font-semibold rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors duration-200"
             >
               {currentLanguage === 'en' ? 'View All Subsidiaries →' : '전체 계열사 보기 →'}
             </button>

@@ -1,12 +1,22 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useI18n } from '../../hooks/useI18n';
+import TraditionalNav from '../../components/v2/TraditionalNav';
+import TraditionalLayout from '../../components/v2/TraditionalLayout';
+import SmallBanner from '../../components/v2/SmallBanner';
 
 /**
- * 그룹비전 (IRGS) 페이지
+ * 그룹비전 (IRGS) 페이지 - Classic/Hybrid 공용
  */
 const AboutVisionPage = () => {
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
+  
+  // 현재 경로가 classic 또는 hybrid인지 확인
+  const isClassic = location.pathname.startsWith('/classic');
+  const isHybrid = location.pathname.startsWith('/hybrid');
+  const version = isHybrid ? 'hybrid' : isClassic ? 'classic' : 'v2';
   // 애니메이션 variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -76,7 +86,22 @@ const AboutVisionPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 pt-20">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <TraditionalNav version={version} />
+      
+      <SmallBanner
+        subtitle={currentLanguage === 'en' ? 'JUNGHO Group' : '정호그룹'}
+        title={currentLanguage === 'en' ? 'Vision & Mission (IRGS)' : '그룹비전 (IRGS)'}
+        description={currentLanguage === 'en' 
+          ? 'Innovation, Reliability, Green, Service - Our core values'
+          : '혁신, 신뢰, 친환경, 서비스 - 정호그룹의 핵심 가치'
+        }
+        backgroundImage="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80"
+        height="400px"
+      />
+      
+      <TraditionalLayout showSidebar={true} category="about" version={version}>
+        <div>
       {/* Hero Section */}
       <motion.section 
         className="relative py-20 bg-gradient-to-br from-primary-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
@@ -187,6 +212,8 @@ const AboutVisionPage = () => {
           </p>
         </div>
       </motion.section>
+        </div>
+      </TraditionalLayout>
     </div>
   );
 };

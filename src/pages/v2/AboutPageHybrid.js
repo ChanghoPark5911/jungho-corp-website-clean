@@ -111,7 +111,7 @@ const AboutPageHybrid = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* 전통적 네비게이션 */}
-      <TraditionalNav />
+      <TraditionalNav version="hybrid" />
 
       {/* Hero Section */}
       <motion.section 

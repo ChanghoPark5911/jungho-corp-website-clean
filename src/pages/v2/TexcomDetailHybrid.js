@@ -15,12 +15,7 @@ const TexcomDetailHybrid = () => {
   const [showAllAchievements, setShowAllAchievements] = useState(false);
 
   // 사이드바 메뉴
-  const sidebarItems = [
-    { id: 'intro', label: currentLanguage === 'en' ? 'Group Intro' : '그룹소개', path: '/hybrid/about/intro' },
-    { id: 'subsidiaries', label: currentLanguage === 'en' ? 'Subsidiaries' : '계열사', path: '/hybrid/subsidiaries' },
-    { id: 'media', label: currentLanguage === 'en' ? 'Media/PR' : '미디어/PR', path: '/media/promotion' },
-    { id: 'support', label: currentLanguage === 'en' ? 'Support' : '고객지원', path: '/support' }
-  ];
+  // 사이드바는 TraditionalLayout에서 자동 생성 (category="subsidiaries")
 
   // 사업부별 제품/서비스
   const businessDivisions = [
@@ -108,9 +103,85 @@ const TexcomDetailHybrid = () => {
     { year: '1982년', content: '정호물산 설립' }
   ];
 
+  // 파트너사 정보
+  const partnerCompanies = [
+    {
+      name: 'SAURER.',
+      nameColor: 'text-red-600',
+      country: currentLanguage === 'en' ? 'Germany' : '독일',
+      flag: '🇩🇪',
+      website: 'https://www.saurer.com',
+      logo: '/images/logos/partners/saurer-logo.png',
+      description: currentLanguage === 'en' ? 'Industrial textile twisting machines for tire cords' : '타이어코드, 카페트, 방적사, 우리섬유, 산업용 섬유 연사기 제조업체'
+    },
+    {
+      name: 'BENNINGER',
+      nameColor: '#0066CC',
+      country: currentLanguage === 'en' ? 'Germany' : '독일',
+      flag: '🇩🇪',
+      website: 'https://www.benningergroup.com',
+      logo: '/images/logos/partners/benninger-logo.png',
+      description: currentLanguage === 'en' ? 'Fabric heat treatment line' : '직물 열처리 Line 제조업체(타이어 코드用)'
+    },
+    {
+      name: 'Luwa',
+      nameColor: '#0099CC',
+      country: currentLanguage === 'en' ? 'Switzerland' : '스위스',
+      flag: '🇨🇭',
+      website: 'https://www.luwa.com',
+      logo: '/images/logos/partners/luwa-logo.png',
+      description: currentLanguage === 'en' ? 'Air conditioning equipment for cotton & synthetic fiber spinning' : '면방, 합성용 공조 설비 제조업체'
+    },
+    {
+      name: 'Bräcker',
+      nameColor: '#CC0000',
+      country: currentLanguage === 'en' ? 'Switzerland' : '스위스',
+      flag: '🇨🇭',
+      website: 'https://www.braecker.ch',
+      logo: '/images/logos/partners/braecker-logo.png',
+      description: currentLanguage === 'en' ? 'Rings and Travellers for spinning frames' : '정방기用 Ring, Traveller 제조 BERKOL Cots, Apron 및 유지보수 기계류 제조'
+    },
+    {
+      name: 'CYGNET TEKKIMP',
+      nameColor: 'text-gray-700',
+      country: currentLanguage === 'en' ? 'UK' : '영국',
+      flag: '🇬🇧',
+      website: 'https://www.cygnet-tekkimp.com',
+      logo: '/images/logos/partners/tekkimp-logo.png',
+      description: currentLanguage === 'en' ? 'Loom creel' : '직기 Creel 제조업체(타이어코드, 유리섬유, Carbon fiber)'
+    },
+    {
+      name: 'TEXTECHNO',
+      nameColor: 'text-gray-700',
+      country: currentLanguage === 'en' ? 'Germany' : '독일',
+      flag: '🇩🇪',
+      website: 'https://www.textechno.com',
+      logo: '/images/logos/partners/textechno-logo.png',
+      description: currentLanguage === 'en' ? 'Various textile testing equipment' : '섬유용 각종 시험장비'
+    },
+    {
+      name: 'LENZING',
+      nameColor: 'text-gray-700',
+      country: currentLanguage === 'en' ? 'Austria' : '오스트리아',
+      flag: '🇦🇹',
+      website: 'https://www.lenzing-instruments.com',
+      logo: '/images/logos/partners/lenzing-logo.png',
+      description: currentLanguage === 'en' ? 'Various textile testing equipment' : '섬유용 각종 시험장비'
+    },
+    {
+      name: 'KATO TECH',
+      nameColor: 'text-gray-700',
+      country: currentLanguage === 'en' ? 'Japan' : '일본',
+      flag: '🇯🇵',
+      website: 'https://www.keskato.co.jp',
+      logo: '/images/logos/partners/katotech-logo.png',
+      description: currentLanguage === 'en' ? 'Various testing instruments' : '각종 시험기기'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <TraditionalNav />
+      <TraditionalNav version="hybrid" />
 
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'JUNGHO Group Subsidiary' : '정호그룹 계열사'}
@@ -123,7 +194,7 @@ const TexcomDetailHybrid = () => {
         height="400px"
       />
 
-      <TraditionalLayout showSidebar={true} sidebarItems={sidebarItems}>
+      <TraditionalLayout showSidebar={true} category="subsidiaries" version="hybrid">
         {/* 회사 소개 */}
         <motion.section 
           className="mb-10"
@@ -222,6 +293,83 @@ const TexcomDetailHybrid = () => {
                       </div>
                     </motion.div>
                   ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* 주요 파트너사 */}
+        <motion.section 
+          className="mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {currentLanguage === 'en' ? 'Partner Companies' : '주요 파트너사'}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-base mt-2">
+              {currentLanguage === 'en' 
+                ? 'World-class textile machinery manufacturers we work with' 
+                : '함께하고 있는 세계적인 섬유기계 제조업체들'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {partnerCompanies.map((company, index) => (
+              <motion.div 
+                key={index}
+                className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+              >
+                <div className="p-4">
+                  {/* 국가명 + 로고 */}
+                  <div className="flex items-center gap-3 mb-3" style={{ minHeight: '70px' }}>
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap text-center" style={{ minWidth: '50px' }}>
+                      {company.flag}<br/>{company.country}
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <img 
+                        src={company.logo}
+                        alt={`${company.name} Logo`} 
+                        className="max-h-14 max-w-full object-contain"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                      <div style={{ display: 'none' }} className={`text-2xl font-bold ${company.nameColor.startsWith('#') ? '' : company.nameColor}`}>
+                        <span style={company.nameColor.startsWith('#') ? { color: company.nameColor } : {}}>{company.name}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 웹사이트 링크 */}
+                  <div className="mb-2">
+                    <a 
+                      href={company.website} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-blue-600 dark:text-blue-400 hover:underline text-sm block"
+                    >
+                      {company.website.replace('https://', '').replace('http://', '')}
+                    </a>
+                  </div>
+
+                  {/* 사업분야 */}
+                  <div>
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
+                    </h6>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {company.description}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             ))}

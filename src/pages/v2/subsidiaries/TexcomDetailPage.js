@@ -217,129 +217,196 @@ const TexcomDetailPage = () => {
               </h4>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* SAURER */}
               <motion.div 
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-700"
                 whileHover={{ y: -5 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {currentLanguage === 'en' ? 'SAURER (Germany)' : '독일 SAURER'}
-                  </h5>
-                  <span className="text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
-                    {currentLanguage === 'en' ? 'Germany' : '독일'}
-                  </span>
+                <div className="p-4">
+                  {/* 국가명 + 로고 */}
+                  <div className="flex items-center gap-3 mb-3" style={{ minHeight: '70px' }}>
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      🇩🇪 {currentLanguage === 'en' ? 'Germany' : '독일'}
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <img 
+                        src="/images/logos/partners/saurer-logo.png" 
+                        alt="SAURER Logo" 
+                        className="max-h-14 max-w-full object-contain"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextElementSibling.style.display = 'flex';
+                        }}
+                      />
+                      <div className="hidden items-center justify-center">
+                        <span className="text-2xl font-bold text-red-600">SAURER.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 웹사이트 URL */}
+                  <div className="mb-2">
+                    <a href="https://www.saurer.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                      https://saurer.com
+                    </a>
+                  </div>
+
+                  {/* 사업부문 */}
+                  <div>
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
+                    </h6>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {currentLanguage === 'en' 
+                        ? 'Industrial textile twisting machines for tire cords'
+                        : '타이어코드, 카페트, 방적사, 우리섬유, 산업용 섬유 연사기 제조업체'}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
-                  {currentLanguage === 'en' 
-                    ? 'Industrial textile twisting machines for tire cords'
-                    : '타이어코드 등 산업용 섬유 연사기'}
-                </p>
-                <a href="https://www.saurer.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
-                  🌐 www.saurer.com
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
               </motion.div>
 
+              {/* BENNINGER */}
               <motion.div 
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-700"
                 whileHover={{ y: -5 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {currentLanguage === 'en' ? 'BENNINGER (Germany)' : '독일 BENNINGER'}
-                  </h5>
-                  <span className="text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
-                    {currentLanguage === 'en' ? 'Germany' : '독일'}
-                  </span>
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-3" style={{ minHeight: '70px' }}>
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      🇩🇪 {currentLanguage === 'en' ? 'Germany' : '독일'}
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <img src="/images/logos/partners/benninger-logo.png" alt="BENNINGER Logo" 
+                        className="max-h-14 max-w-full object-contain"
+                        onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }}
+                      />
+                      <div className="hidden items-center justify-center">
+                        <span className="text-2xl font-bold" style={{ color: '#0066CC' }}>BENNINGER</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <a href="https://www.benningergroup.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                      http://www.benningergroup.com/
+                    </a>
+                  </div>
+                  <div>
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
+                    </h6>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {currentLanguage === 'en' ? 'Fabric heat treatment line' : '직물 열처리 Line 제조업체(타이어 코드用)'}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
-                  {currentLanguage === 'en' 
-                    ? 'Fabric heat treatment line'
-                    : '직물 열처리 Line'}
-                </p>
-                <a href="https://www.benningergroup.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
-                  🌐 www.benningergroup.com
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
               </motion.div>
 
+              {/* LUWA */}
               <motion.div 
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-700"
                 whileHover={{ y: -5 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {currentLanguage === 'en' ? 'LUWA (Switzerland)' : '스위스 LUWA'}
-                  </h5>
-                  <span className="text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
-                    {currentLanguage === 'en' ? 'Switzerland' : '스위스'}
-                  </span>
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-3" style={{ minHeight: '70px' }}>
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      🇨🇭 {currentLanguage === 'en' ? 'Switzerland' : '스위스'}
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <img src="/images/logos/partners/luwa-logo.png" alt="LUWA Logo" 
+                        className="max-h-14 max-w-full object-contain"
+                        onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }}
+                      />
+                      <div className="hidden items-center justify-center">
+                        <span className="text-2xl font-bold" style={{ color: '#0099CC' }}>Luwa</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <a href="https://www.luwa.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                      http://www.luwa.com
+                    </a>
+                  </div>
+                  <div>
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
+                    </h6>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {currentLanguage === 'en' ? 'Air conditioning equipment for cotton & synthetic fiber spinning' : '면방, 합성용 공조 설비 제조업체'}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
-                  {currentLanguage === 'en' 
-                    ? 'Air conditioning equipment for cotton & synthetic fiber spinning'
-                    : '면방, 합성용 공조 설비'}
-                </p>
-                <a href="https://www.luwa.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
-                  🌐 www.luwa.com
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
               </motion.div>
 
+              {/* BRÄCKER */}
               <motion.div 
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-700"
                 whileHover={{ y: -5 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {currentLanguage === 'en' ? 'BRAECKER (Switzerland)' : '스위스 BRAECKER'}
-                  </h5>
-                  <span className="text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
-                    {currentLanguage === 'en' ? 'Switzerland' : '스위스'}
-                  </span>
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-3" style={{ minHeight: '70px' }}>
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      🇨🇭 {currentLanguage === 'en' ? 'Switzerland' : '스위스'}
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <img src="/images/logos/partners/braecker-logo.png" alt="Bräcker Logo" 
+                        className="max-h-14 max-w-full object-contain"
+                        onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }}
+                      />
+                      <div className="hidden items-center justify-center">
+                        <span className="text-2xl font-bold" style={{ color: '#CC0000' }}>Bräcker</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <a href="https://www.braecker.ch" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                      http://www.bracker.ch
+                    </a>
+                  </div>
+                  <div>
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
+                    </h6>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {currentLanguage === 'en' ? 'Rings and Travellers for spinning frames' : '정방기用 Ring, Traveller 제조 BERKOL Cots, Apron 및 유지보수 기계류 제조'}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
-                  {currentLanguage === 'en' 
-                    ? 'Rings and Travellers for spinning frames'
-                    : '정방기용 Ring, Traveller'}
-                </p>
-                <a href="https://www.braecker.ch" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
-                  🌐 www.braecker.ch
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
               </motion.div>
 
+              {/* CYGNET TEKKIMP */}
               <motion.div 
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-700"
                 whileHover={{ y: -5 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {currentLanguage === 'en' ? 'TEKKIMP (UK)' : '영국 TEKKIMP'}
-                  </h5>
-                  <span className="text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
-                    {currentLanguage === 'en' ? 'UK' : '영국'}
-                  </span>
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-3" style={{ minHeight: '70px' }}>
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      🇬🇧 {currentLanguage === 'en' ? 'UK' : '영국'}
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <img src="/images/logos/partners/tekkimp-logo.png" alt="CYGNET TEKKIMP Logo" 
+                        className="max-h-14 max-w-full object-contain"
+                        onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }}
+                      />
+                      <div className="hidden items-center justify-center">
+                        <span className="text-xl font-bold text-gray-700">CYGNET TEKKIMP</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <a href="https://www.cygnet-tekkimp.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                      http://www.cygnet-tekkimp.com
+                    </a>
+                  </div>
+                  <div>
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
+                    </h6>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {currentLanguage === 'en' ? 'Loom creel' : '직기 Creel 제조업체(타이어코드, 유리섬유, Carbon fiber)'}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
-                  {currentLanguage === 'en' 
-                    ? 'Loom creel'
-                    : '직기 Creel'}
-                </p>
-                <a href="https://www.cygnet-tekkimp.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
-                  🌐 www.cygnet-tekkimp.com
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
               </motion.div>
             </div>
           </motion.div>
@@ -352,79 +419,112 @@ const TexcomDetailPage = () => {
               </h4>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* TEXTECHNO */}
               <motion.div 
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-700"
                 whileHover={{ y: -5 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {currentLanguage === 'en' ? 'TEXTECHNO (Germany)' : '독일 TEXTECHNO'}
-                  </h5>
-                  <span className="text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
-                    {currentLanguage === 'en' ? 'Germany' : '독일'}
-                  </span>
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-3" style={{ minHeight: '70px' }}>
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      🇩🇪 {currentLanguage === 'en' ? 'Germany' : '독일'}
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <img src="/images/logos/partners/textechno-logo.png" alt="TEXTECHNO Logo" 
+                        className="max-h-14 max-w-full object-contain"
+                        onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }}
+                      />
+                      <div className="hidden items-center justify-center">
+                        <span className="text-2xl font-bold text-gray-700">TEXTECHNO</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <a href="https://www.textechno.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                      www.textechno.com
+                    </a>
+                  </div>
+                  <div>
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
+                    </h6>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {currentLanguage === 'en' ? 'Various textile testing equipment' : '섬유용 각종 시험장비'}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
-                  {currentLanguage === 'en' 
-                    ? 'Various textile testing equipment'
-                    : '섬유용 각종 시험장비'}
-                </p>
-                <a href="https://www.textechno.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
-                  🌐 www.textechno.com
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
               </motion.div>
 
+              {/* LENZING */}
               <motion.div 
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-700"
                 whileHover={{ y: -5 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {currentLanguage === 'en' ? 'LENZING (Austria)' : '오스트리아 LENZING'}
-                  </h5>
-                  <span className="text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
-                    {currentLanguage === 'en' ? 'Austria' : '오스트리아'}
-                  </span>
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-3" style={{ minHeight: '70px' }}>
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      🇦🇹 {currentLanguage === 'en' ? 'Austria' : '오스트리아'}
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <img src="/images/logos/partners/lenzing-logo.png" alt="LENZING Logo" 
+                        className="max-h-14 max-w-full object-contain"
+                        onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }}
+                      />
+                      <div className="hidden items-center justify-center">
+                        <span className="text-2xl font-bold text-gray-700">LENZING</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <a href="https://www.lenzing-instruments.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                      www.lenzing-instruments.com
+                    </a>
+                  </div>
+                  <div>
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
+                    </h6>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {currentLanguage === 'en' ? 'Various textile testing equipment' : '섬유용 각종 시험장비'}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
-                  {currentLanguage === 'en' 
-                    ? 'Various textile testing equipment'
-                    : '섬유용 각종 시험장비'}
-                </p>
-                <a href="https://www.lenzing-instruments.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
-                  🌐 www.lenzing-instruments.com
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
               </motion.div>
 
+              {/* KATO TECH */}
               <motion.div 
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-700"
                 whileHover={{ y: -5 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h5 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {currentLanguage === 'en' ? 'KATO TECH (Japan)' : '일본 KATO TECH'}
-                  </h5>
-                  <span className="text-sm bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
-                    {currentLanguage === 'en' ? 'Japan' : '일본'}
-                  </span>
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-3" style={{ minHeight: '70px' }}>
+                    <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      🇯🇵 {currentLanguage === 'en' ? 'Japan' : '일본'}
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <img src="/images/logos/partners/katotech-logo.png" alt="KATO TECH Logo" 
+                        className="max-h-14 max-w-full object-contain"
+                        onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }}
+                      />
+                      <div className="hidden items-center justify-center">
+                        <span className="text-2xl font-bold text-gray-700">KATO TECH</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <a href="https://www.keskato.co.jp" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                      www.keskato.co.jp
+                    </a>
+                  </div>
+                  <div>
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
+                    </h6>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {currentLanguage === 'en' ? 'Various testing instruments' : '각종 시험기기'}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-100 mb-3 product-description">
-                  {currentLanguage === 'en' 
-                    ? 'Various testing instruments'
-                    : '각종 시험기기'}
-                </p>
-                <a href="https://www.keskato.co.jp" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center gap-1">
-                  🌐 www.keskato.co.jp
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
               </motion.div>
             </div>
           </motion.div>

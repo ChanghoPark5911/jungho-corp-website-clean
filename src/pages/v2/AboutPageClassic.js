@@ -73,7 +73,7 @@ const AboutPageClassic = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* 전통적 네비게이션 */}
-      <TraditionalNav />
+      <TraditionalNav version="classic" />
 
       {/* 작은 배너 */}
       <SmallBanner

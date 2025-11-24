@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useI18n } from '../../hooks/useI18n';
 import TraditionalNav from '../../components/v2/TraditionalNav';
+import TraditionalLayout from '../../components/v2/TraditionalLayout';
 import SmallBanner from '../../components/v2/SmallBanner';
 
 /**
@@ -91,7 +92,7 @@ const AboutManagementHybrid = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <TraditionalNav />
+      <TraditionalNav version="hybrid" />
 
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'JUNGHO Group' : '정호그룹'}

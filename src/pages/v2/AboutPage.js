@@ -126,16 +126,16 @@ const AboutPage = () => {
 
         {/* ABOUT 이정표 - 오른쪽 상단 */}
         <motion.div 
-          className="absolute top-8 right-8 text-right"
+          className="absolute top-8 right-8 text-right z-10"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
-            Current Page
+          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+            {currentLanguage === 'en' ? 'CURRENT PAGE' : '현재 페이지'}
           </div>
-          <div className="text-2xl font-bold text-gray-700 dark:text-gray-300">
-            ABOUT
+          <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+            {currentLanguage === 'en' ? 'ABOUT' : '회사소개'}
           </div>
         </motion.div>
 

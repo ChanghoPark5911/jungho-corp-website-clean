@@ -161,10 +161,10 @@ const ProjectsPage = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
-            Current Page
+            {currentLanguage === 'en' ? 'CURRENT PAGE' : '현재 페이지'}
           </div>
           <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-            PROJECTS
+            {currentLanguage === 'en' ? 'PROJECTS' : '프로젝트'}
           </div>
         </motion.div>
 

@@ -8,7 +8,7 @@ import { COMPANY_INFO } from '../../utils/constants';
  * V1 SupportPage.js를 기반으로 V2 디자인 적용
  */
 const SupportPage = () => {
-  const { t } = useI18n();
+  const { t, currentLanguage } = useI18n();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -43,9 +43,9 @@ const SupportPage = () => {
     {
       id: 'phone',
       icon: '📞',
-      title: '전화 상담',
+      title: currentLanguage === 'en' ? 'Phone Consultation' : '전화 상담',
       description: COMPANY_INFO.support.phone.number,
-      hours: COMPANY_INFO.support.phone.hours,
+      hours: currentLanguage === 'en' ? 'Weekdays 09:00 - 18:00' : COMPANY_INFO.support.phone.hours,
       color: 'from-blue-500 to-blue-600',
       bgColor: 'bg-blue-50',
       textColor: 'text-blue-600'
@@ -53,9 +53,9 @@ const SupportPage = () => {
     {
       id: 'email',
       icon: '📧',
-      title: '이메일 문의',
+      title: currentLanguage === 'en' ? 'Email Inquiry' : '이메일 문의',
       description: COMPANY_INFO.support.email.address,
-      hours: COMPANY_INFO.support.email.hours,
+      hours: currentLanguage === 'en' ? '24/7 Available' : COMPANY_INFO.support.email.hours,
       color: 'from-green-500 to-green-600',
       bgColor: 'bg-green-50',
       textColor: 'text-green-600'
@@ -63,9 +63,9 @@ const SupportPage = () => {
     {
       id: 'kakao',
       icon: '💬',
-      title: '카카오톡 상담',
+      title: currentLanguage === 'en' ? 'KakaoTalk Consultation' : '카카오톡 상담',
       description: COMPANY_INFO.support.kakaoTalk.id,
-      hours: COMPANY_INFO.support.kakaoTalk.hours,
+      hours: currentLanguage === 'en' ? 'Real-time Consultation' : COMPANY_INFO.support.kakaoTalk.hours,
       color: 'from-yellow-400 to-yellow-500',
       bgColor: 'bg-yellow-50',
       textColor: 'text-yellow-600'
@@ -117,12 +117,12 @@ const SupportPage = () => {
 
   // 문의 카테고리
   const inquiryCategories = [
-    { value: 'general', label: '일반 문의' },
-    { value: 'product', label: '제품 문의' },
-    { value: 'quote', label: '견적 요청' },
-    { value: 'technical', label: '기술 지원' },
-    { value: 'as', label: 'A/S 신청' },
-    { value: 'partnership', label: '제휴 문의' }
+    { value: 'general', label: currentLanguage === 'en' ? 'General Inquiry' : '일반 문의' },
+    { value: 'product', label: currentLanguage === 'en' ? 'Product Inquiry' : '제품 문의' },
+    { value: 'quote', label: currentLanguage === 'en' ? 'Quote Request' : '견적 요청' },
+    { value: 'technical', label: currentLanguage === 'en' ? 'Technical Support' : '기술 지원' },
+    { value: 'as', label: currentLanguage === 'en' ? 'A/S Request' : 'A/S 신청' },
+    { value: 'partnership', label: currentLanguage === 'en' ? 'Partnership Inquiry' : '제휴 문의' }
   ];
 
   const handleInputChange = (e) => {
@@ -174,13 +174,15 @@ const SupportPage = () => {
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
             variants={fadeInUp}
           >
-            고객센터
+            {currentLanguage === 'en' ? 'Customer Center' : '고객센터'}
           </motion.h1>
           <motion.p 
             className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto"
             variants={fadeInUp}
           >
-            정호그룹의 전문가들이 24시간 내에 답변드립니다
+            {currentLanguage === 'en' 
+              ? 'Jungho Group experts will respond within 24 hours' 
+              : '정호그룹의 전문가들이 24시간 내에 답변드립니다'}
           </motion.p>
         </motion.div>
       </section>
@@ -196,10 +198,10 @@ const SupportPage = () => {
           >
             <motion.div className="text-center mb-12" variants={fadeInUp}>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                지원 채널
+                {currentLanguage === 'en' ? 'Support Channels' : '지원 채널'}
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-400">
-                편리한 방법으로 문의해 주세요
+                {currentLanguage === 'en' ? 'Please contact us via your preferred method' : '편리한 방법으로 문의해 주세요'}
               </p>
             </motion.div>
 
@@ -246,10 +248,12 @@ const SupportPage = () => {
           >
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                문의하기
+                {currentLanguage === 'en' ? 'Contact Us' : '문의하기'}
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-400">
-                궁금하신 사항을 남겨주시면 빠르게 답변드리겠습니다
+                {currentLanguage === 'en' 
+                  ? 'Leave your inquiry and we will respond promptly' 
+                  : '궁금하신 사항을 남겨주시면 빠르게 답변드리겠습니다'}
               </p>
             </div>
 
@@ -257,7 +261,7 @@ const SupportPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    이름 <span className="text-red-500">*</span>
+                    {currentLanguage === 'en' ? 'Name' : '이름'} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -266,12 +270,12 @@ const SupportPage = () => {
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
-                    placeholder="홍길동"
+                    placeholder={currentLanguage === 'en' ? 'John Doe' : '홍길동'}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    이메일 <span className="text-red-500">*</span>
+                    {currentLanguage === 'en' ? 'Email' : '이메일'} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
@@ -288,7 +292,7 @@ const SupportPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    연락처
+                    {currentLanguage === 'en' ? 'Phone' : '연락처'}
                   </label>
                   <input
                     type="tel"
@@ -301,7 +305,7 @@ const SupportPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    문의 유형 <span className="text-red-500">*</span>
+                    {currentLanguage === 'en' ? 'Inquiry Type' : '문의 유형'} <span className="text-red-500">*</span>
                   </label>
                   <select
                     name="category"
@@ -310,7 +314,7 @@ const SupportPage = () => {
                     required
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
                   >
-                    <option value="">선택해 주세요</option>
+                    <option value="">{currentLanguage === 'en' ? 'Please select' : '선택해 주세요'}</option>
                     {inquiryCategories.map((cat) => (
                       <option key={cat.value} value={cat.value}>
                         {cat.label}
@@ -322,7 +326,7 @@ const SupportPage = () => {
 
               <div className="mb-6">
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  문의 내용 <span className="text-red-500">*</span>
+                  {currentLanguage === 'en' ? 'Message' : '문의 내용'} <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   name="message"
@@ -331,7 +335,9 @@ const SupportPage = () => {
                   required
                   rows="6"
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all resize-none"
-                  placeholder="문의하실 내용을 자세히 적어주세요..."
+                  placeholder={currentLanguage === 'en' 
+                    ? 'Please provide details about your inquiry...' 
+                    : '문의하실 내용을 자세히 적어주세요...'}
                 ></textarea>
               </div>
 
@@ -340,7 +346,9 @@ const SupportPage = () => {
                 disabled={submitStatus === 'sending'}
                 className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-4 rounded-lg font-bold text-lg hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transform transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {submitStatus === 'sending' ? '전송 중...' : '문의하기'}
+                {submitStatus === 'sending' 
+                  ? (currentLanguage === 'en' ? 'Sending...' : '전송 중...') 
+                  : (currentLanguage === 'en' ? 'Submit Inquiry' : '문의하기')}
               </button>
 
               {submitStatus === 'success' && (
@@ -352,7 +360,11 @@ const SupportPage = () => {
                   <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span>문의가 성공적으로 접수되었습니다. 빠른 시일 내에 답변드리겠습니다.</span>
+                  <span>
+                    {currentLanguage === 'en' 
+                      ? 'Your inquiry has been successfully submitted. We will respond as soon as possible.' 
+                      : '문의가 성공적으로 접수되었습니다. 빠른 시일 내에 답변드리겠습니다.'}
+                  </span>
                 </motion.div>
               )}
             </form>
@@ -372,10 +384,12 @@ const SupportPage = () => {
           >
             <div className="text-5xl mb-4">📍</div>
             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3">
-              본사 방문을 원하시나요?
+              {currentLanguage === 'en' ? 'Want to visit our headquarters?' : '본사 방문을 원하시나요?'}
             </h3>
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
-              정호그룹 본사의 위치와 교통편 안내를 확인하세요
+              {currentLanguage === 'en' 
+                ? 'Check the location and directions to Jungho Group headquarters' 
+                : '정호그룹 본사의 위치와 교통편 안내를 확인하세요'}
             </p>
             <button
               onClick={() => window.location.href = '/about/location'}
@@ -385,7 +399,7 @@ const SupportPage = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <span>오시는 길 보기</span>
+              <span>{currentLanguage === 'en' ? 'View Directions' : '오시는 길 보기'}</span>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -402,7 +416,7 @@ const SupportPage = () => {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span>평일 09:00 - 18:00</span>
+                  <span>{currentLanguage === 'en' ? 'Weekdays 09:00 - 18:00' : '평일 09:00 - 18:00'}</span>
                 </div>
               </div>
             </div>

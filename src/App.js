@@ -29,25 +29,16 @@ const DesignSystem = lazy(() => import('./components/design-system/DesignSystem'
 
 // v2 페이지 및 레이아웃
 const LayoutV2 = lazy(() => import('./components/v2/LayoutV2'));
+const HybridLayout = lazy(() => import('./components/v2/HybridLayout')); // Hybrid Layout (MegaMenu + No Sidebar)
 const HomePageV2 = lazy(() => import('./pages/v2/HomePageV2'));
 const HomePageClassic = lazy(() => import('./pages/v2/HomePageClassic')); // 전통적 스타일
-const HomePageHybrid = lazy(() => import('./pages/v2/HomePageHybrid')); // 하이브리드 스타일
-const AboutIntroHybrid = lazy(() => import('./pages/v2/AboutIntroHybrid')); // 하이브리드: 회사소개
-const SubsidiariesListHybrid = lazy(() => import('./pages/v2/SubsidiariesListHybrid')); // 하이브리드: 계열사 목록
-const ClarusDetailHybrid = lazy(() => import('./pages/v2/ClarusDetailHybrid')); // 하이브리드: 클라루스 상세
-const TLCDetailHybrid = lazy(() => import('./pages/v2/TLCDetailHybrid')); // 하이브리드: 정호티엘씨 상세
-const IllutechDetailHybrid = lazy(() => import('./pages/v2/IllutechDetailHybrid')); // 하이브리드: 일루텍 상세
-const TexcomDetailHybrid = lazy(() => import('./pages/v2/TexcomDetailHybrid')); // 하이브리드: 정호텍스컴 상세
+const HomePageHybrid = lazy(() => import('./pages/v2/HomePageHybrid')); // 하이브리드 스타일 (홈페이지만 유지)
 const AboutIntroClassic = lazy(() => import('./pages/v2/AboutIntroClassic')); // 클래식: 회사소개
-const SubsidiariesListClassic = lazy(() => import('./pages/v2/SubsidiariesListClassic')); // 클래식: 계열사 목록
 const ClarusDetailClassic = lazy(() => import('./pages/v2/ClarusDetailClassic')); // 클래식: 클라루스 상세
 const TLCDetailClassic = lazy(() => import('./pages/v2/TLCDetailClassic')); // 클래식: 정호티엘씨 상세
 const IllutechDetailClassic = lazy(() => import('./pages/v2/IllutechDetailClassic')); // 클래식: 일루텍 상세
 const TexcomDetailClassic = lazy(() => import('./pages/v2/TexcomDetailClassic')); // 클래식: 정호텍스컴 상세
-const AboutPageHybrid = lazy(() => import('./pages/v2/AboutPageHybrid')); // 하이브리드: About 허브 페이지
 const AboutPageClassic = lazy(() => import('./pages/v2/AboutPageClassic')); // 클래식: About 허브 페이지
-const AboutVisionHybrid = lazy(() => import('./pages/v2/AboutVisionHybrid')); // 하이브리드: 그룹비전
-const AboutManagementHybrid = lazy(() => import('./pages/v2/AboutManagementHybrid')); // 하이브리드: 경영방침
 const BusinessPageHybrid = lazy(() => import('./pages/v2/BusinessPageHybrid')); // 하이브리드: 사업분야
 const MediaPageHybrid = lazy(() => import('./pages/v2/MediaPageHybrid')); // 하이브리드: 미디어센터
 const ProjectsPageHybrid = lazy(() => import('./pages/v2/ProjectsPageHybrid')); // 하이브리드: 프로젝트
@@ -125,7 +116,16 @@ function App() {
         <ScrollToTop />
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* v2 관리자 페이지 (레이아웃 없음) - 최우선 */}
+            {/* 
+              ===================================
+              관리자 페이지 (AdminPageV2)
+              ===================================
+              - 메인 관리자 페이지: /admin
+              - V2/Hybrid/Classic 모든 버전 관리
+              - 기능: V2 홈, 정적 페이지, 미디어, 다국어, 사용자
+              - 레거시 관리자: /admin-old (백업용)
+              ===================================
+            */}
             <Route path="/admin" element={<AdminPageV2 />} />
             <Route path="/v2/admin" element={<AdminPageV2 />} />
             
@@ -133,23 +133,24 @@ function App() {
             <Route path="/classic" element={<HomePageClassic />} />
             
             {/* 하이브리드 버전 (전통 구조 + 현대 디자인) 🎨 */}
+            {/* Hybrid 버전: V2 페이지를 HybridLayout으로 감싸서 재활용 */}
             <Route path="/hybrid" element={<HomePageHybrid />} />
-            <Route path="/hybrid/about" element={<AboutPageHybrid />} />
-            <Route path="/hybrid/about/intro" element={<AboutIntroHybrid />} />
-            <Route path="/hybrid/about/vision" element={<AboutVisionHybrid />} />
-            <Route path="/hybrid/about/management" element={<AboutManagementHybrid />} />
-            <Route path="/hybrid/about/history" element={<AboutHistoryPage />} />
-            <Route path="/hybrid/about/cibi" element={<AboutCIBIPage />} />
-            <Route path="/hybrid/about/location" element={<AboutLocationPage />} />
+            <Route path="/hybrid/about" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><AboutPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/about/intro" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><AboutIntroPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/about/vision" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><AboutVisionPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/about/management" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><AboutManagementPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/about/history" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><AboutHistoryPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/about/ci" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><AboutCIBIPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/about/cibi" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><AboutCIBIPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/about/location" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><AboutLocationPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/business" element={<BusinessPageHybrid />} />
             <Route path="/hybrid/media" element={<MediaPageHybrid />} />
             <Route path="/hybrid/media/news" element={<NewsPage />} />
             <Route path="/hybrid/projects" element={<ProjectsPageHybrid />} />
-            <Route path="/hybrid/subsidiaries" element={<SubsidiariesListHybrid />} />
-            <Route path="/hybrid/subsidiaries/clarus" element={<ClarusDetailHybrid />} />
-            <Route path="/hybrid/subsidiaries/jungho-tlc" element={<TLCDetailHybrid />} />
-            <Route path="/hybrid/subsidiaries/illutech" element={<IllutechDetailHybrid />} />
-            <Route path="/hybrid/subsidiaries/jungho-texcom" element={<TexcomDetailHybrid />} />
+            <Route path="/hybrid/subsidiaries/clarus" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><ClarusDetailPageV2 /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/subsidiaries/jungho-tlc" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TlcDetailPageV2 /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/subsidiaries/illutech" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><IllutechDetailPageV2 /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/subsidiaries/jungho-texcom" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TexcomDetailPageV2 /></HybridLayout></Suspense>} />
             
             <Route path="/classic/about" element={<AboutPageClassic />} />
             <Route path="/classic/about/intro" element={<AboutIntroClassic />} />
@@ -161,7 +162,6 @@ function App() {
             <Route path="/classic/business" element={<BusinessPage />} />
             <Route path="/classic/media" element={<MediaPageHybrid />} />
             <Route path="/classic/projects" element={<ProjectsPage />} />
-            <Route path="/classic/subsidiaries" element={<SubsidiariesListClassic />} />
             <Route path="/classic/subsidiaries/clarus" element={<ClarusDetailClassic />} />
             <Route path="/classic/subsidiaries/jungho-tlc" element={<TLCDetailClassic />} />
             <Route path="/classic/subsidiaries/illutech" element={<IllutechDetailClassic />} />

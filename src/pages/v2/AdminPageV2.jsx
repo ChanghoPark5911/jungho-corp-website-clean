@@ -600,34 +600,93 @@ const AdminPageV2 = () => {
 };
 
 // 대시보드 탭
-const DashboardTab = () => (
-  <div>
-    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">대시보드</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {[
-        { label: '페이지뷰', value: '12,345', icon: '👁️', color: 'blue' },
-        { label: '방문자', value: '1,234', icon: '👥', color: 'green' },
-        { label: '콘텐츠', value: '56', icon: '📄', color: 'purple' },
-        { label: '미디어', value: '23', icon: '🎬', color: 'orange' },
-      ].map((stat, index) => (
-        <div key={index} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
-          <div className="text-3xl mb-2">{stat.icon}</div>
-          <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+const DashboardTab = () => {
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">대시보드</h2>
+      
+      {/* 통계 카드 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { label: '페이지뷰', value: '12,345', icon: '👁️', color: 'blue' },
+          { label: '방문자', value: '1,234', icon: '👥', color: 'green' },
+          { label: '콘텐츠', value: '56', icon: '📄', color: 'purple' },
+          { label: '미디어', value: '23', icon: '🎬', color: 'orange' },
+        ].map((stat, index) => (
+          <div key={index} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+            <div className="text-3xl mb-2">{stat.icon}</div>
+            <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+      
+      {/* 버전 관리 섹션 */}
+      <div className="mt-8 p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg border border-purple-200 dark:border-purple-700">
+        <h3 className="text-lg font-bold text-purple-900 dark:text-purple-100 mb-4 flex items-center gap-2">
+          🎨 버전 관리
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* V2 버전 */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-blue-500 shadow-lg">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-bold text-blue-600 dark:text-blue-400">V2 버전</h4>
+              <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-2 py-1 rounded">최신</span>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">모던한 MegaMenu와 풍부한 UI</p>
+            <button
+              onClick={() => window.open('/v2', '_blank')}
+              className="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-semibold transition-colors"
+            >
+              🚀 V2 보기
+            </button>
+          </div>
+
+          {/* Hybrid 버전 */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-green-500 shadow-lg">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-bold text-green-600 dark:text-green-400">Hybrid 버전</h4>
+              <span className="text-xs bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 px-2 py-1 rounded">권장</span>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">V2 메뉴 + 최적화된 콘텐츠</p>
+            <button
+              onClick={() => window.open('/hybrid', '_blank')}
+              className="w-full px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-semibold transition-colors"
+            >
+              ✨ Hybrid 보기
+            </button>
+          </div>
+
+          {/* Classic 버전 */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-gray-400 shadow-lg">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-bold text-gray-600 dark:text-gray-400">Classic 버전</h4>
+              <span className="text-xs bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">전통</span>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">전통적인 사이드바 레이아웃</p>
+            <button
+              onClick={() => window.open('/classic/about', '_blank')}
+              className="w-full px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-semibold transition-colors"
+            >
+              📋 Classic 보기
+            </button>
+          </div>
         </div>
-      ))}
+      </div>
+      
+      {/* 빠른 시작 가이드 */}
+      <div className="mt-6 p-6 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
+        <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">💡 빠른 시작</h3>
+        <ul className="space-y-2 text-blue-800 dark:text-blue-200">
+          <li>• <strong>V2 홈페이지</strong>: IRGSHero와 Gateway 섹션을 관리하세요</li>
+          <li>• <strong>정적 페이지</strong>: About 페이지 콘텐츠를 수정하세요</li>
+          <li>• <strong>미디어 관리</strong>: 홍보영상과 SNS 링크를 업데이트하세요</li>
+          <li>• <strong>다국어 관리</strong>: 한국어/영어 번역을 관리하세요</li>
+        </ul>
+      </div>
     </div>
-    
-    <div className="mt-8 p-6 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
-      <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">💡 빠른 시작</h3>
-      <ul className="space-y-2 text-blue-800 dark:text-blue-200">
-        <li>• <strong>V2 홈페이지</strong>: IRGSHero와 Gateway 섹션을 관리하세요</li>
-        <li>• <strong>미디어 관리</strong>: 홍보영상과 SNS 링크를 업데이트하세요</li>
-        <li>• <strong>사용자 관리</strong>: 관리자 계정을 추가/수정하세요</li>
-      </ul>
-    </div>
-  </div>
-);
+  );
+};
 
 // V2 홈페이지 탭
 const V2HomeTab = ({ data, setData, onSave }) => {

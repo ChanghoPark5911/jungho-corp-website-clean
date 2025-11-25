@@ -7,10 +7,13 @@ import LanguageSelector from '../LanguageSelector';
  * v2 MegaMenu 컴포넌트
  * 롯데그룹 스타일의 메가메뉴 네비게이션
  * + 부드러운 CSS 드롭다운 애니메이션
+ * 
+ * @param {string} version - 버전 ('v2' 또는 'hybrid'), 기본값은 'v2'
  */
-const MegaMenu = () => {
+const MegaMenu = ({ version = 'v2' }) => {
   const { t, currentLanguage } = useI18n();
   const navigate = useNavigate();
+  const pathPrefix = version === 'hybrid' ? '/hybrid' : '';
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
@@ -25,36 +28,36 @@ const MegaMenu = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // 메뉴 구조 정의
+  // 메뉴 구조 정의 (버전별 경로 prefix 적용)
   const menuStructure = [
     {
       id: 'about',
       label: currentLanguage === 'en' ? 'ABOUT' : 'ABOUT',
-      path: '/about',
+      path: `${pathPrefix}/about`,
       submenu: [
-        { label: t('nav.about.intro') || '정호소개', path: '/about/intro', icon: '👋' },
-        { label: t('nav.about.vision') || '그룹비전 (IRGS)', path: '/about/vision', icon: '🎯' },
-        { label: t('nav.about.management') || '경영방침', path: '/about/management', icon: '📋' },
-        { label: 'CI/BI', path: '/about/ci', icon: '🎨' },
-        { label: 'HISTORY', path: '/about/history', icon: '📅' },
-        { label: t('nav.about.location') || '찾아오시는길', path: '/about/location', icon: '📍' },
+        { label: t('nav.about.intro') || '정호소개', path: `${pathPrefix}/about/intro`, icon: '👋' },
+        { label: t('nav.about.vision') || '그룹비전 (IRGS)', path: `${pathPrefix}/about/vision`, icon: '🎯' },
+        { label: t('nav.about.management') || '경영방침', path: `${pathPrefix}/about/management`, icon: '📋' },
+        { label: 'CI/BI', path: `${pathPrefix}/about/ci`, icon: '🎨' },
+        { label: 'HISTORY', path: `${pathPrefix}/about/history`, icon: '📅' },
+        { label: t('nav.about.location') || '찾아오시는길', path: `${pathPrefix}/about/location`, icon: '📍' },
       ],
     },
     {
       id: 'subsidiaries',
       label: t('nav.subsidiaries.main') || '그룹사',
-      path: '/subsidiaries',
+      path: `${pathPrefix}/subsidiaries`,
       submenu: [
-        { label: t('nav.subsidiaries.tlc') || '정호티엘씨', path: '/subsidiaries/tlc', icon: '⚡', color: 'tlc' },
-        { label: t('nav.subsidiaries.clarus') || '클라루스', path: '/subsidiaries/clarus', icon: '💡', color: 'clarus' },
-        { label: t('nav.subsidiaries.illutech') || '일루텍', path: '/subsidiaries/illutech', icon: '🔆', color: 'illutech' },
-        { label: t('nav.subsidiaries.texcom') || '정호텍스컴', path: '/subsidiaries/texcom', icon: '🧵', color: 'texcom' },
+        { label: t('nav.subsidiaries.tlc') || '정호티엘씨', path: `${pathPrefix}/subsidiaries/jungho-tlc`, icon: '⚡', color: 'tlc' },
+        { label: t('nav.subsidiaries.clarus') || '클라루스', path: `${pathPrefix}/subsidiaries/clarus`, icon: '💡', color: 'clarus' },
+        { label: t('nav.subsidiaries.illutech') || '일루텍', path: `${pathPrefix}/subsidiaries/illutech`, icon: '🔆', color: 'illutech' },
+        { label: t('nav.subsidiaries.texcom') || '정호텍스컴', path: `${pathPrefix}/subsidiaries/jungho-texcom`, icon: '🧵', color: 'texcom' },
       ],
     },
     {
       id: 'media',
       label: t('nav.media.main') || '미디어/PR',
-      path: '/projects', // 프로젝트 영상으로 바로 연결
+      path: '/projects', // 프로젝트 영상은 공통 경로
       submenu: [
         { label: t('nav.media.projects') || '프로젝트 영상', path: '/projects', icon: '🏢' },
         { label: t('nav.media.promotion') || '홍보영상', path: '/media/promotion', icon: '📺' },
@@ -103,7 +106,7 @@ const MegaMenu = () => {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* 로고 */}
-          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group flex-shrink-0">
+          <Link to={version === 'hybrid' ? '/hybrid' : '/v2'} className="flex items-center space-x-2 sm:space-x-3 group flex-shrink-0">
             <img 
               src="/images/logos/jungho-logo.png" 
               alt="정호그룹 로고" 
@@ -140,7 +143,12 @@ const MegaMenu = () => {
                   onMouseLeave={handleMenuLeave}
                 >
                   <button
-                    onClick={() => handleNavigation(menu.path)}
+                    onClick={() => {
+                      // "그룹사" 메뉴는 클릭해도 이동하지 않음 (서브메뉴만 사용)
+                      if (menu.id !== 'subsidiaries') {
+                        handleNavigation(menu.path);
+                      }
+                    }}
                     className={`
                       px-4 py-2 text-sm font-semibold rounded-lg
                       transition-colors duration-150
@@ -149,6 +157,7 @@ const MegaMenu = () => {
                           ? 'text-primary-600 bg-primary-50'
                           : 'text-gray-900 dark:text-gray-300 hover:text-primary-600 hover:bg-gray-50'
                       }
+                      ${menu.id === 'subsidiaries' ? 'cursor-default' : 'cursor-pointer'}
                     `}
                   >
                     {menu.label}
@@ -303,8 +312,13 @@ const MegaMenu = () => {
             {menuStructure.map((menu) => (
               <div key={menu.id} className="border-b border-gray-200 dark:border-gray-700 pb-4">
                 <button
-                  onClick={() => handleNavigation(menu.path)}
-                  className="w-full text-left text-lg font-semibold text-gray-900 dark:text-white mb-2"
+                  onClick={() => {
+                    // "그룹사" 메뉴는 클릭해도 이동하지 않음 (서브메뉴만 사용)
+                    if (menu.id !== 'subsidiaries') {
+                      handleNavigation(menu.path);
+                    }
+                  }}
+                  className={`w-full text-left text-lg font-semibold text-gray-900 dark:text-white mb-2 ${menu.id === 'subsidiaries' ? 'cursor-default' : 'cursor-pointer'}`}
                 >
                   {menu.label}
                 </button>

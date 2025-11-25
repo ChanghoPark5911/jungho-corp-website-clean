@@ -85,26 +85,12 @@ const AboutVisionPage = () => {
     },
   ];
 
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <TraditionalNav version={version} />
-      
-      <SmallBanner
-        subtitle={currentLanguage === 'en' ? 'JUNGHO Group' : '정호그룹'}
-        title={currentLanguage === 'en' ? 'Vision & Mission (IRGS)' : '그룹비전 (IRGS)'}
-        description={currentLanguage === 'en' 
-          ? 'Innovation, Reliability, Green, Service - Our core values'
-          : '혁신, 신뢰, 친환경, 서비스 - 정호그룹의 핵심 가치'
-        }
-        backgroundImage="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80"
-        height="400px"
-      />
-      
-      <TraditionalLayout showSidebar={true} category="about" version={version}>
-        <div>
+  // 순수 콘텐츠 (레이아웃 제외)
+  const content = (
+    <div>
       {/* Hero Section */}
       <motion.section 
-        className="relative py-20 bg-gradient-to-br from-primary-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
+        className="relative pt-32 pb-6 bg-gradient-to-br from-primary-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
@@ -116,6 +102,21 @@ const AboutVisionPage = () => {
             backgroundSize: '40px 40px'
           }} />
         </div>
+
+        {/* 이정표 - 오른쪽 상단 */}
+        <motion.div 
+          className="absolute top-8 right-8 text-right z-10"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+            {currentLanguage === 'en' ? 'CURRENT PAGE' : '현재 페이지'}
+          </div>
+          <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+            {currentLanguage === 'en' ? 'GROUP VISION' : '그룹비전'}
+          </div>
+        </motion.div>
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div variants={fadeInUp}>
@@ -141,7 +142,7 @@ const AboutVisionPage = () => {
 
       {/* IRGS 카드 */}
       <motion.section 
-        className="py-12 bg-white dark:bg-gray-900"
+        className="pt-6 pb-12 bg-white dark:bg-gray-900"
         initial="hidden"
         animate="visible"
         variants={staggerContainer}
@@ -212,7 +213,32 @@ const AboutVisionPage = () => {
           </p>
         </div>
       </motion.section>
-        </div>
+    </div>
+  );
+
+  // Hybrid 버전: 레이아웃 없이 콘텐츠만 반환 (HybridLayout이 App.js에서 적용됨)
+  if (isHybrid) {
+    return content;
+  }
+
+  // Classic/V2 버전: 기존 레이아웃 포함
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <TraditionalNav version={version} />
+      
+      <SmallBanner
+        subtitle={currentLanguage === 'en' ? 'JUNGHO Group' : '정호그룹'}
+        title={currentLanguage === 'en' ? 'Vision & Mission (IRGS)' : '그룹비전 (IRGS)'}
+        description={currentLanguage === 'en' 
+          ? 'Innovation, Reliability, Green, Service - Our core values'
+          : '혁신, 신뢰, 친환경, 서비스 - 정호그룹의 핵심 가치'
+        }
+        backgroundImage="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80"
+        height="400px"
+      />
+      
+      <TraditionalLayout showSidebar={true} category="about" version={version}>
+        {content}
       </TraditionalLayout>
     </div>
   );

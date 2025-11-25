@@ -3,18 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
 import { useI18n } from '../../hooks/useI18n';
-import TraditionalNav from '../../components/v2/TraditionalNav';
-import TraditionalLayout from '../../components/v2/TraditionalLayout';
+import HybridLayout from '../../components/v2/HybridLayout';
 import SmallBanner from '../../components/v2/SmallBanner';
 
 /**
- * 홈페이지 - 하이브리드 버전 (전통적 구조 + 현대적 디자인)
- * - 클래식 버전의 레이아웃 유지
- * - 현대적 디자인 요소 추가 (카드, 애니메이션, 그라데이션)
+ * 홈페이지 - 하이브리드 버전 (V2 네비게이션 + Hybrid 디자인)
+ * - V2의 MegaMenu 사용 (일관된 네비게이션)
+ * - 풀 너비 레이아웃 (사이드바 제거)
+ * - Hybrid 고유의 디자인 스타일 유지
+ * - 최근 수정사항: 주요 사업 분야, 계열사 소개 반영
  */
 const HomePageHybrid = () => {
   const navigate = useNavigate();
   const { currentLanguage } = useI18n();
+
+  // 계열사 섹션으로 스크롤
+  const scrollToSubsidiaries = () => {
+    const element = document.getElementById('subsidiaries-section');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   // 배경 이미지 옵션 (정호그룹 사업 관련 이미지)
   const backgroundImages = [
@@ -64,8 +73,6 @@ const HomePageHybrid = () => {
     return () => clearInterval(interval);
   }, [isAutoPlay, backgroundImages]);
 
-  // 사이드바는 TraditionalLayout에서 자동 생성 (category="home")
-
   // 계열사 목록 (이미지 추가)
   const subsidiaries = [
     {
@@ -74,8 +81,8 @@ const HomePageHybrid = () => {
       nameEn: 'CLARUS Korea',
       icon: '💡',
       description: currentLanguage === 'en'
-        ? 'IoT-based smart lighting control specialist'
-        : 'IoT 기반 스마트 조명 제어 전문 기업',
+        ? 'IoT-based smart lighting/power control solution development, production and export'
+        : 'IoT기반 스마트 조명/전력제어솔루션 개발, 생산 및 해외수출',
       established: '2009',
       business: currentLanguage === 'en'
         ? 'Lighting Control, Power Monitoring'
@@ -90,8 +97,8 @@ const HomePageHybrid = () => {
       nameEn: 'Jungho TLC Co., Ltd.',
       icon: '🏢',
       description: currentLanguage === 'en'
-        ? 'Partner for stable building automation'
-        : '안정적인 빌딩 자동화의 파트너',
+        ? 'Installation, sales and maintenance of lighting/power control solutions in public and private sectors'
+        : '공공, 민간분야 조명/전력제어솔루션 시공 판매 및 유지보수',
       established: '1982',
       business: currentLanguage === 'en'
         ? 'Integrated Lighting & Power Control'
@@ -138,18 +145,18 @@ const HomePageHybrid = () => {
   const businessAreas = [
     {
       icon: '💡',
-      title: currentLanguage === 'en' ? 'AI & IoT Solutions' : 'AI 및 IoT 솔루션',
+      title: currentLanguage === 'en' ? 'Lighting/Power Control Solution Development' : '조명/전력제어 솔루션 개발',
       description: currentLanguage === 'en'
-        ? 'Smart lighting and power control using AI and IoT technology'
-        : 'AI와 IoT 기술을 활용한 스마트 조명 및 전력 제어',
+        ? 'Development of lighting and power control solutions using AI and IoT technology'
+        : 'AI, IoT기술을 활용한 조명, 전력 제어 솔루션 개발',
       gradient: 'from-blue-500 to-cyan-500'
     },
     {
-      icon: '🚚',
-      title: currentLanguage === 'en' ? 'Eco-Friendly Logistics' : '친환경 물류',
+      icon: '🏢',
+      title: currentLanguage === 'en' ? 'Lighting/Power Control Solution Sales' : '조명/전력제어 솔루션 국내외 판매',
       description: currentLanguage === 'en'
-        ? 'Integrated logistics solutions for sustainable future'
-        : '지속 가능한 미래를 위한 통합 물류 솔루션',
+        ? 'Domestic and international sales and installation of lighting/power control solutions'
+        : '국내외 조명/전력제어 솔루션 판매, 시공',
       gradient: 'from-green-500 to-emerald-500'
     },
     {
@@ -171,10 +178,7 @@ const HomePageHybrid = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      {/* 전통적 네비게이션 */}
-      <TraditionalNav version="hybrid" />
-
+    <HybridLayout>
       {/* 배경 이미지 컨트롤 - 우측 하단 고정 */}
       <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-3">
         {/* 자동재생/일시정지 버튼 */}
@@ -320,7 +324,7 @@ const HomePageHybrid = () => {
                   {currentLanguage === 'en' ? 'Check out Jungho Group\'s vision and history' : '정호그룹의 비전과 역사를 확인하세요'}
                 </p>
                 <div className="text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-2 inline-flex items-center transition-transform">
-                  바로가기
+                  {currentLanguage === 'en' ? 'Learn More' : '바로가기'}
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -334,7 +338,7 @@ const HomePageHybrid = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
               whileHover={{ scale: 1.03, y: -5 }}
-              onClick={() => navigate('/hybrid/subsidiaries')}
+              onClick={scrollToSubsidiaries}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer group"
             >
               <div className="h-32 bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
@@ -348,7 +352,7 @@ const HomePageHybrid = () => {
                   {currentLanguage === 'en' ? '4 professional subsidiaries together' : '4개 전문 계열사가 함께합니다'}
                 </p>
                 <div className="text-green-600 dark:text-green-400 font-semibold group-hover:translate-x-2 inline-flex items-center transition-transform">
-                  바로가기
+                  {currentLanguage === 'en' ? 'Learn More' : '바로가기'}
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -376,7 +380,7 @@ const HomePageHybrid = () => {
                   {currentLanguage === 'en' ? 'Experience our latest news and videos' : '생생한 소식과 영상을 만나보세요'}
                 </p>
                 <div className="text-purple-600 dark:text-purple-400 font-semibold group-hover:translate-x-2 inline-flex items-center transition-transform">
-                  바로가기
+                  {currentLanguage === 'en' ? 'Learn More' : '바로가기'}
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -404,7 +408,7 @@ const HomePageHybrid = () => {
                   {currentLanguage === 'en' ? 'Feel free to contact us with any questions' : '궁금한 점을 언제든 연락하세요'}
                 </p>
                 <div className="text-orange-600 dark:text-orange-400 font-semibold group-hover:translate-x-2 inline-flex items-center transition-transform">
-                  바로가기
+                  {currentLanguage === 'en' ? 'Learn More' : '바로가기'}
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -415,8 +419,8 @@ const HomePageHybrid = () => {
         </div>
       </motion.section>
 
-      {/* 메인 콘텐츠 - 전통적 레이아웃 */}
-      <TraditionalLayout showSidebar={true} category="home" version="hybrid">
+      {/* 메인 콘텐츠 - 풀 너비 레이아웃 */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 회사 소개 */}
         <motion.section 
           className="mb-12"
@@ -545,6 +549,7 @@ const HomePageHybrid = () => {
 
         {/* 계열사 소개 */}
         <motion.section 
+          id="subsidiaries-section"
           className="mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -618,69 +623,6 @@ const HomePageHybrid = () => {
                     </button>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-8 text-center">
-            <button
-              onClick={() => navigate('/hybrid/subsidiaries')}
-              className="group px-8 py-4 border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-bold rounded-xl hover:bg-blue-600 dark:hover:bg-blue-700 hover:text-white dark:hover:text-white shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center gap-2"
-            >
-              {currentLanguage === 'en' ? 'View All Subsidiaries' : '계열사 전체보기'}
-              <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-            </button>
-          </div>
-        </motion.section>
-
-        {/* 주요 사업 분야 */}
-        <motion.section 
-          className="mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              {currentLanguage === 'en' ? 'Business Areas' : '주요 사업 분야'}
-            </h2>
-            <p className="text-sm text-gray-400 dark:text-gray-400">
-              {currentLanguage === 'en' ? 'What We Do' : '정호그룹의 사업 영역'}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {businessAreas.map((area, index) => (
-              <motion.div 
-                key={index}
-                className="group relative bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-2xl p-6 hover:border-transparent hover:shadow-2xl transition-all duration-300 overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ scale: 1.03, y: -5 }}
-              >
-                {/* 그라데이션 배경 효과 */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${area.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
-                
-                {/* 아이콘과 타이틀 */}
-                <div className="relative flex items-start gap-4 mb-4">
-                  <div className="text-5xl transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                    {area.icon}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
-                      {area.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                      {area.description}
-                    </p>
-                  </div>
-                </div>
-
-                {/* 하단 장식 */}
-                <div className={`h-1 w-0 group-hover:w-full bg-gradient-to-r ${area.gradient} transition-all duration-500 rounded-full`}></div>
               </motion.div>
             ))}
           </div>
@@ -967,8 +909,8 @@ const HomePageHybrid = () => {
             </div>
           </div>
         </motion.section>
-      </TraditionalLayout>
-    </div>
+      </div>
+    </HybridLayout>
   );
 };
 

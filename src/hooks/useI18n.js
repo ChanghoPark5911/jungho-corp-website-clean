@@ -39,8 +39,15 @@ export const useI18n = () => {
 
   // 언어 변경
   const changeLanguage = (language) => {
+    console.log('🔄 [useI18n.changeLanguage] 언어 변경 요청:', language);
+    console.log('📦 [useI18n.changeLanguage] 현재 언어:', currentLanguage);
+    
     setIsLoading(true);
+    
+    // i18nAdvanced에 언어 설정
     i18nAdvanced.setLanguage(language);
+    
+    // 로컬 state 업데이트
     setCurrentLanguage(language);
     
     // 언어 변경 이벤트 발생
@@ -48,8 +55,11 @@ export const useI18n = () => {
       detail: { language } 
     }));
     
+    console.log('⏳ [useI18n.changeLanguage] 100ms 후 페이지 새로고침...');
+    
     // 페이지 새로고침으로 번역 적용
     setTimeout(() => {
+      console.log('🔄 [useI18n.changeLanguage] 페이지 새로고침 실행');
       window.location.reload();
     }, 100);
   };

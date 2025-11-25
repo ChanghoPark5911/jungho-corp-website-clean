@@ -18,7 +18,6 @@ const AboutCIBIPage = () => {
   // 현재 경로가 classic 또는 hybrid인지 확인
   const isClassic = location.pathname.startsWith('/classic');
   const isHybrid = location.pathname.startsWith('/hybrid');
-  const isTraditional = isClassic || isHybrid;
   const version = isHybrid ? 'hybrid' : isClassic ? 'classic' : 'v2';
 
   // 애니메이션 variants
@@ -152,18 +151,33 @@ const AboutCIBIPage = () => {
     document.body.removeChild(link);
   };
 
-  // Traditional 버전용 콘텐츠
+  // 페이지 콘텐츠
   const pageContent = (
-    <div className={isTraditional ? '' : 'min-h-screen bg-gray-50 dark:bg-gray-900 pt-20'}>
+    <div className={(isClassic || isHybrid) ? '' : 'min-h-screen bg-gray-50 dark:bg-gray-900 pt-20'}>
       {/* Hero Section - V2 버전에서만 표시 */}
-      {!isTraditional && (
+      {!isClassic && !isHybrid && (
         <motion.section
-          className="py-20 bg-gradient-to-br from-blue-600 to-primary-700 text-white"
+          className="relative py-20 bg-gradient-to-br from-blue-600 to-primary-700 text-white"
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          {/* 이정표 - 오른쪽 상단 */}
+          <motion.div 
+            className="absolute top-8 right-8 text-right z-10"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="text-xs font-medium text-blue-200 uppercase tracking-wider mb-1">
+              {currentLanguage === 'en' ? 'CURRENT PAGE' : '현재 페이지'}
+            </div>
+            <div className="text-2xl font-bold text-white">
+              CI / BI
+            </div>
+          </motion.div>
+
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div variants={fadeInUp}>
               <div className="text-6xl mb-6">🎨</div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
@@ -177,6 +191,25 @@ const AboutCIBIPage = () => {
             </motion.div>
           </div>
         </motion.section>
+      )}
+
+      {/* CURRENT PAGE 표시 - Hybrid/Classic 버전용 */}
+      {(isClassic || isHybrid) && (
+        <div className="relative pt-20 pb-8 bg-gradient-to-br from-primary-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+          <motion.div 
+            className="absolute top-8 right-8 text-right z-10"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+              {currentLanguage === 'en' ? 'CURRENT PAGE' : '현재 페이지'}
+            </div>
+            <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+              CI / BI
+            </div>
+          </motion.div>
+        </div>
       )}
 
       {/* 탭 네비게이션 */}
@@ -437,8 +470,13 @@ const AboutCIBIPage = () => {
     </div>
   );
 
-  // Traditional 버전일 때는 TraditionalNav와 TraditionalLayout으로 감싸기
-  if (isTraditional) {
+  // Hybrid 버전: 레이아웃 없이 콘텐츠만 반환 (HybridLayout이 App.js에서 적용됨)
+  if (isHybrid) {
+    return pageContent;
+  }
+
+  // Classic 버전: TraditionalNav와 TraditionalLayout으로 감싸기
+  if (isClassic) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
         <TraditionalNav version={version} />

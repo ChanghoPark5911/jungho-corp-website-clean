@@ -1,14 +1,21 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../../hooks/useI18n';
 import { useTheme } from '../../../contexts/ThemeContext';
 
 const ClarusDetailPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
   const { isDarkMode } = useTheme();
   const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
+  const [selectedImage, setSelectedImage] = React.useState(null);
+  const [showAllAchievements, setShowAllAchievements] = React.useState(false);
+
+  // 현재 경로가 Hybrid인지 확인하여 뒤로가기 경로 설정
+  const isHybrid = location.pathname.startsWith('/hybrid');
+  const backPath = isHybrid ? '/hybrid' : '/';
 
   // JSON 파일에서 PDF 자료 로드 (우선), localStorage는 백업 (클라루스 관련만)
   React.useEffect(() => {
@@ -83,49 +90,37 @@ const ClarusDetailPage = () => {
     }
   };
 
-  // 주요 제품/서비스
+  // 주요 제품/서비스 (Classic 버전 콘텐츠 적용)
   const products = [
     {
-      name: 'Programmable Controller',
-      description: currentLanguage === 'en' 
-        ? 'IoT-based intelligent lighting control controller'
-        : 'IoT 기반 지능형 조명 제어 컨트롤러',
-      icon: '🎛️'
+      name: currentLanguage === 'en' ? 'Lighting Control System' : '조명제어시스템',
+      description: currentLanguage === 'en'
+        ? 'IoT-based integrated lighting control for buildings and facilities'
+        : 'IoT 기반 건물 및 시설물 통합 조명 제어',
+      features: currentLanguage === 'en' 
+        ? ['Remote Control', 'Energy Saving', 'Schedule Management', 'Real-time Monitoring']
+        : ['원격 제어', '에너지 절감', '스케줄 관리', '실시간 모니터링'],
+      imagePath: '/images/clarus/lighting-control-diagram.png'
     },
     {
-      name: 'Energy Monitoring Unit',
+      name: currentLanguage === 'en' ? 'Power Monitoring System' : '전력감시시스템',
       description: currentLanguage === 'en'
-        ? 'Real-time energy monitoring and management system'
-        : '실시간 에너지 모니터링 및 관리 시스템',
-      icon: '📊'
+        ? 'Real-time power consumption monitoring and analysis'
+        : '실시간 전력 사용량 감시 및 분석',
+      features: currentLanguage === 'en'
+        ? ['Power Measurement', 'Data Analysis', 'Report Generation', 'Alert System']
+        : ['전력 계측', '데이터 분석', '리포트 생성', '알람 시스템'],
+      imagePath: '/images/clarus/power-monitoring-diagram.png'
     },
     {
-      name: 'Program Switch',
+      name: currentLanguage === 'en' ? 'Export Business' : '해외사업(수출)',
       description: currentLanguage === 'en'
-        ? 'User-customizable programmable switch'
-        : '사용자 맞춤형 프로그램 가능 스위치',
-      icon: '🔘'
-    },
-    {
-      name: 'Wireless Control System',
-      description: currentLanguage === 'en'
-        ? 'Wireless-based lighting control solution'
-        : '무선 기반 조명 제어 솔루션',
-      icon: '📡'
-    },
-    {
-      name: 'MAGIC CLARUS Software',
-      description: currentLanguage === 'en'
-        ? 'Integrated lighting management software'
-        : '통합 조명 관리 소프트웨어',
-      icon: '💻'
-    },
-    {
-      name: 'Sensor & Wireless Unit',
-      description: currentLanguage === 'en'
-        ? 'Smart sensors and wireless communication modules'
-        : '스마트 센서 및 무선 통신 모듈',
-      icon: '📶'
+        ? 'Building global export infrastructure for Clarus lighting control products'
+        : 'Clarus 조명제어 제품의 해외수출 인프라 구축',
+      features: currentLanguage === 'en'
+        ? ['North America/Europe advanced markets, China/Taiwan', 'Southeast Asian emerging markets including Vietnam/Philippines']
+        : ['북미/유럽 선진시장, 중국/대만', '베트남/필리핀 등 동남아 신흥시장'],
+      imagePath: '/images/clarus/export-business-map.png'
     }
   ];
 
@@ -222,7 +217,7 @@ const ClarusDetailPage = () => {
         {/* 뒤로가기 버튼 */}
         <motion.button
           className="absolute top-8 left-8 z-10 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-          onClick={() => navigate('/subsidiaries')}
+          onClick={() => navigate(backPath)}
           whileHover={{ x: -5 }}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -567,23 +562,91 @@ const ClarusDetailPage = () => {
           </motion.div>
 
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="space-y-6"
             variants={staggerContainer}
           >
             {products.map((product, index) => (
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                whileHover={{ y: -5 }}
-                className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
               >
-                <div className="text-4xl mb-4">{product.icon}</div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                  {product.name}
-                </h3>
-                  <p className="text-gray-600 dark:text-gray-100 product-description">
-                    {product.description}
-                  </p>
+                {/* 헤더 */}
+                <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 px-6 py-4 flex items-center gap-3">
+                  <div className="w-8 h-8 bg-white text-blue-600 rounded-lg flex items-center justify-center text-lg font-bold flex-shrink-0 shadow-md">
+                    {index + 1}
+                  </div>
+                  <h3 className="text-xl font-bold text-white m-0 p-0" style={{ lineHeight: '1' }}>
+                    {product.name}
+                  </h3>
+                </div>
+
+                {/* 본문: 좌측 텍스트 + 우측 이미지 */}
+                <div className="p-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* 좌측: 설명 및 주요 기능 (2/3) */}
+                    <div className="lg:col-span-2">
+                      <p className="text-gray-700 dark:text-gray-300 text-base mb-4 leading-relaxed">
+                        {product.description}
+                      </p>
+                      
+                      {/* 주요 기능 */}
+                      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                          {currentLanguage === 'en' ? '▪ Key Features:' : index === 2 ? '▪ 대상:' : '▪ 주요 기능:'}
+                        </h4>
+                        <div className="space-y-2">
+                          {product.features.map((feature, idx) => (
+                            <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-300 text-sm">
+                              <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">
+                                {index === 2 ? '-' : '✓'}
+                              </span>
+                              <span>{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 우측: 다이어그램/이미지 공간 (1/3) */}
+                    <div className="lg:col-span-1">
+                      <div className="bg-gray-50 dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 h-full min-h-[200px] flex flex-col items-center justify-center">
+                        {product.imagePath ? (
+                          <div 
+                            className="w-full h-full flex items-center justify-center cursor-pointer group relative"
+                            onClick={() => setSelectedImage({ src: product.imagePath, alt: product.name })}
+                          >
+                            <img 
+                              src={product.imagePath} 
+                              alt={`${product.name} diagram`}
+                              className="w-full h-full object-contain rounded-lg transition-transform duration-300 group-hover:scale-105"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                e.target.parentNode.innerHTML = '<div class="text-center"><div class="text-4xl mb-2">📊</div><p class="text-sm text-gray-500 dark:text-gray-400 font-semibold">' + 
+                                  (currentLanguage === 'en' ? 'Diagram<br/>Coming Soon' : '다이어그램<br/>준비중') + '</p></div>';
+                              }}
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                              <div className="bg-black bg-opacity-50 rounded-full p-3">
+                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-center">
+                            <div className="text-4xl mb-2">📊</div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 font-semibold">
+                              {currentLanguage === 'en' ? 'Diagram' : '다이어그램'}<br />
+                              {currentLanguage === 'en' ? 'Coming Soon' : '준비중'}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </motion.div>
@@ -654,7 +717,7 @@ const ClarusDetailPage = () => {
             className="space-y-4"
             variants={staggerContainer}
           >
-            {achievements.map((achievement, index) => (
+            {(showAllAchievements ? achievements : achievements.slice(0, 5)).map((achievement, index) => (
               <motion.div
                 key={index}
                 variants={fadeInUp}
@@ -670,6 +733,37 @@ const ClarusDetailPage = () => {
               </motion.div>
             ))}
           </motion.div>
+
+          {/* 더보기/접기 버튼 */}
+          {achievements.length > 5 && (
+            <motion.div 
+              className="mt-8 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <button
+                onClick={() => setShowAllAchievements(!showAllAchievements)}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+              >
+                {showAllAchievements ? (
+                  <>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                    </svg>
+                    {currentLanguage === 'en' ? 'Show Less' : '접기'}
+                  </>
+                ) : (
+                  <>
+                    {currentLanguage === 'en' ? `View All ${achievements.length} Achievements` : `전체 ${achievements.length}개 연혁 보기`}
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </>
+                )}
+              </button>
+            </motion.div>
+          )}
         </div>
       </motion.section>
 
@@ -808,6 +902,30 @@ const ClarusDetailPage = () => {
           </motion.div>
         </div>
       </motion.section>
+
+      {/* 이미지 확대 모달 */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-6xl w-full">
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <img 
+              src={selectedImage.src} 
+              alt={selectedImage.alt}
+              className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

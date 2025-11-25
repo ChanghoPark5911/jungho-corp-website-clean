@@ -221,14 +221,6 @@ const AboutIntroClassic = () => {
               </div>
             ))}
           </div>
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => navigate('/classic/subsidiaries')}
-              className="px-6 py-3 border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-medium rounded hover:bg-blue-600 dark:hover:bg-blue-700 hover:text-white dark:hover:text-white transition-all duration-200"
-            >
-              {currentLanguage === 'en' ? 'View All Subsidiaries →' : '계열사 전체보기 →'}
-            </button>
-          </div>
         </section>
       </TraditionalLayout>
     </div>

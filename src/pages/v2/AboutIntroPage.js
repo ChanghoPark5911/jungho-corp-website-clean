@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
 
 /**
@@ -8,8 +8,13 @@ import { useI18n } from '../../hooks/useI18n';
  */
 const AboutIntroPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
   const [pagesData, setPagesData] = React.useState(null);
+
+  // 현재 경로가 Hybrid인지 확인
+  const isHybrid = location.pathname.startsWith('/hybrid');
+  const pathPrefix = isHybrid ? '/hybrid' : '';
 
   // JSON 파일 및 LocalStorage에서 데이터 로드
   React.useEffect(() => {
@@ -76,7 +81,7 @@ const AboutIntroPage = () => {
     }
   };
 
-  // 기본 계열사 데이터
+  // 기본 계열사 데이터 (경로는 현재 버전에 맞게 동적 설정)
   const defaultSubsidiaries = [
     {
       id: 'tlc',
@@ -85,7 +90,7 @@ const AboutIntroPage = () => {
       description: currentLanguage === 'en' ? 'Smart Building Automation Systems Specialist' : '스마트 빌딩 자동화 시스템 전문 기업',
       icon: '⚡',
       color: 'from-green-500 to-emerald-500',
-      path: '/subsidiaries/tlc'
+      path: `${pathPrefix}/subsidiaries/jungho-tlc`
     },
     {
       id: 'clarus',
@@ -94,7 +99,7 @@ const AboutIntroPage = () => {
       description: currentLanguage === 'en' ? 'Leading Company in Advanced Lighting Control Technology' : '첨단 조명 제어 기술 선도 기업',
       icon: '💡',
       color: 'from-cyan-500 to-blue-500',
-      path: '/subsidiaries/clarus'
+      path: `${pathPrefix}/subsidiaries/clarus`
     },
     {
       id: 'illutech',
@@ -103,7 +108,7 @@ const AboutIntroPage = () => {
       description: currentLanguage === 'en' ? 'High-Efficiency LED Lighting Manufacturer' : '고효율 LED 조명 전문 제조사',
       icon: '🔆',
       color: 'from-orange-500 to-amber-500',
-      path: '/subsidiaries/illutech'
+      path: `${pathPrefix}/subsidiaries/illutech`
     },
     {
       id: 'texcom',
@@ -112,7 +117,7 @@ const AboutIntroPage = () => {
       description: currentLanguage === 'en' ? '40 Years of Textile Machinery Expertise' : '40년 전통의 섬유기계 전문 기업',
       icon: '🧵',
       color: 'from-purple-500 to-pink-500',
-      path: '/subsidiaries/texcom'
+      path: `${pathPrefix}/subsidiaries/jungho-texcom`
     }
   ];
 
@@ -199,6 +204,21 @@ const AboutIntroPage = () => {
             backgroundSize: '40px 40px'
           }} />
         </div>
+
+        {/* 이정표 - 오른쪽 상단 */}
+        <motion.div 
+          className="absolute top-8 right-8 text-right z-10"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+            {currentLanguage === 'en' ? 'CURRENT PAGE' : '현재 페이지'}
+          </div>
+          <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+            {currentLanguage === 'en' ? 'COMPANY INTRODUCTION' : '정호그룹 소개'}
+          </div>
+        </motion.div>
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 

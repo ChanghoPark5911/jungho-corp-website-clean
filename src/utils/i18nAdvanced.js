@@ -12,16 +12,71 @@ class I18nAdvanced {
       // ja: '日本語'
     };
     
-    // 저장된 언어를 먼저 확인
-    const storedLang = localStorage.getItem('preferredLanguage');
+    // 메모리 기반 언어 저장소 (localStorage가 작동하지 않을 때 대체)
+    this.memoryLanguage = null;
+    
+    // 저장된 언어를 확인 (localStorage → sessionStorage → 메모리 → 기본값)
+    const storedLang = this.getStoredLanguageFromMultipleSources();
     this.currentLanguage = (storedLang && this.supportedLanguages.includes(storedLang)) ? storedLang : 'ko';
     
     console.log('🚀 i18nAdvanced 초기화 - 현재 언어:', this.currentLanguage);
-    console.log('📦 localStorage.preferredLanguage:', storedLang);
+    console.log('📦 저장소 상태:', {
+      localStorage: this.safeGetItem('preferredLanguage', 'localStorage'),
+      sessionStorage: this.safeGetItem('preferredLanguage', 'sessionStorage'),
+      memory: this.memoryLanguage
+    });
     
     this.translations = {};
     
     this.init();
+  }
+
+  // 안전한 저장소 접근 (try-catch)
+  safeGetItem(key, storageType = 'localStorage') {
+    try {
+      const storage = storageType === 'sessionStorage' ? sessionStorage : localStorage;
+      return storage.getItem(key);
+    } catch (e) {
+      console.warn(`⚠️ ${storageType} 읽기 실패:`, e.message);
+      return null;
+    }
+  }
+
+  safeSetItem(key, value, storageType = 'localStorage') {
+    try {
+      const storage = storageType === 'sessionStorage' ? sessionStorage : localStorage;
+      storage.setItem(key, value);
+      return true;
+    } catch (e) {
+      console.warn(`⚠️ ${storageType} 쓰기 실패:`, e.message);
+      return false;
+    }
+  }
+
+  // 다중 소스에서 언어 가져오기
+  getStoredLanguageFromMultipleSources() {
+    // 1순위: localStorage
+    let stored = this.safeGetItem('preferredLanguage', 'localStorage');
+    if (stored) {
+      console.log('✅ localStorage에서 언어 로드:', stored);
+      return stored;
+    }
+
+    // 2순위: sessionStorage
+    stored = this.safeGetItem('preferredLanguage', 'sessionStorage');
+    if (stored) {
+      console.log('✅ sessionStorage에서 언어 로드:', stored);
+      return stored;
+    }
+
+    // 3순위: 메모리
+    if (this.memoryLanguage) {
+      console.log('✅ 메모리에서 언어 로드:', this.memoryLanguage);
+      return this.memoryLanguage;
+    }
+
+    console.log('ℹ️ 저장된 언어 없음 - 기본값 사용');
+    return null;
   }
 
   init() {
@@ -82,12 +137,19 @@ class I18nAdvanced {
     return 'ko'; // 기본값
   }
 
-  // 번역 데이터 로드
+  // 번역 데이터 로드 (다중 저장소 지원)
   loadTranslations() {
     try {
-      // localStorage에서 번역 데이터 로드
-      const storedTranslations = localStorage.getItem('i18nTranslations');
-      console.log('🔍 i18nTranslations 로드 시도:', storedTranslations ? '데이터 있음' : '데이터 없음');
+      // localStorage 또는 sessionStorage에서 번역 데이터 로드
+      let storedTranslations = this.safeGetItem('i18nTranslations', 'localStorage');
+      let storageSource = 'localStorage';
+      
+      if (!storedTranslations) {
+        storedTranslations = this.safeGetItem('i18nTranslations', 'sessionStorage');
+        storageSource = 'sessionStorage';
+      }
+      
+      console.log('🔍 i18nTranslations 로드 시도:', storedTranslations ? `데이터 있음 (${storageSource})` : '데이터 없음');
       
       if (storedTranslations) {
         try {
@@ -989,7 +1051,7 @@ class I18nAdvanced {
             technicalDocs: 'Technical Documents'
           },
           support: {
-            main: 'Customer Service',
+            main: 'Customer Center',
             report: 'Support Report',
             contact: 'Contact Us'
           },
@@ -1157,7 +1219,7 @@ class I18nAdvanced {
           retry: 'Retry',
           noContent: 'Unable to load content.',
           hero: {
-            title: 'Customer Support',
+            title: 'Customer Center',
             subtitle: 'Jungho Group experts will respond within 24 hours. Please contact us anytime.',
             description: 'We support customer success through professional technical support and services'
           },
@@ -1284,9 +1346,9 @@ class I18nAdvanced {
             keywords: 'Jungho Group, Projects, Lighting Control, LED Lighting, Smart Lighting, Project Cases'
           },
           support: {
-            title: 'Customer Support - Jungho Group',
-            description: 'Check out Jungho Group\'s customer support services. We provide various support services such as 24/7 technical support, A/S service, and training programs.',
-            keywords: 'Jungho Group, Customer Support, A/S, Technical Support, Training Program, Customer Service'
+            title: 'Customer Center - Jungho Group',
+            description: 'Check out Jungho Group\'s customer center services. We provide various support services such as 24/7 technical support, A/S service, and training programs.',
+            keywords: 'Jungho Group, Customer Center, Customer Support, A/S, Technical Support, Training Program, Customer Service'
           },
           news: {
             title: 'News - Jungho Group',
@@ -2484,33 +2546,79 @@ class I18nAdvanced {
     };
   }
 
-  // 번역 데이터 저장
+  // 번역 데이터 저장 (다중 저장소 지원)
   saveTranslations() {
-    try {
-      localStorage.setItem('i18nTranslations', JSON.stringify(this.translations));
-      console.log('번역 데이터 저장 완료');
-    } catch (error) {
-      console.error('번역 데이터 저장 오류:', error);
+    const jsonData = JSON.stringify(this.translations);
+    let saved = false;
+    
+    // 1순위: localStorage
+    if (this.safeSetItem('i18nTranslations', jsonData, 'localStorage')) {
+      console.log('✅ 번역 데이터 저장 완료 (localStorage)');
+      saved = true;
+    }
+    
+    // 2순위: sessionStorage (localStorage 실패 시)
+    if (!saved && this.safeSetItem('i18nTranslations', jsonData, 'sessionStorage')) {
+      console.log('✅ 번역 데이터 저장 완료 (sessionStorage, localStorage 대체)');
+      saved = true;
+    }
+    
+    if (!saved) {
+      console.warn('⚠️ 번역 데이터 저장 실패 (모든 저장소 실패)');
     }
   }
 
   // 언어 변경
   setLanguage(language) {
     if (this.supportedLanguages.includes(language)) {
-      console.log('🌐 언어 변경:', language);
+      console.log('🌐 [setLanguage] 언어 변경 시작:', language);
+      console.log('📦 [setLanguage] 이전 언어:', this.currentLanguage);
+      
       this.currentLanguage = language;
-      localStorage.setItem('preferredLanguage', language);
-      console.log('✅ preferredLanguage 저장 완료:', localStorage.getItem('preferredLanguage'));
+      
+      // 다중 저장소에 저장 (localStorage → sessionStorage → 메모리)
+      let savedSuccessfully = false;
+      
+      // 1순위: localStorage
+      if (this.safeSetItem('preferredLanguage', language, 'localStorage')) {
+        const saved = this.safeGetItem('preferredLanguage', 'localStorage');
+        if (saved === language) {
+          console.log('✅ [setLanguage] localStorage에 저장 완료:', saved);
+          savedSuccessfully = true;
+        } else {
+          console.warn('⚠️ [setLanguage] localStorage 저장 확인 실패');
+        }
+      }
+      
+      // 2순위: sessionStorage (localStorage 실패 시)
+      if (!savedSuccessfully) {
+        if (this.safeSetItem('preferredLanguage', language, 'sessionStorage')) {
+          console.log('✅ [setLanguage] sessionStorage에 저장 완료 (localStorage 대체)');
+          savedSuccessfully = true;
+        }
+      }
+      
+      // 3순위: 메모리 (모든 저장소 실패 시)
+      if (!savedSuccessfully) {
+        this.memoryLanguage = language;
+        console.log('✅ [setLanguage] 메모리에 저장 완료 (모든 저장소 실패):', this.memoryLanguage);
+        savedSuccessfully = true;
+      }
+      
+      if (!savedSuccessfully) {
+        console.error('❌ [setLanguage] 모든 저장 방법 실패!');
+      }
       
       // HTML lang 속성 업데이트
       document.documentElement.lang = language;
+      console.log('🏷️ [setLanguage] HTML lang 속성 업데이트:', document.documentElement.lang);
       
       // 언어 변경 이벤트 발생
       window.dispatchEvent(new CustomEvent('languageChanged', { 
         detail: { language } 
       }));
       
-      console.log('언어 변경:', language);
+      console.log('✅ [setLanguage] 언어 변경 완료:', language);
     }
   }
 
@@ -2658,5 +2766,11 @@ class I18nAdvanced {
 
 // 싱글톤 인스턴스 생성
 const i18nAdvanced = new I18nAdvanced();
+
+// 디버깅을 위해 window 객체에 노출
+if (typeof window !== 'undefined') {
+  window.i18nAdvanced = i18nAdvanced;
+  console.log('🌍 i18nAdvanced가 window 객체에 노출되었습니다. 콘솔에서 window.i18nAdvanced로 접근 가능합니다.');
+}
 
 export default i18nAdvanced;

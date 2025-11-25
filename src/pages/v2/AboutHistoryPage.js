@@ -257,23 +257,9 @@ const AboutHistoryPage = () => {
     }
   ];
 
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <TraditionalNav version={version} />
-      
-      <SmallBanner
-        subtitle={currentLanguage === 'en' ? 'JUNGHO Group' : '정호그룹'}
-        title={currentLanguage === 'en' ? 'History' : '연혁'}
-        description={currentLanguage === 'en' 
-          ? '40+ years of innovation and growth since 1982'
-          : '1982년부터 이어온 40년의 혁신과 성장'
-        }
-        backgroundImage="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1920&q=80"
-        height="400px"
-      />
-      
-      <TraditionalLayout showSidebar={true} category="about" version={version}>
-        <div>
+  // 순수 콘텐츠 (레이아웃 제외)
+  const content = (
+    <div>
       {/* Hero Section */}
       <motion.section 
         className="relative py-20 bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden"
@@ -297,10 +283,10 @@ const AboutHistoryPage = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
-            {t('history.currentPage')}
+            {currentLanguage === 'en' ? 'CURRENT PAGE' : '현재 페이지'}
           </div>
           <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-            {t('history.pageTitle')}
+            {currentLanguage === 'en' ? 'HISTORY' : '연혁'}
           </div>
         </motion.div>
 
@@ -462,7 +448,32 @@ const AboutHistoryPage = () => {
           </motion.div>
         </div>
       </motion.section>
-        </div>
+    </div>
+  );
+
+  // Hybrid 버전: 레이아웃 없이 콘텐츠만 반환 (HybridLayout이 App.js에서 적용됨)
+  if (isHybrid) {
+    return content;
+  }
+
+  // Classic/V2 버전: 기존 레이아웃 포함
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <TraditionalNav version={version} />
+      
+      <SmallBanner
+        subtitle={currentLanguage === 'en' ? 'JUNGHO Group' : '정호그룹'}
+        title={currentLanguage === 'en' ? 'History' : '연혁'}
+        description={currentLanguage === 'en' 
+          ? '40+ years of innovation and growth since 1982'
+          : '1982년부터 이어온 40년의 혁신과 성장'
+        }
+        backgroundImage="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1920&q=80"
+        height="400px"
+      />
+      
+      <TraditionalLayout showSidebar={true} category="about" version={version}>
+        {content}
       </TraditionalLayout>
     </div>
   );

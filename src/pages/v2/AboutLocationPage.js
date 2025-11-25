@@ -13,7 +13,6 @@ const AboutLocationPage = () => {
   // 현재 경로가 classic 또는 hybrid인지 확인
   const isClassic = location.pathname.startsWith('/classic');
   const isHybrid = location.pathname.startsWith('/hybrid');
-  const isTraditional = isClassic || isHybrid;
   const version = isHybrid ? 'hybrid' : isClassic ? 'classic' : 'v2';
   // 애니메이션 variants
   const fadeInUp = {
@@ -112,11 +111,11 @@ const AboutLocationPage = () => {
     mapUrl: 'https://map.kakao.com/link/map/클라루스빌딩,37.5769,127.0816'
   };
 
-  // Traditional 버전용 콘텐츠
+  // 페이지 콘텐츠
   const pageContent = (
-    <div className={isTraditional ? '' : 'min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 pt-20'}>
+    <div className={(isClassic || isHybrid) ? '' : 'min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 pt-20'}>
       {/* Hero Section - V2 버전에서만 표시 */}
-      {!isTraditional && (
+      {!isClassic && !isHybrid && (
         <motion.section 
           className="relative py-20 bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden"
           initial={{ opacity: 0 }}
@@ -139,10 +138,10 @@ const AboutLocationPage = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
-            Current Page
+            {currentLanguage === 'en' ? 'CURRENT PAGE' : '현재 페이지'}
           </div>
           <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-            LOCATION
+            {currentLanguage === 'en' ? 'LOCATION' : '찾아오시는 길'}
           </div>
         </motion.div>
 
@@ -508,8 +507,13 @@ const AboutLocationPage = () => {
     </div>
   );
 
-  // Traditional 버전일 때는 TraditionalNav와 TraditionalLayout으로 감싸기
-  if (isTraditional) {
+  // Hybrid 버전: 레이아웃 없이 콘텐츠만 반환 (HybridLayout이 App.js에서 적용됨)
+  if (isHybrid) {
+    return pageContent;
+  }
+
+  // Classic 버전: TraditionalNav와 TraditionalLayout으로 감싸기
+  if (isClassic) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
         <TraditionalNav version={version} />

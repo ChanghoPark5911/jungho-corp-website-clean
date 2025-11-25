@@ -1,14 +1,20 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../../hooks/useI18n';
 import { useTheme } from '../../../contexts/ThemeContext';
 
 const IllutechDetailPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
   const { isDarkMode } = useTheme();
   const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
+  const [showAllAchievements, setShowAllAchievements] = React.useState(false);
+
+  // 현재 경로가 Hybrid인지 확인하여 뒤로가기 경로 설정
+  const isHybrid = location.pathname.startsWith('/hybrid');
+  const backPath = isHybrid ? '/hybrid' : '/';
 
   // JSON 파일에서 PDF 자료 로드 (우선), localStorage는 백업 (일루텍 관련만)
   React.useEffect(() => {
@@ -204,7 +210,7 @@ const IllutechDetailPage = () => {
         {/* 뒤로가기 버튼 */}
         <motion.button
           className="absolute top-8 left-8 z-10 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-          onClick={() => navigate('/subsidiaries')}
+          onClick={() => navigate(backPath)}
           whileHover={{ x: -5 }}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -456,7 +462,7 @@ const IllutechDetailPage = () => {
             className="space-y-4"
             variants={staggerContainer}
           >
-            {achievements.map((achievement, index) => (
+            {(showAllAchievements ? achievements : achievements.slice(0, 5)).map((achievement, index) => (
               <motion.div
                 key={index}
                 variants={fadeInUp}
@@ -472,6 +478,37 @@ const IllutechDetailPage = () => {
               </motion.div>
             ))}
           </motion.div>
+
+          {/* 더보기/접기 버튼 */}
+          {achievements.length > 5 && (
+            <motion.div 
+              className="mt-8 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <button
+                onClick={() => setShowAllAchievements(!showAllAchievements)}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+              >
+                {showAllAchievements ? (
+                  <>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                    </svg>
+                    {currentLanguage === 'en' ? 'Show Less' : '접기'}
+                  </>
+                ) : (
+                  <>
+                    {currentLanguage === 'en' ? `View All ${achievements.length} Achievements` : `전체 ${achievements.length}개 연혁 보기`}
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </>
+                )}
+              </button>
+            </motion.div>
+          )}
         </div>
       </motion.section>
 

@@ -72,8 +72,8 @@ const HomePageClassic = () => {
       name: currentLanguage === 'en' ? 'CLARUS' : '클라루스',
       nameEn: 'CLARUS Korea',
       description: currentLanguage === 'en'
-        ? 'IoT-based smart lighting control specialist'
-        : 'IoT 기반 스마트 조명 제어 전문 기업',
+        ? 'IoT-based smart lighting/power control solution development, production and export'
+        : 'IoT기반 스마트 조명/전력제어솔루션 개발, 생산 및 해외수출',
       established: '2009',
       business: currentLanguage === 'en'
         ? 'Lighting Control, Power Monitoring'
@@ -85,8 +85,8 @@ const HomePageClassic = () => {
       name: currentLanguage === 'en' ? 'Jungho TLC' : '정호티엘씨',
       nameEn: 'Jungho TLC Co., Ltd.',
       description: currentLanguage === 'en'
-        ? 'Partner for stable building automation'
-        : '안정적인 빌딩 자동화의 파트너',
+        ? 'Installation, sales and maintenance of lighting/power control solutions in public and private sectors'
+        : '공공, 민간분야 조명/전력제어솔루션 시공 판매 및 유지보수',
       established: '1982',
       business: currentLanguage === 'en'
         ? 'Integrated Lighting & Power Control'
@@ -125,17 +125,17 @@ const HomePageClassic = () => {
   const businessAreas = [
     {
       icon: '💡',
-      title: currentLanguage === 'en' ? 'AI & IoT Solutions' : 'AI 및 IoT 솔루션',
+      title: currentLanguage === 'en' ? 'Lighting/Power Control Solution Development' : '조명/전력제어 솔루션 개발',
       description: currentLanguage === 'en'
-        ? 'Smart lighting and power control using AI and IoT technology'
-        : 'AI와 IoT 기술을 활용한 스마트 조명 및 전력 제어'
+        ? 'Development of lighting and power control solutions using AI and IoT technology'
+        : 'AI, IoT기술을 활용한 조명, 전력 제어 솔루션 개발'
     },
     {
-      icon: '🚚',
-      title: currentLanguage === 'en' ? 'Eco-Friendly Logistics' : '친환경 물류',
+      icon: '🏢',
+      title: currentLanguage === 'en' ? 'Lighting/Power Control Solution Sales' : '조명/전력제어 솔루션 국내외 판매',
       description: currentLanguage === 'en'
-        ? 'Integrated logistics solutions for sustainable future'
-        : '지속 가능한 미래를 위한 통합 물류 솔루션'
+        ? 'Domestic and international sales and installation of lighting/power control solutions'
+        : '국내외 조명/전력제어 솔루션 판매, 시공'
     },
     {
       icon: '👔',
@@ -484,7 +484,7 @@ const HomePageClassic = () => {
         </section>
 
         {/* 계열사 소개 - 테이블 형식 (Traditional Style) */}
-        <section className="mb-12">
+        <section id="subsidiaries-section" className="mb-12">
           <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'Our Subsidiaries' : '계열사 소개'}
@@ -555,15 +555,6 @@ const HomePageClassic = () => {
                 ))}
               </tbody>
             </table>
-          </div>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => navigate('/subsidiaries')}
-              className="px-6 py-3 border-2 border-green-600 dark:border-green-500 text-green-600 dark:text-green-400 font-medium rounded hover:bg-green-600 dark:hover:bg-green-700 hover:text-white dark:hover:text-white transition-all duration-200"
-            >
-              {currentLanguage === 'en' ? 'View All Subsidiaries →' : '계열사 전체보기 →'}
-            </button>
           </div>
         </section>
 

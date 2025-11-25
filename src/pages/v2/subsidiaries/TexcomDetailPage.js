@@ -1,13 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../../hooks/useI18n';
 import { useTheme } from '../../../contexts/ThemeContext';
 
 const TexcomDetailPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
   const { isDarkMode } = useTheme();
+
+  // 현재 경로가 Hybrid인지 확인하여 뒤로가기 경로 설정
+  const isHybrid = location.pathname.startsWith('/hybrid');
+  const backPath = isHybrid ? '/hybrid' : '/';
 
   // 애니메이션 variants
   const fadeInUp = {
@@ -50,7 +55,7 @@ const TexcomDetailPage = () => {
         {/* 뒤로가기 버튼 */}
         <motion.button
           className="absolute top-8 left-8 z-10 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-          onClick={() => navigate('/subsidiaries')}
+          onClick={() => navigate(backPath)}
           whileHover={{ x: -5 }}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}

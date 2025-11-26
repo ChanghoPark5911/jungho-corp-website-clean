@@ -155,7 +155,7 @@ const ProjectsPage = () => {
 
         {/* 이정표 - 오른쪽 상단 */}
         <motion.div 
-          className="absolute top-8 right-8 text-right z-10"
+          className="absolute top-24 right-8 text-right z-10"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}

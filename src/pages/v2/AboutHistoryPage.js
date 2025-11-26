@@ -277,7 +277,7 @@ const AboutHistoryPage = () => {
 
         {/* 이정표 - 오른쪽 상단 */}
         <motion.div 
-          className="absolute top-8 right-8 text-right z-10"
+          className="absolute top-24 right-8 text-right z-10"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -451,12 +451,12 @@ const AboutHistoryPage = () => {
     </div>
   );
 
-  // Hybrid 버전: 레이아웃 없이 콘텐츠만 반환 (HybridLayout이 App.js에서 적용됨)
-  if (isHybrid) {
+  // V2 또는 Hybrid: 콘텐츠만 반환 (레이아웃은 App.js에서 제공)
+  if (!isClassic) {
     return content;
   }
 
-  // Classic/V2 버전: 기존 레이아웃 포함
+  // Classic 버전만: 자체 레이아웃 포함
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <TraditionalNav version={version} />

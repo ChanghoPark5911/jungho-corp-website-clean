@@ -477,7 +477,7 @@ const AdminPageV2 = () => {
   // 관리자 대시보드
   const tabs = [
     { id: 'dashboard', label: '대시보드', icon: '📊' },
-    { id: 'v2home', label: 'V2 홈페이지', icon: '🏠' },
+    { id: 'v2home', label: '메인 홈페이지', icon: '🏠' },
     { id: 'pages', label: '정적 페이지', icon: '📄' },
     { id: 'media', label: '미디어 관리', icon: '🎬' },
     // { id: 'images', label: '이미지 관리', icon: '🖼️' }, // Firebase Storage 사용 시 활성화
@@ -621,13 +621,13 @@ const DashboardTab = () => {
         ))}
       </div>
       
-      {/* 버전 관리 섹션 */}
+      {/* 버전 관리 섹션 - 최종 버전 결정 시까지 임시 숨김 */}
+      {/* 
       <div className="mt-8 p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg border border-purple-200 dark:border-purple-700">
         <h3 className="text-lg font-bold text-purple-900 dark:text-purple-100 mb-4 flex items-center gap-2">
           🎨 버전 관리
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* V2 버전 */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-blue-500 shadow-lg">
             <div className="flex items-center justify-between mb-2">
               <h4 className="font-bold text-blue-600 dark:text-blue-400">V2 버전</h4>
@@ -642,7 +642,6 @@ const DashboardTab = () => {
             </button>
           </div>
 
-          {/* Hybrid 버전 */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-green-500 shadow-lg">
             <div className="flex items-center justify-between mb-2">
               <h4 className="font-bold text-green-600 dark:text-green-400">Hybrid 버전</h4>
@@ -657,7 +656,6 @@ const DashboardTab = () => {
             </button>
           </div>
 
-          {/* Classic 버전 */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-gray-400 shadow-lg">
             <div className="flex items-center justify-between mb-2">
               <h4 className="font-bold text-gray-600 dark:text-gray-400">Classic 버전</h4>
@@ -673,14 +671,15 @@ const DashboardTab = () => {
           </div>
         </div>
       </div>
+      */}
       
       {/* 빠른 시작 가이드 */}
       <div className="mt-6 p-6 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
         <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">💡 빠른 시작</h3>
         <ul className="space-y-2 text-blue-800 dark:text-blue-200">
-          <li>• <strong>V2 홈페이지</strong>: IRGSHero와 Gateway 섹션을 관리하세요</li>
-          <li>• <strong>정적 페이지</strong>: About 페이지 콘텐츠를 수정하세요</li>
-          <li>• <strong>미디어 관리</strong>: 홍보영상과 SNS 링크를 업데이트하세요</li>
+          <li>• <strong>메인 홈페이지</strong>: IRGSHero와 Gateway 섹션을 관리하세요</li>
+          <li>• <strong>정적 페이지</strong>: ABOUT 페이지 콘텐츠를 수정하세요</li>
+          <li>• <strong>미디어 관리</strong>: 프로젝트 영상, 홍보영상, SNS 링크를 업데이트하세요</li>
           <li>• <strong>다국어 관리</strong>: 한국어/영어 번역을 관리하세요</li>
         </ul>
       </div>
@@ -695,7 +694,7 @@ const V2HomeTab = ({ data, setData, onSave }) => {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">V2 홈페이지 관리</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">메인 홈페이지 관리</h2>
         <button
           onClick={onSave}
           className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"

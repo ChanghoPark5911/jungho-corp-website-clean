@@ -63,8 +63,8 @@ const SupportPage = () => {
     {
       id: 'kakao',
       icon: '💬',
-      title: currentLanguage === 'en' ? 'KakaoTalk Consultation' : '카카오톡 상담',
-      description: COMPANY_INFO.support.kakaoTalk.id,
+      title: currentLanguage === 'en' ? '1:1 Monthly Consultation' : '카카오톡 상담',
+      description: currentLanguage === 'en' ? '@JunghoGroup' : COMPANY_INFO.support.kakaoTalk.id,
       hours: currentLanguage === 'en' ? 'Real-time Consultation' : COMPANY_INFO.support.kakaoTalk.hours,
       color: 'from-yellow-400 to-yellow-500',
       bgColor: 'bg-yellow-50',
@@ -91,8 +91,10 @@ const SupportPage = () => {
       category: '서비스',
       questions: [
         {
-          q: '기술 지원은 어떻게 받을 수 있나요?',
-          a: '전화(02-553-3631), 이메일(support@jungho.com), 카카오톡(@정호그룹)을 통해 24시간 기술 지원을 받으실 수 있습니다.'
+          q: currentLanguage === 'en' ? 'How can I get technical support?' : '기술 지원은 어떻게 받을 수 있나요?',
+          a: currentLanguage === 'en' 
+            ? 'You can get 24-hour technical support via phone (02-553-3631), email (support@jungho.com), or KakaoTalk (@JunghoGroup).'
+            : '전화(02-553-3631), 이메일(support@jungho.com), 카카오톡(@정호그룹)을 통해 24시간 기술 지원을 받으실 수 있습니다.'
         },
         {
           q: 'A/S는 어떻게 신청하나요?',
@@ -155,7 +157,7 @@ const SupportPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-24">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-20">
         <motion.div 

@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
@@ -116,6 +116,9 @@ function App() {
         <ScrollToTop />
         <Suspense fallback={<PageLoader />}>
           <Routes>
+            {/* 루트 경로는 Hybrid 버전으로 리다이렉트 */}
+            <Route path="/" element={<Navigate to="/hybrid" replace />} />
+            
             {/* 
               ===================================
               관리자 페이지 (AdminPageV2)
@@ -128,6 +131,9 @@ function App() {
             */}
             <Route path="/admin" element={<AdminPageV2 />} />
             <Route path="/v2/admin" element={<AdminPageV2 />} />
+            
+            {/* V2 버전 (모던 MegaMenu 스타일) 🚀 */}
+            <Route path="/v2" element={<Suspense fallback={<PageLoader />}><LayoutV2><HomePageV2 /></LayoutV2></Suspense>} />
             
             {/* 클래식 버전 (전통적 스타일) - 레이아웃 없음 ⭐ */}
             <Route path="/classic" element={<HomePageClassic />} />
@@ -146,7 +152,7 @@ function App() {
             <Route path="/hybrid/business" element={<BusinessPageHybrid />} />
             <Route path="/hybrid/media" element={<MediaPageHybrid />} />
             <Route path="/hybrid/media/news" element={<NewsPage />} />
-            <Route path="/hybrid/projects" element={<ProjectsPageHybrid />} />
+            <Route path="/hybrid/projects" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><ProjectsPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/media/promotion" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><MediaPromotionPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/media/technical-docs" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><MediaTechnicalDocsPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/media/sns" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><MediaSNSPage /></HybridLayout></Suspense>} />

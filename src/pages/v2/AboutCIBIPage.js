@@ -197,7 +197,7 @@ const AboutCIBIPage = () => {
       {(isClassic || isHybrid) && (
         <div className="relative pt-20 pb-8 bg-gradient-to-br from-primary-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
           <motion.div 
-            className="absolute top-8 right-8 text-right z-10"
+            className="absolute top-24 right-8 text-right z-10"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -470,12 +470,12 @@ const AboutCIBIPage = () => {
     </div>
   );
 
-  // Hybrid 버전: 레이아웃 없이 콘텐츠만 반환 (HybridLayout이 App.js에서 적용됨)
-  if (isHybrid) {
+  // V2 또는 Hybrid: 콘텐츠만 반환 (레이아웃은 App.js에서 제공)
+  if (!isClassic) {
     return pageContent;
   }
 
-  // Classic 버전: TraditionalNav와 TraditionalLayout으로 감싸기
+  // Classic 버전만: 자체 레이아웃 포함
   if (isClassic) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">

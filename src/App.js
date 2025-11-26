@@ -147,6 +147,13 @@ function App() {
             <Route path="/hybrid/media" element={<MediaPageHybrid />} />
             <Route path="/hybrid/media/news" element={<NewsPage />} />
             <Route path="/hybrid/projects" element={<ProjectsPageHybrid />} />
+            <Route path="/hybrid/media/promotion" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><MediaPromotionPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/media/technical-docs" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><MediaTechnicalDocsPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/media/sns" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><MediaSNSPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/support" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SupportPageV2 /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/support/report" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SupportPageV2 /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/support/contact" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SupportPageV2 /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/subsidiaries" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SubsidiariesPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries/clarus" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><ClarusDetailPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries/jungho-tlc" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TlcDetailPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries/illutech" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><IllutechDetailPageV2 /></HybridLayout></Suspense>} />

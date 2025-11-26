@@ -57,21 +57,21 @@ const MegaMenu = ({ version = 'v2' }) => {
     {
       id: 'media',
       label: t('nav.media.main') || '미디어/PR',
-      path: '/projects', // 프로젝트 영상은 공통 경로
+      path: `${pathPrefix}/projects`,
       submenu: [
-        { label: t('nav.media.projects') || '프로젝트 영상', path: '/projects', icon: '🏢' },
-        { label: t('nav.media.promotion') || '홍보영상', path: '/media/promotion', icon: '📺' },
-        { label: t('nav.media.technicalDocs') || '기술자료실', path: '/media/technical-docs', icon: '📄' },
-        { label: 'SNS', path: '/media/sns', icon: '📱' },
+        { label: t('nav.media.projects') || '프로젝트 영상', path: `${pathPrefix}/projects`, icon: '🏢' },
+        { label: t('nav.media.promotion') || '홍보영상', path: `${pathPrefix}/media/promotion`, icon: '📺' },
+        { label: t('nav.media.technicalDocs') || '기술자료실', path: `${pathPrefix}/media/technical-docs`, icon: '📄' },
+        { label: 'SNS', path: `${pathPrefix}/media/sns`, icon: '📱' },
       ],
     },
     {
       id: 'support',
       label: t('nav.support.main') || '고객센터',
-      path: '/support',
+      path: `${pathPrefix}/support`,
       submenu: [
-        { label: t('nav.support.report') || '지원 제보', path: '/support/report', icon: '📝' },
-        { label: t('nav.support.contact') || '문의하기', path: '/support/contact', icon: '📧' },
+        { label: t('nav.support.report') || '지원 제보', path: `${pathPrefix}/support/report`, icon: '📝' },
+        { label: t('nav.support.contact') || '문의하기', path: `${pathPrefix}/support/contact`, icon: '📧' },
       ],
     },
   ];

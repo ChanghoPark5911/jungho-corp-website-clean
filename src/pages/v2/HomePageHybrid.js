@@ -438,13 +438,13 @@ const HomePageHybrid = () => {
           </div>
 
           <div className="bg-gradient-to-br from-white to-blue-50 dark:from-gray-800 dark:to-blue-900/20 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300">
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 text-lg">
+            <p className="text-gray-700 dark:text-gray-200 leading-relaxed mb-4 text-lg">
               {currentLanguage === 'en'
                 ? 'Founded in 1982, JUNGHO Group has been leading innovation in AI, IoT, logistics, and textile industries for over 40 years. We provide optimized solutions for each industry based on our accumulated technology and experience.'
                 : '1982년 설립 이래, 정호그룹은 40년 이상 AI, IoT, 물류, 텍스타일 분야에서 혁신을 선도해왔습니다. 축적된 기술력과 경험을 바탕으로 각 산업 분야에 최적화된 솔루션을 제공하고 있습니다.'
               }
             </p>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 text-lg">
+            <p className="text-gray-700 dark:text-gray-200 leading-relaxed mb-4 text-lg">
               {currentLanguage === 'en'
                 ? 'Our four subsidiaries - CLARUS, Jungho TLC, ILLUTECH, and Jungho TEXCOM - specialize in their respective fields and work together to create synergy.'
                 : '클라루스, 정호티엘씨, 일루텍, 정호텍스컴 등 4개의 계열사는 각 분야에서 전문성을 발휘하며 시너지를 창출하고 있습니다.'
@@ -604,7 +604,7 @@ const HomePageHybrid = () => {
                     </p>
                   </div>
 
-                  <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
+                  <p className="text-gray-700 dark:text-gray-200 mb-4 leading-relaxed">
                     {company.description}
                   </p>
 

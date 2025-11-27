@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
+import ThemeToggle from '../ThemeToggle';
 
 /**
  * 전통적 스타일의 레이아웃 컴포넌트
@@ -189,7 +190,7 @@ const TraditionalLayout = ({
           {showSidebar && menuItems.length > 0 && (
             <aside className="w-[200px] border-r border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 min-h-screen">
               <div className="py-6">
-                <h3 className="px-4 mb-4 text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                <h3 className="px-4 mb-4 text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">
                   {getCategoryTitle()}
                 </h3>
                 <nav>
@@ -198,7 +199,7 @@ const TraditionalLayout = ({
                       <li key={item.id}>
                         <button
                           onClick={() => navigate(item.path)}
-                          className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-600 dark:hover:text-green-400 hover:border-l-4 hover:border-green-600 transition-all duration-200"
+                          className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-600 dark:hover:text-green-400 hover:border-l-4 hover:border-green-600 transition-all duration-200"
                         >
                           {item.icon ? `${item.icon} ` : '• '}{item.label}
                         </button>
@@ -212,11 +213,11 @@ const TraditionalLayout = ({
                   <h4 className="text-sm font-bold text-green-900 dark:text-green-300 mb-2">
                     {currentLanguage === 'en' ? '📞 Contact' : '📞 문의하기'}
                   </h4>
-                  <p className="text-xs text-gray-700 dark:text-gray-300 mb-1">
+                  <p className="text-xs text-gray-700 dark:text-gray-200 mb-1">
                     <strong>{currentLanguage === 'en' ? 'Tel:' : '전화:'}</strong>
                   </p>
                   <p className="text-xs text-green-600 dark:text-green-400 mb-2">02-553-3631</p>
-                  <p className="text-xs text-gray-700 dark:text-gray-300 mb-1">
+                  <p className="text-xs text-gray-700 dark:text-gray-200 mb-1">
                     <strong>{currentLanguage === 'en' ? 'Email:' : '이메일:'}</strong>
                   </p>
                   <p className="text-xs text-green-600 dark:text-green-400 break-all">info@junghocorp.com</p>
@@ -237,24 +238,30 @@ const TraditionalLayout = ({
       {/* 하단 푸터 (전통적 스타일) */}
       <footer className="bg-gray-100 dark:bg-gray-800 border-t border-gray-300 dark:border-gray-700 mt-12">
         <div className="max-w-[1200px] mx-auto py-6 px-8">
-          <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-center text-sm text-gray-600 dark:text-gray-200">
             <p className="mb-2">
-              <strong className="text-gray-800 dark:text-gray-200">
+              <strong className="text-gray-800 dark:text-white">
                 {currentLanguage === 'en' ? 'JUNGHO Group' : '정호그룹'}
               </strong>
             </p>
             <p className="mb-1">
-              {currentLanguage === 'en' 
-                ? 'Address: 17, Nonhyeon-ro 116-gil, Gangnam-gu, Seoul, Jungho Building'
-                : '주소: 서울시 강남구 논현로116길 17 정호빌딩'
-              }
+              <span className="font-semibold">{currentLanguage === 'en' ? 'Address:' : '주소:'}</span>{' '}
+              <span className="text-gray-700 dark:text-white">
+                {currentLanguage === 'en' 
+                  ? '17, Nonhyeon-ro 116-gil, Gangnam-gu, Seoul, Jungho Building'
+                  : '서울시 강남구 논현로116길 17 정호빌딩'
+                }
+              </span>
             </p>
             <p className="mb-1">
-              {currentLanguage === 'en' ? 'Tel:' : '전화:'} 02-553-3631 | 
-              {currentLanguage === 'en' ? ' Fax:' : ' 팩스:'} 02-553-2526
+              <span className="font-semibold">{currentLanguage === 'en' ? 'Tel:' : '전화:'}</span>{' '}
+              <span className="text-gray-700 dark:text-white">02-553-3631</span> | 
+              <span className="font-semibold">{currentLanguage === 'en' ? ' Fax:' : ' 팩스:'}</span>{' '}
+              <span className="text-gray-700 dark:text-white">02-553-2526</span>
             </p>
             <p className="mb-4">
-              {currentLanguage === 'en' ? 'Email:' : '이메일:'} info@junghocorp.com
+              <span className="font-semibold">{currentLanguage === 'en' ? 'Email:' : '이메일:'}</span>{' '}
+              <span className="text-gray-700 dark:text-white">info@junghocorp.com</span>
             </p>
             <div className="pt-4 border-t border-gray-300 dark:border-gray-600">
               <p className="text-xs text-gray-500 dark:text-gray-500">
@@ -264,6 +271,9 @@ const TraditionalLayout = ({
           </div>
         </div>
       </footer>
+      
+      {/* 다크모드 토글 버튼 */}
+      <ThemeToggle />
     </div>
   );
 };

@@ -64,7 +64,7 @@ const TexcomDetailPage = () => {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          <span className="font-semibold text-gray-700 dark:text-gray-300">
+          <span className="font-semibold text-gray-700 dark:text-gray-200">
             {currentLanguage === 'en' ? 'Subsidiaries' : '계열사 목록'}
           </span>
         </motion.button>
@@ -258,7 +258,7 @@ const TexcomDetailPage = () => {
 
                   {/* 사업부문 */}
                   <div>
-                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                       {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
                     </h6>
                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -296,7 +296,7 @@ const TexcomDetailPage = () => {
                     </a>
                   </div>
                   <div>
-                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                       {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
                     </h6>
                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -332,7 +332,7 @@ const TexcomDetailPage = () => {
                     </a>
                   </div>
                   <div>
-                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                       {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
                     </h6>
                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -368,7 +368,7 @@ const TexcomDetailPage = () => {
                     </a>
                   </div>
                   <div>
-                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                       {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
                     </h6>
                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -404,7 +404,7 @@ const TexcomDetailPage = () => {
                     </a>
                   </div>
                   <div>
-                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                       {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
                     </h6>
                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -450,7 +450,7 @@ const TexcomDetailPage = () => {
                     </a>
                   </div>
                   <div>
-                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                       {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
                     </h6>
                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -486,7 +486,7 @@ const TexcomDetailPage = () => {
                     </a>
                   </div>
                   <div>
-                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                       {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
                     </h6>
                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -522,7 +522,7 @@ const TexcomDetailPage = () => {
                     </a>
                   </div>
                   <div>
-                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    <h6 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                       {currentLanguage === 'en' ? 'Business Area' : '사업부문'}
                     </h6>
                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -554,7 +554,7 @@ const TexcomDetailPage = () => {
                     </span>
                   </div>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300 mb-4 text-lg">
+                <p className="text-gray-700 dark:text-gray-200 mb-4 text-lg">
                   {currentLanguage === 'en' 
                     ? 'High-performance automatic microscope finder'
                     : '고성능 현미경 자동 탐색기기'}
@@ -648,7 +648,7 @@ const TexcomDetailPage = () => {
             </div>
 
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-10 shadow-2xl">
-              <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+              <p className="text-xl text-gray-700 dark:text-gray-200 mb-8 leading-relaxed">
                 {currentLanguage === 'en' ? (
                   <>
                     The RSS Division operates a separate dedicated website.<br />
@@ -764,7 +764,7 @@ const TexcomDetailPage = () => {
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
                 {currentLanguage === 'en' ? 'Global Partnership' : '글로벌 파트너십'}
               </h3>
-              <p className="text-gray-700 dark:text-gray-300 text-lg">
+              <p className="text-gray-700 dark:text-gray-200 text-lg">
                 {currentLanguage === 'en'
                   ? 'Exclusive supply of world-class brands from Germany, Switzerland, Austria, Japan, UK, etc.'
                   : '독일, 스위스, 오스트리아, 일본, 영국 등 세계 유수 브랜드 독점 공급'}
@@ -780,7 +780,7 @@ const TexcomDetailPage = () => {
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
                 {currentLanguage === 'en' ? '40 Years of Experience' : '40년 경험'}
               </h3>
-              <p className="text-gray-700 dark:text-gray-300 text-lg">
+              <p className="text-gray-700 dark:text-gray-200 text-lg">
                 {currentLanguage === 'en'
                   ? 'Textile industry expertise and technology accumulated since 1982'
                   : '1982년부터 축적된 섬유 산업 전문성과 기술력'}
@@ -796,7 +796,7 @@ const TexcomDetailPage = () => {
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
                 {currentLanguage === 'en' ? 'One-Stop Service' : '원스톱 서비스'}
               </h3>
-              <p className="text-gray-700 dark:text-gray-300 text-lg">
+              <p className="text-gray-700 dark:text-gray-200 text-lg">
                 {currentLanguage === 'en'
                   ? 'Integrated support from consultation, import, delivery, installation, training to maintenance'
                   : '상담, 수입, 납품, 설치, 교육, 유지보수까지 통합 지원'}
@@ -812,7 +812,7 @@ const TexcomDetailPage = () => {
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
                 {currentLanguage === 'en' ? 'From B2B to B2C' : 'B2B에서 B2C로'}
               </h3>
-              <p className="text-gray-700 dark:text-gray-300 text-lg">
+              <p className="text-gray-700 dark:text-gray-200 text-lg">
                 {currentLanguage === 'en'
                   ? 'Expanding to fashion based on textile machinery expertise'
                   : '섬유 기계 전문성을 바탕으로 패션까지 확장'}
@@ -837,7 +837,7 @@ const TexcomDetailPage = () => {
             <div className="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg space-y-4">
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📞</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Phone:' : '전화:'}
                 </span>
                 <a href="tel:02-538-3652" className="text-purple-600 dark:text-purple-400 hover:underline font-bold">
@@ -846,7 +846,7 @@ const TexcomDetailPage = () => {
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📧</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Email:' : '이메일:'}
                 </span>
                 <a href="mailto:sales@junghocorp.com" className="text-purple-600 dark:text-purple-400 hover:underline font-bold">
@@ -855,7 +855,7 @@ const TexcomDetailPage = () => {
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">🌐</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Website:' : '웹사이트:'}
                 </span>
                 <a href="http://www.theautofinder.com" target="_blank" rel="noopener noreferrer" className="text-purple-600 dark:text-purple-400 hover:underline font-bold">
@@ -864,10 +864,10 @@ const TexcomDetailPage = () => {
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📍</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Headquarters:' : '본사:'}
                 </span>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-gray-700 dark:text-white">
                   {currentLanguage === 'en'
                     ? '3F, Jungho Building, 17, Nonhyeon-ro 116-gil, Gangnam-gu, Seoul'
                     : '서울시 강남구 논현로116길 17 정호빌딩 3층'}

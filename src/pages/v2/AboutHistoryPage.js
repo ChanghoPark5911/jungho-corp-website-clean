@@ -277,7 +277,7 @@ const AboutHistoryPage = () => {
 
         {/* 이정표 - 오른쪽 상단 */}
         <motion.div 
-          className="absolute top-24 right-8 text-right z-10"
+          className="hidden md:block absolute top-40 right-8 text-right z-10"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -385,7 +385,7 @@ const AboutHistoryPage = () => {
                       {item.events.map((event, eventIndex) => (
                         <li 
                           key={eventIndex}
-                          className="flex items-start gap-3 text-gray-700 dark:text-gray-300"
+                          className="flex items-start gap-3 text-gray-700 dark:text-gray-200"
                         >
                           <span className="flex-shrink-0 w-2 h-2 bg-primary-500 dark:bg-primary-400 rounded-full mt-2" />
                           <span className="text-sm md:text-base leading-relaxed">{event}</span>

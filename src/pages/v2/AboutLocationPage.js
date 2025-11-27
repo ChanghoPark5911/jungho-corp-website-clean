@@ -132,7 +132,7 @@ const AboutLocationPage = () => {
 
         {/* 이정표 - 오른쪽 상단 */}
         <motion.div 
-          className="absolute top-24 right-8 text-right z-10"
+          className="absolute top-32 right-8 text-right z-10"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -186,6 +186,56 @@ const AboutLocationPage = () => {
           </motion.div>
         </div>
       </motion.section>
+      )}
+
+      {/* CURRENT PAGE 표시 및 제목 - Hybrid/Classic 버전용 */}
+      {(isClassic || isHybrid) && (
+        <div className="relative pt-32 pb-12 bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+          <motion.div 
+            className="hidden md:block absolute top-40 right-8 text-right z-10"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+              {currentLanguage === 'en' ? 'CURRENT PAGE' : '현재 페이지'}
+            </div>
+            <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+              {currentLanguage === 'en' ? 'LOCATION' : '찾아오시는 길'}
+            </div>
+          </motion.div>
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              className="text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="inline-block px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-semibold mb-4">
+                {currentLanguage === 'en' 
+                  ? '📍 Seoul Gangnam · Jungnang' 
+                  : '📍 서울 강남 · 중랑'}
+              </span>
+              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                {currentLanguage === 'en' ? 'Location' : '찾아오시는 길'}
+              </h1>
+              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                {currentLanguage === 'en' ? (
+                  <>
+                    Visit our headquarters and R&D center<br />
+                    <span className="text-primary-600 dark:text-primary-400 font-semibold">We welcome you anytime</span>
+                  </>
+                ) : (
+                  <>
+                    정호그룹 본사와 R&D 센터로<br />
+                    <span className="text-primary-600 dark:text-primary-400 font-semibold">언제든 방문을 환영합니다</span>
+                  </>
+                )}
+              </p>
+            </motion.div>
+          </div>
+        </div>
       )}
 
       {/* 본사 섹션 */}
@@ -242,10 +292,10 @@ const AboutLocationPage = () => {
                     {currentLanguage === 'en' ? 'Address' : '주소'}
                   </h3>
                 </div>
-                <div className="space-y-2 text-gray-700 dark:text-gray-300">
-                  <p><span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Street:' : '도로명:'}</span> {headquarters.address.road}</p>
-                  <p><span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Lot:' : '지번:'}</span> {headquarters.address.jibun}</p>
-                  <p><span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Postal Code:' : '우편번호:'}</span> {headquarters.address.postal}</p>
+                <div className="space-y-2">
+                  <p className="text-gray-700 dark:text-gray-100"><span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Street:' : '도로명:'}</span> <span className="text-gray-900 dark:text-white">{headquarters.address.road}</span></p>
+                  <p className="text-gray-700 dark:text-gray-100"><span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Lot:' : '지번:'}</span> <span className="text-gray-900 dark:text-white">{headquarters.address.jibun}</span></p>
+                  <p className="text-gray-700 dark:text-gray-100"><span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Postal Code:' : '우편번호:'}</span> <span className="text-gray-900 dark:text-white">{headquarters.address.postal}</span></p>
                 </div>
               </div>
 
@@ -259,16 +309,16 @@ const AboutLocationPage = () => {
                     {currentLanguage === 'en' ? 'Contact' : '연락처'}
                   </h3>
                 </div>
-                <div className="space-y-2 text-gray-700 dark:text-gray-300">
-                  <p className="flex items-center gap-2">
+                <div className="space-y-2">
+                  <p className="flex items-center gap-2 text-gray-700 dark:text-gray-100">
                     <span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Phone:' : '전화:'}</span> 
-                    <a href={`tel:${headquarters.contact.phone.replace(/\./g, '-')}`} className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                    <a href={`tel:${headquarters.contact.phone.replace(/\./g, '-')}`} className="text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
                       {headquarters.contact.phone}
                     </a>
                   </p>
-                  <p className="flex items-center gap-2">
+                  <p className="flex items-center gap-2 text-gray-700 dark:text-gray-100">
                     <span className="font-semibold text-primary-600 dark:text-primary-400">{currentLanguage === 'en' ? 'Fax:' : '팩스:'}</span> 
-                    {headquarters.contact.fax}
+                    <span className="text-gray-900 dark:text-white">{headquarters.contact.fax}</span>
                   </p>
                 </div>
               </div>
@@ -290,7 +340,7 @@ const AboutLocationPage = () => {
                         {subway.line}
                       </div>
                       <span className="font-semibold text-gray-900 dark:text-white">{subway.station}</span>
-                      <span className="text-gray-600 dark:text-gray-400 text-sm">{subway.exit} · {subway.time}</span>
+                      <span className="text-gray-600 dark:text-gray-200 text-sm">{subway.exit} · {subway.time}</span>
                     </div>
                   ))}
                 </div>
@@ -321,7 +371,7 @@ const AboutLocationPage = () => {
                           ))}
                         </div>
                       </div>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm ml-2">{bus.stop}</p>
+                      <p className="text-gray-600 dark:text-gray-200 text-sm ml-2">{bus.stop}</p>
                     </div>
                   ))}
                 </div>
@@ -337,7 +387,7 @@ const AboutLocationPage = () => {
                     {currentLanguage === 'en' ? 'By Car' : '승용차'}
                   </h3>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p className="text-gray-700 dark:text-white leading-relaxed">
                   {headquarters.car}
                 </p>
               </div>
@@ -400,9 +450,9 @@ const AboutLocationPage = () => {
                     {currentLanguage === 'en' ? 'Address' : '주소'}
                   </h3>
                 </div>
-                <div className="space-y-2 text-gray-700 dark:text-gray-300">
-                  <p><span className="font-semibold text-cyan-600 dark:text-cyan-400">{currentLanguage === 'en' ? 'Street:' : '도로명:'}</span> {rdCenter.address.road}</p>
-                  <p><span className="font-semibold text-cyan-600 dark:text-cyan-400">{currentLanguage === 'en' ? 'Lot:' : '지번:'}</span> {rdCenter.address.jibun}</p>
+                <div className="space-y-2">
+                  <p className="text-gray-700 dark:text-gray-100"><span className="font-semibold text-cyan-600 dark:text-cyan-400">{currentLanguage === 'en' ? 'Street:' : '도로명:'}</span> <span className="text-gray-900 dark:text-white">{rdCenter.address.road}</span></p>
+                  <p className="text-gray-700 dark:text-gray-100"><span className="font-semibold text-cyan-600 dark:text-cyan-400">{currentLanguage === 'en' ? 'Lot:' : '지번:'}</span> <span className="text-gray-900 dark:text-white">{rdCenter.address.jibun}</span></p>
                 </div>
               </div>
 
@@ -416,16 +466,16 @@ const AboutLocationPage = () => {
                     {currentLanguage === 'en' ? 'Contact' : '연락처'}
                   </h3>
                 </div>
-                <div className="space-y-2 text-gray-700 dark:text-gray-300">
-                  <p className="flex items-center gap-2">
+                <div className="space-y-2">
+                  <p className="flex items-center gap-2 text-gray-700 dark:text-gray-100">
                     <span className="font-semibold text-cyan-600 dark:text-cyan-400">{currentLanguage === 'en' ? 'Phone:' : '전화:'}</span> 
-                    <a href={`tel:${rdCenter.contact.phone.replace(/\./g, '-')}`} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+                    <a href={`tel:${rdCenter.contact.phone.replace(/\./g, '-')}`} className="text-gray-900 dark:text-white hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
                       {rdCenter.contact.phone}
                     </a>
                   </p>
-                  <p className="flex items-center gap-2">
+                  <p className="flex items-center gap-2 text-gray-700 dark:text-gray-100">
                     <span className="font-semibold text-cyan-600 dark:text-cyan-400">{currentLanguage === 'en' ? 'Email:' : '이메일:'}</span> 
-                    <a href={`mailto:${rdCenter.contact.email}`} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+                    <a href={`mailto:${rdCenter.contact.email}`} className="text-gray-900 dark:text-white hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
                       {rdCenter.contact.email}
                     </a>
                   </p>
@@ -449,7 +499,7 @@ const AboutLocationPage = () => {
                         {subway.line}
                       </div>
                       <span className="font-semibold text-gray-900 dark:text-white">{subway.station}</span>
-                      <span className="text-gray-600 dark:text-gray-400 text-sm">{subway.exit} · {subway.time}</span>
+                      <span className="text-gray-600 dark:text-gray-200 text-sm">{subway.exit} · {subway.time}</span>
                     </div>
                   ))}
                 </div>
@@ -480,7 +530,7 @@ const AboutLocationPage = () => {
                           ))}
                         </div>
                       </div>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm ml-2">{bus.stop}</p>
+                      <p className="text-gray-600 dark:text-gray-200 text-sm ml-2">{bus.stop}</p>
                     </div>
                   ))}
                 </div>
@@ -496,7 +546,7 @@ const AboutLocationPage = () => {
                     {currentLanguage === 'en' ? 'By Car' : '승용차'}
                   </h3>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p className="text-gray-700 dark:text-white leading-relaxed">
                   {rdCenter.car}
                 </p>
               </div>

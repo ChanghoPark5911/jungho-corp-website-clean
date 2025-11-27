@@ -31,7 +31,7 @@ const SubsidiariesPage = () => {
   // 계열사 데이터
   const subsidiaries = [
     {
-      id: 'tlc',
+      id: 'jungho-tlc',
       name: currentLanguage === 'en' ? 'Jungho TLC' : '정호티엘씨',
       nameEn: 'Jungho TLC',
       nameKo: '정호티엘씨',
@@ -86,7 +86,7 @@ const SubsidiariesPage = () => {
       established: '2010'
     },
     {
-      id: 'texcom',
+      id: 'jungho-texcom',
       name: currentLanguage === 'en' ? 'Jungho TEXCOM' : '정호텍스컴',
       nameEn: 'Jungho TEXCOM',
       nameKo: '정호텍스컴',
@@ -125,7 +125,7 @@ const SubsidiariesPage = () => {
 
         {/* 이정표 - 오른쪽 상단 */}
         <motion.div 
-          className="absolute top-24 right-8 text-right z-10"
+          className="hidden md:block absolute top-24 right-8 text-right z-10"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}

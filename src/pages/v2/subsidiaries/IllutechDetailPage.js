@@ -219,7 +219,7 @@ const IllutechDetailPage = () => {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          <span className="font-semibold text-gray-700 dark:text-gray-300">
+          <span className="font-semibold text-gray-700 dark:text-gray-200">
             {currentLanguage === 'en' ? 'Subsidiaries' : '계열사 목록'}
           </span>
         </motion.button>
@@ -371,7 +371,7 @@ const IllutechDetailPage = () => {
                         {product.name}
                       </h3>
                     </div>
-                    <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                    <p className="text-lg text-gray-600 dark:text-gray-200 leading-relaxed">
                       {product.description}
                     </p>
                   </div>
@@ -607,7 +607,7 @@ const IllutechDetailPage = () => {
             <div className="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg space-y-4">
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📞</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Phone:' : '전화:'}
                 </span>
                 <a href="tel:02-515-5018" className="text-orange-600 dark:text-orange-400 hover:underline">
@@ -616,7 +616,7 @@ const IllutechDetailPage = () => {
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📧</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Email:' : '이메일:'}
                 </span>
                 <a href="mailto:illutech@junghocorp.com" className="text-orange-600 dark:text-orange-400 hover:underline">
@@ -625,10 +625,10 @@ const IllutechDetailPage = () => {
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📍</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Headquarters:' : '본사:'}
                 </span>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-gray-700 dark:text-white">
                   {currentLanguage === 'en'
                     ? '3F, Jungho Building, 17, Nonhyeon-ro 116-gil, Gangnam-gu, Seoul'
                     : '서울시 강남구 논현로116길 17 정호빌딩 3층'}

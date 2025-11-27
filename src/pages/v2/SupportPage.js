@@ -225,11 +225,11 @@ const SupportPage = () => {
                     <div className={`text-xl font-bold ${channel.textColor} mb-2`}>
                       {channel.description}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
+                    <div className="text-sm text-gray-600 dark:text-gray-200 flex items-center">
                       <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      {channel.hours}
+                      <span className="text-gray-700 dark:text-white">{channel.hours}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -262,7 +262,7 @@ const SupportPage = () => {
             <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                     {currentLanguage === 'en' ? 'Name' : '이름'} <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -276,7 +276,7 @@ const SupportPage = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                     {currentLanguage === 'en' ? 'Email' : '이메일'} <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -293,7 +293,7 @@ const SupportPage = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                     {currentLanguage === 'en' ? 'Phone' : '연락처'}
                   </label>
                   <input
@@ -306,7 +306,7 @@ const SupportPage = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                     {currentLanguage === 'en' ? 'Inquiry Type' : '문의 유형'} <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -327,7 +327,7 @@ const SupportPage = () => {
               </div>
 
               <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                   {currentLanguage === 'en' ? 'Message' : '문의 내용'} <span className="text-red-500">*</span>
                 </label>
                 <textarea

@@ -255,7 +255,7 @@ const MediaPromotionPage = () => {
                 className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2 ${
                   selectedCategory === category.id
                     ? 'bg-primary-600 text-white shadow-lg scale-105'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 <span>{category.icon}</span>
@@ -314,7 +314,7 @@ const MediaPromotionPage = () => {
                 <div className="text-4xl md:text-5xl font-bold text-primary-600 dark:text-primary-400 mb-2">
                   {intellectualPropertyStats.total}+
                 </div>
-                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
+                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-200">
                   {t('media.promotion.ipTotal')}
                 </div>
               </motion.div>
@@ -327,7 +327,7 @@ const MediaPromotionPage = () => {
                 <div className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-2">
                   {intellectualPropertyStats.patents}
                 </div>
-                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
+                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-200">
                   {t('media.promotion.ipPatents')}
                 </div>
               </motion.div>
@@ -340,7 +340,7 @@ const MediaPromotionPage = () => {
                 <div className="text-4xl md:text-5xl font-bold text-purple-600 dark:text-purple-400 mb-2">
                   {intellectualPropertyStats.designs}
                 </div>
-                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
+                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-200">
                   {t('media.promotion.ipDesigns')}
                 </div>
               </motion.div>
@@ -353,7 +353,7 @@ const MediaPromotionPage = () => {
                 <div className="text-4xl md:text-5xl font-bold text-green-600 dark:text-green-400 mb-2">
                   {intellectualPropertyStats.software}
                 </div>
-                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300">
+                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-200">
                   {t('media.promotion.ipSoftware')}
                 </div>
               </motion.div>

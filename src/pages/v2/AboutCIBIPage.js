@@ -164,7 +164,7 @@ const AboutCIBIPage = () => {
         >
           {/* 이정표 - 오른쪽 상단 */}
           <motion.div 
-            className="absolute top-8 right-8 text-right z-10"
+            className="absolute top-24 right-8 text-right z-10"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -195,9 +195,9 @@ const AboutCIBIPage = () => {
 
       {/* CURRENT PAGE 표시 - Hybrid/Classic 버전용 */}
       {(isClassic || isHybrid) && (
-        <div className="relative pt-20 pb-8 bg-gradient-to-br from-primary-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div className="relative pt-32 pb-12 bg-gradient-to-br from-primary-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
           <motion.div 
-            className="absolute top-24 right-8 text-right z-10"
+            className="hidden md:block absolute top-40 right-8 text-right z-10"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -209,6 +209,25 @@ const AboutCIBIPage = () => {
               CI / BI
             </div>
           </motion.div>
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              className="text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="text-6xl mb-6">🎨</div>
+              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                {currentLanguage === 'en' ? 'CI / BI' : 'CI / BI'}
+              </h1>
+              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                {currentLanguage === 'en'
+                  ? 'Jungho Group Corporate Identity & Brand Identity'
+                  : '정호그룹 기업 아이덴티티 및 브랜드 아이덴티티'}
+              </p>
+            </motion.div>
+          </div>
         </div>
       )}
 
@@ -221,7 +240,7 @@ const AboutCIBIPage = () => {
               className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                 selectedTab === 'ci'
                   ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {currentLanguage === 'en' ? 'CI (Corporate Identity)' : 'CI (기업 아이덴티티)'}
@@ -231,7 +250,7 @@ const AboutCIBIPage = () => {
               className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                 selectedTab === 'bi'
                   ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {currentLanguage === 'en' ? 'BI (Brand Identity)' : 'BI (브랜드 아이덴티티)'}
@@ -241,7 +260,7 @@ const AboutCIBIPage = () => {
               className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                 selectedTab === 'subsidiary'
                   ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {currentLanguage === 'en' ? 'Subsidiaries' : '계열회사'}

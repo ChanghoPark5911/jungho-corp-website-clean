@@ -638,7 +638,7 @@ const HomePageV2 = () => {
           >
             {/* 정호티엘씨 */}
             <motion.div 
-              onClick={() => navigate('/subsidiaries/tlc')}
+              onClick={() => navigate('/subsidiaries/jungho-tlc')}
               className="group relative overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white dark:bg-gray-800"
               variants={fadeInUp}
               whileHover={{ 
@@ -746,7 +746,7 @@ const HomePageV2 = () => {
 
             {/* 정호텍스컴 */}
             <motion.div 
-              onClick={() => navigate('/subsidiaries/texcom')}
+              onClick={() => navigate('/subsidiaries/jungho-texcom')}
               className="group relative overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white dark:bg-gray-800"
               variants={fadeInUp}
               whileHover={{ 

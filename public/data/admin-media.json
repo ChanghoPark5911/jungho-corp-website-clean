@@ -1,0 +1,65 @@
+{
+  "projects": [
+    {
+      "id": "proj001",
+      "category": "업무시설",
+      "title": "과천 펜타원 스퀘어",
+      "description": "최첨단 빌딩 자동화 시스템 구축",
+      "imageUrl": "/images/projects/1.업무시설/과천 펜타원 스퀘어.JPG",
+      "location": "경기도 과천시",
+      "year": "2023",
+      "featured": true,
+      "order": 1
+    },
+    {
+      "id": "proj002",
+      "category": "업무시설",
+      "title": "여의도 파크원",
+      "description": "대규모 복합 업무시설 조명 제어",
+      "imageUrl": "/images/projects/1.업무시설/여의도 파크원.JPG",
+      "location": "서울 여의도",
+      "year": "2022",
+      "featured": true,
+      "order": 2
+    },
+    {
+      "id": "proj003",
+      "category": "주거시설",
+      "title": "송파 헬리오 시티",
+      "description": "스마트 주거 단지 통합 관리",
+      "imageUrl": "/images/projects/3.주거시설/송파 헬리오 시티.JPG",
+      "location": "서울 송파구",
+      "year": "2023",
+      "featured": true,
+      "order": 3
+    }
+  ],
+  "promotionVideos": [
+    {
+      "id": "video001",
+      "title": "정호그룹 기업 소개",
+      "description": "40년 전통의 조명 제어 전문 기업",
+      "thumbnailUrl": "/images/banners/banner1.jpg",
+      "videoUrl": "https://www.youtube.com/embed/VIDEO_ID_1",
+      "duration": "3:45",
+      "order": 1
+    },
+    {
+      "id": "video002",
+      "title": "스마트 빌딩 솔루션",
+      "description": "차세대 빌딩 자동화 시스템",
+      "thumbnailUrl": "/images/banners/banner2.jpg",
+      "videoUrl": "https://www.youtube.com/embed/VIDEO_ID_2",
+      "duration": "5:20",
+      "order": 2
+    }
+  ],
+  "snsLinks": {
+    "youtube": "https://www.youtube.com/@JunghoGroup",
+    "instagram": "https://www.instagram.com/jungho_group/",
+    "naverBlog": "https://blog.naver.com/jungho_group",
+    "facebook": "https://www.facebook.com/JunghoGroup"
+  },
+  "lastUpdated": "2025-11-27T00:00:00Z"
+}
+

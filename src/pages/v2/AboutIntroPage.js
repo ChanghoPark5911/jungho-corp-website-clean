@@ -84,7 +84,7 @@ const AboutIntroPage = () => {
   // 기본 계열사 데이터 (경로는 현재 버전에 맞게 동적 설정)
   const defaultSubsidiaries = [
     {
-      id: 'tlc',
+      id: 'jungho-tlc',
       name: currentLanguage === 'en' ? 'Jungho TLC' : '정호티엘씨',
       role: currentLanguage === 'en' ? 'Building Automation & Power Control Solutions' : '빌딩 자동화 및 전력 제어 솔루션',
       description: currentLanguage === 'en' ? 'Smart Building Automation Systems Specialist' : '스마트 빌딩 자동화 시스템 전문 기업',
@@ -111,7 +111,7 @@ const AboutIntroPage = () => {
       path: `${pathPrefix}/subsidiaries/illutech`
     },
     {
-      id: 'texcom',
+      id: 'jungho-texcom',
       name: currentLanguage === 'en' ? 'Jungho TEXCOM' : '정호텍스컴',
       role: currentLanguage === 'en' ? 'Textile Machinery & Fashion Business' : '섬유기계 및 패션 사업',
       description: currentLanguage === 'en' ? '40 Years of Textile Machinery Expertise' : '40년 전통의 섬유기계 전문 기업',
@@ -207,7 +207,7 @@ const AboutIntroPage = () => {
 
         {/* 이정표 - 오른쪽 상단 */}
         <motion.div 
-          className="absolute top-24 right-8 text-right z-10"
+          className="hidden md:block absolute top-40 right-8 text-right z-10"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -237,19 +237,19 @@ const AboutIntroPage = () => {
             variants={fadeInUp}
           >
             <div className="prose prose-lg dark:prose-invert max-w-none">
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              <p className="text-gray-700 dark:text-gray-200 leading-relaxed mb-6">
                 {highlightText(aboutIntro.paragraph1)}
               </p>
 
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              <p className="text-gray-700 dark:text-gray-200 leading-relaxed mb-6">
                 {highlightText(aboutIntro.paragraph2)}
               </p>
 
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              <p className="text-gray-700 dark:text-gray-200 leading-relaxed mb-6">
                 {highlightText(aboutIntro.paragraph3)}
               </p>
 
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-8">
+              <p className="text-gray-700 dark:text-gray-200 leading-relaxed mb-8">
                 {highlightText(aboutIntro.paragraph4)}
               </p>
 
@@ -308,7 +308,7 @@ const AboutIntroPage = () => {
                   </h3>
 
                   {/* 역할 */}
-                  <p className="text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2">
+                  <p className="text-gray-700 dark:text-gray-200 text-sm font-semibold mb-2">
                     {company.role}
                   </p>
 

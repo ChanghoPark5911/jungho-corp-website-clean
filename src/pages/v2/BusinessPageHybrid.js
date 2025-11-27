@@ -153,7 +153,7 @@ const BusinessPageHybrid = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               {currentLanguage === 'en' ? 'Core Business Areas' : '핵심 사업영역'}
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
+            <p className="text-xl text-gray-600 dark:text-gray-200">
               {currentLanguage === 'en'
                 ? 'Providing innovative solutions in various fields'
                 : '다양한 분야에서 혁신적인 솔루션을 제공합니다'}
@@ -172,7 +172,7 @@ const BusinessPageHybrid = () => {
                 <h3 className={`text-2xl font-bold mb-4 bg-gradient-to-r ${area.gradient} bg-clip-text text-transparent`}>
                   {area.title}
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                <p className="text-gray-700 dark:text-gray-200 leading-relaxed mb-6">
                   {area.description}
                 </p>
                 <ul className="space-y-2">
@@ -198,7 +198,7 @@ const BusinessPageHybrid = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               {currentLanguage === 'en' ? 'Subsidiaries by Specialty' : '계열사별 전문분야'}
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
+            <p className="text-xl text-gray-600 dark:text-gray-200">
               {currentLanguage === 'en'
                 ? '4 subsidiaries providing best solutions in each field'
                 : '4개 계열사가 각각의 전문분야에서 최고의 솔루션을 제공합니다'}

@@ -206,7 +206,7 @@ const TlcDetailPage = () => {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          <span className="font-semibold text-gray-700 dark:text-gray-300">
+          <span className="font-semibold text-gray-700 dark:text-gray-200">
             {currentLanguage === 'en' ? 'Subsidiaries' : '계열사 목록'}
           </span>
         </motion.button>
@@ -363,7 +363,7 @@ const TlcDetailPage = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* 좌측: 설명 및 주요 기능 (2/3) */}
                     <div className="lg:col-span-2">
-                      <p className="text-gray-700 dark:text-gray-300 text-base mb-4 leading-relaxed">
+                      <p className="text-gray-700 dark:text-gray-200 text-base mb-4 leading-relaxed">
                         {product.description}
                       </p>
                       
@@ -374,7 +374,7 @@ const TlcDetailPage = () => {
                         </h4>
                         <div className="space-y-2">
                           {product.features.map((feature, idx) => (
-                            <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-300 text-sm">
+                            <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
                               <span className="text-purple-600 dark:text-purple-400 font-bold mt-0.5">✓</span>
                               <span>{feature}</span>
                             </div>
@@ -637,7 +637,7 @@ const TlcDetailPage = () => {
             <div className="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg space-y-4">
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📞</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Phone:' : '전화:'}
                 </span>
                 <a href="tel:02-515-5018" className="text-primary-600 dark:text-primary-400 hover:underline">
@@ -646,7 +646,7 @@ const TlcDetailPage = () => {
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📧</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Email:' : '이메일:'}
                 </span>
                 <a href="mailto:tlc@junghocorp.com" className="text-primary-600 dark:text-primary-400 hover:underline">
@@ -655,10 +655,10 @@ const TlcDetailPage = () => {
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📍</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Headquarters:' : '본사:'}
                 </span>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-gray-700 dark:text-white">
                   {currentLanguage === 'en'
                     ? '3F, Jungho Building, 17, Nonhyeon-ro 116-gil, Gangnam-gu, Seoul'
                     : '서울시 강남구 논현로116길 17 정호빌딩 3층'}

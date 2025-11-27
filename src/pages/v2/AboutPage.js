@@ -126,7 +126,7 @@ const AboutPage = () => {
 
         {/* ABOUT 이정표 - 오른쪽 상단 */}
         <motion.div 
-          className="absolute top-24 right-8 text-right z-10"
+          className="hidden md:block absolute top-40 right-8 text-right z-10"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -144,7 +144,7 @@ const AboutPage = () => {
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-primary-600 dark:text-primary-400 mb-6">
               {currentLanguage === 'en' ? 'Jungho Group' : '정호그룹'}
             </h1>
-            <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-200 max-w-3xl mx-auto leading-relaxed">
               {currentLanguage === 'en' ? (
                 <>
                   40 years of innovative lighting technology,
@@ -215,7 +215,7 @@ const AboutPage = () => {
                   </h3>
 
                   {/* 설명 */}
-                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line flex-grow">
+                  <p className="text-gray-600 dark:text-gray-200 leading-relaxed whitespace-pre-line flex-grow">
                     {section.description}
                   </p>
 
@@ -272,7 +272,7 @@ const AboutPage = () => {
               ? 'Need more information?' 
               : '더 자세한 정보가 필요하신가요?'}
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
+          <p className="text-xl text-gray-600 dark:text-gray-200 mb-8">
             {currentLanguage === 'en'
               ? 'Please contact us if you have any questions about Jungho Group'
               : '정호그룹에 대해 궁금하신 점이 있으시면 언제든 문의해주세요'}

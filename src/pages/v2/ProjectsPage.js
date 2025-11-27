@@ -6,6 +6,8 @@ const ProjectsPage = () => {
   const { t, currentLanguage } = useI18n();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedProject, setSelectedProject] = useState(null);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // 애니메이션 variants
   const fadeInUp = {
@@ -27,6 +29,45 @@ const ProjectsPage = () => {
       }
     }
   };
+
+  // 프로젝트 데이터 로드 (관리자 페이지 연동)
+  React.useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        // 1순위: localStorage에서 관리자가 수정한 데이터 확인
+        const savedData = localStorage.getItem('projects-data');
+        if (savedData) {
+          const data = JSON.parse(savedData);
+          setProjects(data.projects || []);
+          setLoading(false);
+          return;
+        }
+        
+        // 2순위: JSON 파일에서 데이터 로드
+        const response = await fetch('/data/projects.json');
+        const data = await response.json();
+        setProjects(data.projects || []);
+        setLoading(false);
+      } catch (error) {
+        console.error('프로젝트 데이터 로드 실패:', error);
+        // 3순위 폴백: 기존 하드코딩 데이터 사용
+        setProjects(fallbackProjects);
+        setLoading(false);
+      }
+    };
+    
+    loadProjects();
+    
+    // 관리자 페이지에서 업데이트 이벤트 수신
+    const handleProjectsUpdate = (event) => {
+      if (event.detail?.projects) {
+        setProjects(event.detail.projects);
+      }
+    };
+    
+    window.addEventListener('projectsUpdated', handleProjectsUpdate);
+    return () => window.removeEventListener('projectsUpdated', handleProjectsUpdate);
+  }, []);
 
   // URL 쿼리 파라미터에서 카테고리 읽기
   React.useEffect(() => {
@@ -59,8 +100,8 @@ const ProjectsPage = () => {
     'industrial': '생산·물류·데이터센터'
   };
 
-  // 프로젝트 데이터 (50개) - 실제 파일명과 일치
-  const projects = [
+  // 폴백용 프로젝트 데이터 (JSON 로드 실패 시 사용)
+  const fallbackProjects = [
     // 업무시설 (8개)
     { id: 1, name: '쿠쿠 강동 사옥', category: '업무시설', image: '/images/projects/1.업무시설/쿠쿠 강동 사옥.JPG', year: 2024 },
     { id: 2, name: '남양 현대 자동차 연구소', category: '업무시설', image: '/images/projects/1.업무시설/남양 현대 자동차 연구소.JPG', year: 2023 },
@@ -131,10 +172,23 @@ const ProjectsPage = () => {
     { id: 58, name: '퍼시픽 써니 데이터센터', category: '생산·물류·데이터센터', image: '/images/projects/6.생산,물류,데이터센터/퍼시픽 써니 데이터센터.JPG', year: 2020 }
   ];
 
-  // 필터링된 프로젝트
-  const filteredProjects = selectedCategory === 'all' 
+  // 필터링된 프로젝트 (최신순 정렬)
+  const filteredProjects = (selectedCategory === 'all' 
     ? projects 
-    : projects.filter(p => p.category === categoryIdToKorean[selectedCategory]);
+    : projects.filter(p => p.category === categoryIdToKorean[selectedCategory])
+  ).sort((a, b) => b.year - a.year || b.id - a.id);
+
+  // 로딩 중일 때
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="text-center">
+          <div className="text-4xl mb-4">⏳</div>
+          <p className="text-gray-600 dark:text-gray-400">프로젝트 로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 pt-20">
@@ -155,7 +209,7 @@ const ProjectsPage = () => {
 
         {/* 이정표 - 오른쪽 상단 */}
         <motion.div 
-          className="absolute top-24 right-8 text-right z-10"
+          className="hidden md:block absolute top-24 right-8 text-right z-10"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -235,7 +289,7 @@ const ProjectsPage = () => {
                 className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
                   selectedCategory === cat.id
                     ? 'bg-primary-600 text-white shadow-lg scale-105'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

@@ -233,7 +233,7 @@ const MediaTechnicalDocsPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* 카테고리 필터 */}
           <div className="mb-4">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">
               {currentLanguage === 'en' ? 'Category' : '카테고리'}
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -244,7 +244,7 @@ const MediaTechnicalDocsPage = () => {
                   className={`px-4 py-2 rounded-lg font-semibold transition-all ${
                     selectedCategory === cat.id
                       ? 'bg-blue-600 text-white shadow-lg'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <span className="mr-2">{cat.icon}</span>
@@ -256,7 +256,7 @@ const MediaTechnicalDocsPage = () => {
 
           {/* 계열사 필터 */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">
               {currentLanguage === 'en' ? 'Subsidiary' : '계열사'}
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -267,7 +267,7 @@ const MediaTechnicalDocsPage = () => {
                   className={`px-4 py-2 rounded-lg font-semibold transition-all ${
                     selectedSubsidiary === sub.id
                       ? 'bg-cyan-600 text-white shadow-lg'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <span className="mr-2">{sub.icon}</span>

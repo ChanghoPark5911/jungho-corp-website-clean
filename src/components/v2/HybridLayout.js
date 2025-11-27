@@ -1,6 +1,7 @@
 import React from 'react';
 import MegaMenu from './MegaMenu';
 import Footer from '../Footer';
+import ThemeToggle from '../ThemeToggle';
 
 /**
  * Hybrid 버전 전용 레이아웃
@@ -21,6 +22,9 @@ const HybridLayout = ({ children, className = '' }) => {
       
       {/* Footer */}
       <Footer />
+      
+      {/* 다크모드 토글 버튼 */}
+      <ThemeToggle />
     </div>
   );
 };

@@ -1,10 +1,16 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { COMPANY_INFO, SUBSIDIARIES, SOCIAL_LINKS } from '../utils/constants';
 import { Typography } from './ui';
 import { useI18n } from '../hooks/useI18n';
 
 const Footer = () => {
   const { t } = useI18n();
+  const location = useLocation();
+  
+  // 현재 경로에 따라 관리자 페이지 링크 결정
+  const isHybridVersion = location.pathname.startsWith('/hybrid');
+  const adminLink = isHybridVersion ? '/admin-new/login' : '/admin';
   // SNS 링크
   const socialLinks = [
     {
@@ -180,7 +186,7 @@ const Footer = () => {
               </a>
               <span className="text-white/30">|</span>
               <a
-                href="/admin"
+                href={adminLink}
                 className="text-white/50 hover:text-secondary transition-colors duration-200 text-xs"
                 title="관리자 페이지"
               >

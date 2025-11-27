@@ -155,7 +155,7 @@ const MegaMenu = ({ version = 'v2' }) => {
                       ${
                         activeMenu === menu.id
                           ? 'text-primary-600 bg-primary-50'
-                          : 'text-gray-900 dark:text-gray-300 hover:text-primary-600 hover:bg-gray-50'
+                          : 'text-gray-900 dark:text-gray-200 hover:text-primary-600 hover:bg-gray-50'
                       }
                       ${menu.id === 'subsidiaries' ? 'cursor-default' : 'cursor-pointer'}
                     `}
@@ -181,7 +181,7 @@ const MegaMenu = ({ version = 'v2' }) => {
                             w-full flex items-center space-x-3 px-4 py-2
                             text-left text-sm
                             transition-all duration-150
-                            text-gray-700 dark:text-gray-300
+                            text-gray-700 dark:text-gray-200
                             hover:text-primary-600 dark:hover:text-primary-300
                             hover:bg-primary-50 dark:hover:bg-primary-900/20
                             hover:translate-x-1
@@ -209,7 +209,7 @@ const MegaMenu = ({ version = 'v2' }) => {
                     ${
                       activeMenu === 'family'
                         ? 'text-primary-600 bg-primary-50'
-                        : 'text-gray-900 dark:text-gray-300 hover:text-primary-600 hover:bg-gray-50'
+                        : 'text-gray-900 dark:text-gray-200 hover:text-primary-600 hover:bg-gray-50'
                     }
                   `}
                 >
@@ -232,7 +232,7 @@ const MegaMenu = ({ version = 'v2' }) => {
                         w-full flex items-center justify-between px-4 py-2
                         text-left text-sm
                         transition-all duration-150
-                        text-gray-700 dark:text-gray-300
+                        text-gray-700 dark:text-gray-200
                         hover:text-primary-600 dark:hover:text-primary-300
                         hover:bg-primary-50 dark:hover:bg-primary-900/20
                         hover:translate-x-1
@@ -327,7 +327,7 @@ const MegaMenu = ({ version = 'v2' }) => {
                     <button
                       key={index}
                       onClick={() => handleNavigation(item.path)}
-                      className="w-full flex items-center space-x-3 py-2 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
+                      className="w-full flex items-center space-x-3 py-2 text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400"
                     >
                       <span className="text-xl">{item.icon}</span>
                       <span>{item.label}</span>
@@ -347,7 +347,7 @@ const MegaMenu = ({ version = 'v2' }) => {
                   <button
                     key={index}
                     onClick={() => handleExternalLink(site.url)}
-                    className="w-full flex items-center space-x-3 py-2 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
+                    className="w-full flex items-center space-x-3 py-2 text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400"
                   >
                     <span className="text-xl">{site.icon}</span>
                     <span>{site.label}</span>

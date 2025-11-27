@@ -226,7 +226,7 @@ const ClarusDetailPage = () => {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          <span className="font-semibold text-gray-700 dark:text-gray-300">
+          <span className="font-semibold text-gray-700 dark:text-gray-200">
             {currentLanguage === 'en' ? 'Subsidiaries' : '계열사 목록'}
           </span>
         </motion.button>
@@ -485,7 +485,7 @@ const ClarusDetailPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
               <div className="p-4">
                 <div className="text-3xl mb-3">🌟</div>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en'
                     ? 'Starting your first smart home'
                     : '첫 스마트홈을 시작하려는 분'}
@@ -493,7 +493,7 @@ const ClarusDetailPage = () => {
               </div>
               <div className="p-4">
                 <div className="text-3xl mb-3">🎁</div>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en'
                     ? 'Want to gift convenient lighting/power control to parents'
                     : '부모님 댁에 편한 조명/전원 제어를 선물하고 싶은 분'}
@@ -501,7 +501,7 @@ const ClarusDetailPage = () => {
               </div>
               <div className="p-4">
                 <div className="text-3xl mb-3">💰</div>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en'
                     ? 'Want to save on electricity bills and time'
                     : '집안 전기요금과 시간을 아끼고 싶은 분'}
@@ -586,7 +586,7 @@ const ClarusDetailPage = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* 좌측: 설명 및 주요 기능 (2/3) */}
                     <div className="lg:col-span-2">
-                      <p className="text-gray-700 dark:text-gray-300 text-base mb-4 leading-relaxed">
+                      <p className="text-gray-700 dark:text-gray-200 text-base mb-4 leading-relaxed">
                         {product.description}
                       </p>
                       
@@ -597,7 +597,7 @@ const ClarusDetailPage = () => {
                         </h4>
                         <div className="space-y-2">
                           {product.features.map((feature, idx) => (
-                            <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-300 text-sm">
+                            <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
                               <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">
                                 {index === 2 ? '-' : '✓'}
                               </span>
@@ -862,7 +862,7 @@ const ClarusDetailPage = () => {
             <div className="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg space-y-4">
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📞</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Phone:' : '전화:'}
                 </span>
                 <a href="tel:02-515-5018" className="text-cyan-600 dark:text-cyan-400 hover:underline">
@@ -871,7 +871,7 @@ const ClarusDetailPage = () => {
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📧</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Email:' : '이메일:'}
                 </span>
                 <a href="mailto:clarus@junghocorp.com" className="text-cyan-600 dark:text-cyan-400 hover:underline">
@@ -880,7 +880,7 @@ const ClarusDetailPage = () => {
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">🌐</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Website:' : '웹사이트:'}
                 </span>
                 <a href="https://www.magicclarus.com" target="_blank" rel="noopener noreferrer" className="text-cyan-600 dark:text-cyan-400 hover:underline">
@@ -889,10 +889,10 @@ const ClarusDetailPage = () => {
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">
                 <span className="text-2xl">📍</span>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Headquarters:' : '본사:'}
                 </span>
-                <span className="text-gray-700 dark:text-gray-300">
+                <span className="text-gray-700 dark:text-white">
                   {currentLanguage === 'en'
                     ? '3F, Jungho Building, 17, Nonhyeon-ro 116-gil, Gangnam-gu, Seoul'
                     : '서울시 강남구 논현로116길 17 정호빌딩 3층'}

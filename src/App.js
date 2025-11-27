@@ -61,6 +61,14 @@ const MediaTechnicalDocsPage = lazy(() => import('./pages/v2/MediaTechnicalDocsP
 const SupportPageV2 = lazy(() => import('./pages/v2/SupportPage'));
 const AdminPageV2 = lazy(() => import('./pages/v2/AdminPageV2'));
 
+// 새 관리자 시스템 (Phase 1)
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminTest = lazy(() => import('./pages/admin/AdminTest'));
+const MediaManager = lazy(() => import('./pages/admin/MediaManager'));
+const SupportManager = lazy(() => import('./pages/admin/SupportManager'));
+const I18nManager = lazy(() => import('./pages/admin/I18nManager'));
+
 // 로딩 컴포넌트
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -131,9 +139,31 @@ function App() {
             */}
             <Route path="/admin" element={<AdminPageV2 />} />
             <Route path="/v2/admin" element={<AdminPageV2 />} />
+
+            {/* 
+              ===================================
+              새 관리자 시스템 (Phase 1 - 독립적)
+              ===================================
+              - /admin-new/login: 로그인
+              - /admin-new/dashboard: 대시보드
+              - /admin-new/media: 미디어 관리 (예정)
+              - /admin-new/support: 고객센터 관리 (예정)
+              ===================================
+            */}
+            <Route path="/admin-new/test" element={<Suspense fallback={<PageLoader />}><AdminTest /></Suspense>} />
+            <Route path="/admin-new/login" element={<Suspense fallback={<PageLoader />}><AdminLogin /></Suspense>} />
+            <Route path="/admin-new/dashboard" element={<Suspense fallback={<PageLoader />}><AdminDashboard /></Suspense>} />
+            <Route path="/admin-new/media" element={<Suspense fallback={<PageLoader />}><MediaManager /></Suspense>} />
+            <Route path="/admin-new/support" element={<Suspense fallback={<PageLoader />}><SupportManager /></Suspense>} />
+            <Route path="/admin-new/i18n" element={<Suspense fallback={<PageLoader />}><I18nManager /></Suspense>} />
+            <Route path="/admin-new" element={<Navigate to="/admin-new/login" replace />} />
             
             {/* V2 버전 (모던 MegaMenu 스타일) 🚀 */}
             <Route path="/v2" element={<Suspense fallback={<PageLoader />}><LayoutV2><HomePageV2 /></LayoutV2></Suspense>} />
+            <Route path="/v2/projects" element={<Suspense fallback={<PageLoader />}><LayoutV2><ProjectsPageV2 /></LayoutV2></Suspense>} />
+            <Route path="/v2/about" element={<Suspense fallback={<PageLoader />}><LayoutV2><AboutPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/about/intro" element={<Suspense fallback={<PageLoader />}><LayoutV2><AboutIntroPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/subsidiaries" element={<Suspense fallback={<PageLoader />}><LayoutV2><SubsidiariesPage /></LayoutV2></Suspense>} />
             
             {/* 클래식 버전 (전통적 스타일) - 레이아웃 없음 ⭐ */}
             <Route path="/classic" element={<HomePageClassic />} />
@@ -216,9 +246,9 @@ function App() {
                   <Route path="/about/location" element={<AboutLocationPage />} />
                   <Route path="/subsidiaries" element={<SubsidiariesPage />} />
                   <Route path="/subsidiaries/clarus" element={<ClarusDetailPageV2 />} />
-                  <Route path="/subsidiaries/tlc" element={<TlcDetailPageV2 />} />
+                  <Route path="/subsidiaries/jungho-tlc" element={<TlcDetailPageV2 />} />
                   <Route path="/subsidiaries/illutech" element={<IllutechDetailPageV2 />} />
-                  <Route path="/subsidiaries/texcom" element={<TexcomDetailPageV2 />} />
+                  <Route path="/subsidiaries/jungho-texcom" element={<TexcomDetailPageV2 />} />
                   <Route path="/projects" element={<ProjectsPageV2 />} />
                   <Route path="/media/sns" element={<MediaSNSPage />} />
                   <Route path="/media/promotion" element={<MediaPromotionPage />} />

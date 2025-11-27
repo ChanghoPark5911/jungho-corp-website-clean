@@ -60,6 +60,26 @@ const SupportManager = () => {
     }
   };
 
+  const handleAdd = (newFaq) => {
+    const maxId = faqData.faqs.reduce((max, f) => Math.max(max, f.id || 0), 0);
+    const faqWithId = { 
+      ...newFaq, 
+      id: maxId + 1,
+      views: 0,
+      helpful: 0
+    };
+    setFaqData({ ...faqData, faqs: [...faqData.faqs, faqWithId] });
+    setShowAddForm(false);
+  };
+
+  const handleEdit = (updatedFaq) => {
+    const newFaqs = faqData.faqs.map(f => 
+      f.id === updatedFaq.id ? updatedFaq : f
+    );
+    setFaqData({ ...faqData, faqs: newFaqs });
+    setEditingFaq(null);
+  };
+
   const handleLogout = () => {
     sessionStorage.removeItem('adminAuthenticated');
     navigate('/admin-new/login');

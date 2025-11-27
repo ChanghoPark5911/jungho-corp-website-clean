@@ -72,6 +72,13 @@
     "cultural": { "id": "cultural", "key": "cultural", "nameKo": "문화·의료·교육", "nameEn": "Cultural", "count": 10, "total": 416 },
     "industrial": { "id": "industrial", "key": "industrial", "nameKo": "생산·물류·데이터센터", "nameEn": "Industrial", "count": 10, "total": 198 }
   },
+  "snsLinks": {
+    "youtube": "https://www.youtube.com/@junghogroup",
+    "instagram": "https://www.instagram.com/junghogroup",
+    "naverBlog": "https://blog.naver.com/junghogroup",
+    "facebook": "https://www.facebook.com/junghogroup"
+  },
+  "promotionVideos": [],
   "lastUpdated": "2025-11-27T00:00:00Z"
 }
 

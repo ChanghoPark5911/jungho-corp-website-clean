@@ -499,23 +499,290 @@ const ProjectForm = ({ project, onSave, onCancel }) => {
 
 // 홍보영상 탭
 const VideosTab = ({ videos, setMediaData, mediaData }) => {
+  const [editingVideo, setEditingVideo] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+
+  const handleDelete = (videoId) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      const newVideos = videos.filter(v => v.id !== videoId);
+      setMediaData({ ...mediaData, promotionVideos: newVideos });
+    }
+  };
+
+  const handleAdd = (newVideo) => {
+    const maxId = videos.reduce((max, v) => Math.max(max, v.id || 0), 0);
+    const videoWithId = { ...newVideo, id: maxId + 1 };
+    setMediaData({ ...mediaData, promotionVideos: [...videos, videoWithId] });
+    setShowAddForm(false);
+  };
+
+  const handleEdit = (updatedVideo) => {
+    const newVideos = videos.map(v => 
+      v.id === updatedVideo.id ? updatedVideo : v
+    );
+    setMediaData({ ...mediaData, promotionVideos: newVideos });
+    setEditingVideo(null);
+  };
+
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-        홍보영상 관리
-      </h2>
-      <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">
-        <p className="text-sm text-yellow-800 dark:text-yellow-200">
-          💡 홍보영상 관리 기능은 곧 추가됩니다.
-        </p>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          홍보영상 관리
+        </h2>
+        <button
+          onClick={() => setShowAddForm(true)}
+          className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center"
+        >
+          <span className="mr-2">+</span>
+          새 홍보영상 추가
+        </button>
       </div>
+
+      {/* 홍보영상 목록 */}
       <div className="space-y-4">
-        {videos.map((video) => (
-          <div key={video.id} className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md">
-            <h3 className="font-bold text-gray-900 dark:text-white">{video.title}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">{video.description}</p>
+        {videos.length === 0 ? (
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8 text-center">
+            <p className="text-gray-500 dark:text-gray-400">
+              등록된 홍보영상이 없습니다. 새 홍보영상을 추가해주세요.
+            </p>
           </div>
-        ))}
+        ) : (
+          videos.map((video) => (
+            <div key={video.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+              <div className="flex">
+                {/* 썸네일 */}
+                <div className="w-48 h-32 flex-shrink-0 bg-gray-200 dark:bg-gray-700">
+                  {video.thumbnail ? (
+                    <img 
+                      src={video.thumbnail} 
+                      alt={video.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-4xl">📺</span>
+                    </div>
+                  )}
+                </div>
+                
+                {/* 정보 */}
+                <div className="flex-1 p-4">
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">
+                    {video.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    {video.description}
+                  </p>
+                  <div className="text-xs text-gray-500 dark:text-gray-500 mb-3">
+                    <a 
+                      href={video.videoUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="hover:text-primary-600 dark:hover:text-primary-400"
+                    >
+                      🔗 {video.videoUrl}
+                    </a>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => setEditingVideo(video)}
+                      className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-3 py-1 rounded text-sm"
+                    >
+                      수정
+                    </button>
+                    <button
+                      onClick={() => handleDelete(video.id)}
+                      className="bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 px-3 py-1 rounded text-sm"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* 추가 폼 */}
+      {showAddForm && (
+        <VideoForm
+          onSave={handleAdd}
+          onCancel={() => setShowAddForm(false)}
+        />
+      )}
+
+      {/* 수정 폼 */}
+      {editingVideo && (
+        <VideoForm
+          video={editingVideo}
+          onSave={handleEdit}
+          onCancel={() => setEditingVideo(null)}
+        />
+      )}
+    </div>
+  );
+};
+
+// 홍보영상 추가/수정 폼
+const VideoForm = ({ video, onSave, onCancel }) => {
+  const [formData, setFormData] = useState(
+    video || {
+      title: '',
+      description: '',
+      videoUrl: '',
+      thumbnail: ''
+    }
+  );
+  const [thumbnailPreview, setThumbnailPreview] = useState(video?.thumbnail || '');
+  const [uploading, setUploading] = useState(false);
+
+  const handleThumbnailUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('이미지 파일은 5MB 이하여야 합니다.');
+      return;
+    }
+
+    setUploading(true);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result;
+      setThumbnailPreview(base64String);
+      setFormData({ ...formData, thumbnail: base64String });
+      setUploading(false);
+    };
+    
+    reader.readAsDataURL(file);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!formData.title || !formData.videoUrl) {
+      alert('제목과 동영상 URL은 필수입니다.');
+      return;
+    }
+
+    onSave(formData);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <h3 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">
+          {video ? '홍보영상 수정' : '새 홍보영상 추가'}
+        </h3>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* 제목 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              제목 *
+            </label>
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+              placeholder="예: 정호그룹 2024 홍보영상"
+              required
+            />
+          </div>
+
+          {/* 설명 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              설명
+            </label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+              placeholder="홍보영상에 대한 간단한 설명"
+              rows={3}
+            />
+          </div>
+
+          {/* 동영상 URL */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              동영상 URL *
+            </label>
+            <input
+              type="url"
+              value={formData.videoUrl}
+              onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+              placeholder="https://www.youtube.com/watch?v=..."
+              required
+            />
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              YouTube, Vimeo 등의 동영상 URL을 입력하세요
+            </p>
+          </div>
+
+          {/* 썸네일 업로드 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              썸네일 (선택)
+            </label>
+            <div className="flex items-center space-x-4">
+              <label className="flex-1 cursor-pointer">
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center hover:border-primary-500 transition-colors">
+                  {uploading ? (
+                    <p className="text-sm text-gray-600 dark:text-gray-400">업로드 중...</p>
+                  ) : thumbnailPreview ? (
+                    <div className="space-y-2">
+                      <img 
+                        src={thumbnailPreview} 
+                        alt="Preview" 
+                        className="max-h-32 mx-auto rounded"
+                      />
+                      <p className="text-xs text-gray-500">클릭하여 변경</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        📷 썸네일 업로드
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        JPG, PNG (최대 5MB)
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleThumbnailUpload}
+                  className="hidden"
+                />
+              </label>
+            </div>
+          </div>
+
+          {/* 버튼 */}
+          <div className="flex space-x-3 pt-4">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 rounded-lg"
+            >
+              취소
+            </button>
+            <button
+              type="submit"
+              className="flex-1 bg-primary-600 hover:bg-primary-700 text-white py-2 rounded-lg"
+            >
+              {video ? '수정하기' : '추가하기'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
@@ -523,7 +790,12 @@ const VideosTab = ({ videos, setMediaData, mediaData }) => {
 
 // SNS 링크 탭
 const SNSTab = ({ snsLinks, setMediaData, mediaData }) => {
-  const [links, setLinks] = useState(snsLinks);
+  const [links, setLinks] = useState(snsLinks || {
+    youtube: '',
+    instagram: '',
+    naverBlog: '',
+    facebook: ''
+  });
 
   const handleChange = (platform, value) => {
     const newLinks = { ...links, [platform]: value };

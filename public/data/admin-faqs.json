@@ -26,6 +26,16 @@
       "order": 3,
       "views": 312,
       "helpful": 25
+    },
+    {
+      "category": "일반",
+      "question": "대량 납품 문의는 어떻게 하나요?",
+      "questionEn": "How can I inquire about bulk orders?",
+      "answer": "대량 납품 문의는 영업팀(02-515-5018)으로 연락주시거나 이메일(sales@junghocorp.com)로 문의해주세요. 프로젝트 규모와 납기 일정을 알려주시면 최적의 솔루션을 제안해드립니다.",
+      "answerEn": "For bulk order inquiries, please contact our sales team at 02-515-5018 or email sales@junghocorp.com. Please provide project scale and delivery schedule for the best solution.",
+      "id": "faq004",
+      "views": 0,
+      "helpful": 0
     }
   ],
   "categories": [
@@ -37,4 +47,3 @@
   ],
   "lastUpdated": "2025-11-27T00:00:00Z"
 }
-

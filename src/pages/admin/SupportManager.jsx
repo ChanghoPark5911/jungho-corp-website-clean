@@ -29,6 +29,17 @@ const SupportManager = () => {
 
   const loadFaqData = async () => {
     try {
+      // 1순위: localStorage에서 데이터 확인
+      const localData = localStorage.getItem('admin-faq-data');
+      if (localData) {
+        console.log('✅ localStorage에서 FAQ 데이터 로드');
+        setFaqData(JSON.parse(localData));
+        setLoading(false);
+        return;
+      }
+
+      // 2순위: JSON 파일에서 로드
+      console.log('📄 JSON 파일에서 FAQ 데이터 로드');
       const response = await fetch('/data/admin-faqs.json');
       const data = await response.json();
       setFaqData(data);
@@ -88,10 +99,15 @@ const SupportManager = () => {
   };
 
   const handleAdd = (newFaq) => {
-    const maxId = faqData.faqs.reduce((max, f) => Math.max(max, f.id || 0), 0);
+    // 기존 FAQ ID에서 숫자 부분 추출하여 최대값 찾기
+    const maxNum = faqData.faqs.reduce((max, f) => {
+      const numPart = parseInt(f.id.toString().replace(/\D/g, '')) || 0;
+      return Math.max(max, numPart);
+    }, 0);
+    
     const faqWithId = { 
       ...newFaq, 
-      id: maxId + 1,
+      id: `faq${String(maxNum + 1).padStart(3, '0')}`, // "faq001", "faq002" 형식
       views: 0,
       helpful: 0
     };
@@ -270,7 +286,11 @@ const SupportManager = () => {
 // FAQ 추가/수정 폼
 const FaqForm = ({ faq, onSave, onCancel }) => {
   const [formData, setFormData] = useState(
-    faq || {
+    faq ? {
+      ...faq,
+      questionEn: faq.questionEn || '',
+      answerEn: faq.answerEn || ''
+    } : {
       category: '일반',
       question: '',
       questionEn: '',
@@ -289,7 +309,13 @@ const FaqForm = ({ faq, onSave, onCancel }) => {
       return;
     }
 
-    onSave(formData);
+    // 수정 시에는 기존 FAQ의 모든 필드 유지
+    const dataToSave = faq ? {
+      ...faq,
+      ...formData
+    } : formData;
+
+    onSave(dataToSave);
   };
 
   return (

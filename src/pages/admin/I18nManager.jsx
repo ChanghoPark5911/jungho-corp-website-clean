@@ -29,6 +29,17 @@ const I18nManager = () => {
 
   const loadI18nData = async () => {
     try {
+      // 1순위: localStorage에서 데이터 확인
+      const localData = localStorage.getItem('admin-i18n-data');
+      if (localData) {
+        console.log('✅ localStorage에서 다국어 데이터 로드');
+        setI18nData(JSON.parse(localData));
+        setLoading(false);
+        return;
+      }
+
+      // 2순위: JSON 파일에서 로드
+      console.log('📄 JSON 파일에서 다국어 데이터 로드');
       const response = await fetch('/data/admin-i18n.json');
       const data = await response.json();
       setI18nData(data);

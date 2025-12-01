@@ -58,6 +58,42 @@ const MediaManager = () => {
     }
   };
 
+  // 프로젝트 데이터 내보내기 (JSON 파일 다운로드)
+  const exportProjectsData = () => {
+    try {
+      // localStorage에서 최신 데이터 가져오기
+      const projectsData = localStorage.getItem('projects-data');
+      const data = projectsData ? JSON.parse(projectsData) : mediaData;
+      
+      // JSON 문자열로 변환 (보기 좋게 포맷팅)
+      const jsonString = JSON.stringify(data, null, 2);
+      
+      // Blob 생성
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      
+      // 다운로드 링크 생성
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `projects-${new Date().toISOString().split('T')[0]}.json`;
+      
+      // 다운로드 실행
+      document.body.appendChild(link);
+      link.click();
+      
+      // 정리
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      setSaveStatus('✅ 프로젝트 데이터 내보내기 완료!');
+      setTimeout(() => setSaveStatus(''), 3000);
+    } catch (error) {
+      console.error('내보내기 실패:', error);
+      setSaveStatus('❌ 내보내기 실패');
+      setTimeout(() => setSaveStatus(''), 3000);
+    }
+  };
+
   const handleLogout = () => {
     sessionStorage.removeItem('adminAuthenticated');
     navigate('/admin-new/login');
@@ -97,6 +133,14 @@ const MediaManager = () => {
                   {saveStatus}
                 </span>
               )}
+              <button
+                onClick={exportProjectsData}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"
+                title="프로젝트 데이터를 JSON 파일로 다운로드합니다"
+              >
+                <span className="mr-2">📥</span>
+                프로젝트 내보내기
+              </button>
               <button
                 onClick={saveMediaData}
                 className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium"
@@ -220,6 +264,29 @@ const ProjectsTab = ({ projects, setMediaData, mediaData }) => {
           <span className="mr-2">+</span>
           새 프로젝트 추가
         </button>
+      </div>
+
+      {/* 영구 저장 안내 */}
+      <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+        <div className="flex items-start">
+          <div className="flex-shrink-0">
+            <span className="text-2xl">💾</span>
+          </div>
+          <div className="ml-3 flex-1">
+            <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
+              📌 영구 저장 방법
+            </h3>
+            <ol className="text-xs text-blue-800 dark:text-blue-200 space-y-1 list-decimal list-inside">
+              <li>프로젝트를 추가/수정한 후 상단의 <strong>"저장"</strong> 버튼을 클릭합니다</li>
+              <li>상단의 <strong>"📥 프로젝트 내보내기"</strong> 버튼을 클릭하여 JSON 파일을 다운로드합니다</li>
+              <li>다운로드한 파일을 <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">public/data/projects.json</code> 파일로 복사합니다</li>
+              <li>Git에 커밋하고 푸시하여 배포 사이트에 반영합니다</li>
+            </ol>
+            <p className="text-xs text-blue-700 dark:text-blue-300 mt-2">
+              ⚠️ 내보내기를 하지 않으면 브라우저 캐시 삭제 시 데이터가 사라질 수 있습니다.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* 프로젝트 목록 */}

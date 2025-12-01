@@ -29,6 +29,17 @@ const MediaManager = () => {
 
   const loadMediaData = async () => {
     try {
+      // 1순위: localStorage에서 데이터 확인
+      const localData = localStorage.getItem('projects-data');
+      if (localData) {
+        console.log('✅ localStorage에서 미디어 데이터 로드');
+        setMediaData(JSON.parse(localData));
+        setLoading(false);
+        return;
+      }
+
+      // 2순위: JSON 파일에서 로드
+      console.log('📄 JSON 파일에서 미디어 데이터 로드');
       const response = await fetch('/data/projects.json');
       const data = await response.json();
       setMediaData(data);

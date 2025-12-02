@@ -1,0 +1,50 @@
+{
+  "products": [
+    {
+      "id": "nuclear-led",
+      "icon": "⚛️",
+      "nameKo": "원전형 LED 조명",
+      "nameEn": "Nuclear Power Plant LED Lighting",
+      "descriptionKo": "원자력 발전소용 특수 LED 조명으로 높은 내구성과 안전성을 갖춘 제품입니다",
+      "descriptionEn": "Special LED lighting for nuclear power plants with high durability and safety",
+      "imagePath": "/images/illutech/products/nuclear-led.jpg"
+    },
+    {
+      "id": "explosion-proof-led",
+      "icon": "🔥",
+      "nameKo": "방폭형 LED 조명",
+      "nameEn": "Explosion-proof LED Lighting",
+      "descriptionKo": "위험 지역용 방폭 인증 조명으로 폭발 위험이 있는 환경에서도 안전하게 사용 가능합니다",
+      "descriptionEn": "Explosion-proof certified lighting for hazardous areas, safe to use in explosive environments",
+      "imagePath": "/images/illutech/products/explosion-proof-led.jpg"
+    },
+    {
+      "id": "factory-led",
+      "icon": "🏭",
+      "nameKo": "일반 공장용 조명등",
+      "nameEn": "General Factory Lighting",
+      "descriptionKo": "공장 및 산업 현장에 최적화된 고효율 LED 조명으로 에너지 절감과 밝은 작업 환경을 제공합니다",
+      "descriptionEn": "High-efficiency LED lighting optimized for factories and industrial sites, providing energy savings and bright working environment",
+      "imagePath": "/images/illutech/products/factory-led.jpg"
+    },
+    {
+      "id": "security-led",
+      "icon": "🔦",
+      "nameKo": "LED 보안등",
+      "nameEn": "LED Security Lighting",
+      "descriptionKo": "고효율 보안 조명으로 밤낮 구분 없이 안전한 환경을 만들어줍니다",
+      "descriptionEn": "High-efficiency security lighting creating safe environments day and night",
+      "imagePath": "/images/illutech/products/security-led.jpg"
+    },
+    {
+      "id": "crosswalk-safety-led",
+      "icon": "🚶",
+      "nameKo": "횡단보도 안전등",
+      "nameEn": "Crosswalk Safety Lighting",
+      "descriptionKo": "보행자 안전을 위한 횡단보도 전용 LED 조명으로 시인성이 뛰어납니다",
+      "descriptionEn": "Dedicated LED lighting for crosswalks ensuring pedestrian safety with excellent visibility",
+      "imagePath": "/images/illutech/products/crosswalk-safety-led.jpg"
+    }
+  ]
+}
+

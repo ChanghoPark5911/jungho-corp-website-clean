@@ -11,10 +11,39 @@ const IllutechDetailPage = () => {
   const { isDarkMode } = useTheme();
   const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
   const [showAllAchievements, setShowAllAchievements] = React.useState(false);
+  const [products, setProducts] = React.useState([]);
 
   // 현재 경로가 Hybrid인지 확인하여 뒤로가기 경로 설정
   const isHybrid = location.pathname.startsWith('/hybrid');
   const backPath = isHybrid ? '/hybrid' : '/';
+
+  // 제품 데이터 로드
+  React.useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const timestamp = new Date().getTime();
+        const response = await fetch(`/data/illutech-products.json?v=${timestamp}`, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
+        
+        if (response.ok) {
+          const jsonData = await response.json();
+          if (jsonData.products && Array.isArray(jsonData.products)) {
+            setProducts(jsonData.products);
+            console.log('✅ 일루텍 제품 데이터 로드:', jsonData.products.length, '개');
+          }
+        }
+      } catch (error) {
+        console.error('일루텍 제품 데이터 로드 실패:', error);
+      }
+    };
+
+    loadProducts();
+  }, []);
 
   // JSON 파일에서 PDF 자료 로드 (우선), localStorage는 백업 (일루텍 관련만)
   React.useEffect(() => {
@@ -89,57 +118,6 @@ const IllutechDetailPage = () => {
     }
   };
 
-  // 주요 제품/서비스
-  const products = [
-      {
-        name: currentLanguage === 'en' ? 'Nuclear Power Plant LED Lighting' : '원전용 LED 조명',
-        description: currentLanguage === 'en'
-          ? 'Special LED lighting for nuclear power plants'
-          : '원자력 발전소용 특수 LED 조명',
-        icon: '⚛️',
-        image: '/images/products/illutech-nuclear.jpg' // 이미지 경로 추가
-      },
-      {
-        name: currentLanguage === 'en' ? 'Explosion-proof LED Lighting' : '방폭형 LED 조명',
-        description: currentLanguage === 'en'
-          ? 'Explosion-proof certified lighting for hazardous areas'
-          : '위험 지역용 방폭 인증 조명',
-        icon: '🔥',
-        image: '/images/products/illutech-explosion-proof.jpg' // 이미지 경로 추가
-      },
-      {
-        name: currentLanguage === 'en' ? 'Public Infrastructure LED' : '공공 인프라용 LED',
-        description: currentLanguage === 'en'
-          ? 'Lighting for public facilities such as tunnels and roads'
-          : '터널, 도로 등 공공시설 조명',
-        icon: '🏗️',
-        image: '/images/products/illutech-infrastructure.jpg' // 이미지 경로 추가
-    },
-    {
-      name: currentLanguage === 'en' ? 'Industrial LED Lighting' : '산업용 LED 조명',
-      description: currentLanguage === 'en'
-        ? 'Lighting solutions for factories and industrial sites'
-        : '공장 및 산업 현장용 조명 솔루션',
-      icon: '🏭',
-      image: '/images/products/illutech-industrial.jpg' // 이미지 경로 추가
-    },
-    {
-      name: currentLanguage === 'en' ? 'Security LED Lighting' : 'LED 보안등',
-      description: currentLanguage === 'en'
-        ? 'High-efficiency security lighting'
-        : '고효율 보안 조명',
-      icon: '🔦',
-      image: '/images/products/illutech-security.jpg' // 이미지 경로 추가
-    },
-    {
-      name: currentLanguage === 'en' ? 'Street LED Lighting' : 'LED 가로등',
-      description: currentLanguage === 'en'
-        ? 'Energy-efficient street lighting'
-        : '에너지 절약형 가로등',
-      icon: '💡',
-      image: '/images/products/illutech-street.jpg' // 이미지 경로 추가
-    }
-  ];
 
   // 핵심 강점
   const strengths = [
@@ -357,38 +335,54 @@ const IllutechDetailPage = () => {
           >
             {products.map((product, index) => (
               <motion.div
-                key={index}
+                key={product.id}
                 variants={fadeInUp}
                 whileHover={{ scale: 1.02 }}
                 className="bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden"
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                  {/* 왼쪽: 텍스트 내용 */}
-                  <div className="p-8 flex flex-col justify-center">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
+                  {/* 왼쪽: 텍스트 내용 (60%) */}
+                  <div className="md:col-span-3 p-8 flex flex-col justify-center">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="text-5xl">{product.icon}</div>
                       <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                        {product.name}
+                        {currentLanguage === 'en' ? product.nameEn : product.nameKo}
                       </h3>
                     </div>
                     <p className="text-lg text-gray-600 dark:text-gray-200 leading-relaxed">
-                      {product.description}
+                      {currentLanguage === 'en' ? product.descriptionEn : product.descriptionKo}
                     </p>
                   </div>
                   
-                  {/* 오른쪽: 이미지 */}
-                  <div className="relative h-64 md:h-auto">
-                    {product.image && (
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          // 이미지 로드 실패 시 대체 배경
-                          e.target.style.display = 'none';
-                          e.target.parentElement.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                        }}
-                      />
+                  {/* 오른쪽: 이미지 (40%) */}
+                  <div className="md:col-span-2 relative h-64 md:h-auto min-h-[240px] bg-gradient-to-br from-orange-50 to-amber-50 dark:from-gray-800 dark:to-gray-850 flex items-center justify-center">
+                    {product.imagePath ? (
+                      <>
+                        <img
+                          src={product.imagePath}
+                          alt={currentLanguage === 'en' ? product.nameEn : product.nameKo}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            // 이미지 로드 실패 시 대체 아이콘 표시
+                            e.target.style.display = 'none';
+                            e.target.nextElementSibling.style.display = 'flex';
+                          }}
+                        />
+                        {/* 이미지 로드 실패 시 대체 UI */}
+                        <div className="hidden flex-col items-center justify-center text-center p-8">
+                          <div className="text-6xl mb-4">{product.icon}</div>
+                          <p className="text-sm text-gray-500 dark:text-gray-400 font-semibold">
+                            {currentLanguage === 'en' ? 'Image Coming Soon' : '이미지 준비중'}
+                          </p>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-center p-8">
+                        <div className="text-6xl mb-4">{product.icon}</div>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 font-semibold">
+                          {currentLanguage === 'en' ? 'Image Coming Soon' : '이미지 준비중'}
+                        </p>
+                      </div>
                     )}
                   </div>
                 </div>

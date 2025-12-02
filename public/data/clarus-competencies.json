@@ -1,0 +1,93 @@
+{
+  "competencies": [
+    {
+      "id": "rnd-center",
+      "icon": "🔬",
+      "titleKo": "R&D Center",
+      "titleEn": "R&D Center",
+      "subtitleKo": "연구개발센터",
+      "subtitleEn": "Research & Development",
+      "descriptionKo": "그룹 내 유일한 연구개발센터로서 조명/전력제어 시스템의 핵심 기술을 개발합니다",
+      "descriptionEn": "The only R&D center within the group, developing core technologies for lighting and power control systems",
+      "features": [
+        {
+          "ko": "기업부설 연구소 운영",
+          "en": "Corporate Research Institute"
+        },
+        {
+          "ko": "IoT 및 무선통신 기술 개발",
+          "en": "IoT & Wireless Communication Technology"
+        }
+      ],
+      "imagePath": "/images/clarus/competencies/rnd-center.jpg",
+      "borderColor": "cyan"
+    },
+    {
+      "id": "production-facility",
+      "icon": "🏭",
+      "titleKo": "Production Facility",
+      "titleEn": "Production Facility",
+      "subtitleKo": "생산시설",
+      "subtitleEn": "Manufacturing",
+      "descriptionKo": "조명/전력제어장치를 직접 생산하며, 철저한 품질관리를 수행합니다",
+      "descriptionEn": "Direct production of lighting and power control devices with thorough quality management",
+      "features": [
+        {
+          "ko": "자체 생산 시스템 구축",
+          "en": "In-house Production System"
+        },
+        {
+          "ko": "품질인증 획득 (UL/cUL, KC, FCC)",
+          "en": "Quality Certification (UL/cUL, KC, FCC)"
+        }
+      ],
+      "imagePath": "/images/clarus/competencies/production-facility.jpg",
+      "borderColor": "blue"
+    },
+    {
+      "id": "export-business",
+      "icon": "🌏",
+      "titleKo": "Export Business",
+      "titleEn": "Export Business",
+      "subtitleKo": "해외수출",
+      "subtitleEn": "Global Market",
+      "descriptionKo": "그룹 수출을 담당하며, 북미·유럽·아시아 등 글로벌 시장으로 진출합니다",
+      "descriptionEn": "Leading group exports, expanding into global markets including North America, Europe, and Asia",
+      "features": [
+        {
+          "ko": "북미·유럽 선진시장",
+          "en": "North America & Europe"
+        },
+        {
+          "ko": "중국·대만·동남아 신흥시장",
+          "en": "China, Taiwan, Southeast Asia"
+        }
+      ],
+      "imagePath": "/images/clarus/competencies/export-business.jpg",
+      "borderColor": "emerald"
+    },
+    {
+      "id": "online-shopping",
+      "icon": "🛒",
+      "titleKo": "Online Shopping Mall",
+      "titleEn": "Online Shopping Mall",
+      "subtitleKo": "온라인 영업",
+      "subtitleEn": "E-Commerce",
+      "descriptionKo": "MAGIC CLARUS 브랜드로 국내 온라인 판매 및 고객 직접 소통을 담당합니다",
+      "descriptionEn": "Operating MAGIC CLARUS brand for domestic online sales and direct customer communication",
+      "features": [
+        {
+          "ko": "네이버 스마트스토어",
+          "en": "Naver Smart Store"
+        },
+        {
+          "ko": "쿠팡 및 자사몰 운영",
+          "en": "Coupang & Official Mall"
+        }
+      ],
+      "imagePath": "/images/clarus/competencies/online-shopping.jpg",
+      "borderColor": "red"
+    }
+  ]
+}
+

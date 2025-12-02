@@ -12,10 +12,39 @@ const ClarusDetailPage = () => {
   const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [showAllAchievements, setShowAllAchievements] = React.useState(false);
+  const [competencies, setCompetencies] = React.useState([]);
 
   // 현재 경로가 Hybrid인지 확인하여 뒤로가기 경로 설정
   const isHybrid = location.pathname.startsWith('/hybrid');
   const backPath = isHybrid ? '/hybrid' : '/';
+
+  // 핵심 역량 데이터 로드
+  React.useEffect(() => {
+    const loadCompetencies = async () => {
+      try {
+        const timestamp = new Date().getTime();
+        const response = await fetch(`/data/clarus-competencies.json?v=${timestamp}`, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
+        
+        if (response.ok) {
+          const jsonData = await response.json();
+          if (jsonData.competencies && Array.isArray(jsonData.competencies)) {
+            setCompetencies(jsonData.competencies);
+            console.log('✅ 핵심 역량 데이터 로드:', jsonData.competencies.length, '개');
+          }
+        }
+      } catch (error) {
+        console.error('핵심 역량 데이터 로드 실패:', error);
+      }
+    };
+
+    loadCompetencies();
+  }, []);
 
   // JSON 파일에서 PDF 자료 로드 (우선), localStorage는 백업 (클라루스 관련만)
   React.useEffect(() => {
@@ -69,18 +98,18 @@ const ClarusDetailPage = () => {
     return () => window.removeEventListener('v2MediaDataUpdated', handleUpdate);
   }, []);
 
-  // 애니메이션 variants
+  // 애니메이션 variants (속도 최적화)
   const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' }
+      transition: { duration: 0.3, ease: 'easeOut' }
     }
   };
 
   const staggerContainer = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
@@ -299,6 +328,195 @@ const ClarusDetailPage = () => {
                 </div>
               </div>
             </motion.div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* 클라루스의 4대 핵심 역량 */}
+      <motion.section 
+        className="py-20 bg-gradient-to-br from-white via-cyan-50 to-blue-50 dark:from-gray-900 dark:via-blue-950/30 dark:to-gray-900 relative overflow-hidden"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        {/* 배경 패턴 */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
+            backgroundSize: '40px 40px'
+          }} />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* 섹션 헤더 */}
+          <motion.div variants={fadeInUp} className="text-center mb-16">
+            <div className="inline-block mb-4 px-6 py-2 bg-cyan-100 dark:bg-cyan-900/30 rounded-full">
+              <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400">
+                {currentLanguage === 'en' ? '⭐ Core Competencies' : '⭐ 핵심 역량'}
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+              {currentLanguage === 'en' 
+                ? "CLARUS's 4 Core Competencies"
+                : '클라루스의 4대 핵심 역량'}
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              {currentLanguage === 'en'
+                ? 'The only R&D center in the group, leading production, export, and online sales'
+                : '그룹 내 유일한 R&D 센터 보유, 생산·수출·온라인 영업 주도'}
+            </p>
+          </motion.div>
+
+          {/* 4대 역량 카드 그리드 */}
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            variants={staggerContainer}
+          >
+            {competencies.map((comp, index) => {
+              const borderColorMap = {
+                cyan: 'border-cyan-200 dark:border-cyan-800',
+                blue: 'border-blue-200 dark:border-blue-800',
+                emerald: 'border-emerald-200 dark:border-emerald-800',
+                red: 'border-red-200 dark:border-red-800'
+              };
+
+              const bgGradientMap = {
+                cyan: 'from-cyan-50 dark:from-cyan-950/20',
+                blue: 'from-blue-50 dark:from-blue-950/20',
+                emerald: 'from-emerald-50 dark:from-emerald-950/20',
+                red: 'from-red-50 dark:from-red-950/20'
+              };
+
+              const iconGradientMap = {
+                cyan: 'from-cyan-500 to-blue-500',
+                blue: 'from-blue-500 to-indigo-500',
+                emerald: 'from-emerald-500 to-teal-500',
+                red: 'from-red-500 to-pink-500'
+              };
+
+              const textColorMap = {
+                cyan: 'text-cyan-600 dark:text-cyan-400',
+                blue: 'text-blue-600 dark:text-blue-400',
+                emerald: 'text-emerald-600 dark:text-emerald-400',
+                red: 'text-red-600 dark:text-red-400'
+              };
+
+              return (
+                <motion.div
+                  key={comp.id}
+                  variants={fadeInUp}
+                  whileHover={{ scale: 1.03, y: -5 }}
+                  className={`group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 ${borderColorMap[comp.borderColor]} relative overflow-hidden`}
+                >
+                  {/* 배경 그라데이션 효과 */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${bgGradientMap[comp.borderColor]} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                  
+                  <div className="relative z-10">
+                    {/* 상단: 아이콘 + 제목 */}
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className={`flex-shrink-0 w-14 h-14 bg-gradient-to-br ${iconGradientMap[comp.borderColor]} rounded-xl flex items-center justify-center text-2xl shadow-lg transform group-hover:rotate-12 transition-transform duration-300`}>
+                        {comp.icon}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                          {currentLanguage === 'en' ? comp.titleEn : comp.titleKo}
+                        </h3>
+                        <p className={`${textColorMap[comp.borderColor]} font-semibold text-sm`}>
+                          {currentLanguage === 'en' ? comp.subtitleEn : comp.subtitleKo}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 본문: 왼쪽 텍스트 + 오른쪽 이미지 */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                      {/* 왼쪽: 설명 및 특징 (2/3) */}
+                      <div className="lg:col-span-2">
+                        <p className="text-gray-700 dark:text-gray-200 text-base leading-relaxed mb-3">
+                          {currentLanguage === 'en' ? comp.descriptionEn : comp.descriptionKo}
+                        </p>
+                        
+                        {/* 주요 특징 */}
+                        <div className="space-y-2">
+                          {comp.features.map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                              <span className={`font-semibold ${textColorMap[comp.borderColor]}`}>✓</span>
+                              <span>{currentLanguage === 'en' ? feature.en : feature.ko}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* 오른쪽: 이미지 공간 (1/3) */}
+                      <div className="lg:col-span-1">
+                        <div 
+                          className="bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden h-32 lg:h-full min-h-[180px] flex items-center justify-center cursor-pointer group/img relative border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-colors"
+                          onClick={() => {
+                            if (comp.imagePath) {
+                              setSelectedImage({ src: comp.imagePath, alt: comp.titleKo });
+                            }
+                          }}
+                        >
+                          {comp.imagePath ? (
+                            <>
+                              <img 
+                                src={comp.imagePath}
+                                alt={currentLanguage === 'en' ? comp.titleEn : comp.titleKo}
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover/img:scale-110"
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                  e.target.nextElementSibling.style.display = 'flex';
+                                }}
+                              />
+                              {/* 이미지 로드 실패 시 대체 아이콘 */}
+                              <div className="hidden flex-col items-center justify-center text-center p-4">
+                                <span className="text-4xl mb-2">{comp.icon}</span>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold">
+                                  {currentLanguage === 'en' ? 'Image' : '이미지'}<br />
+                                  {currentLanguage === 'en' ? 'Coming Soon' : '준비중'}
+                                </p>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="flex flex-col items-center justify-center text-center p-4">
+                              <span className="text-4xl mb-2">{comp.icon}</span>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold">
+                                {currentLanguage === 'en' ? 'Image' : '이미지'}<br />
+                                {currentLanguage === 'en' ? 'Coming Soon' : '준비중'}
+                              </p>
+                            </div>
+                          )}
+                          
+                          {/* Hover 효과: 확대 아이콘 */}
+                          {comp.imagePath && (
+                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 bg-black bg-opacity-30 pointer-events-none">
+                              <div className="bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg">
+                                <svg className="w-6 h-6 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                </svg>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+
+          {/* 하단 강조 문구 */}
+          <motion.div 
+            variants={fadeInUp}
+            className="mt-16 text-center"
+          >
+            <div className="inline-block px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl shadow-xl">
+              <p className="text-white text-lg sm:text-xl font-bold">
+                {currentLanguage === 'en'
+                  ? '🏆 Leading the Group\'s Technology Innovation and Global Business'
+                  : '🏆 그룹의 기술혁신과 글로벌 비즈니스를 선도합니다'}
+              </p>
+            </div>
           </motion.div>
         </div>
       </motion.section>
@@ -568,7 +786,7 @@ const ClarusDetailPage = () => {
             {products.map((product, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
+                initial={{ opacity: 1 }}
                 className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
               >
                 {/* 헤더 */}
@@ -582,69 +800,66 @@ const ClarusDetailPage = () => {
                 </div>
 
                 {/* 본문: 좌측 텍스트 + 우측 이미지 */}
-                <div className="p-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* 좌측: 설명 및 주요 기능 (2/3) */}
-                    <div className="lg:col-span-2">
-                      <p className="text-gray-700 dark:text-gray-200 text-base mb-4 leading-relaxed">
-                        {product.description}
-                      </p>
-                      
-                      {/* 주요 기능 */}
-                      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-                          {currentLanguage === 'en' ? '▪ Key Features:' : index === 2 ? '▪ 대상:' : '▪ 주요 기능:'}
-                        </h4>
-                        <div className="space-y-2">
-                          {product.features.map((feature, idx) => (
-                            <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
-                              <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">
-                                {index === 2 ? '-' : '✓'}
-                              </span>
-                              <span>{feature}</span>
-                            </div>
-                          ))}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
+                  {/* 좌측: 설명 및 주요 기능 (2/3) */}
+                  <div className="lg:col-span-2 p-8">
+                    <p className="text-gray-700 dark:text-gray-200 text-base mb-4 leading-relaxed">
+                      {product.description}
+                    </p>
+                    
+                    {/* 주요 기능 */}
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                        {currentLanguage === 'en' ? '▪ Key Features:' : index === 2 ? '▪ 대상:' : '▪ 주요 기능:'}
+                      </h4>
+                      <div className="space-y-2">
+                        {product.features.map((feature, idx) => (
+                          <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
+                            <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">
+                              {index === 2 ? '-' : '✓'}
+                            </span>
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 우측: 다이어그램/이미지 공간 (1/3) */}
+                  <div className="lg:col-span-1 bg-gray-50 dark:bg-gray-900 p-4 flex items-center justify-center min-h-[250px]">
+                    {product.imagePath ? (
+                      <div 
+                        className="w-full h-full flex items-center justify-center cursor-pointer group relative"
+                        onClick={() => setSelectedImage({ src: product.imagePath, alt: product.name })}
+                      >
+                        <img 
+                          src={product.imagePath} 
+                          alt={`${product.name} diagram`}
+                          className="w-full h-full object-contain rounded-lg transition-transform duration-300 group-hover:scale-105"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.parentNode.innerHTML = '<div class="text-center"><div class="text-4xl mb-2">📊</div><p class="text-sm text-gray-500 dark:text-gray-400 font-semibold">' + 
+                              (currentLanguage === 'en' ? 'Diagram<br/>Coming Soon' : '다이어그램<br/>준비중') + '</p></div>';
+                          }}
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                          <div className="bg-black bg-opacity-50 rounded-full p-3">
+                            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                            </svg>
+                          </div>
                         </div>
                       </div>
-                    </div>
-
-                    {/* 우측: 다이어그램/이미지 공간 (1/3) */}
-                    <div className="lg:col-span-1">
-                      <div className="bg-gray-50 dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 h-full min-h-[200px] flex flex-col items-center justify-center">
-                        {product.imagePath ? (
-                          <div 
-                            className="w-full h-full flex items-center justify-center cursor-pointer group relative"
-                            onClick={() => setSelectedImage({ src: product.imagePath, alt: product.name })}
-                          >
-                            <img 
-                              src={product.imagePath} 
-                              alt={`${product.name} diagram`}
-                              className="w-full h-full object-contain rounded-lg transition-transform duration-300 group-hover:scale-105"
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.parentNode.innerHTML = '<div class="text-center"><div class="text-4xl mb-2">📊</div><p class="text-sm text-gray-500 dark:text-gray-400 font-semibold">' + 
-                                  (currentLanguage === 'en' ? 'Diagram<br/>Coming Soon' : '다이어그램<br/>준비중') + '</p></div>';
-                              }}
-                            />
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                              <div className="bg-black bg-opacity-50 rounded-full p-3">
-                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                                </svg>
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="text-center">
-                            <div className="text-4xl mb-2">📊</div>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 font-semibold">
-                              {currentLanguage === 'en' ? 'Diagram' : '다이어그램'}<br />
-                              {currentLanguage === 'en' ? 'Coming Soon' : '준비중'}
-                            </p>
-                          </div>
-                        )}
+                    ) : (
+                      <div className="text-center">
+                        <div className="text-4xl mb-2">📊</div>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 font-semibold">
+                          {currentLanguage === 'en' ? 'Diagram' : '다이어그램'}<br />
+                          {currentLanguage === 'en' ? 'Coming Soon' : '준비중'}
+                        </p>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </motion.div>

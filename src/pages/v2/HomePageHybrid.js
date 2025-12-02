@@ -17,6 +17,33 @@ const HomePageHybrid = () => {
   const navigate = useNavigate();
   const { currentLanguage } = useI18n();
 
+  // 정호텍스컴 배경 이미지 슬라이드쇼
+  const [texcomImageIndex, setTexcomImageIndex] = useState(0);
+  const texcomImages = React.useMemo(() => [
+    '/images/textile-mach-img1.png',
+    '/images/textile-mach-img2.png',
+    '/images/textile-mach-img3.png'
+  ], []);
+
+  // 이미지 preload
+  useEffect(() => {
+    texcomImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [texcomImages]);
+
+  // 3초마다 이미지 자동 전환
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTexcomImageIndex((prevIndex) => 
+        (prevIndex + 1) % texcomImages.length
+      );
+    }, 3000); // 3초마다 변경
+
+    return () => clearInterval(interval);
+  }, [texcomImages]);
+
   // 계열사 섹션으로 스크롤
   const scrollToSubsidiaries = () => {
     const element = document.getElementById('subsidiaries-section');
@@ -577,18 +604,44 @@ const HomePageHybrid = () => {
               >
                 {/* 이미지 헤더 */}
                 <div className="relative h-48 overflow-hidden">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${company.gradient} opacity-60`}></div>
-                  <img 
-                    src={company.image} 
-                    alt={company.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 right-4">
+                  {company.id === 'texcom' ? (
+                    // 정호텍스컴 슬라이드쇼
+                    <>
+                      {texcomImages.map((image, idx) => (
+                        <img
+                          key={idx}
+                          src={image}
+                          alt={`${company.name} ${idx + 1}`}
+                          className={`absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-1000 ${
+                            idx === texcomImageIndex ? 'opacity-100' : 'opacity-0'
+                          }`}
+                          onError={(e) => {
+                            console.error(`❌ 이미지 로드 실패: ${image}`);
+                          }}
+                          onLoad={() => {
+                            console.log(`✅ 이미지 로드 성공: ${image}`);
+                          }}
+                        />
+                      ))}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${company.gradient} opacity-40`}></div>
+                    </>
+                  ) : (
+                    // 다른 계열사 기본 이미지
+                    <>
+                      <div className={`absolute inset-0 bg-gradient-to-br ${company.gradient} opacity-60`}></div>
+                      <img 
+                        src={company.image} 
+                        alt={company.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </>
+                  )}
+                  <div className="absolute top-4 right-4 z-10">
                     <span className="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold rounded-full shadow-lg">
                       {currentLanguage === 'en' ? 'Est.' : '설립'} {company.established}
                     </span>
                   </div>
-                  <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                  <div className="absolute bottom-4 left-4 flex items-center gap-2 z-10">
                     <div className="text-4xl drop-shadow-lg">{company.icon}</div>
                   </div>
                 </div>

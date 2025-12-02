@@ -311,11 +311,8 @@ const IllutechDetailPage = () => {
       </motion.section>
 
       {/* 주요 제품/서비스 */}
-      <motion.section 
+      <section 
         className="py-20 bg-gray-50 dark:bg-gray-800"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div variants={fadeInUp} className="text-center mb-12">
@@ -329,16 +326,11 @@ const IllutechDetailPage = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            className="space-y-8"
-            variants={staggerContainer}
-          >
+          <div className="space-y-8">
             {products.map((product, index) => (
-              <motion.div
+              <div
                 key={product.id}
-                variants={fadeInUp}
-                whileHover={{ scale: 1.02 }}
-                className="bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden"
+                className="bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden hover:scale-[1.02]"
               >
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
                   {/* 왼쪽: 텍스트 내용 (60%) */}
@@ -386,11 +378,11 @@ const IllutechDetailPage = () => {
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* 핵심 강점 */}
       <motion.section 

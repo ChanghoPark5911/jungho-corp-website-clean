@@ -7,6 +7,25 @@ const SubsidiariesPage = () => {
   const navigate = useNavigate();
   const { t, currentLanguage } = useI18n();
 
+  // 정호텍스컴 배경 이미지 슬라이드쇼
+  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+  const texcomImages = [
+    '/images/textile-mach-img1.png',
+    '/images/textile-mach-img2.png',
+    '/images/textile-mach-img3.png'
+  ];
+
+  // 3초마다 이미지 자동 전환
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        (prevIndex + 1) % texcomImages.length
+      );
+    }, 3000); // 3초마다 변경
+
+    return () => clearInterval(interval);
+  }, []);
+
   // 애니메이션 variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -218,10 +237,39 @@ const SubsidiariesPage = () => {
               >
                 <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700">
                   {/* 헤더 */}
-                  <div className={`h-32 bg-gradient-to-br ${company.color} flex items-center justify-center relative overflow-hidden`}>
-                    <div className="absolute inset-0 bg-black/10" />
-                    <span className="text-6xl relative z-10">{company.icon}</span>
-                  </div>
+                  {company.id === 'jungho-texcom' ? (
+                    <div className="h-32 relative overflow-hidden">
+                      {/* 슬라이드쇼 배경 이미지 */}
+                      {texcomImages.map((image, idx) => (
+                        <div
+                          key={idx}
+                          className={`absolute inset-0 transition-opacity duration-1000 ${
+                            idx === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                          }`}
+                          style={{
+                            backgroundImage: `url(${image})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                          }}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-br from-green-600/70 to-green-800/70" />
+                        </div>
+                      ))}
+                      {/* 아이콘 */}
+                      <div className="absolute inset-0 flex items-center justify-center z-10">
+                        <span className="text-6xl">{company.icon}</span>
+                      </div>
+                      {/* 설립 연도 배지 */}
+                      <div className="absolute top-3 right-3 z-10 px-3 py-1 bg-white/90 dark:bg-gray-800/90 rounded-full text-xs font-semibold text-gray-700 dark:text-gray-200">
+                        설립 {company.established}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={`h-32 bg-gradient-to-br ${company.color} flex items-center justify-center relative overflow-hidden`}>
+                      <div className="absolute inset-0 bg-black/10" />
+                      <span className="text-6xl relative z-10">{company.icon}</span>
+                    </div>
+                  )}
 
                   {/* 콘텐츠 */}
                   <div className="p-6 space-y-4">

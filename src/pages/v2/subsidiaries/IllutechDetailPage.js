@@ -355,13 +355,13 @@ const IllutechDetailPage = () => {
                   </div>
                   
                   {/* 오른쪽: 이미지 (40%) */}
-                  <div className="md:col-span-2 relative h-64 md:h-auto min-h-[240px] bg-gradient-to-br from-orange-50 to-amber-50 dark:from-gray-800 dark:to-gray-850 flex items-center justify-center">
+                  <div className="md:col-span-2 relative h-64 md:h-auto min-h-[240px] bg-gradient-to-br from-orange-50 to-amber-50 dark:from-gray-800 dark:to-gray-850 flex items-center justify-center p-6">
                     {product.imagePath ? (
                       <>
                         <img
                           src={product.imagePath}
                           alt={currentLanguage === 'en' ? product.nameEn : product.nameKo}
-                          className="w-full h-full object-cover"
+                          className="w-2/3 h-2/3 object-contain"
                           onError={(e) => {
                             // 이미지 로드 실패 시 대체 아이콘 표시
                             e.target.style.display = 'none';

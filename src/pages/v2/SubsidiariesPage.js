@@ -9,11 +9,19 @@ const SubsidiariesPage = () => {
 
   // 정호텍스컴 배경 이미지 슬라이드쇼
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
-  const texcomImages = [
+  const texcomImages = React.useMemo(() => [
     '/images/textile-mach-img1.png',
     '/images/textile-mach-img2.png',
     '/images/textile-mach-img3.png'
-  ];
+  ], []);
+
+  // 이미지 preload
+  React.useEffect(() => {
+    texcomImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [texcomImages]);
 
   // 3초마다 이미지 자동 전환
   React.useEffect(() => {
@@ -24,7 +32,7 @@ const SubsidiariesPage = () => {
     }, 3000); // 3초마다 변경
 
     return () => clearInterval(interval);
-  }, []);
+  }, [texcomImages]);
 
   // 애니메이션 variants
   const fadeInUp = {

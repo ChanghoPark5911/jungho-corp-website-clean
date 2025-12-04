@@ -164,25 +164,125 @@ const TexcomDetailPage = () => {
         </div>
       </motion.section>
 
-      {/* 섬유기계 사업부 */}
+      {/* 사업부 소개 - 두 사업부 나란히 배치 */}
       <motion.section 
-        className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900"
+        className="py-20 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900"
         initial="hidden"
         animate="visible"
         variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div variants={fadeInUp} className="text-center mb-12">
-            <div className="inline-flex items-center gap-3 mb-4">
-              <span className="text-5xl">🏭</span>
-              <div className="text-left">
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
-                  {currentLanguage === 'en' ? 'Textile Machinery Division' : '섬유기계 사업부'}
-                </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">Textile Machinery Division</p>
-              </div>
-            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              {currentLanguage === 'en' ? 'Business Divisions' : '사업부 소개'}
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400">
+              {currentLanguage === 'en' 
+                ? 'Jungho TEXCOM consists of two specialized divisions'
+                : '정호텍스컴은 두 개의 전문 사업부로 구성되어 있습니다'}
+            </p>
           </motion.div>
+
+          {/* 두 사업부 카드 - 나란히 배치 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* 섬유기계 사업부 카드 */}
+            <motion.div
+              variants={fadeInUp}
+              className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-blue-900/30 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-blue-200 dark:border-blue-800"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-5xl">🏭</span>
+                <div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'Textile Machinery Division' : '섬유기계 사업부'}
+                  </h3>
+                  <p className="text-blue-600 dark:text-blue-400 font-medium">Textile Machinery Division</p>
+                </div>
+              </div>
+              <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">
+                {currentLanguage === 'en'
+                  ? 'Importing and supplying world-class textile machinery and testing equipment from Germany, Switzerland, Austria, Japan, etc. to domestic textile industry customers.'
+                  : '독일, 스위스, 오스트리아, 일본 등 세계적인 섬유기계 및 시험기를 수입하여 국내 섬유 산업 고객에게 공급하고 있습니다.'}
+              </p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-full text-sm">
+                  {currentLanguage === 'en' ? 'Textile Machinery' : '섬유기계'}
+                </span>
+                <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-full text-sm">
+                  {currentLanguage === 'en' ? 'Testing Equipment' : '시험기'}
+                </span>
+                <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-full text-sm">
+                  {currentLanguage === 'en' ? 'Parts & Service' : '부품 및 서비스'}
+                </span>
+              </div>
+              <a 
+                href="#textile-machinery-detail"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                {currentLanguage === 'en' ? 'View Details' : '상세보기'}
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+            </motion.div>
+
+            {/* RSS 사업부 카드 */}
+            <motion.div
+              variants={fadeInUp}
+              className="bg-gradient-to-br from-orange-50 to-red-100 dark:from-gray-800 dark:to-orange-900/30 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-orange-200 dark:border-orange-800"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-5xl">🧦</span>
+                <div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+                    {currentLanguage === 'en' ? 'RSS Division' : 'RSS 사업부'}
+                  </h3>
+                  <p className="text-orange-600 dark:text-orange-400 font-medium">RSS Division</p>
+                </div>
+              </div>
+              <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">
+                {currentLanguage === 'en'
+                  ? 'Expanding from B2B textile machinery business to B2C fashion business. The RSS Division operates a dedicated website for fashion products.'
+                  : 'B2B 섬유기계 사업의 경험을 바탕으로 B2C 패션 사업까지 확장하고 있습니다. RSS 사업부는 패션 전문 웹사이트를 운영합니다.'}
+              </p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="px-3 py-1 bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200 rounded-full text-sm">
+                  {currentLanguage === 'en' ? 'Fashion' : '패션'}
+                </span>
+                <span className="px-3 py-1 bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200 rounded-full text-sm">
+                  {currentLanguage === 'en' ? 'B2C' : 'B2C 사업'}
+                </span>
+                <span className="px-3 py-1 bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200 rounded-full text-sm">
+                  {currentLanguage === 'en' ? 'E-Commerce' : '이커머스'}
+                </span>
+              </div>
+              <a 
+                href="https://redssocksoo.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white rounded-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                <span>🌐</span>
+                {currentLanguage === 'en' ? 'Visit RSS Website' : 'RSS 홈페이지 방문'}
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+              <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">redssocksoo.com</p>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* 섬유기계 사업부 상세 - 제품 및 파트너사 */}
+      <motion.section 
+        id="textile-machinery-detail"
+        className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <motion.div variants={fadeInUp} className="mb-12">
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
@@ -623,61 +723,6 @@ const TexcomDetailPage = () => {
                   </div>
                 </a>
               </div>
-            </div>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* RSS 사업부 */}
-      <motion.section 
-        className="py-20 bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-900 dark:to-gray-800"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
-      >
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div variants={fadeInUp} className="text-center">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <span className="text-5xl">🧦</span>
-              <div className="text-left">
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
-                  {currentLanguage === 'en' ? 'RSS Division' : 'RSS 사업부'}
-                </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">RSS Division</p>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-10 shadow-2xl">
-              <p className="text-xl text-gray-700 dark:text-gray-200 mb-8 leading-relaxed">
-                {currentLanguage === 'en' ? (
-                  <>
-                    The RSS Division operates a separate dedicated website.<br />
-                    Please visit the RSS official website for more information.
-                  </>
-                ) : (
-                  <>
-                    RSS 사업부는 별도의 전문 홈페이지를 운영하고 있습니다.<br />
-                    자세한 정보는 RSS 공식 웹사이트를 방문해주세요.
-                  </>
-                )}
-              </p>
-              <motion.a
-                href="https://redssocksoo.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white text-lg font-bold rounded-xl shadow-lg transition-all duration-300"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span className="text-2xl">🌐</span>
-                {currentLanguage === 'en' ? 'Visit RSS Official Website' : 'RSS 공식 홈페이지 방문'}
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </motion.a>
-              <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                redssocksoo.com
-              </p>
             </div>
           </motion.div>
         </div>

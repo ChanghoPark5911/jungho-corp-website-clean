@@ -62,6 +62,7 @@ const MegaMenu = ({ version = 'v2' }) => {
         { label: t('nav.media.projects') || '프로젝트 영상', path: `${pathPrefix}/projects`, icon: '🏢' },
         { label: t('nav.media.promotion') || '홍보영상', path: `${pathPrefix}/media/promotion`, icon: '📺' },
         { label: t('nav.media.technicalDocs') || '기술자료실', path: `${pathPrefix}/media/technical-docs`, icon: '📄' },
+        { label: currentLanguage === 'en' ? 'Intellectual Property' : '지적재산권', path: `${pathPrefix}/media/intellectual-property`, icon: '🏆' },
         { label: 'SNS', path: `${pathPrefix}/media/sns`, icon: '📱' },
       ],
     },

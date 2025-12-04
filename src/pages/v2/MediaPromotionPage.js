@@ -43,22 +43,14 @@ const MediaPromotionPage = () => {
     }
   };
 
-  // 카테고리
+  // 카테고리 (지적재산권은 별도 페이지로 분리됨)
   const categories = [
     { id: 'all', label: t('media.promotion.categories.all'), icon: '📺' },
     { id: 'company', label: t('media.promotion.categories.company'), icon: '🏢' },
     { id: 'subsidiaries', label: t('media.promotion.categories.subsidiaries'), icon: '🏭' },
-    { id: 'technology', label: t('media.promotion.categories.technology'), icon: '💡' },
-    { id: 'awards', label: t('media.promotion.categories.awards'), icon: '🏆' }
+    { id: 'technology', label: t('media.promotion.categories.technology'), icon: '💡' }
   ];
 
-  // 지적재산권 통계
-  const intellectualPropertyStats = {
-    total: 140,
-    patents: 85,
-    designs: 35,
-    software: 20
-  };
 
   // 기본 홍보영상 데이터 (최초 실행시 사용)
   const defaultPromotionVideos = [
@@ -214,41 +206,6 @@ const MediaPromotionPage = () => {
     };
   }, []);
 
-  // 주요 지적재산권 인증서 (샘플)
-  const intellectualPropertyCertificates = [
-    {
-      id: 'ip1',
-      title: '굿디자인_TLS 4\' (CRC3303 - CRC3305)',
-      category: '디자인',
-      description: '제 30-0882500, 녹색 부착형 터치 스위치 디자인등록증',
-      thumbnail: '🎨',
-      date: '2015-04-20'
-    },
-    {
-      id: 'ip2',
-      title: '산업융합 선도기업 선정서',
-      category: '인증',
-      description: '스마트 조명 선도기업 선정 (산업통상자원부)',
-      thumbnail: '🏅',
-      date: '2017-12-22'
-    },
-    {
-      id: 'ip3',
-      title: '에너지 에이터널 1.0',
-      category: '소프트웨어',
-      description: '터엣에스 에이터널 1.0 (에너지 매니저 V4.1)',
-      thumbnail: '💻',
-      date: '2017-11-15'
-    },
-    {
-      id: 'ip4',
-      title: '유무선 통합 Energy Manager 4.1',
-      category: '소프트웨어',
-      description: '에너지 관리 소프트웨어 등록증',
-      thumbnail: '📱',
-      date: '2017-10-25'
-    }
-  ];
 
   // 필터링된 영상
   const filteredVideos = selectedCategory === 'all' 
@@ -326,156 +283,6 @@ const MediaPromotionPage = () => {
           </div>
         </div>
       </section>
-
-      {/* 지적재산권 통계 섹션 (수상 및 인증 카테고리일 때만 표시) */}
-      {selectedCategory === 'awards' && (
-        <section className="py-16 bg-white dark:bg-gray-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* 제목 */}
-            <motion.div
-              className="text-center mb-12"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={fadeInUp}
-            >
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full mb-4">
-                <span className="text-3xl">🏆</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                {t('media.promotion.ipTitle')}
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-400">
-                {t('media.promotion.ipSubtitle')}
-              </p>
-            </motion.div>
-
-            {/* 통계 카드 */}
-            <motion.div 
-              className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={staggerContainer}
-            >
-              <motion.div 
-                variants={fadeInUp}
-                className="bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900 dark:to-primary-800 rounded-2xl p-8 text-center shadow-lg"
-              >
-                <div className="text-5xl mb-3">📊</div>
-                <div className="text-4xl md:text-5xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                  {intellectualPropertyStats.total}+
-                </div>
-                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-200">
-                  {t('media.promotion.ipTotal')}
-                </div>
-              </motion.div>
-
-              <motion.div 
-                variants={fadeInUp}
-                className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 rounded-2xl p-8 text-center shadow-lg"
-              >
-                <div className="text-5xl mb-3">🔬</div>
-                <div className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                  {intellectualPropertyStats.patents}
-                </div>
-                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-200">
-                  {t('media.promotion.ipPatents')}
-                </div>
-              </motion.div>
-
-              <motion.div 
-                variants={fadeInUp}
-                className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 rounded-2xl p-8 text-center shadow-lg"
-              >
-                <div className="text-5xl mb-3">🎨</div>
-                <div className="text-4xl md:text-5xl font-bold text-purple-600 dark:text-purple-400 mb-2">
-                  {intellectualPropertyStats.designs}
-                </div>
-                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-200">
-                  {t('media.promotion.ipDesigns')}
-                </div>
-              </motion.div>
-
-              <motion.div 
-                variants={fadeInUp}
-                className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 rounded-2xl p-8 text-center shadow-lg"
-              >
-                <div className="text-5xl mb-3">💻</div>
-                <div className="text-4xl md:text-5xl font-bold text-green-600 dark:text-green-400 mb-2">
-                  {intellectualPropertyStats.software}
-                </div>
-                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-200">
-                  {t('media.promotion.ipSoftware')}
-                </div>
-              </motion.div>
-            </motion.div>
-
-            {/* 주요 인증서 갤러리 */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={fadeInUp}
-            >
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-                주요 인증 및 등록
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {intellectualPropertyCertificates.map((cert) => (
-                  <motion.div
-                    key={cert.id}
-                    variants={fadeInUp}
-                    whileHover={{ y: -5 }}
-                    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
-                  >
-                    <div className="text-5xl mb-4 text-center">{cert.thumbnail}</div>
-                    <div className="inline-block px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-full text-xs font-semibold mb-3">
-                      {cert.category}
-                    </div>
-                    <h4 className="text-base font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
-                      {cert.title}
-                    </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                      {cert.description}
-                    </p>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {new Date(cert.date).toLocaleDateString('ko-KR')}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* 안내 메시지 */}
-            <motion.div
-              className="mt-12 text-center bg-gray-50 dark:bg-gray-800 rounded-2xl p-8"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={fadeInUp}
-            >
-              <div className="text-4xl mb-4">📄</div>
-              <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                전체 지적재산권 목록
-              </h4>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                정호그룹이 보유한 140여 개의 지적재산권 전체 목록은<br />
-                별도 문의를 통해 확인하실 수 있습니다.
-              </p>
-              <button 
-                onClick={() => navigate(`${prefix}/support/contact`)}
-                className="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors duration-300"
-              >
-                <span>문의하기</span>
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </motion.div>
-          </div>
-        </section>
-      )}
 
       {/* 영상 그리드 */}
       <section className="py-16">

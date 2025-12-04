@@ -58,6 +58,7 @@ const ProjectsPageV2 = lazy(() => import('./pages/v2/ProjectsPage'));
 const MediaSNSPage = lazy(() => import('./pages/v2/MediaSNSPage'));
 const MediaPromotionPage = lazy(() => import('./pages/v2/MediaPromotionPage'));
 const MediaTechnicalDocsPage = lazy(() => import('./pages/v2/MediaTechnicalDocsPage'));
+const IntellectualPropertyPage = lazy(() => import('./pages/v2/IntellectualPropertyPage'));
 const SupportPageV2 = lazy(() => import('./pages/v2/SupportPage'));
 const AdminPageV2 = lazy(() => import('./pages/v2/AdminPageV2'));
 
@@ -177,6 +178,7 @@ function App() {
             <Route path="/v2/media/promotion" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaPromotionPage /></LayoutV2></Suspense>} />
             <Route path="/v2/media/sns" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaSNSPage /></LayoutV2></Suspense>} />
             <Route path="/v2/media/technical-docs" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaTechnicalDocsPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/media/intellectual-property" element={<Suspense fallback={<PageLoader />}><LayoutV2><IntellectualPropertyPage /></LayoutV2></Suspense>} />
             <Route path="/v2/support" element={<Suspense fallback={<PageLoader />}><LayoutV2><SupportPageV2 /></LayoutV2></Suspense>} />
             <Route path="/v2/support/contact" element={<Suspense fallback={<PageLoader />}><LayoutV2><SupportPageV2 /></LayoutV2></Suspense>} />
             
@@ -201,6 +203,7 @@ function App() {
             <Route path="/hybrid/media/promotion" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><MediaPromotionPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/media/technical-docs" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><MediaTechnicalDocsPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/media/sns" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><MediaSNSPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/media/intellectual-property" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><IntellectualPropertyPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/support" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SupportPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/support/report" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SupportPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/support/contact" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SupportPageV2 /></HybridLayout></Suspense>} />

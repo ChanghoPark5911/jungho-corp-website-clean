@@ -86,7 +86,7 @@ const AboutIntroPage = () => {
     {
       id: 'jungho-tlc',
       name: currentLanguage === 'en' ? 'Jungho TLC' : '정호티엘씨',
-      role: currentLanguage === 'en' ? 'Building Automation & Power Control Solutions' : '빌딩 자동화 및 전력 제어 솔루션',
+      role: currentLanguage === 'en' ? 'Building Management Information & Lighting/Power Control Solutions' : '빌딩관리 종합정보 및 조명·전력제어 솔루션',
       description: currentLanguage === 'en' ? 'Smart Building Automation Systems Specialist' : '스마트 빌딩 자동화 시스템 전문 기업',
       icon: '⚡',
       color: 'from-green-500 to-emerald-500',
@@ -95,8 +95,8 @@ const AboutIntroPage = () => {
     {
       id: 'clarus',
       name: currentLanguage === 'en' ? 'CLARUS' : '클라루스',
-      role: currentLanguage === 'en' ? 'Lighting Control Systems & Smart Solutions' : '조명 제어 시스템 및 스마트 솔루션',
-      description: currentLanguage === 'en' ? 'Leading Company in Advanced Lighting Control Technology' : '첨단 조명 제어 기술 선도 기업',
+      role: currentLanguage === 'en' ? 'Smart Lighting/Power Management Solution Development' : '스마트 조명·전력관리 솔루션 개발',
+      description: currentLanguage === 'en' ? 'Advanced Lighting/Power Control Technology Leader' : '첨단 조명 제어 기술 선도 기업',
       icon: '💡',
       color: 'from-cyan-500 to-blue-500',
       path: `${pathPrefix}/subsidiaries/clarus`

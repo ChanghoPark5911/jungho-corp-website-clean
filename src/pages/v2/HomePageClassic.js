@@ -322,7 +322,7 @@ const HomePageClassic = () => {
             </p>
             <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
               <button
-                onClick={() => navigate('/about/intro')}
+                onClick={() => navigate('/classic/about/intro')}
                 className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm"
               >
                 {currentLanguage === 'en' ? 'Learn More →' : '자세히 보기 →'}
@@ -589,7 +589,7 @@ const HomePageClassic = () => {
             </div>
             <div className="mt-4">
               <button
-                onClick={() => navigate('/support')}
+                onClick={() => navigate('/classic/support')}
                 className="px-5 py-2 bg-white text-green-600 font-medium rounded hover:bg-green-50 transition-colors duration-200"
               >
                 {currentLanguage === 'en' ? 'Go to Support Center →' : '고객지원센터 바로가기 →'}

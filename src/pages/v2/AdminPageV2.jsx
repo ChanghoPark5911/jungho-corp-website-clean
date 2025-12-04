@@ -116,14 +116,14 @@ const AdminPageV2 = () => {
       {
         id: 'tlc',
         name: '정호티엘씨',
-        role: '빌딩 자동화 및 전력 제어 솔루션',
+        role: '빌딩관리 종합정보 및 조명·전력제어 솔루션',
         description: '스마트 빌딩 자동화 시스템 전문 기업',
         icon: '⚡'
       },
       {
         id: 'clarus',
         name: '클라루스',
-        role: '조명 제어 시스템 및 스마트 솔루션',
+        role: '스마트 조명·전력관리 솔루션 개발',
         description: '첨단 조명 제어 기술 선도 기업',
         icon: '💡'
       },
@@ -287,11 +287,33 @@ const AdminPageV2 = () => {
     }
   };
 
-  // JSON 파일로 내보내기 (배포용)
+  // JSON 파일로 내보내기 (배포용) - 홍보영상 + SNS + 기술문서 통합
   const exportToJSON = () => {
     try {
       const exportData = {
-        documents: mediaData.technicalDocuments || [],
+        projects: [], // 프로젝트 데이터 (별도 관리)
+        promotionVideos: (mediaData.promotionVideos || []).map(video => ({
+          id: video.id,
+          title: video.title,
+          category: video.category,
+          description: video.description,
+          thumbnail: video.thumbnail,
+          thumbnailUrl: video.thumbnailUrl || video.thumbnail,
+          videoUrl: video.videoUrl,
+          youtubeUrl: video.youtubeUrl,
+          videoType: video.videoType || 'youtube',
+          duration: video.duration,
+          date: video.date,
+          views: video.views,
+          order: video.order || 0
+        })),
+        snsLinks: mediaData.snsLinks || {
+          youtube: '',
+          instagram: '',
+          naverBlog: '',
+          facebook: ''
+        },
+        technicalDocuments: mediaData.technicalDocuments || [],
         lastUpdated: new Date().toISOString(),
         version: "1.0.0"
       };
@@ -301,24 +323,46 @@ const AdminPageV2 = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'technical-docs.json';
+      link.download = 'admin-media.json';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
       
-      alert('✅ JSON 파일 다운로드 완료!\n\n다운로드한 파일을:\n1. public/data/technical-docs.json 위치에 복사\n2. Git 커밋 & 푸시\n3. Vercel 자동 배포 대기\n\n그러면 영구적으로 저장됩니다!');
+      alert('✅ JSON 파일 다운로드 완료!\n\n📁 다운로드한 파일을:\n1. public/data/admin-media.json 위치에 복사\n2. Git 커밋 & 푸시\n3. Vercel 자동 배포 대기\n\n✨ 그러면 홍보영상이 영구적으로 저장됩니다!');
     } catch (error) {
       console.error('JSON 내보내기 실패:', error);
       alert('❌ JSON 내보내기 실패: ' + error.message);
     }
   };
 
-  // 클립보드에 JSON 복사 (가장 쉬운 방법!)
+  // 클립보드에 JSON 복사 (가장 쉬운 방법!) - 홍보영상 + SNS + 기술문서 통합
   const copyToClipboard = async () => {
     try {
       const exportData = {
-        documents: mediaData.technicalDocuments || [],
+        projects: [], // 프로젝트 데이터 (별도 관리)
+        promotionVideos: (mediaData.promotionVideos || []).map(video => ({
+          id: video.id,
+          title: video.title,
+          category: video.category,
+          description: video.description,
+          thumbnail: video.thumbnail,
+          thumbnailUrl: video.thumbnailUrl || video.thumbnail,
+          videoUrl: video.videoUrl,
+          youtubeUrl: video.youtubeUrl,
+          videoType: video.videoType || 'youtube',
+          duration: video.duration,
+          date: video.date,
+          views: video.views,
+          order: video.order || 0
+        })),
+        snsLinks: mediaData.snsLinks || {
+          youtube: '',
+          instagram: '',
+          naverBlog: '',
+          facebook: ''
+        },
+        technicalDocuments: mediaData.technicalDocuments || [],
         lastUpdated: new Date().toISOString(),
         version: "1.0.0"
       };
@@ -326,7 +370,7 @@ const AdminPageV2 = () => {
       const jsonString = JSON.stringify(exportData, null, 2);
       await navigator.clipboard.writeText(jsonString);
       
-      alert('✅ 클립보드에 복사되었습니다!\n\n다음 단계:\n1. VS Code에서 public/data/technical-docs.json 파일 열기\n2. Ctrl+A (전체 선택)\n3. Ctrl+V (붙여넣기)\n4. Ctrl+S (저장)\n5. Git 커밋 & 푸시\n\n그러면 영구적으로 저장됩니다!');
+      alert('✅ JSON이 클립보드에 복사되었습니다!\n\n📁 붙여넣기할 위치:\n• public/data/admin-media.json\n\n✨ 복사 후 Git 커밋 & 푸시하면 홍보영상이 영구 저장됩니다!');
     } catch (error) {
       console.error('클립보드 복사 실패:', error);
       alert('❌ 클립보드 복사 실패: ' + error.message + '\n\n브라우저가 클립보드 접근을 차단했을 수 있습니다.');
@@ -479,8 +523,7 @@ const AdminPageV2 = () => {
     { id: 'dashboard', label: '대시보드', icon: '📊' },
     { id: 'v2home', label: '메인 홈페이지', icon: '🏠' },
     { id: 'pages', label: '정적 페이지', icon: '📄' },
-    { id: 'media', label: '미디어 관리', icon: '🎬' },
-    // { id: 'images', label: '이미지 관리', icon: '🖼️' }, // Firebase Storage 사용 시 활성화
+    // 미디어 관리는 /admin-new/media 로 이동됨
     { id: 'i18n', label: '다국어 관리', icon: '🌐' },
     { id: 'users', label: '사용자 관리', icon: '👥' },
   ];
@@ -589,8 +632,7 @@ const AdminPageV2 = () => {
           {activeTab === 'dashboard' && <DashboardTab />}
           {activeTab === 'v2home' && <V2HomeTab data={v2HomeData} setData={setV2HomeData} onSave={saveV2HomeData} />}
           {activeTab === 'pages' && <PagesTab data={pagesData} setData={setPagesData} onSave={savePagesData} />}
-          {activeTab === 'media' && <MediaTab data={mediaData} setData={setMediaData} onSave={saveMediaData} exportToJSON={exportToJSON} copyToClipboard={copyToClipboard} />}
-          {activeTab === 'images' && <ImagesTab />}
+          {/* 미디어 관리는 /admin-new/media 로 이동됨 */}
           {activeTab === 'i18n' && i18nData && <I18nTab data={i18nData} setData={setI18nData} onSave={saveI18nData} />}
           {activeTab === 'users' && <UsersTab data={usersData} setData={setUsersData} onSave={saveUsersData} />}
         </div>
@@ -677,11 +719,26 @@ const DashboardTab = () => {
       <div className="mt-6 p-6 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
         <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">💡 빠른 시작</h3>
         <ul className="space-y-2 text-blue-800 dark:text-blue-200">
-          <li>• <strong>메인 홈페이지</strong>: IRGSHero와 Gateway 섹션을 관리하세요</li>
+          <li>• <strong>메인 홈페이지</strong>: Hero와 Gateway 섹션을 관리하세요</li>
           <li>• <strong>정적 페이지</strong>: ABOUT 페이지 콘텐츠를 수정하세요</li>
-          <li>• <strong>미디어 관리</strong>: 프로젝트 영상, 홍보영상, SNS 링크를 업데이트하세요</li>
           <li>• <strong>다국어 관리</strong>: 한국어/영어 번역을 관리하세요</li>
         </ul>
+      </div>
+
+      {/* 미디어 관리 바로가기 */}
+      <div className="mt-6 p-6 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border border-green-200 dark:border-green-700">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-bold text-green-900 dark:text-green-100 mb-1">🎬 미디어/PR 관리</h3>
+            <p className="text-sm text-green-800 dark:text-green-200">프로젝트 영상, 홍보영상, SNS 링크를 관리하세요</p>
+          </div>
+          <button
+            onClick={() => window.location.href = '/admin-new/login'}
+            className="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all shadow-lg"
+          >
+            📁 미디어 관리 →
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -1566,6 +1623,18 @@ const MediaTab = ({ data, setData, onSave, exportToJSON, copyToClipboard }) => (
           ))
         )}
       </div>
+    </div>
+
+    {/* 영구 저장 안내 */}
+    <div className="mt-8 p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border border-green-200 dark:border-green-800">
+      <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2 flex items-center">
+        💡 영구 저장 방법 (홍보영상 & 기술문서)
+      </h3>
+      <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+        <li>• <strong className="text-blue-600 dark:text-blue-400">임시 저장</strong>: localStorage에 저장 (브라우저 캐시 지우면 삭제됨)</li>
+        <li>• <strong className="text-green-600 dark:text-green-400">영구 저장</strong>: "클립보드에 복사" 또는 "JSON 다운로드" → <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">public/data/admin-media.json</code>에 저장 → Git 커밋</li>
+        <li>• 영구 저장 후에는 <strong>모든 사용자가 배포 버전에서도 데이터를 볼 수 있습니다!</strong></li>
+      </ul>
     </div>
   </div>
 );

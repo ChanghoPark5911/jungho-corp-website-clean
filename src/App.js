@@ -129,12 +129,10 @@ function App() {
             
             {/* 
               ===================================
-              관리자 페이지 (AdminPageV2)
+              관리자 페이지 - 두 시스템 병행 운영
               ===================================
-              - 메인 관리자 페이지: /admin
-              - V2/Hybrid/Classic 모든 버전 관리
-              - 기능: V2 홈, 정적 페이지, 미디어, 다국어, 사용자
-              - 레거시 관리자: /admin-old (백업용)
+              - /admin: 기존 AdminPageV2 (Hero, 정적페이지, 다국어)
+              - /admin-new: 새 시스템 (프로젝트/홍보영상 관리)
               ===================================
             */}
             <Route path="/admin" element={<AdminPageV2 />} />
@@ -155,7 +153,8 @@ function App() {
             <Route path="/admin-new/dashboard" element={<Suspense fallback={<PageLoader />}><AdminDashboard /></Suspense>} />
             <Route path="/admin-new/media" element={<Suspense fallback={<PageLoader />}><MediaManager /></Suspense>} />
             <Route path="/admin-new/support" element={<Suspense fallback={<PageLoader />}><SupportManager /></Suspense>} />
-            <Route path="/admin-new/i18n" element={<Suspense fallback={<PageLoader />}><I18nManager /></Suspense>} />
+            {/* 다국어 관리는 /admin 에서 관리 */}
+            <Route path="/admin-new/i18n" element={<Navigate to="/admin" replace />} />
             <Route path="/admin-new" element={<Navigate to="/admin-new/login" replace />} />
             
             {/* V2 버전 (모던 MegaMenu 스타일) 🚀 */}
@@ -163,7 +162,23 @@ function App() {
             <Route path="/v2/projects" element={<Suspense fallback={<PageLoader />}><LayoutV2><ProjectsPageV2 /></LayoutV2></Suspense>} />
             <Route path="/v2/about" element={<Suspense fallback={<PageLoader />}><LayoutV2><AboutPage /></LayoutV2></Suspense>} />
             <Route path="/v2/about/intro" element={<Suspense fallback={<PageLoader />}><LayoutV2><AboutIntroPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/about/vision" element={<Suspense fallback={<PageLoader />}><LayoutV2><AboutVisionPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/about/management" element={<Suspense fallback={<PageLoader />}><LayoutV2><AboutManagementPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/about/history" element={<Suspense fallback={<PageLoader />}><LayoutV2><AboutHistoryPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/about/ci" element={<Suspense fallback={<PageLoader />}><LayoutV2><AboutCIBIPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/about/cibi" element={<Suspense fallback={<PageLoader />}><LayoutV2><AboutCIBIPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/about/location" element={<Suspense fallback={<PageLoader />}><LayoutV2><AboutLocationPage /></LayoutV2></Suspense>} />
             <Route path="/v2/subsidiaries" element={<Suspense fallback={<PageLoader />}><LayoutV2><SubsidiariesPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/subsidiaries/clarus" element={<Suspense fallback={<PageLoader />}><LayoutV2><ClarusDetailPageV2 /></LayoutV2></Suspense>} />
+            <Route path="/v2/subsidiaries/jungho-tlc" element={<Suspense fallback={<PageLoader />}><LayoutV2><TlcDetailPageV2 /></LayoutV2></Suspense>} />
+            <Route path="/v2/subsidiaries/illutech" element={<Suspense fallback={<PageLoader />}><LayoutV2><IllutechDetailPageV2 /></LayoutV2></Suspense>} />
+            <Route path="/v2/subsidiaries/jungho-texcom" element={<Suspense fallback={<PageLoader />}><LayoutV2><TexcomDetailPageV2 /></LayoutV2></Suspense>} />
+            <Route path="/v2/media" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaPageHybrid /></LayoutV2></Suspense>} />
+            <Route path="/v2/media/promotion" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaPromotionPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/media/sns" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaSNSPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/media/technical-docs" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaTechnicalDocsPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/support" element={<Suspense fallback={<PageLoader />}><LayoutV2><SupportPageV2 /></LayoutV2></Suspense>} />
+            <Route path="/v2/support/contact" element={<Suspense fallback={<PageLoader />}><LayoutV2><SupportPageV2 /></LayoutV2></Suspense>} />
             
             {/* 클래식 버전 (전통적 스타일) - 레이아웃 없음 ⭐ */}
             <Route path="/classic" element={<HomePageClassic />} />
@@ -204,11 +219,16 @@ function App() {
             <Route path="/classic/about/location" element={<AboutLocationPage />} />
             <Route path="/classic/business" element={<BusinessPage />} />
             <Route path="/classic/media" element={<MediaPageHybrid />} />
+            <Route path="/classic/media/promotion" element={<Suspense fallback={<PageLoader />}><MediaPromotionPage /></Suspense>} />
+            <Route path="/classic/media/technical-docs" element={<Suspense fallback={<PageLoader />}><MediaTechnicalDocsPage /></Suspense>} />
+            <Route path="/classic/media/sns" element={<Suspense fallback={<PageLoader />}><MediaSNSPage /></Suspense>} />
             <Route path="/classic/projects" element={<ProjectsPage />} />
+            <Route path="/classic/subsidiaries" element={<SubsidiariesPage />} />
             <Route path="/classic/subsidiaries/clarus" element={<ClarusDetailClassic />} />
             <Route path="/classic/subsidiaries/jungho-tlc" element={<TLCDetailClassic />} />
             <Route path="/classic/subsidiaries/illutech" element={<IllutechDetailClassic />} />
             <Route path="/classic/subsidiaries/jungho-texcom" element={<TexcomDetailClassic />} />
+            <Route path="/classic/support" element={<SupportPageV2 />} />
             
             {/* v1 라우트 (이전 버전) */}
             <Route path="/v1/*" element={
@@ -250,6 +270,7 @@ function App() {
                   <Route path="/subsidiaries/illutech" element={<IllutechDetailPageV2 />} />
                   <Route path="/subsidiaries/jungho-texcom" element={<TexcomDetailPageV2 />} />
                   <Route path="/projects" element={<ProjectsPageV2 />} />
+                  <Route path="/media" element={<MediaPageHybrid />} />
                   <Route path="/media/sns" element={<MediaSNSPage />} />
                   <Route path="/media/promotion" element={<MediaPromotionPage />} />
                   <Route path="/media/technical-docs" element={<MediaTechnicalDocsPage />} />

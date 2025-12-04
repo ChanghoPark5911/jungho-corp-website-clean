@@ -56,17 +56,17 @@ const TraditionalNav = ({ version = 'classic' }) => {
     {
       id: 'media',
       label: currentLanguage === 'en' ? 'MEDIA' : '미디어/PR',
-      path: '/media',
+      path: `${prefix}/media`,
       dropdownItems: [
-        { label: currentLanguage === 'en' ? 'Promotion Videos' : '홍보영상', path: '/media/promotion' },
-        { label: currentLanguage === 'en' ? 'Technical Docs' : '기술자료실', path: '/media/technical-docs' },
-        { label: currentLanguage === 'en' ? 'SNS' : 'SNS', path: '/media/sns' }
+        { label: currentLanguage === 'en' ? 'Promotion Videos' : '홍보영상', path: `${prefix}/media/promotion` },
+        { label: currentLanguage === 'en' ? 'Technical Docs' : '기술자료실', path: `${prefix}/media/technical-docs` },
+        { label: currentLanguage === 'en' ? 'SNS' : 'SNS', path: `${prefix}/media/sns` }
       ]
     },
     {
       id: 'support',
       label: currentLanguage === 'en' ? 'SUPPORT' : '고객지원',
-      path: '/support',
+      path: `${prefix}/support`,
       dropdownItems: null
     }
   ];

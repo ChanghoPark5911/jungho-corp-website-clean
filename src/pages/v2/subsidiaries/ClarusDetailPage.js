@@ -296,7 +296,7 @@ const ClarusDetailPage = () => {
             >
               {currentLanguage === 'en'
                 ? 'Creating customer value and future together with innovative technology and quality'
-                : '혁신적인 기술과 품질로 고객의 가치와 미래를 함께 만들어갑니다'}
+                : '혁신기술에 의한 고객가치 Creator'}
             </motion.p>
 
             <motion.div 
@@ -333,11 +333,8 @@ const ClarusDetailPage = () => {
       </motion.section>
 
       {/* 클라루스의 4대 핵심 역량 */}
-      <motion.section 
+      <section 
         className="py-20 bg-gradient-to-br from-white via-cyan-50 to-blue-50 dark:from-gray-900 dark:via-blue-950/30 dark:to-gray-900 relative overflow-hidden"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
       >
         {/* 배경 패턴 */}
         <div className="absolute inset-0 opacity-5">
@@ -349,7 +346,7 @@ const ClarusDetailPage = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* 섹션 헤더 */}
-          <motion.div variants={fadeInUp} className="text-center mb-16">
+          <div className="text-center mb-16">
             <div className="inline-block mb-4 px-6 py-2 bg-cyan-100 dark:bg-cyan-900/30 rounded-full">
               <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400">
                 {currentLanguage === 'en' ? '⭐ Core Competencies' : '⭐ 핵심 역량'}
@@ -365,13 +362,10 @@ const ClarusDetailPage = () => {
                 ? 'The only R&D center in the group, leading production, export, and online sales'
                 : '그룹 내 유일한 R&D 센터 보유, 생산·수출·온라인 영업 주도'}
             </p>
-          </motion.div>
+          </div>
 
           {/* 4대 역량 카드 그리드 */}
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            variants={staggerContainer}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {competencies.map((comp, index) => {
               const borderColorMap = {
                 cyan: 'border-cyan-200 dark:border-cyan-800',
@@ -402,11 +396,9 @@ const ClarusDetailPage = () => {
               };
 
               return (
-                <motion.div
+                <div
                   key={comp.id}
-                  variants={fadeInUp}
-                  whileHover={{ scale: 1.03, y: -5 }}
-                  className={`group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 ${borderColorMap[comp.borderColor]} relative overflow-hidden`}
+                  className={`group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:scale-[1.03] hover:-translate-y-1 transition-all duration-300 border-2 ${borderColorMap[comp.borderColor]} relative overflow-hidden`}
                 >
                   {/* 배경 그라데이션 효과 */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${bgGradientMap[comp.borderColor]} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
@@ -500,16 +492,13 @@ const ClarusDetailPage = () => {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
-          </motion.div>
+          </div>
 
           {/* 하단 강조 문구 */}
-          <motion.div 
-            variants={fadeInUp}
-            className="mt-16 text-center"
-          >
+          <div className="mt-16 text-center">
             <div className="inline-block px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl shadow-xl">
               <p className="text-white text-lg sm:text-xl font-bold">
                 {currentLanguage === 'en'
@@ -517,9 +506,9 @@ const ClarusDetailPage = () => {
                   : '🏆 그룹의 기술혁신과 글로벌 비즈니스를 선도합니다'}
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* 회사 소개 */}
       <motion.section 
@@ -566,7 +555,7 @@ const ClarusDetailPage = () => {
                     자체 시스템 소프트웨어를 개발하여 확장성과 유지관리성을 극대화하였으며, 급변하는 글로벌 기준에 부합하는 제품을 공급하고 있습니다.
                   </p>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    앞으로도 클라루스는 <span className="font-semibold text-cyan-600 dark:text-cyan-400">혁신적인 기술과 품질로 고객의 가치와 미래를 함께 만들어 가겠습니다.</span>
+                    앞으로도 클라루스는 <span className="font-semibold text-cyan-600 dark:text-cyan-400">혁신기술에 의한 고객가치 Creator로서 함께 성장해 가겠습니다.</span>
                   </p>
                 </>
               )}

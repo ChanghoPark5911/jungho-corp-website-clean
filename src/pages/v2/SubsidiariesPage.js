@@ -1,11 +1,20 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
 
 const SubsidiariesPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
+  
+  // 현재 경로에 따라 버전 prefix 결정
+  const getPrefix = () => {
+    if (location.pathname.startsWith('/hybrid')) return '/hybrid';
+    if (location.pathname.startsWith('/classic')) return '/classic';
+    return '/v2';
+  };
+  const prefix = getPrefix();
 
   // 정호텍스컴 배경 이미지 슬라이드쇼
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
@@ -71,9 +80,10 @@ const SubsidiariesPage = () => {
       business: currentLanguage === 'en'
         ? 'Integrated Lighting/Power Control System'
         : '조명·전력 통합 제어 시스템',
-      color: 'from-primary-600 to-primary-700',
+      color: 'from-green-600 to-emerald-600',
       icon: '💡',
-      established: '1982'
+      established: '1982',
+      bgImage: '/images/tlc/integrated-si-system.png'
     },
     {
       id: 'clarus',
@@ -81,8 +91,8 @@ const SubsidiariesPage = () => {
       nameEn: 'CLARUS',
       nameKo: '클라루스',
       slogan: currentLanguage === 'en'
-        ? 'Creating customer value and future with innovative technology and quality'
-        : '혁신적인 기술과 품질로 고객의 가치와 미래를 함께 만들어갑니다',
+        ? 'Customer Value Creator through Innovative Technology'
+        : '혁신기술에 의한 고객가치 Creator',
       description: currentLanguage === 'en'
         ? 'We have continuously developed core technologies for smart building management and energy saving, including E/F2-BUS-based integrated control technology, IoT and wired/wireless communication technology, and energy management software.'
         : 'E/F2-BUS 기반 통합제어 기술과 IoT 및 유·무선 통신 기술, 에너지 관리 소프트웨어 등 스마트 빌딩 관리와 에너지 절감을 위한 핵심 기술을 지속적으로 발전시켜 왔습니다.',
@@ -92,7 +102,8 @@ const SubsidiariesPage = () => {
       color: 'from-cyan-600 to-blue-600',
       icon: '🔆',
       established: '2009',
-      website: 'https://www.magicclarus.com'
+      website: 'https://www.magicclarus.com',
+      bgImage: '/images/clarus/competencies/rnd-center.jpg'
     },
     {
       id: 'illutech',
@@ -110,7 +121,8 @@ const SubsidiariesPage = () => {
         : '산업·특수 LED 조명',
       color: 'from-orange-600 to-amber-600',
       icon: '💡',
-      established: '2010'
+      established: '2010',
+      bgImage: '/images/illutech/products/factory-led.jpg'
     },
     {
       id: 'jungho-texcom',
@@ -241,14 +253,14 @@ const SubsidiariesPage = () => {
               <div
                 key={company.id}
                 className="group cursor-pointer"
-                onClick={() => navigate(`/subsidiaries/${company.id}`)}
+                onClick={() => navigate(`${prefix}/subsidiaries/${company.id}`)}
               >
                 <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700">
-                  {/* 헤더 */}
-                  {company.id === 'jungho-texcom' ? (
-                    <div className="h-32 relative overflow-hidden">
-                      {/* 슬라이드쇼 배경 이미지 */}
-                      {texcomImages.map((image, idx) => (
+                  {/* 헤더 - 배경 이미지 */}
+                  <div className="h-32 relative overflow-hidden">
+                    {company.id === 'jungho-texcom' ? (
+                      /* 정호텍스컴: 슬라이드쇼 배경 */
+                      texcomImages.map((image, idx) => (
                         <div
                           key={idx}
                           className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -260,24 +272,38 @@ const SubsidiariesPage = () => {
                             backgroundPosition: 'center'
                           }}
                         >
-                          <div className="absolute inset-0 bg-gradient-to-br from-green-600/70 to-green-800/70" />
+                          <div className={`absolute inset-0 bg-gradient-to-br ${company.color}/70`} />
                         </div>
-                      ))}
-                      {/* 아이콘 */}
-                      <div className="absolute inset-0 flex items-center justify-center z-10">
-                        <span className="text-6xl">{company.icon}</span>
+                      ))
+                    ) : company.bgImage ? (
+                      /* 다른 계열사: 단일 배경 이미지 */
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          backgroundImage: `url(${company.bgImage})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center'
+                        }}
+                      >
+                        <div className={`absolute inset-0 bg-gradient-to-br ${company.color}/70`} />
                       </div>
-                      {/* 설립 연도 배지 */}
+                    ) : (
+                      /* 배경 이미지 없는 경우: 그라데이션 배경 */
+                      <div className={`absolute inset-0 bg-gradient-to-br ${company.color}`}>
+                        <div className="absolute inset-0 bg-black/10" />
+                      </div>
+                    )}
+                    {/* 아이콘 */}
+                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                      <span className="text-6xl">{company.icon}</span>
+                    </div>
+                    {/* 설립 연도 배지 (정호텍스컴만) */}
+                    {company.id === 'jungho-texcom' && (
                       <div className="absolute top-3 right-3 z-10 px-3 py-1 bg-white/90 dark:bg-gray-800/90 rounded-full text-xs font-semibold text-gray-700 dark:text-gray-200">
-                        설립 {company.established}
+                        {currentLanguage === 'en' ? 'Est.' : '설립'} {company.established}
                       </div>
-                    </div>
-                  ) : (
-                    <div className={`h-32 bg-gradient-to-br ${company.color} flex items-center justify-center relative overflow-hidden`}>
-                      <div className="absolute inset-0 bg-black/10" />
-                      <span className="text-6xl relative z-10">{company.icon}</span>
-                    </div>
-                  )}
+                    )}
+                  </div>
 
                   {/* 콘텐츠 */}
                   <div className="p-6 space-y-4">
@@ -385,7 +411,7 @@ const SubsidiariesPage = () => {
               className="px-8 py-4 bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-300"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/support/contact')}
+              onClick={() => navigate(`${prefix}/support/contact`)}
             >
               {t('home.subsidiariesPage.cta.contactButton') || t('common.contact') || (currentLanguage === 'en' ? 'Contact Us' : '문의하기')}
             </motion.button>

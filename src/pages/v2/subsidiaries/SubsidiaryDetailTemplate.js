@@ -1,13 +1,22 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../../hooks/useI18n';
 import { useTheme } from '../../../contexts/ThemeContext';
 
 const SubsidiaryDetailTemplate = ({ data }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
   const { isDarkMode } = useTheme();
+  
+  // 현재 경로에 따라 버전 prefix 결정
+  const getPrefix = () => {
+    if (location.pathname.startsWith('/hybrid')) return '/hybrid';
+    if (location.pathname.startsWith('/classic')) return '/classic';
+    return '/v2';
+  };
+  const prefix = getPrefix();
   const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
 
   // JSON 파일에서 PDF 자료 로드 (우선), localStorage는 백업 (해당 계열사 관련만)
@@ -103,7 +112,7 @@ const SubsidiaryDetailTemplate = ({ data }) => {
         {/* 뒤로가기 버튼 */}
         <motion.button
           className="absolute top-8 left-8 z-10 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-          onClick={() => navigate('/subsidiaries')}
+          onClick={() => navigate(`${prefix}/subsidiaries`)}
           whileHover={{ x: -5 }}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}

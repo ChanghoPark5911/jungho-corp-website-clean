@@ -353,7 +353,7 @@ const IllutechDetailPage = () => {
                         <img
                           src={product.imagePath}
                           alt={currentLanguage === 'en' ? product.nameEn : product.nameKo}
-                          className="w-2/3 h-2/3 object-contain"
+                          className="w-full h-full object-contain"
                           onError={(e) => {
                             // 이미지 로드 실패 시 대체 아이콘 표시
                             e.target.style.display = 'none';

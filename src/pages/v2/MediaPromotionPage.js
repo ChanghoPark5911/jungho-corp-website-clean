@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
 
 /**
@@ -10,6 +10,16 @@ import { useI18n } from '../../hooks/useI18n';
 const MediaPromotionPage = () => {
   const { t } = useI18n();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // 현재 경로에 따라 버전 prefix 결정
+  const getPrefix = () => {
+    if (location.pathname.startsWith('/hybrid')) return '/hybrid';
+    if (location.pathname.startsWith('/classic')) return '/classic';
+    return '/v2';
+  };
+  const prefix = getPrefix();
+  
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedVideo, setSelectedVideo] = useState(null);
 
@@ -122,22 +132,62 @@ const MediaPromotionPage = () => {
   ];
 
   // localStorage에서 홍보영상 데이터 로드 (관리자 페이지에서 관리)
+  // 기본 데이터 + 새로 추가한 데이터를 병합
   const [promotionVideos, setPromotionVideos] = useState(defaultPromotionVideos);
 
   useEffect(() => {
-    const loadPromotionVideos = () => {
+    const loadPromotionVideos = async () => {
       try {
-        const savedMediaData = localStorage.getItem('v2_media_data');
-        if (savedMediaData) {
-          const parsedData = JSON.parse(savedMediaData);
-          if (parsedData.promotionVideos && parsedData.promotionVideos.length > 0) {
-            setPromotionVideos(parsedData.promotionVideos);
-          } else {
-            // 저장된 데이터가 없으면 기본값 사용
-            setPromotionVideos(defaultPromotionVideos);
+        // 기본 데이터의 제목 목록 (중복 체크용)
+        const defaultTitles = defaultPromotionVideos.map(v => v.title);
+        let additionalVideos = [];
+        
+        // 1순위: JSON 파일에서 로드 (배포된 데이터)
+        try {
+          const response = await fetch('/data/admin-media.json');
+          if (response.ok) {
+            const jsonData = await response.json();
+            if (jsonData.promotionVideos && jsonData.promotionVideos.length > 0) {
+              // JSON 파일의 영상을 추가 (썸네일 필드명 통일)
+              const jsonVideos = jsonData.promotionVideos.map(v => ({
+                ...v,
+                thumbnail: v.thumbnail || v.thumbnailUrl || '🎬'
+              }));
+              additionalVideos = [...jsonVideos];
+              console.log('✅ JSON 파일에서 홍보영상 로드:', jsonVideos.length, '개');
+            }
           }
+        } catch (jsonError) {
+          console.log('📄 JSON 파일 없음, localStorage 확인');
+        }
+        
+        // 2순위: localStorage에서 추가 데이터 확인
+        const projectsData = localStorage.getItem('projects-data');
+        if (projectsData) {
+          const parsedProjects = JSON.parse(projectsData);
+          if (parsedProjects.promotionVideos && parsedProjects.promotionVideos.length > 0) {
+            // 이미 추가된 영상과 중복 방지 (제목으로 비교)
+            const existingTitles = additionalVideos.map(v => v.title);
+            const newFromLocal = parsedProjects.promotionVideos.filter(
+              video => !existingTitles.includes(video.title)
+            );
+            additionalVideos = [...additionalVideos, ...newFromLocal];
+            if (newFromLocal.length > 0) {
+              console.log('✅ localStorage에서 추가 홍보영상 로드:', newFromLocal.length, '개');
+            }
+          }
+        }
+        
+        if (additionalVideos.length > 0) {
+          // 기본 데이터에 없는 새로운 영상만 필터링 (제목으로 비교)
+          const newVideos = additionalVideos.filter(
+            video => !defaultTitles.includes(video.title)
+          );
+          // 기본 데이터 + 새로 추가된 데이터 병합
+          setPromotionVideos([...defaultPromotionVideos, ...newVideos]);
+          console.log('✅ 홍보영상 총:', defaultPromotionVideos.length, '개(기본) +', newVideos.length, '개(추가)');
         } else {
-          // localStorage에 데이터가 없으면 기본값 사용
+          // 저장된 데이터가 없으면 기본값 사용
           setPromotionVideos(defaultPromotionVideos);
         }
       } catch (error) {
@@ -155,10 +205,12 @@ const MediaPromotionPage = () => {
 
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('v2MediaDataUpdated', handleStorageChange);
+    window.addEventListener('projectsUpdated', handleStorageChange);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('v2MediaDataUpdated', handleStorageChange);
+      window.removeEventListener('projectsUpdated', handleStorageChange);
     };
   }, []);
 
@@ -412,7 +464,7 @@ const MediaPromotionPage = () => {
                 별도 문의를 통해 확인하실 수 있습니다.
               </p>
               <button 
-                onClick={() => navigate('/support/contact')}
+                onClick={() => navigate(`${prefix}/support/contact`)}
                 className="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors duration-300"
               >
                 <span>문의하기</span>
@@ -453,7 +505,25 @@ const MediaPromotionPage = () => {
                 >
                   {/* 썸네일 */}
                   <div className="relative h-48 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                    <div className="text-8xl">{video.thumbnail}</div>
+                    {/* 이미지 URL 또는 Base64인 경우 img 태그로 표시 */}
+                    {video.thumbnail && (video.thumbnail.startsWith('http') || video.thumbnail.startsWith('data:image') || video.thumbnail.startsWith('/')) ? (
+                      <img 
+                        src={video.thumbnail} 
+                        alt={video.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextElementSibling.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    {/* 이모지 또는 대체 표시 */}
+                    <div 
+                      className="text-8xl"
+                      style={{ display: video.thumbnail && (video.thumbnail.startsWith('http') || video.thumbnail.startsWith('data:image') || video.thumbnail.startsWith('/')) ? 'none' : 'flex' }}
+                    >
+                      {video.thumbnail || '🎬'}
+                    </div>
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
                         <svg className="w-8 h-8 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 24 24">

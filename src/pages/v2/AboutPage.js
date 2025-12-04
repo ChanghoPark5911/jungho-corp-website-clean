@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useI18n } from '../../hooks/useI18n';
 
@@ -9,7 +9,16 @@ import { useI18n } from '../../hooks/useI18n';
  */
 const AboutPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t, currentLanguage } = useI18n();
+  
+  // 현재 경로에 따라 버전 prefix 결정
+  const getPrefix = () => {
+    if (location.pathname.startsWith('/hybrid')) return '/hybrid';
+    if (location.pathname.startsWith('/classic')) return '/classic';
+    return '/v2';
+  };
+  const prefix = getPrefix();
 
   // 애니메이션 variants
   const fadeInUp = {
@@ -279,7 +288,7 @@ const AboutPage = () => {
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <motion.button
-              onClick={() => navigate('/support/contact')}
+              onClick={() => navigate(`${prefix}/support/contact`)}
               className="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -287,7 +296,7 @@ const AboutPage = () => {
               {currentLanguage === 'en' ? 'Contact Us' : '문의하기'}
             </motion.button>
             <motion.button
-              onClick={() => navigate('/subsidiaries')}
+              onClick={() => navigate(`${prefix}/subsidiaries`)}
               className="px-8 py-4 bg-white hover:bg-gray-100 text-primary-600 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-primary-600"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

@@ -222,7 +222,7 @@ const HomePageV2 = () => {
             <motion.div
               variants={fadeInUp}
               whileHover={{ scale: 1.05, y: -5 }}
-              onClick={() => navigate('/about')}
+              onClick={() => navigate('/v2/about')}
               className="bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer group"
             >
               <div className="h-32 bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
@@ -248,7 +248,7 @@ const HomePageV2 = () => {
             <motion.div
               variants={fadeInUp}
               whileHover={{ scale: 1.05, y: -5 }}
-              onClick={() => navigate('/subsidiaries')}
+              onClick={() => navigate('/v2/subsidiaries')}
               className="bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer group"
             >
               <div className="h-32 bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
@@ -274,7 +274,7 @@ const HomePageV2 = () => {
             <motion.div
               variants={fadeInUp}
               whileHover={{ scale: 1.05, y: -5 }}
-              onClick={() => navigate('/media/promotion')}
+              onClick={() => navigate('/v2/media/promotion')}
               className="bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer group"
             >
               <div className="h-32 bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
@@ -300,7 +300,7 @@ const HomePageV2 = () => {
             <motion.div
               variants={fadeInUp}
               whileHover={{ scale: 1.05, y: -5 }}
-              onClick={() => navigate('/support/contact')}
+              onClick={() => navigate('/v2/support/contact')}
               className="bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer group"
             >
               <div className="h-32 bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
@@ -638,7 +638,7 @@ const HomePageV2 = () => {
           >
             {/* 정호티엘씨 */}
             <motion.div 
-              onClick={() => navigate('/subsidiaries/jungho-tlc')}
+              onClick={() => navigate('/v2/subsidiaries/jungho-tlc')}
               className="group relative overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white dark:bg-gray-800"
               variants={fadeInUp}
               whileHover={{ 
@@ -664,7 +664,7 @@ const HomePageV2 = () => {
                   {t('home.subsidiaries.tlc.title') || '정호티엘씨'}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  {t('home.subsidiaries.tlc.subtitle') || '빌딩 자동화 / 전력 제어'}
+                  {t('home.subsidiaries.tlc.subtitle') || '빌딩관리 종합정보 및 조명·전력제어 솔루션'}
                 </p>
                 <button className="text-primary-600 dark:text-primary-400 font-semibold group-hover:translate-x-2 inline-block transition-transform">
                   {t('common.learnMore') || '자세히 보기'} →
@@ -674,7 +674,7 @@ const HomePageV2 = () => {
 
             {/* 클라루스 */}
             <motion.div 
-              onClick={() => navigate('/subsidiaries/clarus')}
+              onClick={() => navigate('/v2/subsidiaries/clarus')}
               className="group relative overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white dark:bg-gray-800"
               variants={fadeInUp}
               whileHover={{ 
@@ -700,7 +700,7 @@ const HomePageV2 = () => {
                   {t('home.subsidiaries.clarus.title') || '클라루스'}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  {t('home.subsidiaries.clarus.subtitle') || '조명 제어 솔루션'}
+                  {t('home.subsidiaries.clarus.subtitle') || '스마트 조명·전력관리 솔루션 개발'}
                 </p>
                 <button className="text-clarus-500 dark:text-clarus-400 font-semibold group-hover:translate-x-2 inline-block transition-transform">
                   {t('common.learnMore') || '자세히 보기'} →
@@ -710,7 +710,7 @@ const HomePageV2 = () => {
 
             {/* 일루텍 */}
             <motion.div 
-              onClick={() => navigate('/subsidiaries/illutech')}
+              onClick={() => navigate('/v2/subsidiaries/illutech')}
               className="group relative overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white dark:bg-gray-800"
               variants={fadeInUp}
               whileHover={{ 
@@ -746,7 +746,7 @@ const HomePageV2 = () => {
 
             {/* 정호텍스컴 */}
             <motion.div 
-              onClick={() => navigate('/subsidiaries/jungho-texcom')}
+              onClick={() => navigate('/v2/subsidiaries/jungho-texcom')}
               className="group relative overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white dark:bg-gray-800"
               variants={fadeInUp}
               whileHover={{ 
@@ -809,7 +809,7 @@ const HomePageV2 = () => {
             variants={fadeInUp}
           >
             <motion.button
-              onClick={() => navigate('/about')}
+              onClick={() => navigate('/v2/about')}
               className="px-8 py-4 bg-white text-primary-600 font-semibold rounded-lg transition-colors duration-200"
               whileHover={{ scale: 1.05, backgroundColor: '#f3f4f6' }}
               whileTap={{ scale: 0.95 }}
@@ -817,7 +817,7 @@ const HomePageV2 = () => {
               {t('home.cta.aboutButton') || (currentLanguage === 'en' ? 'About Company' : '회사 소개')}
             </motion.button>
             <motion.button
-              onClick={() => navigate('/support/contact')}
+              onClick={() => navigate('/v2/support/contact')}
               className="px-8 py-4 bg-primary-700 text-white font-semibold rounded-lg transition-colors duration-200 border-2 border-white"
               whileHover={{ scale: 1.05, backgroundColor: '#1B5E20' }}
               whileTap={{ scale: 0.95 }}

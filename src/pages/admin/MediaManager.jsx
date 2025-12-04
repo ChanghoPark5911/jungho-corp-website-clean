@@ -58,8 +58,15 @@ const MediaManager = () => {
       // localStorage에 저장 (JSON 파일 자동 업데이트는 서버 필요)
       localStorage.setItem('projects-data', JSON.stringify(mediaData));
       
+      // v2_media_data도 함께 업데이트 (홍보영상 페이지에서 사용)
+      const existingV2Data = localStorage.getItem('v2_media_data');
+      let v2MediaData = existingV2Data ? JSON.parse(existingV2Data) : {};
+      v2MediaData.promotionVideos = mediaData.promotionVideos || [];
+      localStorage.setItem('v2_media_data', JSON.stringify(v2MediaData));
+      
       // 홈페이지도 업데이트된 데이터 사용하도록 이벤트 발생
       window.dispatchEvent(new CustomEvent('projectsUpdated', { detail: mediaData }));
+      window.dispatchEvent(new CustomEvent('v2MediaDataUpdated', { detail: v2MediaData }));
       
       setSaveStatus('✅ 저장 완료! (새로고침하면 반영됩니다)');
       setTimeout(() => setSaveStatus(''), 5000);
@@ -69,15 +76,24 @@ const MediaManager = () => {
     }
   };
 
-  // 프로젝트 데이터 내보내기 (JSON 파일 다운로드)
-  const exportProjectsData = () => {
+  // 전체 데이터 내보내기 (JSON 파일 다운로드) - 프로젝트 + 홍보영상 + SNS 링크
+  const exportAllData = () => {
     try {
       // localStorage에서 최신 데이터 가져오기
       const projectsData = localStorage.getItem('projects-data');
       const data = projectsData ? JSON.parse(projectsData) : mediaData;
       
+      // 내보내기 데이터 구성
+      const exportData = {
+        projects: data.projects || [],
+        promotionVideos: data.promotionVideos || [],
+        snsLinks: data.snsLinks || {},
+        lastUpdated: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
       // JSON 문자열로 변환 (보기 좋게 포맷팅)
-      const jsonString = JSON.stringify(data, null, 2);
+      const jsonString = JSON.stringify(exportData, null, 2);
       
       // Blob 생성
       const blob = new Blob([jsonString], { type: 'application/json' });
@@ -86,7 +102,7 @@ const MediaManager = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `projects-${new Date().toISOString().split('T')[0]}.json`;
+      link.download = `admin-media-${new Date().toISOString().split('T')[0]}.json`;
       
       // 다운로드 실행
       document.body.appendChild(link);
@@ -96,8 +112,10 @@ const MediaManager = () => {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
       
-      setSaveStatus('✅ 프로젝트 데이터 내보내기 완료!');
-      setTimeout(() => setSaveStatus(''), 3000);
+      alert(`✅ 데이터 내보내기 완료!\n\n📁 다운로드한 파일 정보:\n• 프로젝트: ${exportData.projects.length}개\n• 홍보영상: ${exportData.promotionVideos.length}개\n• SNS 링크 포함\n\n📌 영구 저장 방법:\n1. 다운로드한 파일을 public/data/projects.json에 복사\n2. Git 커밋 & 푸시\n3. 배포 완료!`);
+      
+      setSaveStatus('✅ 데이터 내보내기 완료!');
+      setTimeout(() => setSaveStatus(''), 5000);
     } catch (error) {
       console.error('내보내기 실패:', error);
       setSaveStatus('❌ 내보내기 실패');
@@ -145,12 +163,12 @@ const MediaManager = () => {
                 </span>
               )}
               <button
-                onClick={exportProjectsData}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"
-                title="프로젝트 데이터를 JSON 파일로 다운로드합니다"
+                onClick={exportAllData}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"
+                title="프로젝트, 홍보영상, SNS 링크를 JSON 파일로 다운로드합니다"
               >
                 <span className="mr-2">📥</span>
-                프로젝트 내보내기
+                전체 데이터 내보내기
               </button>
               <button
                 onClick={saveMediaData}
@@ -588,8 +606,8 @@ const VideosTab = ({ videos, setMediaData, mediaData }) => {
   };
 
   const handleAdd = (newVideo) => {
-    const maxId = videos.reduce((max, v) => Math.max(max, v.id || 0), 0);
-    const videoWithId = { ...newVideo, id: maxId + 1 };
+    // 기본 데이터와 ID 충돌 방지를 위해 Date.now() 사용 (최소 1000000 이상)
+    const videoWithId = { ...newVideo, id: Date.now() };
     setMediaData({ ...mediaData, promotionVideos: [...videos, videoWithId] });
     setShowAddForm(false);
   };

@@ -143,23 +143,23 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* 다국어 관리 */}
+          {/* 다국어/Hero 관리 - 기존 시스템으로 이동 */}
           <div 
-            onClick={() => navigate('/admin-new/i18n')}
+            onClick={() => navigate('/admin')}
             className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow"
           >
             <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-6 text-white">
-              <div className="text-4xl mb-3">🌐</div>
-              <h3 className="text-xl font-bold mb-1">다국어 관리</h3>
-              <p className="text-sm opacity-90">한/영/일/중 번역 관리</p>
+              <div className="text-4xl mb-3">⚙️</div>
+              <h3 className="text-xl font-bold mb-1">홈페이지 설정</h3>
+              <p className="text-sm opacity-90">Hero, 다국어, 정적 페이지</p>
             </div>
             <div className="p-6">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600 dark:text-gray-400">
-                  한/영 활성, 일/중 준비됨
+                  기존 관리자 페이지
                 </span>
                 <span className="text-purple-600 dark:text-purple-400 text-sm font-medium">
-                  관리하기 →
+                  이동하기 →
                 </span>
               </div>
             </div>

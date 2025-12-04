@@ -393,7 +393,7 @@ const HomePageHybrid = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
               whileHover={{ scale: 1.03, y: -5 }}
-              onClick={() => navigate('/media/promotion')}
+              onClick={() => navigate('/hybrid/media/promotion')}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer group"
             >
               <div className="h-32 bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
@@ -421,7 +421,7 @@ const HomePageHybrid = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
               whileHover={{ scale: 1.03, y: -5 }}
-              onClick={() => navigate('/support')}
+              onClick={() => navigate('/hybrid/support')}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer group"
             >
               <div className="h-32 bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
@@ -940,7 +940,7 @@ const HomePageHybrid = () => {
                 transition={{ duration: 0.5, delay: 0.7 }}
               >
                 <motion.button
-                  onClick={() => navigate('/support')}
+                  onClick={() => navigate('/hybrid/support')}
                   className="px-8 py-4 bg-white text-purple-600 font-bold rounded-xl hover:bg-purple-50 shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center gap-2"
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
@@ -950,7 +950,7 @@ const HomePageHybrid = () => {
                 </motion.button>
                 
                 <motion.button
-                  onClick={() => navigate('/contact')}
+                  onClick={() => navigate('/hybrid/support/contact')}
                   className="px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white/10 shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center gap-2"
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}

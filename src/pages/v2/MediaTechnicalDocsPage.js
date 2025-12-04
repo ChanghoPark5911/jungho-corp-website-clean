@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
 
 /**
@@ -10,6 +10,16 @@ import { useI18n } from '../../hooks/useI18n';
 const MediaTechnicalDocsPage = () => {
   const { t, currentLanguage } = useI18n();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // 현재 경로에 따라 버전 prefix 결정
+  const getPrefix = () => {
+    if (location.pathname.startsWith('/hybrid')) return '/hybrid';
+    if (location.pathname.startsWith('/classic')) return '/classic';
+    return '/v2';
+  };
+  const prefix = getPrefix();
+  
   const [technicalDocuments, setTechnicalDocuments] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedSubsidiary, setSelectedSubsidiary] = useState('all');
@@ -458,7 +468,7 @@ const MediaTechnicalDocsPage = () => {
               : '전문가와 상담하여 맞춤형 솔루션을 받아보세요'}
           </p>
           <button
-            onClick={() => navigate('/v2/support')}
+            onClick={() => navigate(`${prefix}/support`)}
             className="bg-white text-blue-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors duration-300"
           >
             {currentLanguage === 'en' ? 'Contact Us' : '문의하기'}

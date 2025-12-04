@@ -93,3 +93,7 @@ git push origin main
 - **컴포넌트**: `src/pages/v2/subsidiaries/ClarusDetailPage.js`
 - **이미지 폴더**: `public/images/clarus/competencies/`
 
+
+
+
+

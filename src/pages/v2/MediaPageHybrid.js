@@ -1,16 +1,22 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useI18n } from '../../hooks/useI18n';
 import TraditionalNav from '../../components/v2/TraditionalNav';
 import SmallBanner from '../../components/v2/SmallBanner';
 
 /**
- * 미디어 센터 허브 페이지 - Hybrid 버전
+ * 미디어 센터 허브 페이지 - V2 & Hybrid 공용
  */
 const MediaPageHybrid = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentLanguage } = useI18n();
+
+  // 현재 경로에 따라 버전 결정
+  const isHybrid = location.pathname.startsWith('/hybrid');
+  const isClassic = location.pathname.startsWith('/classic');
+  const basePath = isHybrid ? '/hybrid' : isClassic ? '/classic' : '/v2';
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -31,7 +37,7 @@ const MediaPageHybrid = () => {
     }
   };
 
-  // 미디어 섹션
+  // 미디어 섹션 (경로는 현재 버전에 맞게 동적 설정)
   const mediaSections = [
     {
       id: 'news',
@@ -42,7 +48,7 @@ const MediaPageHybrid = () => {
       icon: '📰',
       color: 'from-blue-500 to-cyan-500',
       bgColor: 'bg-blue-50',
-      path: '/hybrid/media/news',
+      path: `${basePath}/media/news`,
     },
     {
       id: 'promotion',
@@ -53,7 +59,7 @@ const MediaPageHybrid = () => {
       icon: '📑',
       color: 'from-purple-500 to-pink-500',
       bgColor: 'bg-purple-50',
-      path: '/v2/media/promotion',
+      path: `${basePath}/media/promotion`,
     },
     {
       id: 'sns',
@@ -64,7 +70,7 @@ const MediaPageHybrid = () => {
       icon: '📱',
       color: 'from-green-500 to-emerald-500',
       bgColor: 'bg-green-50',
-      path: '/v2/media/sns',
+      path: `${basePath}/media/sns`,
     },
     {
       id: 'technical',
@@ -75,7 +81,7 @@ const MediaPageHybrid = () => {
       icon: '📋',
       color: 'from-orange-500 to-red-500',
       bgColor: 'bg-orange-50',
-      path: '/v2/media/technical-docs',
+      path: `${basePath}/media/technical-docs`,
     },
   ];
 

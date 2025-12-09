@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://jungho-corp.com/sitemap.xml
+Sitemap: https://www.junghocorp.com/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1
@@ -23,4 +23,4 @@ Allow: /texcom/
 Allow: /business/
 Allow: /projects/
 Allow: /support/
-Allow: /news/ 
+Allow: /news/

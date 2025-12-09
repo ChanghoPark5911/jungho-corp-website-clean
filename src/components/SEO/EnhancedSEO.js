@@ -48,8 +48,8 @@ const EnhancedSEO = ({
           "@type": "Organization",
           "name": siteName,
           "description": defaultDescription,
-          "url": "https://jungho-group.com",
-          "logo": "https://jungho-group.com/logo.png",
+          "url": "https://www.junghocorp.com",
+          "logo": "https://www.junghocorp.com/logo.png",
           "foundingDate": "1983",
           "address": {
             "@type": "PostalAddress",

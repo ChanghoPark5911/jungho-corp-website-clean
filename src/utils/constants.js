@@ -13,7 +13,7 @@ export const COMPANY_INFO = {
     phone: '02-553-3631',
     fax: '02-553-2526',
     email: 'info@jungho.com',
-    website: 'www.jungho.com',
+    website: 'www.junghocorp.com',
     kakaoTalk: '@정호그룹'
   },
   support: {

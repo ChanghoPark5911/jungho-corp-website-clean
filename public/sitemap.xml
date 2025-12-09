@@ -2,82 +2,82 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- 홈페이지 -->
   <url>
-    <loc>https://jungho-corp.com/</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://www.junghocorp.com/</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <!-- 계열사 페이지들 -->
   <url>
-    <loc>https://jungho-corp.com/clarus</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://www.junghocorp.com/clarus</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://jungho-corp.com/tlc</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://www.junghocorp.com/tlc</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://jungho-corp.com/illutech</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://www.junghocorp.com/illutech</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://jungho-corp.com/texcom</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://www.junghocorp.com/texcom</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <!-- 주요 페이지들 -->
   <url>
-    <loc>https://jungho-corp.com/business</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://www.junghocorp.com/business</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://jungho-corp.com/projects</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://www.junghocorp.com/projects</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://jungho-corp.com/support</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://www.junghocorp.com/support</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://jungho-corp.com/news</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://www.junghocorp.com/news</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <!-- 정적 페이지들 -->
   <url>
-    <loc>https://jungho-corp.com/privacy</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://www.junghocorp.com/privacy</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   
   <url>
-    <loc>https://jungho-corp.com/terms</loc>
-    <lastmod>2024-01-15</lastmod>
+    <loc>https://www.junghocorp.com/terms</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-</urlset> 
+</urlset>

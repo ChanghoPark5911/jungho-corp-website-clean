@@ -207,21 +207,21 @@ const Footer = () => {
           </div>
 
           {/* SNS 아이콘 */}
-          <div className="flex items-center space-x-3 md:space-x-4">
-                            <span className="text-xs md:text-sm text-white mr-2">{t('footer.followUs')}</span>
+          <nav className="flex items-center space-x-3 md:space-x-4" aria-label="소셜 미디어 링크">
+            <span className="text-xs md:text-sm text-white mr-2">{t('footer.followUs')}</span>
             {socialLinks.map((social) => (
               <a
                 key={social.name}
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                                  className="w-8 h-8 md:w-10 md:h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:text-secondary hover:bg-white/20 transition-all duration-200"
-                aria-label={social.name}
+                className="w-8 h-8 md:w-10 md:h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:text-secondary hover:bg-white/20 transition-all duration-200"
+                aria-label={`${social.name === 'youtube' ? 'YouTube' : social.name === 'naver-blog' ? '네이버 블로그' : social.name === 'instagram' ? 'Instagram' : 'Facebook'} 바로가기 (새 창에서 열림)`}
               >
-                {social.icon}
+                <span aria-hidden="true">{social.icon}</span>
               </a>
             ))}
-          </div>
+          </nav>
         </div>
       </div>
     </footer>

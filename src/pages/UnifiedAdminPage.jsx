@@ -1330,16 +1330,62 @@ const ProjectManagement = ({ data, onSave, isLoading }) => {
     }));
   };
 
+  // 프로젝트 데이터 내보내기 (JSON 파일 다운로드)
+  const exportProjectsToJSON = () => {
+    try {
+      const exportData = {
+        projects: projectData.map(project => ({
+          id: project.id,
+          category: project.category,
+          status: project.status,
+          year: project.year,
+          location: project.location,
+          client: project.client,
+          image: project.image,
+          translations: project.translations,
+          features: project.features
+        })),
+        lastUpdated: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
+      const jsonString = JSON.stringify(exportData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `projects-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      alert(`✅ 프로젝트 데이터 내보내기 완료!\n\n📁 다운로드한 파일: projects-${new Date().toISOString().split('T')[0]}.json\n• 프로젝트 ${exportData.projects.length}개 포함\n\n📌 영구 저장 방법:\n1. 다운로드한 파일을 public/data/projects.json에 복사\n2. Git 커밋 & 푸시\n3. 배포 완료!`);
+    } catch (error) {
+      console.error('내보내기 실패:', error);
+      alert('❌ 내보내기 실패: ' + error.message);
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold">프로젝트 관리</h2>
-        <button
-          onClick={handleAddProject}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          + 새 프로젝트 추가
-        </button>
+        <div className="flex space-x-2">
+          <button
+            onClick={exportProjectsToJSON}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center"
+            title="프로젝트 데이터를 JSON 파일로 다운로드합니다"
+          >
+            📥 내보내기
+          </button>
+          <button
+            onClick={handleAddProject}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            + 새 프로젝트 추가
+          </button>
+        </div>
       </div>
 
       {/* 프로젝트 목록 */}

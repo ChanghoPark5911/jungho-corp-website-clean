@@ -12,8 +12,8 @@ const SEO = ({
   const defaultTitle = '정호그룹 - 조명제어 전문기업 | 40년 전통의 조명솔루션';
   const defaultDescription = '정호그룹은 40년 전통의 조명제어 전문기업으로, 클라러스, TLC, 일루테크, 텍스컴 등 계열사를 통해 AI, IoT, 물류, 텍스타일 분야의 혁신적인 솔루션을 제공합니다.';
   const defaultKeywords = '정호그룹, 조명제어, 클라러스, TLC, 일루테크, 텍스컴, LED조명, 스마트조명, IoT, AI, 물류, 텍스타일, 조명시스템, 조명제어시스템, 조명솔루션';
-  const defaultImage = 'https://www.jungho.com/og-image.jpg';
-  const defaultUrl = 'https://www.jungho.com';
+  const defaultImage = 'https://www.junghocorp.com/og-image.jpg';
+  const defaultUrl = 'https://www.junghocorp.com';
 
   const seoTitle = title ? `${title} | 정호그룹` : defaultTitle;
   const seoDescription = description || defaultDescription;

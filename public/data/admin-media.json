@@ -58,14 +58,6 @@
     },
     {
       "id": 8,
-      "category": "업무시설",
-      "title": "쿠쿠 강동 사옥",
-      "description": "기업 본사 빌딩 조명 시스템",
-      "imageUrl": "/images/projects/1.업무시설/쿠쿠 강동 사옥.JPG",
-      "year": "2022"
-    },
-    {
-      "id": 9,
       "category": "공공시설",
       "title": "경기도 신청사",
       "description": "공공청사 조명 제어 시스템",

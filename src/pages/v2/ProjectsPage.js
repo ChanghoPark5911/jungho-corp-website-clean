@@ -30,7 +30,7 @@ const ProjectsPage = () => {
     }
   };
 
-  // 프로젝트 데이터 로드 (관리자 페이지 연동)
+  // 프로젝트 데이터 로드 (관리자 페이지 연동 - admin-media.json 통합)
   React.useEffect(() => {
     const loadProjects = async () => {
       try {
@@ -38,19 +38,43 @@ const ProjectsPage = () => {
         const savedData = localStorage.getItem('projects-data');
         if (savedData) {
           const data = JSON.parse(savedData);
-          setProjects(data.projects || []);
-          setLoading(false);
-          return;
+          if (data.projects && data.projects.length > 0) {
+            // title 또는 name 필드 통일
+            const normalizedProjects = data.projects.map(p => ({
+              ...p,
+              name: p.name || p.title,
+              title: p.title || p.name,
+              image: p.image || p.imageUrl
+            }));
+            setProjects(normalizedProjects);
+            setLoading(false);
+            return;
+          }
         }
         
-        // 2순위: JSON 파일에서 데이터 로드
-        const response = await fetch('/data/projects.json');
-        const data = await response.json();
-        setProjects(data.projects || []);
+        // 2순위: admin-media.json 파일에서 데이터 로드 (관리자 페이지와 동일)
+        const response = await fetch('/data/admin-media.json');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.projects && data.projects.length > 0) {
+            // title/name, image/imageUrl 필드 통일
+            const normalizedProjects = data.projects.map(p => ({
+              ...p,
+              name: p.name || p.title,
+              title: p.title || p.name,
+              image: p.image || p.imageUrl
+            }));
+            setProjects(normalizedProjects);
+            setLoading(false);
+            return;
+          }
+        }
+        
+        // 3순위 폴백: 기존 하드코딩 데이터 사용
+        setProjects(fallbackProjects);
         setLoading(false);
       } catch (error) {
         console.error('프로젝트 데이터 로드 실패:', error);
-        // 3순위 폴백: 기존 하드코딩 데이터 사용
         setProjects(fallbackProjects);
         setLoading(false);
       }

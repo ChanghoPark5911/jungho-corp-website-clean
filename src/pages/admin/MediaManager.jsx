@@ -29,23 +29,93 @@ const MediaManager = () => {
 
   const loadMediaData = async () => {
     try {
-      // 1순위: localStorage에서 데이터 확인
-      const localData = localStorage.getItem('projects-data');
-      if (localData) {
-        console.log('✅ localStorage에서 미디어 데이터 로드');
-        setMediaData(JSON.parse(localData));
-        setLoading(false);
-        return;
+      let finalData = {
+        projects: [],
+        promotionVideos: [],
+        technicalDocs: [],
+        intellectualProperty: [],
+        ipStats: { total: 0, patents: 0, designs: 0, software: 0 },
+        snsLinks: {}
+      };
+
+      // 1순위: JSON 파일에서 기본 데이터 로드 (admin-media.json)
+      try {
+        console.log('📄 JSON 파일에서 미디어 데이터 로드');
+        const response = await fetch('/data/admin-media.json');
+        if (response.ok) {
+          const jsonData = await response.json();
+          finalData.projects = jsonData.projects || [];
+          finalData.promotionVideos = jsonData.promotionVideos || [];
+          finalData.snsLinks = jsonData.snsLinks || {};
+          console.log('✅ JSON에서 로드: 프로젝트', finalData.projects.length, '개, 홍보영상', finalData.promotionVideos.length, '개');
+        }
+      } catch (jsonError) {
+        console.log('📄 admin-media.json 없음');
       }
 
-      // 2순위: JSON 파일에서 로드
-      console.log('📄 JSON 파일에서 미디어 데이터 로드');
-      const response = await fetch('/data/projects.json');
-      const data = await response.json();
-      setMediaData(data);
+      // 기술자료실 JSON 로드
+      try {
+        const techResponse = await fetch('/data/technical-docs.json');
+        if (techResponse.ok) {
+          const techData = await techResponse.json();
+          finalData.technicalDocs = techData.documents || [];
+          console.log('✅ 기술자료실 로드:', finalData.technicalDocs.length, '개');
+        }
+      } catch (e) {
+        console.log('📄 technical-docs.json 없음');
+      }
+
+      // 지적재산권 JSON 로드
+      try {
+        const ipResponse = await fetch('/data/intellectual-property.json');
+        if (ipResponse.ok) {
+          const ipData = await ipResponse.json();
+          finalData.intellectualProperty = ipData.certificates || [];
+          finalData.ipStats = ipData.stats || { total: 0, patents: 0, designs: 0, software: 0 };
+          console.log('✅ 지적재산권 로드:', finalData.intellectualProperty.length, '개');
+        }
+      } catch (e) {
+        console.log('📄 intellectual-property.json 없음');
+      }
+
+      // 2순위: localStorage에서 추가/수정된 데이터 병합
+      const localData = localStorage.getItem('projects-data');
+      if (localData) {
+        const parsedLocal = JSON.parse(localData);
+        console.log('✅ localStorage에서 추가 데이터 확인');
+        
+        if (parsedLocal.projects && parsedLocal.projects.length > 0) {
+          finalData.projects = parsedLocal.projects;
+        }
+        if (parsedLocal.promotionVideos && parsedLocal.promotionVideos.length > 0) {
+          finalData.promotionVideos = parsedLocal.promotionVideos;
+        }
+        if (parsedLocal.technicalDocs && parsedLocal.technicalDocs.length > 0) {
+          finalData.technicalDocs = parsedLocal.technicalDocs;
+        }
+        if (parsedLocal.intellectualProperty && parsedLocal.intellectualProperty.length > 0) {
+          finalData.intellectualProperty = parsedLocal.intellectualProperty;
+        }
+        if (parsedLocal.ipStats) {
+          finalData.ipStats = parsedLocal.ipStats;
+        }
+        if (parsedLocal.snsLinks) {
+          finalData.snsLinks = parsedLocal.snsLinks;
+        }
+      }
+
+      setMediaData(finalData);
       setLoading(false);
     } catch (error) {
       console.error('데이터 로드 실패:', error);
+      setMediaData({
+        projects: [],
+        promotionVideos: [],
+        technicalDocs: [],
+        intellectualProperty: [],
+        ipStats: { total: 0, patents: 0, designs: 0, software: 0 },
+        snsLinks: {}
+      });
       setLoading(false);
     }
   };
@@ -212,6 +282,26 @@ const MediaManager = () => {
               📺 홍보영상 ({mediaData?.promotionVideos?.length || 0})
             </button>
             <button
+              onClick={() => setActiveTab('technicalDocs')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'technicalDocs'
+                  ? 'border-primary-600 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              📄 기술자료실 ({mediaData?.technicalDocs?.length || 0})
+            </button>
+            <button
+              onClick={() => setActiveTab('intellectualProperty')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'intellectualProperty'
+                  ? 'border-primary-600 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              🏆 지적재산권 ({mediaData?.intellectualProperty?.length || 0})
+            </button>
+            <button
               onClick={() => setActiveTab('sns')}
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'sns'
@@ -237,6 +327,21 @@ const MediaManager = () => {
         {activeTab === 'videos' && (
           <VideosTab 
             videos={mediaData?.promotionVideos || []}
+            setMediaData={setMediaData}
+            mediaData={mediaData}
+          />
+        )}
+        {activeTab === 'technicalDocs' && (
+          <TechnicalDocsTab 
+            documents={mediaData?.technicalDocs || []}
+            setMediaData={setMediaData}
+            mediaData={mediaData}
+          />
+        )}
+        {activeTab === 'intellectualProperty' && (
+          <IntellectualPropertyTab 
+            certificates={mediaData?.intellectualProperty || []}
+            stats={mediaData?.ipStats || { total: 0, patents: 0, designs: 0, software: 0 }}
             setMediaData={setMediaData}
             mediaData={mediaData}
           />
@@ -324,10 +429,10 @@ const ProjectsTab = ({ projects, setMediaData, mediaData }) => {
           .sort((a, b) => b.year - a.year || b.id - a.id)
           .map((project) => (
           <div key={project.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-            {project.image ? (
+            {(project.image || project.imageUrl) ? (
               <img 
-                src={project.image} 
-                alt={project.name}
+                src={project.image || project.imageUrl} 
+                alt={project.name || project.title}
                 className="w-full h-48 object-cover"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -337,7 +442,7 @@ const ProjectsTab = ({ projects, setMediaData, mediaData }) => {
             ) : null}
             <div 
               className="w-full h-48 bg-gray-200 dark:bg-gray-700 flex items-center justify-center"
-              style={{ display: project.image ? 'none' : 'flex' }}
+              style={{ display: (project.image || project.imageUrl) ? 'none' : 'flex' }}
             >
               <span className="text-gray-400 dark:text-gray-500">📷 이미지 없음</span>
             </div>
@@ -351,7 +456,7 @@ const ProjectsTab = ({ projects, setMediaData, mediaData }) => {
                 </span>
               </div>
               <h3 className="font-bold text-gray-900 dark:text-white mb-2">
-                {project.name}
+                {project.name || project.title}
               </h3>
               <div className="flex space-x-2">
                 <button
@@ -649,17 +754,17 @@ const VideosTab = ({ videos, setMediaData, mediaData }) => {
               <div className="flex">
                 {/* 썸네일 */}
                 <div className="w-48 h-32 flex-shrink-0 bg-gray-200 dark:bg-gray-700">
-                  {video.thumbnail ? (
+                  {(video.thumbnail && (video.thumbnail.startsWith('http') || video.thumbnail.startsWith('/') || video.thumbnail.startsWith('data:'))) || video.thumbnailUrl ? (
                     <img 
-                      src={video.thumbnail} 
+                      src={video.thumbnailUrl || video.thumbnail} 
                       alt={video.title}
                       className="w-full h-full object-cover"
+                      onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
                     />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-4xl">📺</span>
-                    </div>
-                  )}
+                  ) : null}
+                  <div className={`w-full h-full items-center justify-center ${(video.thumbnail && (video.thumbnail.startsWith('http') || video.thumbnail.startsWith('/') || video.thumbnail.startsWith('data:'))) || video.thumbnailUrl ? 'hidden' : 'flex'}`}>
+                    <span className="text-4xl">{video.thumbnail && !video.thumbnail.startsWith('http') ? video.thumbnail : '📺'}</span>
+                  </div>
                 </div>
                 
                 {/* 정보 */}
@@ -924,6 +1029,481 @@ const SNSTab = ({ snsLinks, setMediaData, mediaData }) => {
             </div>
           ))}
         </div>
+      </div>
+    </div>
+  );
+};
+
+// 기술자료실 탭
+const TechnicalDocsTab = ({ documents, setMediaData, mediaData }) => {
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingDoc, setEditingDoc] = useState(null);
+
+  const categories = [
+    { value: 'product', label: '제품 카탈로그' },
+    { value: 'technical', label: '기술 자료' },
+    { value: 'case-study', label: '구축 사례' },
+    { value: 'manual', label: '사용 매뉴얼' }
+  ];
+
+  const subsidiaries = [
+    { value: 'clarus', label: '클라루스' },
+    { value: 'tlc', label: '정호티엘씨' },
+    { value: 'illutech', label: '일루텍' },
+    { value: 'texcom', label: '정호텍스컴' }
+  ];
+
+  const handleDelete = (docId) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      const newDocs = documents.filter(d => d.id !== docId);
+      setMediaData({ ...mediaData, technicalDocs: newDocs });
+    }
+  };
+
+  const handleAdd = (newDoc) => {
+    const docWithId = { ...newDoc, id: Date.now() };
+    setMediaData({ ...mediaData, technicalDocs: [...documents, docWithId] });
+    setShowAddForm(false);
+  };
+
+  const handleUpdate = (updatedDoc) => {
+    const newDocs = documents.map(d => d.id === updatedDoc.id ? updatedDoc : d);
+    setMediaData({ ...mediaData, technicalDocs: newDocs });
+    setEditingDoc(null);
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          기술자료실 관리
+        </h2>
+        <button
+          onClick={() => setShowAddForm(true)}
+          className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center"
+        >
+          <span className="mr-2">+</span>
+          새 기술자료 추가
+        </button>
+      </div>
+
+      {showAddForm && (
+        <TechnicalDocForm
+          onSave={handleAdd}
+          onCancel={() => setShowAddForm(false)}
+          categories={categories}
+          subsidiaries={subsidiaries}
+        />
+      )}
+
+      {editingDoc && (
+        <TechnicalDocForm
+          document={editingDoc}
+          onSave={handleUpdate}
+          onCancel={() => setEditingDoc(null)}
+          categories={categories}
+          subsidiaries={subsidiaries}
+        />
+      )}
+
+      <div className="space-y-4">
+        {documents.length === 0 ? (
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8 text-center">
+            <p className="text-gray-500 dark:text-gray-400">
+              등록된 기술자료가 없습니다. 새 기술자료를 추가해주세요.
+            </p>
+          </div>
+        ) : (
+          documents.map((doc) => (
+            <div key={doc.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-1">
+                    📄 {doc.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    {doc.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
+                      {categories.find(c => c.value === doc.category)?.label || doc.category}
+                    </span>
+                    <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded">
+                      {subsidiaries.find(s => s.value === doc.subsidiary)?.label || doc.subsidiary}
+                    </span>
+                    <span className="text-gray-500">{doc.fileSize}</span>
+                  </div>
+                </div>
+                <div className="flex space-x-2 ml-4">
+                  <button
+                    onClick={() => setEditingDoc(doc)}
+                    className="text-blue-600 hover:text-blue-800 text-sm"
+                  >
+                    ✏️ 수정
+                  </button>
+                  <button
+                    onClick={() => handleDelete(doc.id)}
+                    className="text-red-600 hover:text-red-800 text-sm"
+                  >
+                    🗑️ 삭제
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+};
+
+// 기술자료 추가/수정 폼
+const TechnicalDocForm = ({ document, onSave, onCancel, categories, subsidiaries }) => {
+  const [formData, setFormData] = useState(
+    document || {
+      title: '',
+      category: 'product',
+      description: '',
+      fileUrl: '',
+      fileName: '',
+      fileSize: '',
+      subsidiary: 'clarus',
+      date: new Date().toISOString().split('T')[0]
+    }
+  );
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.title) {
+      alert('제목을 입력해주세요.');
+      return;
+    }
+    onSave(formData);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <h3 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">
+          {document ? '기술자료 수정' : '새 기술자료 추가'}
+        </h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">제목 *</label>
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              required
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">카테고리</label>
+              <select
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              >
+                {categories.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">계열사</label>
+              <select
+                value={formData.subsidiary}
+                onChange={(e) => setFormData({ ...formData, subsidiary: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              >
+                {subsidiaries.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">설명</label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              rows={3}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">파일 경로 (예: /documents/clarus/file.pdf)</label>
+            <input
+              type="text"
+              value={formData.fileUrl}
+              onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">파일명</label>
+              <input
+                type="text"
+                value={formData.fileName}
+                onChange={(e) => setFormData({ ...formData, fileName: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">파일 크기</label>
+              <input
+                type="text"
+                value={formData.fileSize}
+                onChange={(e) => setFormData({ ...formData, fileSize: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                placeholder="예: 2.5MB"
+              />
+            </div>
+          </div>
+          <div className="flex space-x-3 pt-4">
+            <button type="button" onClick={onCancel} className="flex-1 bg-gray-200 dark:bg-gray-700 py-2 rounded-lg">취소</button>
+            <button type="submit" className="flex-1 bg-primary-600 text-white py-2 rounded-lg">{document ? '수정하기' : '추가하기'}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// 지적재산권 탭
+const IntellectualPropertyTab = ({ certificates, stats, setMediaData, mediaData }) => {
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingCert, setEditingCert] = useState(null);
+  const [localStats, setLocalStats] = useState(stats);
+
+  const categories = [
+    { value: '특허', label: '특허' },
+    { value: '디자인', label: '디자인' },
+    { value: '소프트웨어', label: '소프트웨어' },
+    { value: '인증', label: '인증' }
+  ];
+
+  const handleDelete = (certId) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      const newCerts = certificates.filter(c => c.id !== certId);
+      setMediaData({ ...mediaData, intellectualProperty: newCerts });
+    }
+  };
+
+  const handleAdd = (newCert) => {
+    const certWithId = { ...newCert, id: Date.now() };
+    setMediaData({ ...mediaData, intellectualProperty: [...certificates, certWithId] });
+    setShowAddForm(false);
+  };
+
+  const handleUpdate = (updatedCert) => {
+    const newCerts = certificates.map(c => c.id === updatedCert.id ? updatedCert : c);
+    setMediaData({ ...mediaData, intellectualProperty: newCerts });
+    setEditingCert(null);
+  };
+
+  const handleStatsChange = (field, value) => {
+    const newStats = { ...localStats, [field]: parseInt(value) || 0 };
+    newStats.total = newStats.patents + newStats.designs + newStats.software;
+    setLocalStats(newStats);
+    setMediaData({ ...mediaData, ipStats: newStats });
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          지적재산권 관리
+        </h2>
+        <button
+          onClick={() => setShowAddForm(true)}
+          className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center"
+        >
+          <span className="mr-2">+</span>
+          새 인증서 추가
+        </button>
+      </div>
+
+      {/* 통계 수정 */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+        <h3 className="font-bold text-gray-900 dark:text-white mb-4">📊 통계 설정</h3>
+        <div className="grid grid-cols-4 gap-4">
+          <div>
+            <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">특허</label>
+            <input
+              type="number"
+              value={localStats.patents}
+              onChange={(e) => handleStatsChange('patents', e.target.value)}
+              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            />
+          </div>
+          <div>
+            <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">디자인</label>
+            <input
+              type="number"
+              value={localStats.designs}
+              onChange={(e) => handleStatsChange('designs', e.target.value)}
+              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            />
+          </div>
+          <div>
+            <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">소프트웨어</label>
+            <input
+              type="number"
+              value={localStats.software}
+              onChange={(e) => handleStatsChange('software', e.target.value)}
+              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            />
+          </div>
+          <div>
+            <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">총계</label>
+            <input
+              type="number"
+              value={localStats.total}
+              disabled
+              className="w-full px-3 py-2 border rounded-lg bg-gray-100 dark:bg-gray-600 dark:border-gray-600 dark:text-white"
+            />
+          </div>
+        </div>
+      </div>
+
+      {showAddForm && (
+        <IPCertificateForm
+          onSave={handleAdd}
+          onCancel={() => setShowAddForm(false)}
+          categories={categories}
+        />
+      )}
+
+      {editingCert && (
+        <IPCertificateForm
+          certificate={editingCert}
+          onSave={handleUpdate}
+          onCancel={() => setEditingCert(null)}
+          categories={categories}
+        />
+      )}
+
+      <div className="space-y-4">
+        {certificates.length === 0 ? (
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8 text-center">
+            <p className="text-gray-500 dark:text-gray-400">
+              등록된 인증서가 없습니다. 새 인증서를 추가해주세요.
+            </p>
+          </div>
+        ) : (
+          certificates.map((cert) => (
+            <div key={cert.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-1">
+                    {cert.thumbnail || '🏆'} {cert.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    {cert.description}
+                  </p>
+                  <div className="flex gap-2 text-xs">
+                    <span className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">
+                      {cert.category}
+                    </span>
+                    <span className="text-gray-500">{cert.date}</span>
+                  </div>
+                </div>
+                <div className="flex space-x-2 ml-4">
+                  <button onClick={() => setEditingCert(cert)} className="text-blue-600 hover:text-blue-800 text-sm">✏️ 수정</button>
+                  <button onClick={() => handleDelete(cert.id)} className="text-red-600 hover:text-red-800 text-sm">🗑️ 삭제</button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+};
+
+// 지적재산권 인증서 추가/수정 폼
+const IPCertificateForm = ({ certificate, onSave, onCancel, categories }) => {
+  const [formData, setFormData] = useState(
+    certificate || {
+      title: '',
+      category: '특허',
+      description: '',
+      thumbnail: '🏆',
+      date: new Date().toISOString().split('T')[0]
+    }
+  );
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.title) {
+      alert('제목을 입력해주세요.');
+      return;
+    }
+    onSave(formData);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-lg w-full">
+        <h3 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">
+          {certificate ? '인증서 수정' : '새 인증서 추가'}
+        </h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">제목 *</label>
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              required
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">카테고리</label>
+              <select
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              >
+                {categories.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">아이콘</label>
+              <input
+                type="text"
+                value={formData.thumbnail}
+                onChange={(e) => setFormData({ ...formData, thumbnail: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                placeholder="🏆"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">설명</label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              rows={3}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">등록일</label>
+            <input
+              type="date"
+              value={formData.date}
+              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+          <div className="flex space-x-3 pt-4">
+            <button type="button" onClick={onCancel} className="flex-1 bg-gray-200 dark:bg-gray-700 py-2 rounded-lg">취소</button>
+            <button type="submit" className="flex-1 bg-primary-600 text-white py-2 rounded-lg">{certificate ? '수정하기' : '추가하기'}</button>
+          </div>
+        </form>
       </div>
     </div>
   );

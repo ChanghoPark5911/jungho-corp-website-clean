@@ -895,7 +895,7 @@ const HomePageHybrid = () => {
                     <span className="text-2xl">📠</span>
                     <span className="font-bold text-lg">{currentLanguage === 'en' ? 'Fax' : '팩스'}</span>
                   </div>
-                  <p className="text-white font-semibold">02-553-3632</p>
+                  <p className="text-white font-semibold">02-553-2526</p>
                   <p className="text-blue-100 text-sm mt-1">{currentLanguage === 'en' ? '24/7 Available' : '24시간 이용 가능'}</p>
                 </motion.div>
 
@@ -928,7 +928,7 @@ const HomePageHybrid = () => {
                     <span className="font-bold text-lg">{currentLanguage === 'en' ? 'Address' : '주소'}</span>
                   </div>
                   <p className="text-white font-semibold">{currentLanguage === 'en' ? 'Seoul, Korea' : '서울특별시'}</p>
-                  <p className="text-blue-100 text-sm mt-1">{currentLanguage === 'en' ? 'Gangnam District' : '강남구'}</p>
+                  <p className="text-blue-100 text-sm mt-1">{currentLanguage === 'en' ? 'Gangnam-gu, Nonhyeon-ro 116-gil 17' : '강남구 논현로 116길 17 정호빌딩'}</p>
                 </motion.div>
               </div>
 

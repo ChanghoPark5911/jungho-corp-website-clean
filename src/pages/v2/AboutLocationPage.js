@@ -50,7 +50,7 @@ const AboutLocationPage = () => {
     },
     contact: {
       phone: '02.515.5018',
-      fax: '02.515.5019'
+      fax: '02-553-2526'
     },
     subway: currentLanguage === 'en' ? [
       { line: 'Line 9', station: 'Eonju Station', exit: 'Exit 3', time: '5 min walk', color: 'bg-amber-500' },

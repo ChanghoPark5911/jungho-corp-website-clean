@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
@@ -6,6 +6,7 @@ import { useI18n } from '../../hooks/useI18n';
 /**
  * 지적재산권 페이지
  * 정호그룹의 특허, 디자인, 소프트웨어 등록 현황
+ * 데이터: /data/intellectual-property.json
  */
 const IntellectualPropertyPage = () => {
   const { t, currentLanguage } = useI18n();
@@ -19,6 +20,36 @@ const IntellectualPropertyPage = () => {
     return '/v2';
   };
   const prefix = getPrefix();
+
+  // 상태 관리
+  const [intellectualPropertyStats, setStats] = useState({
+    total: 0,
+    patents: 0,
+    designs: 0,
+    software: 0
+  });
+  const [intellectualPropertyCertificates, setCertificates] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // JSON에서 데이터 로드
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const response = await fetch('/data/intellectual-property.json');
+        if (response.ok) {
+          const data = await response.json();
+          setStats(data.stats || { total: 0, patents: 0, designs: 0, software: 0 });
+          setCertificates(data.certificates || []);
+          console.log('✅ 지적재산권 데이터 로드:', data.certificates?.length || 0, '개');
+        }
+      } catch (error) {
+        console.error('지적재산권 데이터 로드 실패:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadData();
+  }, []);
 
   // 애니메이션 variants
   const fadeInUp = {
@@ -39,50 +70,6 @@ const IntellectualPropertyPage = () => {
       }
     }
   };
-
-  // 지적재산권 통계
-  const intellectualPropertyStats = {
-    total: 140,
-    patents: 85,
-    designs: 35,
-    software: 20
-  };
-
-  // 주요 지적재산권 인증서
-  const intellectualPropertyCertificates = [
-    {
-      id: 'ip1',
-      title: '굿디자인_TLS 4\' (CRC3303 - CRC3305)',
-      category: currentLanguage === 'en' ? 'Design' : '디자인',
-      description: '제 30-0882500, 녹색 부착형 터치 스위치 디자인등록증',
-      thumbnail: '🎨',
-      date: '2015-04-20'
-    },
-    {
-      id: 'ip2',
-      title: '산업융합 선도기업 선정서',
-      category: currentLanguage === 'en' ? 'Certification' : '인증',
-      description: '스마트 조명 선도기업 선정 (산업통상자원부)',
-      thumbnail: '🏅',
-      date: '2017-12-22'
-    },
-    {
-      id: 'ip3',
-      title: '에너지 에이터널 1.0',
-      category: currentLanguage === 'en' ? 'Software' : '소프트웨어',
-      description: '터엣에스 에이터널 1.0 (에너지 매니저 V4.1)',
-      thumbnail: '💻',
-      date: '2017-11-15'
-    },
-    {
-      id: 'ip4',
-      title: '유무선 통합 Energy Manager 4.1',
-      category: currentLanguage === 'en' ? 'Software' : '소프트웨어',
-      description: '에너지 관리 소프트웨어 등록증',
-      thumbnail: '📱',
-      date: '2017-10-25'
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">

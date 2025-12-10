@@ -576,7 +576,7 @@ const HomePageClassic = () => {
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-medium">{currentLanguage === 'en' ? 'Fax:' : '팩스:'}</span>
-                <span>02-553-3632</span>
+                <span>02-553-2526</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-medium">{currentLanguage === 'en' ? 'Email:' : '이메일:'}</span>

@@ -23,6 +23,7 @@ const TlcDetailPage = lazy(() => import('./pages/TlcDetailPage'));
 const IllutechDetailPage = lazy(() => import('./pages/IllutechDetailPage'));
 const TexcomDetailPage = lazy(() => import('./pages/TexcomDetailPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const TermsPage = lazy(() => import('./pages/TermsPage'));
 const AdminPage = lazy(() => import('./pages/AdminPageWithFirebase.jsx'));
 const UnifiedAdminPage = lazy(() => import('./pages/UnifiedAdminPage.jsx')); // Added
 const DesignSystem = lazy(() => import('./components/design-system/DesignSystem'));
@@ -212,6 +213,8 @@ function App() {
             <Route path="/hybrid/subsidiaries/jungho-tlc" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TlcDetailPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries/illutech" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><IllutechDetailPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries/jungho-texcom" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TexcomDetailPageV2 /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/privacy" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><PrivacyPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/terms" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TermsPage /></HybridLayout></Suspense>} />
             
             <Route path="/classic/about" element={<AboutPageClassic />} />
             <Route path="/classic/about/intro" element={<AboutIntroClassic />} />
@@ -280,6 +283,8 @@ function App() {
                   <Route path="/support" element={<SupportPageV2 />} />
                   <Route path="/support/report" element={<SupportPageV2 />} />
                   <Route path="/support/contact" element={<SupportPageV2 />} />
+                  <Route path="/privacy" element={<PrivacyPage />} />
+                  <Route path="/terms" element={<TermsPage />} />
                 </Routes>
               </LayoutV2>
             } />

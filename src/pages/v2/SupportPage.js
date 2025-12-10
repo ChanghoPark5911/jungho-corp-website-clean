@@ -13,9 +13,20 @@ const SupportPage = () => {
     name: '',
     email: '',
     phone: '',
+    subject: '',
+    company: '',
     category: '',
     message: ''
   });
+
+  // 문의 회사 (계열사) 목록
+  const subsidiaryOptions = [
+    { value: 'jungho-tlc', label: '정호티엘씨' },
+    { value: 'illutech', label: '일루텍' },
+    { value: 'jungho-texcom', label: '정호텍스컴' },
+    { value: 'clarus', label: '클라루스' },
+    { value: 'as-center', label: 'A/S센터' }
+  ];
   const [submitStatus, setSubmitStatus] = useState('');
 
   // 애니메이션 variants
@@ -323,6 +334,50 @@ const SupportPage = () => {
                       </option>
                     ))}
                   </select>
+                </div>
+              </div>
+
+              {/* 제목 필드 */}
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                  {currentLanguage === 'en' ? 'Subject' : '제목'} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+                  placeholder={currentLanguage === 'en' ? 'Enter your inquiry subject' : '문의 제목을 입력해 주세요'}
+                />
+              </div>
+
+              {/* 문의회사 (계열사 선택) */}
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">
+                  {currentLanguage === 'en' ? 'Company' : '문의회사'} <span className="text-red-500">*</span>
+                </label>
+                <div className="flex flex-wrap gap-4">
+                  {subsidiaryOptions.map((option) => (
+                    <label 
+                      key={option.value} 
+                      className="flex items-center cursor-pointer group"
+                    >
+                      <input
+                        type="radio"
+                        name="company"
+                        value={option.value}
+                        checked={formData.company === option.value}
+                        onChange={handleInputChange}
+                        required
+                        className="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+                      />
+                      <span className="ml-2 text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                        {option.label}
+                      </span>
+                    </label>
+                  ))}
                 </div>
               </div>
 

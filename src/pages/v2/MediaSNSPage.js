@@ -10,17 +10,53 @@ const MediaSNSPage = () => {
   const { t, currentLanguage } = useI18n();
   const [snsLinks, setSnsLinks] = React.useState(null);
 
-  // LocalStorage에서 SNS 링크 로드
+  // SNS 링크 로드 (localStorage 우선, JSON 백업)
   React.useEffect(() => {
-    const savedData = localStorage.getItem('v2_media_data');
-    if (savedData) {
-      try {
-        const parsedData = JSON.parse(savedData);
-        setSnsLinks(parsedData.snsLinks);
-      } catch (error) {
-        console.error('SNS 링크 로드 실패:', error);
+    const loadSnsLinks = async () => {
+      // 1순위: projects-data (관리자 페이지에서 저장한 데이터)
+      const projectsData = localStorage.getItem('projects-data');
+      if (projectsData) {
+        try {
+          const parsedData = JSON.parse(projectsData);
+          if (parsedData.snsLinks) {
+            setSnsLinks(parsedData.snsLinks);
+            console.log('✅ SNS 링크 localStorage에서 로드:', parsedData.snsLinks);
+            return;
+          }
+        } catch (e) {}
       }
-    }
+
+      // 2순위: v2_media_data (기존 관리자 페이지)
+      const savedData = localStorage.getItem('v2_media_data');
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          if (parsedData.snsLinks) {
+            setSnsLinks(parsedData.snsLinks);
+            console.log('✅ SNS 링크 v2_media_data에서 로드');
+            return;
+          }
+        } catch (error) {
+          console.error('SNS 링크 로드 실패:', error);
+        }
+      }
+
+      // 3순위: admin-media.json (배포된 기본값)
+      try {
+        const response = await fetch('/data/admin-media.json');
+        if (response.ok) {
+          const jsonData = await response.json();
+          if (jsonData.snsLinks) {
+            setSnsLinks(jsonData.snsLinks);
+            console.log('✅ SNS 링크 JSON에서 로드:', jsonData.snsLinks);
+          }
+        }
+      } catch (e) {
+        console.log('JSON 로드 실패');
+      }
+    };
+
+    loadSnsLinks();
   }, []);
 
   // 애니메이션 variants
@@ -43,63 +79,72 @@ const MediaSNSPage = () => {
     }
   };
 
-  // 기본 SNS 채널 정보
+  // 기본 SNS 채널 정보 (은은한 파스텔 톤)
   const defaultSnsChannels = [
     {
       id: 'youtube',
       name: t('media.sns.channels.youtube.name'),
       description: t('media.sns.channels.youtube.description'),
       icon: '🎥',
-      color: 'from-red-500 to-red-600',
+      color: 'from-red-400 to-red-500',
       url: 'https://www.youtube.com/@JunghoGroup',
       stats: { followers: '1.2K', posts: '45' },
       bgColor: 'bg-red-50',
-      textColor: 'text-red-600',
-      buttonColor: 'bg-red-600 hover:bg-red-700'
+      textColor: 'text-red-500',
+      buttonColor: 'bg-red-400 hover:bg-red-500'
     },
     {
       id: 'instagram',
       name: t('media.sns.channels.instagram.name'),
       description: t('media.sns.channels.instagram.description'),
       icon: '📸',
-      color: 'from-pink-500 via-purple-500 to-orange-500',
+      color: 'from-pink-400 via-purple-400 to-orange-300',
       url: 'https://www.instagram.com/jungho_group/',
       stats: { followers: '856', posts: '128' },
       bgColor: 'bg-gradient-to-br from-pink-50 to-purple-50',
-      textColor: 'text-pink-600',
-      buttonColor: 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600'
+      textColor: 'text-pink-500',
+      buttonColor: 'bg-gradient-to-r from-pink-400 to-purple-400 hover:from-pink-500 hover:to-purple-500'
     },
     {
       id: 'naverBlog',
       name: t('media.sns.channels.naverBlog.name'),
       description: t('media.sns.channels.naverBlog.description'),
       icon: '📝',
-      color: 'from-green-500 to-green-600',
+      color: 'from-green-400 to-green-500',
       url: 'https://blog.naver.com/jungho_group',
       stats: { followers: '2.5K', posts: '234' },
       bgColor: 'bg-green-50',
-      textColor: 'text-green-600',
-      buttonColor: 'bg-green-600 hover:bg-green-700'
+      textColor: 'text-green-500',
+      buttonColor: 'bg-green-400 hover:bg-green-500'
     },
     {
       id: 'facebook',
       name: t('media.sns.channels.facebook.name'),
       description: t('media.sns.channels.facebook.description'),
       icon: '👍',
-      color: 'from-blue-500 to-blue-600',
+      color: 'from-blue-400 to-blue-500',
       url: 'https://www.facebook.com/JunghoGroup',
       stats: { followers: '3.8K', posts: '567' },
       bgColor: 'bg-blue-50',
-      textColor: 'text-blue-600',
-      buttonColor: 'bg-blue-600 hover:bg-blue-700'
+      textColor: 'text-blue-500',
+      buttonColor: 'bg-blue-400 hover:bg-blue-500'
     }
   ];
 
-  // 관리자가 설정한 URL 적용
-  const snsChannels = defaultSnsChannels.map(channel => ({
-    ...channel,
-    url: snsLinks?.[channel.id] || channel.url
-  }));
+  // 관리자가 설정한 URL 적용 (빈 URL은 필터링)
+  const snsChannels = defaultSnsChannels
+    .map(channel => {
+      // snsLinks가 존재하고 해당 키가 있으면 그 값 사용 (빈 문자열 포함)
+      // snsLinks가 없으면 기본 URL 사용
+      const adminUrl = snsLinks && channel.id in snsLinks 
+        ? snsLinks[channel.id] 
+        : channel.url;
+      return {
+        ...channel,
+        url: adminUrl
+      };
+    })
+    .filter(channel => channel.url && channel.url.trim() !== '');
 
   // 최근 SNS 활동 (샘플 데이터)
   const recentActivities = [

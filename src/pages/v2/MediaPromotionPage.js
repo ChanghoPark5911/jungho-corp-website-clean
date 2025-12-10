@@ -52,76 +52,10 @@ const MediaPromotionPage = () => {
   ];
 
 
-  // 기본 홍보영상 데이터 (최초 실행시 사용)
-  const defaultPromotionVideos = [
-    {
-      id: 1,
-      title: '정호그룹 2024 기업 소개',
-      category: 'company',
-      description: '40년 전통의 글로벌 기업, 정호그룹의 비전과 혁신을 소개합니다',
-      thumbnail: '🎬',
-      videoUrl: 'https://www.youtube.com/embed/sample1',
-      duration: '3:45',
-      date: '2024-11-01',
-      views: '12.5K'
-    },
-    {
-      id: 2,
-      title: '(주)클라루스 홍보영상',
-      category: 'subsidiaries',
-      description: '조명제어 전문기업 (주)클라루스의 History, Project, Products 등 홍보동영상',
-      thumbnail: '💡',
-      videoUrl: 'https://www.youtube.com/embed/LDRoaedo7QM',
-      youtubeUrl: 'https://youtu.be/LDRoaedo7QM',
-      duration: '5:20',
-      date: '2024-11-08',
-      views: '15.2K'
-    },
-    {
-      id: 3,
-      title: '정호티엘씨 친환경 물류 시스템',
-      category: 'subsidiaries',
-      description: '지속가능한 미래를 위한 정호티엘씨의 친환경 물류 혁신',
-      thumbnail: '🚚',
-      videoUrl: 'https://www.youtube.com/embed/sample3',
-      duration: '4:15',
-      date: '2024-10-20',
-      views: '6.7K'
-    },
-    {
-      id: 4,
-      title: '일루텍 스마트 조명 제어 시스템',
-      category: 'technology',
-      description: 'IoT 기술로 구현한 차세대 스마트 조명 솔루션',
-      thumbnail: '💡',
-      videoUrl: 'https://www.youtube.com/embed/sample4',
-      duration: '3:30',
-      date: '2024-10-15',
-      views: '9.2K'
-    },
-    {
-      id: 5,
-      title: '정호텍스컴 패션 텍스타일 혁신',
-      category: 'subsidiaries',
-      description: '전통과 혁신이 만나는 정호텍스컴의 텍스타일 기술',
-      thumbnail: '👔',
-      videoUrl: 'https://www.youtube.com/embed/sample5',
-      duration: '4:50',
-      date: '2024-10-10',
-      views: '5.4K'
-    },
-    {
-      id: 6,
-      title: '정호그룹 산업통상자원부 장관 표창',
-      category: 'awards',
-      description: '2024년 산업 혁신 공로로 산업통상자원부 장관 표창 수상',
-      thumbnail: '🏆',
-      videoUrl: 'https://www.youtube.com/embed/sample6',
-      duration: '2:15',
-      date: '2024-09-28',
-      views: '11.8K'
-    }
-  ];
+  // 홍보영상 데이터는 JSON 파일 또는 관리자 페이지에서 관리
+  // 관리자 페이지: /admin-new/media → "📺 홍보영상" 탭
+  // 데이터 파일: public/data/admin-media.json
+  const defaultPromotionVideos = [];
 
   // localStorage에서 홍보영상 데이터 로드 (관리자 페이지에서 관리)
   // 기본 데이터 + 새로 추가한 데이터를 병합

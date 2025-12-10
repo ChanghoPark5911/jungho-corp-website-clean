@@ -6,7 +6,7 @@ export const COMPANY_INFO = {
   founded: '1995',
   ceo: '김정호',
   address: {
-    main: '서울특별시 강남구 논현로 116길 17',
+    main: '서울특별시 강남구 논현로 116길 17 정호빌딩',
     branch: '부산광역시 해운대구 센텀중앙로 456 정호센텀타워'
   },
   contact: {
@@ -43,13 +43,7 @@ export const SUBSIDIARIES = {
     phone: '02-1234-1000',
     email: 'info@clarus.co.kr',
     address: '서울특별시 강남구 논현로 116길 17 5층',
-    pages: [
-      { label: '회사소개', path: '/clarus/about' },
-      { label: '핵심기술', path: '/clarus/technology' },
-      { label: '제품라인업', path: '/clarus/products' },
-      { label: '프로젝트실적', path: '/clarus/projects' },
-      { label: '기술지원', path: '/clarus/support' }
-    ]
+    path: '/hybrid/subsidiaries/clarus'
   },
   tlc: {
     name: '정호티엘씨',
@@ -60,14 +54,7 @@ export const SUBSIDIARIES = {
     phone: '02-553-3631',
     email: 'service@junghotlc.com',
     address: '서울특별시 강남구 논현로 116길 17 6층',
-    pages: [
-      { label: '서비스 영역', path: '/tlc/services' },
-      { label: '프로젝트 프로세스', path: '/tlc/process' },
-      { label: '전국 네트워크', path: '/tlc/network' },
-      { label: 'A/S 센터', path: '/tlc/as-center' },
-      { label: '주요 고객사', path: '/tlc/customers' },
-      { label: '고객 지원', path: '/tlc/support' }
-    ]
+    path: '/hybrid/subsidiaries/jungho-tlc'
   },
   illutech: {
     name: '일루텍',
@@ -78,12 +65,7 @@ export const SUBSIDIARIES = {
     phone: '02-1234-3000',
     email: 'info@illutech.com',
     address: '서울특별시 강남구 논현로 116길 17 7층',
-    pages: [
-      { label: '회사소개', path: '/illutech/about' },
-      { label: '스마트조명', path: '/illutech/lighting' },
-      { label: 'IoT 기술', path: '/illutech/iot' },
-      { label: '제품카탈로그', path: '/illutech/catalog' }
-    ]
+    path: '/hybrid/subsidiaries/illutech'
   },
   texcom: {
     name: '정호텍스컴',
@@ -94,16 +76,16 @@ export const SUBSIDIARIES = {
     phone: '02-1234-4000',
     email: 'info@junghotexcom.com',
     address: '서울특별시 강남구 논현로 116길 17 8층',
-    pages: [
-      { label: '사업 영역', path: '/texcom/business' },
-      { label: '핵심 경쟁력', path: '/texcom/strengths' },
-      { label: '제품/서비스', path: '/texcom/products' },
-      { label: '혁신 기술', path: '/texcom/technology' },
-      { label: '주요 성과', path: '/texcom/achievements' },
-      { label: '고객 지원', path: '/texcom/support' }
-    ]
+    path: '/hybrid/subsidiaries/jungho-texcom'
   }
 };
+
+// 그룹 공통 링크 (Footer용)
+export const GROUP_LINKS = [
+  { label: '프로젝트실적', path: '/hybrid/projects' },
+  { label: '고객 지원', path: '/hybrid/support' },
+  { label: '오시는 길', path: '/hybrid/about/location' }
+];
 
 // 메인 네비게이션 메뉴
 export const NAVIGATION = {

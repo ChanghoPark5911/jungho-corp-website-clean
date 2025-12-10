@@ -1,17 +1,16 @@
 import React from 'react';
-import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 
 const PrivacyPage = () => {
   return (
-    <Layout>
+    <div className="min-h-screen bg-gray-50 pt-20">
       <SEO 
         title="개인정보처리지침 - 정호그룹"
         description="정호그룹의 개인정보처리지침을 확인하세요."
         keywords={['개인정보처리지침', '정호그룹', '개인정보보호']}
       />
       
-      <div className="min-h-screen bg-gray-50 py-12">
+      <div className="py-12">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="bg-white rounded-lg shadow-lg p-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
@@ -117,7 +116,7 @@ const PrivacyPage = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 

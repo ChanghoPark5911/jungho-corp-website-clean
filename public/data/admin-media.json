@@ -1,58 +1,497 @@
 {
   "projects": [
     {
-      "id": "proj001",
+      "id": 1,
       "category": "업무시설",
       "title": "과천 펜타원 스퀘어",
       "description": "최첨단 빌딩 자동화 시스템 구축",
       "imageUrl": "/images/projects/1.업무시설/과천 펜타원 스퀘어.JPG",
-      "location": "경기도 과천시",
-      "year": "2023",
-      "featured": true,
-      "order": 1
+      "year": "2023"
     },
     {
-      "id": "proj002",
+      "id": 2,
+      "category": "업무시설",
+      "title": "남양 현대 자동차 연구소",
+      "description": "자동차 연구시설 조명 제어 시스템",
+      "imageUrl": "/images/projects/1.업무시설/남양 현대 자동차 연구소.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 3,
+      "category": "업무시설",
+      "title": "상암 SBS 미디어센터",
+      "description": "방송시설 통합 조명 관리",
+      "imageUrl": "/images/projects/1.업무시설/상암 SBS 미디어센터.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 4,
+      "category": "업무시설",
+      "title": "송파 KT 타워",
+      "description": "통신사 본사 빌딩 조명 제어",
+      "imageUrl": "/images/projects/1.업무시설/송파 KT 타워.jpg",
+      "year": "2022"
+    },
+    {
+      "id": 5,
       "category": "업무시설",
       "title": "여의도 파크원",
       "description": "대규모 복합 업무시설 조명 제어",
       "imageUrl": "/images/projects/1.업무시설/여의도 파크원.JPG",
-      "location": "서울 여의도",
-      "year": "2022",
-      "featured": true,
-      "order": 2
+      "year": "2022"
     },
     {
-      "id": "proj003",
+      "id": 6,
+      "category": "업무시설",
+      "title": "역삼동 LUCA 831-11 빌딩",
+      "description": "스마트 오피스 빌딩 조명 시스템",
+      "imageUrl": "/images/projects/1.업무시설/역삼동 LUCA 831-11 빌딩.JPG",
+      "year": "2023"
+    },
+    {
+      "id": 7,
+      "category": "업무시설",
+      "title": "중구 초동 업무시설(타워 107)",
+      "description": "도심 업무시설 조명 제어",
+      "imageUrl": "/images/projects/1.업무시설/중구 초동 업무시설(타워 107).JPG",
+      "year": "2023"
+    },
+    {
+      "id": 8,
+      "category": "업무시설",
+      "title": "쿠쿠 강동 사옥",
+      "description": "기업 본사 빌딩 조명 시스템",
+      "imageUrl": "/images/projects/1.업무시설/쿠쿠 강동 사옥.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 9,
+      "category": "공공시설",
+      "title": "경기도 신청사",
+      "description": "공공청사 조명 제어 시스템",
+      "imageUrl": "/images/projects/2.공공시설/경기도 신청사.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 10,
+      "category": "공공시설",
+      "title": "경의선 홍대입구역 복합역사",
+      "description": "지하철 역사 통합 조명 관리",
+      "imageUrl": "/images/projects/2.공공시설/경의선 홍대입구역 복합역사.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 11,
+      "category": "공공시설",
+      "title": "국립 아시아 문화전당",
+      "description": "문화시설 조명 연출 시스템",
+      "imageUrl": "/images/projects/2.공공시설/국립 아시아 문화전당.JPG",
+      "year": "2020"
+    },
+    {
+      "id": 12,
+      "category": "공공시설",
+      "title": "김포 도시철도 4공구 103&104 정거장",
+      "description": "도시철도 정거장 조명 시스템",
+      "imageUrl": "/images/projects/2.공공시설/김포 도시철도 4공구 103&104 정거장.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 13,
+      "category": "공공시설",
+      "title": "대구 교정시설",
+      "description": "교정시설 조명 제어",
+      "imageUrl": "/images/projects/2.공공시설/대구 교정시설.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 14,
+      "category": "공공시설",
+      "title": "대전 국제컨벤션 센터",
+      "description": "컨벤션센터 조명 연출 시스템",
+      "imageUrl": "/images/projects/2.공공시설/대전 국제컨벤션 센터.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 15,
+      "category": "공공시설",
+      "title": "무주 태권도 공원",
+      "description": "체육시설 조명 제어 시스템",
+      "imageUrl": "/images/projects/2.공공시설/무주 태권도 공원.JPG",
+      "year": "2020"
+    },
+    {
+      "id": 16,
+      "category": "공공시설",
+      "title": "부산 북항 마리나",
+      "description": "마리나 시설 조명 연출",
+      "imageUrl": "/images/projects/2.공공시설/부산 북항 마리나.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 17,
+      "category": "공공시설",
+      "title": "부산 영화의 전당",
+      "description": "문화시설 특수 조명 시스템",
+      "imageUrl": "/images/projects/2.공공시설/부산 영화의 전당.JPG",
+      "year": "2019"
+    },
+    {
+      "id": 18,
+      "category": "공공시설",
+      "title": "의정부 역사",
+      "description": "철도역사 조명 제어",
+      "imageUrl": "/images/projects/2.공공시설/의정부 역사.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 19,
+      "category": "주거시설",
+      "title": "개포 프레지던스 자이 APT",
+      "description": "프리미엄 아파트 조명 시스템",
+      "imageUrl": "/images/projects/3.주거시설/개포 프레지던스 자이 APT.JPG",
+      "year": "2023"
+    },
+    {
+      "id": 20,
+      "category": "주거시설",
+      "title": "더샵 센텀 하이브",
+      "description": "주거복합시설 조명 제어",
+      "imageUrl": "/images/projects/3.주거시설/더샵 센텀 하이브.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 21,
+      "category": "주거시설",
+      "title": "부산 송도 힐스테이트 이진베이시티",
+      "description": "대규모 주거단지 조명 관리",
+      "imageUrl": "/images/projects/3.주거시설/부산 송도 힐스테이트 이진베이시티.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 22,
+      "category": "주거시설",
+      "title": "송도 더샵 센터니얼 APT",
+      "description": "스마트 아파트 조명 시스템",
+      "imageUrl": "/images/projects/3.주거시설/송도 더샵 센터니얼 APT.JPG",
+      "year": "2023"
+    },
+    {
+      "id": 23,
       "category": "주거시설",
       "title": "송파 헬리오 시티",
       "description": "스마트 주거 단지 통합 관리",
       "imageUrl": "/images/projects/3.주거시설/송파 헬리오 시티.JPG",
-      "location": "서울 송파구",
-      "year": "2023",
-      "featured": true,
-      "order": 3
+      "year": "2023"
+    },
+    {
+      "id": 24,
+      "category": "주거시설",
+      "title": "수색 (DMC) SK 아이파크 포레",
+      "description": "친환경 주거단지 조명 제어",
+      "imageUrl": "/images/projects/3.주거시설/수색 (DMC) SK 아이파크 포레.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 25,
+      "category": "주거시설",
+      "title": "신설동역 자이르네",
+      "description": "역세권 주거시설 조명 시스템",
+      "imageUrl": "/images/projects/3.주거시설/신설동역 자이르네.JPG",
+      "year": "2023"
+    },
+    {
+      "id": 26,
+      "category": "주거시설",
+      "title": "이천 안흥동 주상복합",
+      "description": "주상복합 조명 제어",
+      "imageUrl": "/images/projects/3.주거시설/이천 안흥동 주상복합.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 27,
+      "category": "주거시설",
+      "title": "춘천 소양 더샵 스타리버",
+      "description": "강변 주거단지 조명 연출",
+      "imageUrl": "/images/projects/3.주거시설/춘천 소양 더샵 스타리버.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 28,
+      "category": "주거시설",
+      "title": "판교 SK 테라스",
+      "description": "테라스형 주거시설 조명",
+      "imageUrl": "/images/projects/3.주거시설/판교 SK 테라스.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 29,
+      "category": "상업시설",
+      "title": "SC제일은행 리모델링(신세계 더 헤리티지)",
+      "description": "금융시설 리모델링 조명",
+      "imageUrl": "/images/projects/4.상업시설/SC제일은행 리모델링(신세계 더 헤리티지).JPG",
+      "year": "2023"
+    },
+    {
+      "id": 30,
+      "category": "상업시설",
+      "title": "고양 스타필드",
+      "description": "대형 쇼핑몰 조명 시스템",
+      "imageUrl": "/images/projects/4.상업시설/고양 스타필드.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 31,
+      "category": "상업시설",
+      "title": "구월 트레이더스",
+      "description": "대형마트 조명 제어",
+      "imageUrl": "/images/projects/4.상업시설/구월 트레이더스.JPG",
+      "year": "2020"
+    },
+    {
+      "id": 32,
+      "category": "상업시설",
+      "title": "굿모닝시티",
+      "description": "복합상업시설 조명 관리",
+      "imageUrl": "/images/projects/4.상업시설/굿모닝시티.JPG",
+      "year": "2019"
+    },
+    {
+      "id": 33,
+      "category": "상업시설",
+      "title": "동탄 워터프런트",
+      "description": "워터프런트 상업시설 조명",
+      "imageUrl": "/images/projects/4.상업시설/동탄 워터프런트.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 34,
+      "category": "상업시설",
+      "title": "송악 농협 하나로 마트",
+      "description": "농협 유통시설 조명 제어",
+      "imageUrl": "/images/projects/4.상업시설/송악 농협 하나로 마트.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 35,
+      "category": "상업시설",
+      "title": "수원 스타필드 쇼핑몰",
+      "description": "복합쇼핑몰 조명 시스템",
+      "imageUrl": "/images/projects/4.상업시설/수원 스타필드 쇼핑몰.JPG",
+      "year": "2023"
+    },
+    {
+      "id": 36,
+      "category": "상업시설",
+      "title": "신세계 백화점 강남점 개보수",
+      "description": "백화점 조명 리뉴얼",
+      "imageUrl": "/images/projects/4.상업시설/신세계 백화점 강남점 개보수.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 37,
+      "category": "상업시설",
+      "title": "파주 프리미엄 아울렛",
+      "description": "아울렛 조명 제어 시스템",
+      "imageUrl": "/images/projects/4.상업시설/파주 프리미엄 아울렛.JPG",
+      "year": "2020"
+    },
+    {
+      "id": 38,
+      "category": "문화,의료,교육시설",
+      "title": "가톨릭 은평 성모병원",
+      "description": "의료시설 조명 제어",
+      "imageUrl": "/images/projects/5.문화,의료,교육시설/가톨릭 은평 성모병원.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 39,
+      "category": "문화,의료,교육시설",
+      "title": "금왕체육관",
+      "description": "체육시설 조명 시스템",
+      "imageUrl": "/images/projects/5.문화,의료,교육시설/금왕체육관.JPG",
+      "year": "2020"
+    },
+    {
+      "id": 40,
+      "category": "문화,의료,교육시설",
+      "title": "대전 월드컵 경기장",
+      "description": "경기장 조명 연출 시스템",
+      "imageUrl": "/images/projects/5.문화,의료,교육시설/대전 월드컵 경기장.JPG",
+      "year": "2019"
+    },
+    {
+      "id": 41,
+      "category": "문화,의료,교육시설",
+      "title": "마산 로봇랜드",
+      "description": "테마파크 조명 연출",
+      "imageUrl": "/images/projects/5.문화,의료,교육시설/마산 로봇랜드.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 42,
+      "category": "문화,의료,교육시설",
+      "title": "분당서울대병원 혁신파크 임상연구센터",
+      "description": "연구시설 조명 제어",
+      "imageUrl": "/images/projects/5.문화,의료,교육시설/분당서울대병원 혁신파크 임상연구센터.JPG",
+      "year": "2023"
+    },
+    {
+      "id": 43,
+      "category": "문화,의료,교육시설",
+      "title": "사법역사문화교육관",
+      "description": "교육시설 조명 시스템",
+      "imageUrl": "/images/projects/5.문화,의료,교육시설/사법역사문화교육관.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 44,
+      "category": "문화,의료,교육시설",
+      "title": "순천향대 부속 새병원",
+      "description": "대학병원 조명 제어",
+      "imageUrl": "/images/projects/5.문화,의료,교육시설/순천향대 부속 새병원.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 45,
+      "category": "문화,의료,교육시설",
+      "title": "제주 KBS",
+      "description": "방송시설 조명 시스템",
+      "imageUrl": "/images/projects/5.문화,의료,교육시설/제주 KBS.JPG",
+      "year": "2020"
+    },
+    {
+      "id": 46,
+      "category": "문화,의료,교육시설",
+      "title": "춘천 기계 공고",
+      "description": "교육시설 조명 제어",
+      "imageUrl": "/images/projects/5.문화,의료,교육시설/춘천 기계 공고.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 47,
+      "category": "문화,의료,교육시설",
+      "title": "카톨릭대 성의교정 옴니버스파크",
+      "description": "대학시설 조명 연출",
+      "imageUrl": "/images/projects/5.문화,의료,교육시설/카톨릭대 성의교정 옴니버스파크.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 48,
+      "category": "생산,물류,데이터센터",
+      "title": "BGF 리테일 진천 물류센터",
+      "description": "물류센터 조명 제어",
+      "imageUrl": "/images/projects/6.생산,물류,데이터센터/BGF 리테일 진천 물류센터.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 49,
+      "category": "생산,물류,데이터센터",
+      "title": "PUS05 마이크로소프트 데이터센터",
+      "description": "글로벌 데이터센터 조명 시스템",
+      "imageUrl": "/images/projects/6.생산,물류,데이터센터/PUS05 마이크로소프트 데이터센터.JPG",
+      "year": "2023"
+    },
+    {
+      "id": 50,
+      "category": "생산,물류,데이터센터",
+      "title": "고양 캐피탈 랜드",
+      "description": "물류시설 조명 제어",
+      "imageUrl": "/images/projects/6.생산,물류,데이터센터/고양 캐피탈 랜드.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 51,
+      "category": "생산,물류,데이터센터",
+      "title": "광주 쿠팡 제2 물류센터",
+      "description": "대형 물류센터 조명 관리",
+      "imageUrl": "/images/projects/6.생산,물류,데이터센터/광주 쿠팡 제2 물류센터.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 52,
+      "category": "생산,물류,데이터센터",
+      "title": "부평 데이터센터",
+      "description": "데이터센터 조명 제어",
+      "imageUrl": "/images/projects/6.생산,물류,데이터센터/부평 데이터센터.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 53,
+      "category": "생산,물류,데이터센터",
+      "title": "에포크 데이터센터",
+      "description": "데이터센터 조명 시스템",
+      "imageUrl": "/images/projects/6.생산,물류,데이터센터/에포크 데이터센터.JPG",
+      "year": "2023"
+    },
+    {
+      "id": 54,
+      "category": "생산,물류,데이터센터",
+      "title": "영종도 아레나스 물류센터",
+      "description": "물류시설 조명 제어",
+      "imageUrl": "/images/projects/6.생산,물류,데이터센터/영종도 아레나스 물류센터.JPG",
+      "year": "2021"
+    },
+    {
+      "id": 55,
+      "category": "생산,물류,데이터센터",
+      "title": "카카오데이터센터",
+      "description": "IT기업 데이터센터 조명",
+      "imageUrl": "/images/projects/6.생산,물류,데이터센터/카카오데이터센터.JPG",
+      "year": "2022"
+    },
+    {
+      "id": 56,
+      "category": "생산,물류,데이터센터",
+      "title": "퍼시픽 써니 데이터센터",
+      "description": "데이터센터 조명 관리",
+      "imageUrl": "/images/projects/6.생산,물류,데이터센터/퍼시픽 써니 데이터센터.JPG",
+      "year": "2023"
+    },
+    {
+      "id": 57,
+      "category": "생산,물류,데이터센터",
+      "title": "평택 R&R 물류센터",
+      "description": "물류센터 통합 조명 제어",
+      "imageUrl": "/images/projects/6.생산,물류,데이터센터/평택 R&R 물류센터.JPG",
+      "year": "2022"
     }
   ],
   "promotionVideos": [
     {
-      "id": "video001",
-      "title": "정호그룹 기업 소개",
-      "description": "40년 전통의 조명 제어 전문 기업",
-      "thumbnailUrl": "/images/banners/banner1.jpg",
-      "videoUrl": "https://www.youtube.com/embed/VIDEO_ID_1",
-      "duration": "3:45",
+      "id": 1,
+      "title": "정호그룹 2024 홍보영상",
+      "category": "company",
+      "description": "40년 전통의 글로벌 기업, 정호그룹의 비전과 혁신을 소개합니다",
+      "thumbnail": "",
+      "thumbnailUrl": "",
+      "videoUrl": "https://www.youtube.com/embed/VIDEO_ID_HERE",
+      "youtubeUrl": "https://youtu.be/VIDEO_ID_HERE",
+      "duration": "0:00",
+      "date": "2024-12-01",
+      "views": "0",
       "order": 1
     },
     {
-      "id": "video002",
-      "title": "스마트 빌딩 솔루션",
-      "description": "차세대 빌딩 자동화 시스템",
-      "thumbnailUrl": "/images/banners/banner2.jpg",
-      "videoUrl": "https://www.youtube.com/embed/VIDEO_ID_2",
+      "id": 2,
+      "title": "(주)클라루스 홍보영상",
+      "category": "subsidiaries",
+      "description": "조명제어 전문기업 (주)클라루스의 History, Project, Products 등 홍보동영상",
+      "thumbnail": "https://img.youtube.com/vi/LDRoaedo7QM/maxresdefault.jpg",
+      "thumbnailUrl": "https://img.youtube.com/vi/LDRoaedo7QM/maxresdefault.jpg",
+      "videoUrl": "https://www.youtube.com/embed/LDRoaedo7QM",
+      "youtubeUrl": "https://youtu.be/LDRoaedo7QM",
       "duration": "5:20",
+      "date": "2024-11-08",
+      "views": "15.2K",
       "order": 2
     }
+  ],
+  "promotionVideoCategories": [
+    { "id": "all", "label": "전체", "icon": "📺" },
+    { "id": "company", "label": "기업소개", "icon": "🏢" },
+    { "id": "subsidiaries", "label": "계열사", "icon": "🏭" },
+    { "id": "technology", "label": "기술소개", "icon": "💡" }
   ],
   "snsLinks": {
     "youtube": "https://www.youtube.com/@JunghoGroup",
@@ -60,6 +499,6 @@
     "naverBlog": "https://blog.naver.com/jungho_group",
     "facebook": "https://www.facebook.com/JunghoGroup"
   },
-  "lastUpdated": "2025-11-27T00:00:00Z"
+  "lastUpdated": "2024-12-10T00:00:00Z"
 }
 

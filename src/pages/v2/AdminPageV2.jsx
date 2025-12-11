@@ -221,29 +221,45 @@ const AdminPageV2 = () => {
       }
     }
 
-    // i18n 데이터 로드 (localStorage 우선, 없으면 JSON 파일에서 로드)
+    // i18n 데이터 로드 (JSON 파일 기본값 + localStorage 번역 병합)
     const loadI18nData = async () => {
-      const savedI18n = localStorage.getItem('i18nTranslations');
-      if (savedI18n) {
-        try {
-          setI18nData(JSON.parse(savedI18n));
-          return;
-        } catch (error) {
-          console.error('localStorage i18n 데이터 파싱 실패:', error);
-        }
-      }
-      
-      // localStorage에 없으면 JSON 파일에서 로드
       try {
+        // 1. 먼저 JSON 파일에서 기본 데이터 로드 (한국어 원본)
         const response = await fetch('/data/admin-i18n.json');
         if (response.ok) {
           const jsonData = await response.json();
-          setI18nData(jsonData);
-          // localStorage에도 저장
-          localStorage.setItem('i18nTranslations', JSON.stringify(jsonData));
+          
+          // 2. localStorage에 저장된 번역 데이터가 있으면 영어 번역만 병합
+          const savedI18n = localStorage.getItem('i18nTranslations');
+          if (savedI18n) {
+            try {
+              const localData = JSON.parse(savedI18n);
+              // 한국어는 JSON 파일 기준, 영어는 localStorage 우선 (수정된 번역 유지)
+              const mergedData = {
+                ...jsonData,
+                ko: jsonData.ko, // 한국어는 항상 JSON 파일 기준
+                en: { ...jsonData.en, ...localData.en } // 영어는 localStorage 우선
+              };
+              setI18nData(mergedData);
+            } catch (error) {
+              console.error('localStorage 데이터 병합 실패:', error);
+              setI18nData(jsonData);
+            }
+          } else {
+            setI18nData(jsonData);
+          }
         }
       } catch (error) {
         console.error('JSON 파일에서 i18n 데이터 로드 실패:', error);
+        // 폴백: localStorage에서 로드 시도
+        const savedI18n = localStorage.getItem('i18nTranslations');
+        if (savedI18n) {
+          try {
+            setI18nData(JSON.parse(savedI18n));
+          } catch (e) {
+            console.error('localStorage i18n 로드도 실패:', e);
+          }
+        }
       }
     };
     

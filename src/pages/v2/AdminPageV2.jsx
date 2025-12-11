@@ -221,14 +221,33 @@ const AdminPageV2 = () => {
       }
     }
 
-    const savedI18n = localStorage.getItem('i18nTranslations');
-    if (savedI18n) {
-      try {
-        setI18nData(JSON.parse(savedI18n));
-      } catch (error) {
-        console.error('i18n 데이터 로드 실패:', error);
+    // i18n 데이터 로드 (localStorage 우선, 없으면 JSON 파일에서 로드)
+    const loadI18nData = async () => {
+      const savedI18n = localStorage.getItem('i18nTranslations');
+      if (savedI18n) {
+        try {
+          setI18nData(JSON.parse(savedI18n));
+          return;
+        } catch (error) {
+          console.error('localStorage i18n 데이터 파싱 실패:', error);
+        }
       }
-    }
+      
+      // localStorage에 없으면 JSON 파일에서 로드
+      try {
+        const response = await fetch('/data/admin-i18n.json');
+        if (response.ok) {
+          const jsonData = await response.json();
+          setI18nData(jsonData);
+          // localStorage에도 저장
+          localStorage.setItem('i18nTranslations', JSON.stringify(jsonData));
+        }
+      } catch (error) {
+        console.error('JSON 파일에서 i18n 데이터 로드 실패:', error);
+      }
+    };
+    
+    loadI18nData();
   };
 
   // 로그인 처리

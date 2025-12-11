@@ -19,12 +19,11 @@ const AdminPageV2 = () => {
   // i18n 데이터
   const [i18nData, setI18nData] = useState(null);
   
-  // V2 홈페이지 데이터 (IRGSHero + Gateway)
+  // V2 홈페이지 데이터 (Hybrid 홈페이지용)
   const [v2HomeData, setV2HomeData] = useState({
     hero: {
-      mainTitle: '사람과 공간을\n밝히는 기술',
-      companyName: '정호그룹',
-      description: '40년의 혁신으로 내일의 빛을 밝힙니다',
+      mainTitle: '혁신적인 기술로 더 나은 미래를 만듭니다',
+      description: '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다',
       irgsValues: [
         {
           id: 'innovation',
@@ -474,8 +473,8 @@ const AdminPageV2 = () => {
                 </svg>
               </div>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">V2 관리자 페이지</h2>
-            <p className="text-gray-600 dark:text-gray-400">정호그룹 V2 홈페이지 관리</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">홈화면 관리자 로그인</h2>
+            <p className="text-gray-600 dark:text-gray-400">정호그룹 홈화면 문구 관리 페이지</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
@@ -510,9 +509,7 @@ const AdminPageV2 = () => {
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-            <p>기본 비밀번호: admin123</p>
-          </div>
+          {/* 비밀번호 힌트 제거됨 */}
         </motion.div>
       </div>
     );
@@ -748,16 +745,95 @@ const DashboardTab = () => {
 const V2HomeTab = ({ data, setData, onSave }) => {
   const [expandedSection, setExpandedSection] = useState('hero');
 
+  // JSON 파일로 내보내기 (영구 저장용)
+  const exportToJSON = () => {
+    try {
+      const exportData = {
+        hero: {
+          mainTitle: data.hero.mainTitle,
+          description: data.hero.description,
+          irgsValues: data.hero.irgsValues
+        },
+        gateway: data.gateway,
+        lastUpdated: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
+      const jsonString = JSON.stringify(exportData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'homepage-content.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      alert('✅ JSON 파일 다운로드 완료!\n\n📁 다운로드한 파일을:\n1. public/data/homepage-content.json 위치에 복사\n2. Git 커밋 & 푸시\n3. Vercel 자동 배포 대기\n\n✨ 그러면 홈화면 문구가 영구적으로 저장됩니다!');
+    } catch (error) {
+      console.error('JSON 내보내기 실패:', error);
+      alert('❌ JSON 내보내기 실패: ' + error.message);
+    }
+  };
+
+  // 클립보드에 JSON 복사
+  const copyToClipboard = async () => {
+    try {
+      const exportData = {
+        hero: {
+          mainTitle: data.hero.mainTitle,
+          description: data.hero.description,
+          irgsValues: data.hero.irgsValues
+        },
+        gateway: data.gateway,
+        lastUpdated: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
+      const jsonString = JSON.stringify(exportData, null, 2);
+      await navigator.clipboard.writeText(jsonString);
+      
+      alert('✅ 클립보드에 복사되었습니다!\n\n📁 다음 단계:\n1. VS Code에서 public/data/homepage-content.json 파일 열기 (없으면 생성)\n2. Ctrl+A (전체 선택)\n3. Ctrl+V (붙여넣기)\n4. Ctrl+S (저장)\n5. Git 커밋 & 푸시\n\n✨ 그러면 홈화면 문구가 영구적으로 저장됩니다!');
+    } catch (error) {
+      console.error('클립보드 복사 실패:', error);
+      alert('❌ 클립보드 복사 실패: ' + error.message);
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">메인 홈페이지 관리</h2>
-        <button
-          onClick={onSave}
-          className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
-        >
-          💾 저장하기
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={onSave}
+            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg"
+          >
+            💾 임시 저장
+          </button>
+          <button
+            onClick={copyToClipboard}
+            className="px-6 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg"
+          >
+            📋 클립보드에 복사
+          </button>
+          <button
+            onClick={exportToJSON}
+            className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
+          >
+            📥 JSON 다운로드
+          </button>
+        </div>
+      </div>
+
+      {/* 저장 방식 안내 */}
+      <div className="mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+        <h4 className="text-sm font-bold text-yellow-800 dark:text-yellow-300 mb-2">💡 저장 방식 안내</h4>
+        <ul className="text-xs text-yellow-700 dark:text-yellow-400 space-y-1">
+          <li>• <strong>임시 저장</strong>: 브라우저 localStorage에 저장 (본인 브라우저에서만 유효)</li>
+          <li>• <strong>영구 저장</strong>: "JSON 다운로드" 또는 "클립보드에 복사" → <code className="bg-yellow-100 dark:bg-yellow-800 px-1 rounded">public/data/homepage-content.json</code>에 저장 → Git 커밋 & 배포</li>
+        </ul>
       </div>
 
       {/* Hero 섹션 */}
@@ -774,7 +850,18 @@ const V2HomeTab = ({ data, setData, onSave }) => {
         
         {expandedSection === 'hero' && (
           <div className="p-6 space-y-6">
-            {/* 메인 문구 */}
+            {/* 현재 홈화면 문구 안내 */}
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+              <h4 className="text-sm font-bold text-blue-800 dark:text-blue-300 mb-2">📌 현재 홈화면 문구</h4>
+              <p className="text-xs text-blue-700 dark:text-blue-400 mb-1">
+                <strong>메인 타이틀:</strong> {data.hero.mainTitle || '혁신적인 기술로 더 나은 미래를 만듭니다'}
+              </p>
+              <p className="text-xs text-blue-700 dark:text-blue-400">
+                <strong>설명문:</strong> {data.hero.description || '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다'}
+              </p>
+            </div>
+
+            {/* 메인 타이틀 */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 메인 타이틀
@@ -784,33 +871,24 @@ const V2HomeTab = ({ data, setData, onSave }) => {
                 onChange={(e) => setData({...data, hero: {...data.hero, mainTitle: e.target.value}})}
                 rows="2"
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                placeholder="혁신적인 기술로 더 나은 미래를 만듭니다"
               />
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">홈화면 Hero 섹션의 큰 제목입니다</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  회사명
-                </label>
-                <input
-                  type="text"
-                  value={data.hero.companyName}
-                  onChange={(e) => setData({...data, hero: {...data.hero, companyName: e.target.value}})}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  설명
-                </label>
-                <input
-                  type="text"
-                  value={data.hero.description}
-                  onChange={(e) => setData({...data, hero: {...data.hero, description: e.target.value}})}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
-                />
-              </div>
+            {/* 설명문 */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                설명문
+              </label>
+              <textarea
+                value={data.hero.description}
+                onChange={(e) => setData({...data, hero: {...data.hero, description: e.target.value}})}
+                rows="3"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                placeholder="정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다"
+              />
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">메인 타이틀 아래에 표시되는 설명 문구입니다</p>
             </div>
 
             {/* IRGS 핵심가치 */}
@@ -2179,18 +2257,65 @@ const I18nTab = ({ data, setData, onSave }) => {
     { code: 'en', name: 'English', flag: '🇺🇸', description: '영어 번역' }
   ];
 
+  // JSON 파일로 내보내기 (영구 저장용)
+  const exportToJSON = () => {
+    try {
+      const exportData = {
+        ko: data.ko,
+        en: data.en,
+        lastUpdated: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
+      const jsonString = JSON.stringify(exportData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'admin-i18n.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      alert('✅ JSON 파일 다운로드 완료!\n\n📁 다운로드한 파일을:\n1. public/data/admin-i18n.json 위치에 복사\n2. Git 커밋 & 푸시\n3. Vercel 자동 배포 대기\n\n✨ 그러면 다국어 번역이 영구적으로 저장됩니다!');
+    } catch (error) {
+      console.error('JSON 내보내기 실패:', error);
+      alert('❌ JSON 내보내기 실패: ' + error.message);
+    }
+  };
+
+  // 클립보드에 JSON 복사
+  const copyToClipboard = async () => {
+    try {
+      const exportData = {
+        ko: data.ko,
+        en: data.en,
+        lastUpdated: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
+      const jsonString = JSON.stringify(exportData, null, 2);
+      await navigator.clipboard.writeText(jsonString);
+      
+      alert('✅ 클립보드에 복사되었습니다!\n\n📁 다음 단계:\n1. VS Code에서 public/data/admin-i18n.json 파일 열기\n2. Ctrl+A (전체 선택)\n3. Ctrl+V (붙여넣기)\n4. Ctrl+S (저장)\n5. Git 커밋 & 푸시\n\n✨ 그러면 다국어 번역이 영구적으로 저장됩니다!');
+    } catch (error) {
+      console.error('클립보드 복사 실패:', error);
+      alert('❌ 클립보드 복사 실패: ' + error.message);
+    }
+  };
+
   const translationSections = [
     {
-      id: 'v2Home',
-      title: 'V2 홈페이지',
+      id: 'homepage',
+      title: '메인 홈페이지',
       icon: '🏠',
       fields: [
         { key: 'home.hero.title', label: '메인 타이틀', type: 'textarea' },
-        { key: 'home.hero.subtitle', label: '회사명', type: 'textarea' },
-        { key: 'home.hero.description', label: '설명', type: 'textarea' },
+        { key: 'home.hero.description', label: '설명문', type: 'textarea' },
         { key: 'home.subsidiaries.title', label: '계열사 섹션 제목', type: 'textarea' },
         { key: 'home.subsidiaries.description', label: '계열사 섹션 설명', type: 'text' },
-        { key: 'header.title', label: '회사명 (헤더)', type: 'text' },
+        { key: 'header.title', label: '그룹명 (헤더)', type: 'text' },
       ]
     },
     {
@@ -2342,12 +2467,35 @@ const I18nTab = ({ data, setData, onSave }) => {
             웹사이트의 다국어 번역을 관리하세요
           </p>
         </div>
-        <button
-          onClick={onSave}
-          className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
-        >
-          💾 저장하기
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={onSave}
+            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg"
+          >
+            💾 임시 저장
+          </button>
+          <button
+            onClick={copyToClipboard}
+            className="px-6 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg"
+          >
+            📋 클립보드에 복사
+          </button>
+          <button
+            onClick={exportToJSON}
+            className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
+          >
+            📥 JSON 다운로드
+          </button>
+        </div>
+      </div>
+
+      {/* 저장 방식 안내 */}
+      <div className="mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+        <h4 className="text-sm font-bold text-yellow-800 dark:text-yellow-300 mb-2">💡 저장 방식 안내</h4>
+        <ul className="text-xs text-yellow-700 dark:text-yellow-400 space-y-1">
+          <li>• <strong>임시 저장</strong>: 브라우저 localStorage에 저장 (본인 브라우저에서만 유효)</li>
+          <li>• <strong>영구 저장</strong>: "JSON 다운로드" 또는 "클립보드에 복사" → <code className="bg-yellow-100 dark:bg-yellow-800 px-1 rounded">public/data/admin-i18n.json</code>에 저장 → Git 커밋 & 배포</li>
+        </ul>
       </div>
 
       {/* 언어 선택 탭 */}

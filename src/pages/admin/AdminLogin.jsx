@@ -53,7 +53,7 @@ const AdminLogin = () => {
             </div>
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">
-            관리자 로그인
+            콘텐츠 관리자 로그인
           </h1>
           <p className="text-gray-400">
             정호그룹 콘텐츠 관리 시스템

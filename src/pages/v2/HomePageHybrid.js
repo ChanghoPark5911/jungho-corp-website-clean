@@ -17,6 +17,47 @@ const HomePageHybrid = () => {
   const navigate = useNavigate();
   const { currentLanguage } = useI18n();
 
+  // 관리자에서 저장한 Hero 데이터 불러오기 (localStorage 또는 JSON 파일)
+  const [heroData, setHeroData] = useState(null);
+  
+  useEffect(() => {
+    const loadHeroData = async () => {
+      // 1. 먼저 localStorage에서 확인 (관리자가 임시 저장한 데이터)
+      const savedData = localStorage.getItem('v2_homepage_data');
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          setHeroData(parsedData.hero);
+          return;
+        } catch (error) {
+          console.error('localStorage Hero 데이터 파싱 실패:', error);
+        }
+      }
+      
+      // 2. localStorage에 없으면 JSON 파일에서 로드 (영구 저장된 데이터)
+      try {
+        const response = await fetch('/data/homepage-content.json');
+        if (response.ok) {
+          const jsonData = await response.json();
+          setHeroData(jsonData.hero);
+        }
+      } catch (error) {
+        console.log('JSON 파일 로드 실패 (기본값 사용):', error);
+      }
+    };
+    
+    loadHeroData();
+  }, []);
+
+  // Hero 섹션 텍스트 (관리자 데이터 우선, 없으면 기본값)
+  const heroTitle = heroData?.mainTitle || (currentLanguage === 'en' 
+    ? 'Creating a Better Future with Innovative Technology'
+    : '혁신적인 기술로 더 나은 미래를 만듭니다');
+  
+  const heroDescription = heroData?.description || (currentLanguage === 'en'
+    ? 'JUNGHO Group is a global company providing innovative solutions in AI, IoT, logistics, and textile industries'
+    : '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다');
+
   // 정호텍스컴 배경 이미지 슬라이드쇼
   const [texcomImageIndex, setTexcomImageIndex] = useState(0);
   const texcomImages = React.useMemo(() => [
@@ -293,17 +334,11 @@ const HomePageHybrid = () => {
         </div>
       )}
 
-      {/* 배너 - 6번 이미지 */}
+      {/* 배너 - Hero 섹션 (관리자에서 수정 가능) */}
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'Since 1982' : '1982년 설립'}
-        title={currentLanguage === 'en' 
-          ? 'Creating a Better Future with Innovative Technology'
-          : '혁신적인 기술로 더 나은 미래를 만듭니다'
-        }
-        description={currentLanguage === 'en'
-          ? 'JUNGHO Group is a global company providing innovative solutions in AI, IoT, logistics, and textile industries'
-          : '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다'
-        }
+        title={heroTitle}
+        description={heroDescription}
         backgroundImage={selectedBackground}
         height="700px"
       />

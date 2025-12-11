@@ -55,6 +55,8 @@ const ClarusDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/ClarusDeta
 const TlcDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/TlcDetailPage'));
 const IllutechDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/IllutechDetailPage'));
 const TexcomDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/TexcomDetailPage'));
+const TexcomTextilePage = lazy(() => import('./pages/v2/subsidiaries/TexcomTextilePage'));
+const TexcomRssPage = lazy(() => import('./pages/v2/subsidiaries/TexcomRssPage'));
 const ProjectsPageV2 = lazy(() => import('./pages/v2/ProjectsPage'));
 const MediaSNSPage = lazy(() => import('./pages/v2/MediaSNSPage'));
 const MediaPromotionPage = lazy(() => import('./pages/v2/MediaPromotionPage'));
@@ -175,6 +177,8 @@ function App() {
             <Route path="/v2/subsidiaries/jungho-tlc" element={<Suspense fallback={<PageLoader />}><LayoutV2><TlcDetailPageV2 /></LayoutV2></Suspense>} />
             <Route path="/v2/subsidiaries/illutech" element={<Suspense fallback={<PageLoader />}><LayoutV2><IllutechDetailPageV2 /></LayoutV2></Suspense>} />
             <Route path="/v2/subsidiaries/jungho-texcom" element={<Suspense fallback={<PageLoader />}><LayoutV2><TexcomDetailPageV2 /></LayoutV2></Suspense>} />
+            <Route path="/v2/subsidiaries/jungho-texcom/textile" element={<Suspense fallback={<PageLoader />}><LayoutV2><TexcomTextilePage /></LayoutV2></Suspense>} />
+            <Route path="/v2/subsidiaries/jungho-texcom/rss" element={<Suspense fallback={<PageLoader />}><LayoutV2><TexcomRssPage /></LayoutV2></Suspense>} />
             <Route path="/v2/media" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaPageHybrid /></LayoutV2></Suspense>} />
             <Route path="/v2/media/promotion" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaPromotionPage /></LayoutV2></Suspense>} />
             <Route path="/v2/media/sns" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaSNSPage /></LayoutV2></Suspense>} />
@@ -213,6 +217,8 @@ function App() {
             <Route path="/hybrid/subsidiaries/jungho-tlc" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TlcDetailPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries/illutech" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><IllutechDetailPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries/jungho-texcom" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TexcomDetailPageV2 /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/subsidiaries/jungho-texcom/textile" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TexcomTextilePage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/subsidiaries/jungho-texcom/rss" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TexcomRssPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/privacy" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><PrivacyPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/terms" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TermsPage /></HybridLayout></Suspense>} />
             

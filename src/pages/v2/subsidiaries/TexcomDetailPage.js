@@ -180,7 +180,7 @@ const TexcomDetailPage = () => {
           >
             {currentLanguage === 'en' 
               ? 'Bridging Textile Industry and Fashion'
-              : '섬유 산업과 패션을 잇는 ㈜정호텍스컴'}
+              : '섬유 산업과 패션을 잇다'}
           </motion.h2>
 
           <motion.div variants={fadeInUp} className="space-y-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">

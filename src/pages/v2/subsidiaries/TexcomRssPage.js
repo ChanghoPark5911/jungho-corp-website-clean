@@ -71,17 +71,53 @@ const TexcomRssPage = () => {
     }
   ];
 
-  // STOCKISTS 데이터
+  // STOCKISTS 데이터 (다국어 지원)
   const stockists = [
-    { name: 'RSS 공식 홈페이지', link: 'https://redssocksoo.com', highlight: true, description: 'RED SSOCKSOO | 레드쏙수 온라인 공식 홈페이지' },
-    { name: '감도 깊은 취향 셀렉트샵 29cm', link: 'https://29cm.co.kr', highlight: false },
-    { name: '무신사 스토어 MUSINSA', link: 'https://musinsa.com', highlight: false },
-    { name: 'Better Life for All, 컬리', link: 'https://kurly.com', highlight: false },
-    { name: 'W컨셉(W CONCEPT)', link: 'https://wconcept.co.kr', highlight: false },
-    { name: '신세계까사 온라인 공식몰, 굿닷컴', link: 'https://ssgood.com', highlight: false },
-    { name: '올리브영 공식 온라인몰', link: 'https://oliveyoung.co.kr', highlight: false },
-    { name: '감성채널 감성에너지, 텐바이텐 10X10', link: 'https://10x10.co.kr', highlight: false },
-    { name: '아트박스가 만든 디자인 쇼핑몰, POOM', link: 'https://poom.co.kr', highlight: false }
+    { 
+      name: currentLanguage === 'en' ? 'RSS Official Online Store' : 'RSS 온라인 공식 홈페이지', 
+      link: 'https://redssocksoo.com', 
+      highlight: true 
+    },
+    { 
+      name: currentLanguage === 'en' ? '29cm - Curated Select Shop' : '감도 깊은 취향 셀렉트샵 29cm', 
+      link: 'https://29cm.co.kr', 
+      highlight: false 
+    },
+    { 
+      name: currentLanguage === 'en' ? 'MUSINSA Store' : '무신사 스토어 MUSINSA', 
+      link: 'https://musinsa.com', 
+      highlight: false 
+    },
+    { 
+      name: currentLanguage === 'en' ? 'Kurly - Better Life for All' : 'Better Life for All, 컬리', 
+      link: 'https://kurly.com', 
+      highlight: false 
+    },
+    { 
+      name: currentLanguage === 'en' ? 'W CONCEPT' : 'W컨셉(W CONCEPT)', 
+      link: 'https://wconcept.co.kr', 
+      highlight: false 
+    },
+    { 
+      name: currentLanguage === 'en' ? 'SSG Good - Shinsegae Casa Online Mall' : '신세계까사 온라인 공식몰, 굿닷컴', 
+      link: 'https://ssgood.com', 
+      highlight: false 
+    },
+    { 
+      name: currentLanguage === 'en' ? 'Olive Young Official Online Mall' : '올리브영 공식 온라인몰', 
+      link: 'https://oliveyoung.co.kr', 
+      highlight: false 
+    },
+    { 
+      name: currentLanguage === 'en' ? '10X10 - Emotional Design Channel' : '감성채널 감성에너지, 텐바이텐 10X10', 
+      link: 'https://10x10.co.kr', 
+      highlight: false 
+    },
+    { 
+      name: currentLanguage === 'en' ? 'POOM - Design Shopping Mall by ArtBox' : '아트박스가 만든 디자인 쇼핑몰, POOM', 
+      link: 'https://poom.co.kr', 
+      highlight: false 
+    }
   ];
 
   return (

@@ -141,7 +141,7 @@ const getDefaultSupportContent = () => ({
       title: "전화 상담",
       description: "전문 엔지니어가 직접 답변드립니다",
       contact: "1588-1234",
-      hours: "평일 09:00-18:00",
+      hours: "평일 08:30-17:30",
       icon: "📞",
       action: {
         label: "전화하기",
@@ -163,7 +163,7 @@ const getDefaultSupportContent = () => ({
       title: "카카오톡",
       description: "실시간 채팅으로 빠른 답변을 받으세요",
       contact: "@정호그룹",
-      hours: "평일 09:00-18:00",
+      hours: "평일 08:30-17:30",
       icon: "💬",
       action: {
         label: "채팅 시작",

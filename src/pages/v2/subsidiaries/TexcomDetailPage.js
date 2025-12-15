@@ -488,7 +488,7 @@ const TexcomDetailPage = () => {
                 <div>
                   <p className="text-xs text-gray-500 dark:text-gray-400">{currentLanguage === 'en' ? 'Hours' : '영업시간'}</p>
                   <span className="text-sm font-bold text-gray-900 dark:text-white">
-                    {currentLanguage === 'en' ? 'Mon-Fri 9AM-6PM' : '평일 09:00 - 18:00'}
+                    {currentLanguage === 'en' ? 'Mon-Fri 8:30AM-5:30PM' : '평일 08:30 - 17:30'}
                   </span>
                 </div>
               </div>

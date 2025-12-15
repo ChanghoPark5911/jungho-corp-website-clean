@@ -60,7 +60,7 @@ const CustomerSupport = React.memo(({
             title: t('home.customerSupport.channels.phone.title') || "전화 상담",
             description: t('home.customerSupport.channels.phone.description') || "전문 엔지니어가 직접 답변드립니다",
             actionLabel: t('home.customerSupport.channels.phone.actionLabel') || "전화하기",
-            hours: t('home.customerSupport.channels.phone.hours') || "평일 09:00-18:00"
+            hours: t('home.customerSupport.channels.phone.hours') || "평일 08:30-17:30"
           },
           email: {
             title: t('home.customerSupport.channels.email.title') || "이메일 문의",
@@ -72,7 +72,7 @@ const CustomerSupport = React.memo(({
             title: t('home.customerSupport.channels.chat.title') || "카카오톡",
             description: t('home.customerSupport.channels.chat.description') || "실시간 채팅으로 빠른 답변을 받으세요",
             actionLabel: t('home.customerSupport.channels.chat.actionLabel') || "채팅 시작",
-            hours: t('home.customerSupport.channels.chat.hours') || "평일 09:00-18:00"
+            hours: t('home.customerSupport.channels.chat.hours') || "평일 08:30-17:30"
           }
         },
         features: {
@@ -112,7 +112,7 @@ const CustomerSupport = React.memo(({
       title: customerSupportData.channels?.phone?.title || "전화 상담",
       description: customerSupportData.channels?.phone?.description || "전문 엔지니어가 직접 답변드립니다",
       contact: "1588-1234",
-      hours: customerSupportData.channels?.phone?.hours || "평일 09:00-18:00",
+      hours: customerSupportData.channels?.phone?.hours || "평일 08:30-17:30",
       action: {
         label: customerSupportData.channels?.phone?.actionLabel || "전화하기",
         onClick: () => window.location.href = "tel:1588-1234"
@@ -142,7 +142,7 @@ const CustomerSupport = React.memo(({
       title: customerSupportData.channels?.chat?.title || "카카오톡",
       description: customerSupportData.channels?.chat?.description || "실시간 채팅으로 빠른 답변을 받으세요",
       contact: "@정호그룹",
-      hours: customerSupportData.channels?.chat?.hours || "평일 09:00-18:00",
+      hours: customerSupportData.channels?.chat?.hours || "평일 08:30-17:30",
       action: {
         label: customerSupportData.channels?.chat?.actionLabel || "채팅 시작",
         path: "https://open.kakao.com/정호그룹"

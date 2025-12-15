@@ -13,7 +13,7 @@ const CustomerSupportSection = () => {
         </svg>
       ),
       contact: '02-553-3631',
-      hours: '평일 09:00 - 18:00',
+      hours: '평일 08:30 - 17:30',
       features: ['즉시 응답', '전문 상담원', '상담 이력 관리', '후속 조치 추적']
     },
     {
@@ -50,7 +50,7 @@ const CustomerSupportSection = () => {
         </svg>
       ),
       contact: '서울본사 방문',
-      hours: '평일 09:00 - 18:00',
+      hours: '평일 08:30 - 17:30',
       features: ['직접 상담', '제품 시연', '기술 설명', '계약 체결']
     }
   ];
@@ -60,7 +60,7 @@ const CustomerSupportSection = () => {
       title: '견적 문의',
       description: '프로젝트 견적 및 제안서 요청',
       contacts: [
-        { method: '전화', info: '02-553-3631', hours: '평일 09:00-18:00' },
+        { method: '전화', info: '02-553-3631', hours: '평일 08:30-17:30' },
         { method: '이메일', info: 'quotation@junghotlc.com', hours: '24시간 접수' },
         { method: '카카오톡', info: '@정호티엘씨', hours: '실시간 상담' }
       ],
@@ -70,7 +70,7 @@ const CustomerSupportSection = () => {
       title: '기술 문의',
       description: '기술적 사양 및 솔루션 상담',
       contacts: [
-        { method: '전화', info: '02-1234-5679', hours: '평일 09:00-18:00' },
+        { method: '전화', info: '02-1234-5679', hours: '평일 08:30-17:30' },
         { method: '이메일', info: 'tech@junghotlc.com', hours: '24시간 접수' },
         { method: '카카오톡', info: '@정호티엘씨', hours: '실시간 상담' }
       ],
@@ -90,7 +90,7 @@ const CustomerSupportSection = () => {
       title: '일반 문의',
       description: '기타 문의사항 및 정보 요청',
       contacts: [
-        { method: '전화', info: '02-553-3631', hours: '평일 09:00-18:00' },
+        { method: '전화', info: '02-553-3631', hours: '평일 08:30-17:30' },
         { method: '이메일', info: 'info@junghotlc.com', hours: '24시간 접수' },
         { method: '카카오톡', info: '@정호티엘씨', hours: '실시간 상담' }
       ],

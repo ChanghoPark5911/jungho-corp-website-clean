@@ -56,7 +56,7 @@ const SupportPage = () => {
       icon: '📞',
       title: currentLanguage === 'en' ? 'Phone Consultation' : '전화 상담',
       description: COMPANY_INFO.support.phone.number,
-      hours: currentLanguage === 'en' ? 'Weekdays 09:00 - 18:00' : COMPANY_INFO.support.phone.hours,
+      hours: currentLanguage === 'en' ? 'Weekdays 08:30 - 17:30' : COMPANY_INFO.support.phone.hours,
       color: 'from-blue-500 to-blue-600',
       bgColor: 'bg-blue-50',
       textColor: 'text-blue-600'
@@ -473,7 +473,7 @@ const SupportPage = () => {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span>{currentLanguage === 'en' ? 'Weekdays 09:00 - 18:00' : '평일 09:00 - 18:00'}</span>
+                  <span>{currentLanguage === 'en' ? 'Weekdays 08:30 - 17:30' : '평일 08:30 - 17:30'}</span>
                 </div>
               </div>
             </div>

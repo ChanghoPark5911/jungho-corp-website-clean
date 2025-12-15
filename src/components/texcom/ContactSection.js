@@ -77,7 +77,7 @@ const ContactSection = () => {
                   <span className="text-2xl mr-4">🕒</span>
                   <div>
                     <div className="font-semibold">영업시간</div>
-                    <div className="text-gray-200">평일 09:00~18:00</div>
+                    <div className="text-gray-200">평일 08:30~17:30</div>
                   </div>
                 </div>
               </div>
@@ -112,7 +112,7 @@ const ContactSection = () => {
                   <span className="text-2xl mr-4">🕒</span>
                   <div>
                     <div className="font-semibold">고객센터</div>
-                    <div className="text-gray-200">평일 09:00~18:00</div>
+                    <div className="text-gray-200">평일 08:30~17:30</div>
                   </div>
                 </div>
               </div>

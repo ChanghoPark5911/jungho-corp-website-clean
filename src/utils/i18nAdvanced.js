@@ -830,7 +830,7 @@ class I18nAdvanced {
                 title: '전화 상담',
                 description: '전문 엔지니어가 직접 답변드립니다',
                 actionLabel: '전화하기',
-                hours: '평일 09:00-18:00'
+                hours: '평일 08:30-17:30'
               },
               email: {
                 title: '이메일 문의',
@@ -842,7 +842,7 @@ class I18nAdvanced {
                 title: '카카오톡',
                 description: '실시간 채팅으로 빠른 답변을 받으세요',
                 actionLabel: '채팅 시작',
-                hours: '평일 09:00-18:00'
+                hours: '평일 08:30-17:30'
               }
             },
             features: {
@@ -1564,7 +1564,7 @@ class I18nAdvanced {
                 title: 'Phone Consultation',
                 description: 'Professional engineers answer directly',
                 actionLabel: 'Call Now',
-                hours: 'Weekdays 09:00-18:00'
+                hours: 'Weekdays 08:30-17:30'
               },
               email: {
                 title: 'Email Inquiry',
@@ -1576,7 +1576,7 @@ class I18nAdvanced {
                 title: 'KakaoTalk',
                 description: 'Get quick responses via real-time chat',
                 actionLabel: 'Start Chat',
-                hours: 'Weekdays 09:00-18:00'
+                hours: 'Weekdays 08:30-17:30'
               }
             },
             features: {
@@ -1999,7 +1999,7 @@ class I18nAdvanced {
                 title: '电话咨询',
                 description: '专业工程师直接回答',
                 actionLabel: '立即致电',
-                hours: '工作日 09:00-18:00'
+                hours: '工作日 08:30-17:30'
               },
               email: {
                 title: '邮件咨询',
@@ -2011,7 +2011,7 @@ class I18nAdvanced {
                 title: 'KakaoTalk',
                 description: '通过实时聊天获得快速回答',
                 actionLabel: '开始聊天',
-                hours: '工作日 09:00-18:00'
+                hours: '工作日 08:30-17:30'
               }
             },
             features: {
@@ -2434,7 +2434,7 @@ class I18nAdvanced {
                 title: '電話相談',
                 description: '専門エンジニアが直接お答えします',
                 actionLabel: '電話する',
-                hours: '平日 09:00-18:00'
+                hours: '平日 08:30-17:30'
               },
               email: {
                 title: 'メールお問い合わせ',
@@ -2446,7 +2446,7 @@ class I18nAdvanced {
                 title: 'KakaoTalk',
                 description: 'リアルタイムチャットで迅速な回答を受け取る',
                 actionLabel: 'チャット開始',
-                hours: '平日 09:00-18:00'
+                hours: '平日 08:30-17:30'
               }
             },
             features: {

@@ -19,7 +19,7 @@ export const COMPANY_INFO = {
   support: {
     phone: {
       number: '02-553-3631',
-      hours: '평일 09:00 - 18:00'
+      hours: '평일 08:30 - 17:30'
     },
     email: {
       address: 'support@jungho.com',

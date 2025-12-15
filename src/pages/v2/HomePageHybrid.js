@@ -915,7 +915,7 @@ const HomePageHybrid = () => {
                     <span className="font-bold text-lg">{currentLanguage === 'en' ? 'Phone' : '전화'}</span>
                   </div>
                   <p className="text-white font-semibold">02-553-3631</p>
-                  <p className="text-blue-100 text-sm mt-1">{currentLanguage === 'en' ? 'Mon-Fri 9AM-6PM' : '평일 오전 9시 - 오후 6시'}</p>
+                  <p className="text-blue-100 text-sm mt-1">{currentLanguage === 'en' ? 'Mon-Fri 8:30AM-5:30PM' : '평일 오전 8시30분 - 오후 5시30분'}</p>
                 </motion.div>
 
                 <motion.div 

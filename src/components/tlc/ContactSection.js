@@ -42,7 +42,7 @@ const ContactSection = () => {
     {
       title: '본사',
       phone: '02-553-3631',
-      hours: '평일 09:00 - 18:00',
+      hours: '평일 08:30 - 17:30',
       address: '서울특별시 강남구 논현로 116길 17 6층',
       email: 'service@junghotlc.com',
       icon: (

@@ -63,7 +63,7 @@ const TexcomTextilePage = () => {
       countryName: currentLanguage === 'en' ? 'Switzerland' : '스위스',
       name: 'Bräcker',
       nameColor: 'text-red-700',
-      url: 'http://www.bracker.ch',
+      url: 'https://www.bracker.ch',
       description: currentLanguage === 'en'
         ? 'Rings and Travellers for spinning frames, BERKOL Cots, Apron'
         : '정방기用 Ring, Traveller 제조 BERKOL Cots, Apron 및 유지보수 기계류 제조'
@@ -71,9 +71,9 @@ const TexcomTextilePage = () => {
     {
       country: '🇬🇧',
       countryName: currentLanguage === 'en' ? 'UK' : '영국',
-      name: 'CYGNET TEKKIMP',
+      name: 'CYGNET TEXKIMP',
       nameColor: 'text-gray-700 dark:text-gray-300',
-      url: 'http://www.cygnet-tekkimp.com',
+      url: 'https://www.cygnet-texkimp.com',
       description: currentLanguage === 'en'
         ? 'Loom creel manufacturer (tire cord, glass fiber, carbon fiber)'
         : '직기 Creel 제조업체(타이어코드, 유리섬유, Carbon fiber)'
@@ -362,10 +362,10 @@ const TexcomTextilePage = () => {
                 <p className="text-gray-700 dark:text-gray-300 mb-4">
                   {currentLanguage === 'en' ? 'High-performance automatic microscope finder' : '고성능 현미경 자동 탐색기기'}
                 </p>
-                <a href="https://www.theautofinder.com" target="_blank" rel="noopener noreferrer"
+                <a href="https://www.junghocorp.com" target="_blank" rel="noopener noreferrer"
                    className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-all">
                   <span className="text-lg">🌐</span>
-                  www.theautofinder.com
+                  www.junghocorp.com
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>

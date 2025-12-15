@@ -11,9 +11,38 @@ const TexcomRssPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentLanguage } = useI18n();
+  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+  const [isFactoryModalOpen, setIsFactoryModalOpen] = React.useState(false);
 
   const isHybrid = location.pathname.startsWith('/hybrid');
   const backPath = isHybrid ? '/hybrid/subsidiaries/jungho-texcom' : '/subsidiaries/jungho-texcom';
+
+  // 제품 이미지 목록 (12장)
+  const productImages = [
+    '/images/rss/products/product-01.jpg',
+    '/images/rss/products/product-02.jpg',
+    '/images/rss/products/product-03.jpg',
+    '/images/rss/products/product-04.jpg',
+    '/images/rss/products/product-05.jpg',
+    '/images/rss/products/product-06.jpg',
+    '/images/rss/products/product-07.jpg',
+    '/images/rss/products/product-08.jpg',
+    '/images/rss/products/product-09.jpg',
+    '/images/rss/products/product-10.jpg',
+    '/images/rss/products/product-11.jpg',
+    '/images/rss/products/product-12.jpg'
+  ];
+
+  // 공장 이미지 (1장)
+  const factoryImage = '/images/rss/factory.jpg';
+
+  // 이미지 슬라이드쇼 자동 전환 (4초 간격)
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % productImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [productImages.length]);
 
   // 애니메이션
   const fadeInUp = {
@@ -79,11 +108,11 @@ const TexcomRssPage = () => {
           </span>
         </motion.button>
 
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
             {/* 왼쪽: RSS 사업부 카드 */}
             <motion.div 
-              className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+              className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
             >
@@ -113,17 +142,50 @@ const TexcomRssPage = () => {
               </div>
             </motion.div>
 
-            {/* 오른쪽: 슬로건 */}
+            {/* 오른쪽: 슬로건 + 배경 이미지 - 왼쪽 카드와 높이 맞춤 */}
             <motion.div 
-              className="lg:col-span-2 text-center lg:text-left"
+              className="lg:col-span-3 relative h-auto lg:self-stretch"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              <h2 className="text-3xl sm:text-4xl font-bold text-amber-700 dark:text-amber-400 leading-tight">
-                {currentLanguage === 'en' 
-                  ? "'Fashion Lifestyle' Leap to Brand"
-                  : "'패션 라이프스타일' 브랜드로의 도약"}
-              </h2>
+              {/* 배경 이미지 (흐릿하게) */}
+              <div className="absolute inset-0 overflow-hidden rounded-2xl shadow-lg">
+                <img
+                  src="/images/rss/hero-background.jpg"
+                  alt="RSS Fashion"
+                  className="w-full h-full object-cover object-top opacity-40 blur-[1px]"
+                  onError={(e) => { 
+                    e.target.style.display = 'none'; 
+                    e.target.nextElementSibling.nextElementSibling.style.display = 'flex';
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-50/50 via-transparent to-red-50/50 dark:from-gray-900/50 dark:via-transparent dark:to-gray-900/50"></div>
+                
+                {/* 이미지가 없을 때 표시되는 플레이스홀더 */}
+                <div className="hidden absolute inset-0 items-center justify-center bg-gradient-to-br from-amber-100/50 to-orange-100/50 dark:from-gray-800/50 dark:to-gray-700/50">
+                  <div className="text-center text-gray-400 dark:text-gray-500">
+                    <svg className="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p className="text-xs font-medium">hero-background.jpg</p>
+                    <p className="text-xs opacity-70">권장: 600×250px</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* 슬로건 텍스트 - 두 줄로 분리, 왼쪽 배치 */}
+              <div className="relative z-10 flex flex-col justify-center h-full min-h-[200px] text-center lg:text-left py-8 px-6 lg:pl-10">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-amber-700 dark:text-amber-400 leading-tight drop-shadow-sm">
+                  {currentLanguage === 'en' 
+                    ? "'Fashion Lifestyle'"
+                    : "'패션 라이프스타일'"}
+                </h2>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-amber-700 dark:text-amber-400 leading-tight drop-shadow-sm mt-2">
+                  {currentLanguage === 'en' 
+                    ? "Leap to Brand"
+                    : "브랜드로의 도약"}
+                </h2>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -206,15 +268,74 @@ const TexcomRssPage = () => {
               ))}
             </div>
 
-            {/* 제품 이미지 영역 */}
+            {/* 제품 이미지 슬라이더 (12장) */}
             <div className="md:col-span-2">
-              <div className="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-xl h-full min-h-[300px] flex items-center justify-center shadow-inner border border-gray-200 dark:border-gray-600">
-                <div className="text-center text-gray-400 dark:text-gray-500">
-                  <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-xl h-full min-h-[300px] overflow-hidden shadow-inner border border-gray-200 dark:border-gray-600">
+                {/* 이미지 슬라이더 */}
+                <div className="relative w-full h-full min-h-[300px]">
+                  {productImages.map((img, index) => (
+                    <motion.img
+                      key={index}
+                      src={img}
+                      alt={`RSS Product ${index + 1}`}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
+                      transition={{ duration: 0.8 }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  ))}
+                  
+                  {/* 이미지가 없을 때 표시되는 플레이스홀더 */}
+                  <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500">
+                    <div className="text-center">
+                      <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <p className="font-medium mb-1">{currentLanguage === 'en' ? 'Product Image' : '제품 이미지'}</p>
+                      <p className="text-xs">{currentLanguage === 'en' ? 'Recommended: 600×400px (3:2)' : '권장 크기: 600×400px (3:2)'}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 이미지 인디케이터 */}
+                <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-1.5">
+                  {productImages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        index === currentImageIndex 
+                          ? 'bg-amber-500 w-6' 
+                          : 'bg-white/60 hover:bg-white/80'
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                {/* 좌우 네비게이션 버튼 */}
+                <button
+                  onClick={() => setCurrentImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length)}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/30 hover:bg-black/50 text-white rounded-full flex items-center justify-center transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
-                  <p className="font-medium mb-1">{currentLanguage === 'en' ? 'Product Image' : '제품 이미지 삽입'}</p>
-                  <p className="text-xs">{currentLanguage === 'en' ? 'Recommended: 600×400px (3:2)' : '권장 크기: 600×400px (3:2)'}</p>
+                </button>
+                <button
+                  onClick={() => setCurrentImageIndex((prev) => (prev + 1) % productImages.length)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/30 hover:bg-black/50 text-white rounded-full flex items-center justify-center transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+
+                {/* 이미지 번호 표시 */}
+                <div className="absolute top-3 right-3 px-2 py-1 bg-black/40 text-white text-xs rounded">
+                  {currentImageIndex + 1} / {productImages.length}
                 </div>
               </div>
             </div>
@@ -257,14 +378,37 @@ const TexcomRssPage = () => {
                 </p>
               </div>
 
-              {/* 이미지 영역 */}
-              <div className="bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-700 dark:to-gray-800 rounded-xl h-64 flex items-center justify-center shadow-inner border border-slate-200 dark:border-slate-600">
-                <div className="text-center text-gray-400 dark:text-gray-500">
-                  <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <p className="font-medium mb-1">{currentLanguage === 'en' ? 'Factory Image' : '공장 이미지 삽입'}</p>
-                  <p className="text-xs">{currentLanguage === 'en' ? 'Recommended: 500×350px (4:3)' : '권장 크기: 500×350px (4:3)'}</p>
+              {/* 공장 이미지 영역 (고정 1장) - 클릭 시 확대 */}
+              <div 
+                className="relative bg-gradient-to-br from-slate-100 to-slate-200 dark:from-gray-700 dark:to-gray-800 rounded-xl h-64 overflow-hidden shadow-inner border border-slate-200 dark:border-slate-600 cursor-pointer group"
+                onClick={() => setIsFactoryModalOpen(true)}
+              >
+                <img
+                  src={factoryImage}
+                  alt={currentLanguage === 'en' ? 'Jungho Textile Factory' : '정호섬유 공장'}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextElementSibling.style.display = 'flex';
+                  }}
+                />
+                {/* 이미지가 없을 때 표시되는 플레이스홀더 */}
+                <div className="hidden absolute inset-0 items-center justify-center text-gray-400 dark:text-gray-500">
+                  <div className="text-center">
+                    <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p className="font-medium mb-1">{currentLanguage === 'en' ? 'Factory Image' : '공장 이미지'}</p>
+                    <p className="text-xs">{currentLanguage === 'en' ? 'Recommended: 500×350px (4:3)' : '권장 크기: 500×350px (4:3)'}</p>
+                  </div>
+                </div>
+                {/* 확대 아이콘 오버레이 */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 dark:bg-gray-800/90 rounded-full p-3 shadow-lg">
+                    <svg className="w-6 h-6 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
@@ -398,6 +542,55 @@ const TexcomRssPage = () => {
 
       {/* 하단 여백 */}
       <div className="h-12 bg-white dark:bg-gray-900"></div>
+
+      {/* 공장 이미지 확대 모달 */}
+      {isFactoryModalOpen && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setIsFactoryModalOpen(false)}
+        >
+          <motion.div
+            className="relative max-w-4xl max-h-[90vh] w-full"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 닫기 버튼 */}
+            <button
+              onClick={() => setIsFactoryModalOpen(false)}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors flex items-center gap-2"
+            >
+              <span className="text-sm">{currentLanguage === 'en' ? 'Close' : '닫기'}</span>
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            {/* 확대된 이미지 */}
+            <img
+              src={factoryImage}
+              alt={currentLanguage === 'en' ? 'Jungho Textile Factory' : '정호섬유 공장'}
+              className="w-full h-auto max-h-[85vh] object-contain rounded-lg shadow-2xl"
+            />
+            
+            {/* 이미지 설명 */}
+            <div className="mt-4 text-center text-white">
+              <p className="text-lg font-semibold">
+                {currentLanguage === 'en' ? 'Jungho Textile Factory' : '정호섬유 공장'}
+              </p>
+              <p className="text-sm text-gray-300">
+                {currentLanguage === 'en' 
+                  ? '122 Jungji 3-gil, Seokjeok-eup, Chilgok-gun, Gyeongsangbuk-do'
+                  : '경상북도 칠곡군 석적읍 중지3길 122'}
+              </p>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   );
 };

@@ -304,28 +304,37 @@ const TexcomRssPage = () => {
               ))}
             </div>
 
-            {/* 제품 이미지 슬라이더 (12장) */}
+            {/* 제품 이미지 슬라이더 (12장) - 성능 최적화 */}
             <div className="md:col-span-2">
               <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-xl h-full min-h-[300px] overflow-hidden shadow-inner border border-gray-200 dark:border-gray-600">
-                {/* 이미지 슬라이더 */}
+                {/* 이미지 슬라이더 - 현재/이전/다음 이미지만 렌더링 */}
                 <div className="relative w-full h-full min-h-[300px]">
-                  {productImages.map((img, index) => (
-                    <motion.img
-                      key={index}
-                      src={img}
-                      alt={`RSS Product ${index + 1}`}
-                      className="absolute inset-0 w-full h-full object-cover"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
-                      transition={{ duration: 0.8 }}
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                      }}
-                    />
-                  ))}
+                  {productImages.map((img, index) => {
+                    // 현재, 이전, 다음 이미지만 렌더링 (성능 최적화)
+                    const prevIndex = (currentImageIndex - 1 + productImages.length) % productImages.length;
+                    const nextIndex = (currentImageIndex + 1) % productImages.length;
+                    const shouldRender = index === currentImageIndex || index === prevIndex || index === nextIndex;
+                    
+                    if (!shouldRender) return null;
+                    
+                    return (
+                      <img
+                        key={index}
+                        src={img}
+                        alt={`RSS Product ${index + 1}`}
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                          index === currentImageIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                        }`}
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                    );
+                  })}
                   
                   {/* 이미지가 없을 때 표시되는 플레이스홀더 */}
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500">
+                  <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500 -z-10">
                     <div className="text-center">
                       <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />

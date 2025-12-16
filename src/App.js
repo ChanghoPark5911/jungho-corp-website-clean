@@ -5,6 +5,7 @@ import LoadingSpinner from './components/ui/LoadingSpinner';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
 import PerformanceDashboard from './components/PerformanceDashboard';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthProvider } from './contexts/AuthContext';
 import { initScrollAnimations, initPageLoadAnimations } from './utils/scrollAnimation';
 import { initPerformanceMonitoring } from './utils/performance';
 import { initAnalytics } from './utils/analytics';
@@ -122,12 +123,13 @@ function App() {
 
   return (
     <ThemeProvider>
-      <Router>
-        <ScrollToTop />
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            {/* 루트 경로는 Hybrid 버전으로 리다이렉트 */}
-            <Route path="/" element={<Navigate to="/hybrid" replace />} />
+      <AuthProvider>
+        <Router>
+          <ScrollToTop />
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* 루트 경로는 Hybrid 버전으로 리다이렉트 */}
+              <Route path="/" element={<Navigate to="/hybrid" replace />} />
             
             {/* 
               ===================================
@@ -288,9 +290,10 @@ function App() {
                 </Routes>
               </LayoutV2>
             } />
-          </Routes>
-        </Suspense>
-      </Router>
+            </Routes>
+          </Suspense>
+        </Router>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

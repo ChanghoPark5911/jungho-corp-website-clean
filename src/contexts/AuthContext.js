@@ -1,19 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
-// 간단한 해시 함수 (브라우저 호환)
-const simpleHash = (str) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return 'hash_' + Math.abs(hash).toString(16);
-};
-
-const hashPassword = (password) => simpleHash(password);
-const comparePassword = (password, hash) => simpleHash(password) === hash;
-
 // 역할별 권한 정의 (3단계: 최고관리자, 관리자, 편집자)
 export const ROLES = {
   SUPER_ADMIN: 'super_admin',  // 모든 권한 (사용자 관리 포함)
@@ -38,17 +24,40 @@ export const ROLE_INFO = {
 const AuthContext = createContext(null);
 const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30분
 
-// 기본 관리자 계정 (초기 설정용)
-const DEFAULT_ADMIN = {
-  id: 'user001',
-  username: 'admin',
-  passwordHash: hashPassword('jungho2025!admin'),
-  name: '최고 관리자',
-  email: 'admin@jungho.com',
-  role: 'super_admin',
-  createdAt: '2025-01-01',
-  lastLogin: '-'
+// 간단한 해시 함수 (보안용이 아닌 난독화용)
+const simpleHash = (str) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return 'h_' + Math.abs(hash).toString(16);
 };
+
+// 비밀번호 검증 (해시 비교 또는 평문 비교)
+const verifyPassword = (inputPassword, storedHash) => {
+  // 저장된 해시와 입력 비밀번호의 해시 비교
+  if (storedHash.startsWith('h_')) {
+    return simpleHash(inputPassword) === storedHash;
+  }
+  // 평문 비교 (레거시 지원)
+  return inputPassword === storedHash;
+};
+
+// 기본 관리자 계정
+const getDefaultUsers = () => [
+  {
+    id: 'user001',
+    username: 'admin',
+    passwordHash: simpleHash('jungho2025!admin'),
+    name: '최고 관리자',
+    email: 'admin@jungho.com',
+    role: 'super_admin',
+    createdAt: '2025-01-01',
+    lastLogin: '-'
+  }
+];
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -56,7 +65,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState([]);
 
-  // 사용자 데이터 로드 (localStorage 우선, 없으면 JSON 파일에서 로드)
+  // 사용자 데이터 로드
   useEffect(() => {
     const loadUsers = async () => {
       try {
@@ -88,18 +97,13 @@ export const AuthProvider = ({ children }) => {
         }
 
         // 기본 관리자 계정 사용
-        const defaultHash = hashPassword('jungho2025!admin');
-        const defaultUsers = [{
-          ...DEFAULT_ADMIN,
-          passwordHash: defaultHash
-        }];
+        const defaultUsers = getDefaultUsers();
         setUsers(defaultUsers);
         localStorage.setItem('admin_users', JSON.stringify(defaultUsers));
       } catch (error) {
         console.error('사용자 데이터 로드 실패:', error);
-        // 오류 시 기본 관리자 계정 사용
-        const defaultHash = hashPassword('jungho2025!admin');
-        setUsers([{ ...DEFAULT_ADMIN, passwordHash: defaultHash }]);
+        const defaultUsers = getDefaultUsers();
+        setUsers(defaultUsers);
       }
       setIsLoading(false);
     };
@@ -128,10 +132,8 @@ export const AuthProvider = ({ children }) => {
       if (currentTime - lastLoginTime < SESSION_TIMEOUT_MS) {
         setUser(JSON.parse(storedUser));
         setIsAuthenticated(true);
-        // 세션 연장
         sessionStorage.setItem('login_time', new Date().toISOString());
       } else {
-        // 세션 만료
         handleLogout();
       }
     }
@@ -141,7 +143,7 @@ export const AuthProvider = ({ children }) => {
   const handleLogin = async (username, password) => {
     const foundUser = users.find(u => u.username === username);
 
-    if (foundUser && comparePassword(password, foundUser.passwordHash)) {
+    if (foundUser && verifyPassword(password, foundUser.passwordHash)) {
       const updatedUser = { 
         ...foundUser, 
         lastLogin: new Date().toISOString().split('T')[0] 
@@ -152,7 +154,6 @@ export const AuthProvider = ({ children }) => {
       sessionStorage.setItem('authenticated_user', JSON.stringify(updatedUser));
       sessionStorage.setItem('login_time', new Date().toISOString());
 
-      // lastLogin 업데이트
       setUsers(prevUsers => prevUsers.map(u => 
         u.id === updatedUser.id ? updatedUser : u
       ));
@@ -181,7 +182,7 @@ export const AuthProvider = ({ children }) => {
       return { success: false, message: '비밀번호는 6자 이상이어야 합니다.' };
     }
 
-    const passwordHash = hashPassword(newUserData.password);
+    const passwordHash = simpleHash(newUserData.password);
     const newUser = {
       id: 'user' + Date.now(),
       username: newUserData.username,
@@ -203,7 +204,7 @@ export const AuthProvider = ({ children }) => {
       if (u.id === userId) {
         const updatedUser = { ...u, ...updatedFields };
         if (updatedFields.password) {
-          updatedUser.passwordHash = hashPassword(updatedFields.password);
+          updatedUser.passwordHash = simpleHash(updatedFields.password);
           delete updatedUser.password;
         }
         return updatedUser;
@@ -211,11 +212,10 @@ export const AuthProvider = ({ children }) => {
       return u;
     }));
 
-    // 현재 로그인한 사용자가 수정된 경우 세션 갱신
     if (user && user.id === userId) {
       const updatedSessionUser = { ...user, ...updatedFields };
       if (updatedFields.password) {
-        updatedSessionUser.passwordHash = hashPassword(updatedFields.password);
+        updatedSessionUser.passwordHash = simpleHash(updatedFields.password);
         delete updatedSessionUser.password;
       }
       setUser(updatedSessionUser);
@@ -274,4 +274,3 @@ export const useAuth = () => {
 };
 
 export default AuthContext;
-

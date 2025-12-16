@@ -1,33 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 /**
  * 관리자 로그인 페이지
- * 간단한 비밀번호 인증만 사용
+ * ID + 비밀번호 인증 사용
  */
 const AdminLogin = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // 비밀번호 (실제 환경에서는 환경변수 사용 권장)
-  const ADMIN_PASSWORD = 'jungho2025!admin';
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
     // 간단한 지연 효과
-    setTimeout(() => {
-      if (password === ADMIN_PASSWORD) {
-        // 로그인 성공 - sessionStorage에 저장
-        sessionStorage.setItem('adminAuthenticated', 'true');
-        sessionStorage.setItem('adminLoginTime', new Date().toISOString());
+    setTimeout(async () => {
+      const result = await login(username, password);
+      
+      if (result.success) {
         navigate('/admin-new/dashboard');
       } else {
-        setError('비밀번호가 올바르지 않습니다.');
+        setError(result.message);
         setIsLoading(false);
       }
     }, 500);
@@ -65,6 +64,25 @@ const AdminLogin = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label 
+                htmlFor="username" 
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >
+                아이디
+              </label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+                placeholder="아이디를 입력하세요"
+                required
+                autoFocus
+              />
+            </div>
+
+            <div>
+              <label 
                 htmlFor="password" 
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
@@ -76,9 +94,8 @@ const AdminLogin = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
-                placeholder="관리자 비밀번호를 입력하세요"
+                placeholder="비밀번호를 입력하세요"
                 required
-                autoFocus
               />
             </div>
 
@@ -118,6 +135,10 @@ const AdminLogin = () => {
                 <span className="mr-2">⏰</span>
                 30분 동안 활동이 없으면 자동 로그아웃
               </p>
+              <p className="flex items-center">
+                <span className="mr-2">🔑</span>
+                기본 계정: admin / jungho2025!admin
+              </p>
             </div>
           </div>
         </div>
@@ -137,4 +158,3 @@ const AdminLogin = () => {
 };
 
 export default AdminLogin;
-

@@ -56,6 +56,8 @@ const ClarusDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/ClarusDeta
 const TlcDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/TlcDetailPage'));
 const IllutechDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/IllutechDetailPage'));
 const TexcomDetailPageV2 = lazy(() => import('./pages/v2/subsidiaries/TexcomDetailPage'));
+const TexcomRssPage = lazy(() => import('./pages/v2/subsidiaries/TexcomRssPage')); // RSS 사업부
+const TexcomTextilePage = lazy(() => import('./pages/v2/subsidiaries/TexcomTextilePage')); // 섬유기계 사업부
 const ProjectsPageV2 = lazy(() => import('./pages/v2/ProjectsPage'));
 const MediaSNSPage = lazy(() => import('./pages/v2/MediaSNSPage'));
 const MediaPromotionPage = lazy(() => import('./pages/v2/MediaPromotionPage'));
@@ -215,6 +217,8 @@ function App() {
             <Route path="/hybrid/subsidiaries/jungho-tlc" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TlcDetailPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries/illutech" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><IllutechDetailPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries/jungho-texcom" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TexcomDetailPageV2 /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/subsidiaries/jungho-texcom/rss" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TexcomRssPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/subsidiaries/jungho-texcom/textile" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TexcomTextilePage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/privacy" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><PrivacyPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/terms" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TermsPage /></HybridLayout></Suspense>} />
             
@@ -277,6 +281,8 @@ function App() {
                   <Route path="/subsidiaries/jungho-tlc" element={<TlcDetailPageV2 />} />
                   <Route path="/subsidiaries/illutech" element={<IllutechDetailPageV2 />} />
                   <Route path="/subsidiaries/jungho-texcom" element={<TexcomDetailPageV2 />} />
+                  <Route path="/subsidiaries/jungho-texcom/rss" element={<TexcomRssPage />} />
+                  <Route path="/subsidiaries/jungho-texcom/textile" element={<TexcomTextilePage />} />
                   <Route path="/projects" element={<ProjectsPageV2 />} />
                   <Route path="/media" element={<MediaPageHybrid />} />
                   <Route path="/media/sns" element={<MediaSNSPage />} />

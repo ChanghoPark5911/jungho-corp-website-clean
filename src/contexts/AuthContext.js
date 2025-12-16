@@ -69,14 +69,28 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadUsers = async () => {
       try {
+        // 버전 체크 - 이전 버전 데이터 초기화
+        const authVersion = localStorage.getItem('auth_version');
+        if (authVersion !== 'v2') {
+          console.log('인증 시스템 업그레이드: 기존 데이터 초기화');
+          localStorage.removeItem('admin_users');
+          localStorage.setItem('auth_version', 'v2');
+        }
+
         // localStorage에서 먼저 확인
         const savedUsers = localStorage.getItem('admin_users');
         if (savedUsers) {
           const parsedUsers = JSON.parse(savedUsers);
-          if (parsedUsers.length > 0) {
+          // 새 해시 형식인지 확인 (h_로 시작)
+          const isNewFormat = parsedUsers.every(u => u.passwordHash && u.passwordHash.startsWith('h_'));
+          if (parsedUsers.length > 0 && isNewFormat) {
             setUsers(parsedUsers);
             setIsLoading(false);
             return;
+          } else {
+            // 이전 형식이면 초기화
+            console.log('이전 해시 형식 감지, 기본 관리자로 초기화');
+            localStorage.removeItem('admin_users');
           }
         }
 

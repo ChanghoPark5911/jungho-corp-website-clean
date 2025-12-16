@@ -30,11 +30,21 @@ const DEFAULT_USERS = [
   {
     id: 'user001',
     username: 'admin',
-    password: 'jungho2025!admin', // 평문 비밀번호
+    password: 'jungho2025!admin',
     name: '최고 관리자',
     email: 'admin@jungho.com',
     role: 'super_admin',
     createdAt: '2025-01-01',
+    lastLogin: '-'
+  },
+  {
+    id: 'user002',
+    username: 'admin01',
+    password: 'admin01!',
+    name: '박창호',
+    email: 'chpark00@junghocorp.com',
+    role: 'admin',
+    createdAt: '2025-12-16',
     lastLogin: '-'
   }
 ];

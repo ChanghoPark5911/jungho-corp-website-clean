@@ -2,9 +2,9 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 
 // 역할별 권한 정의 (3단계: 최고관리자, 관리자, 편집자)
 export const ROLES = {
-  SUPER_ADMIN: 'super_admin',  // 모든 권한 (사용자 관리 포함)
-  ADMIN: 'admin',              // 콘텐츠 및 설정 관리 (사용자 관리 제외)
-  EDITOR: 'editor'             // 콘텐츠 편집만 가능 (뉴스, 프로젝트, 미디어)
+  SUPER_ADMIN: 'super_admin',
+  ADMIN: 'admin',
+  EDITOR: 'editor'
 };
 
 // 역할별 접근 가능 메뉴 정의
@@ -23,34 +23,14 @@ export const ROLE_INFO = {
 
 const AuthContext = createContext(null);
 const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30분
+const AUTH_VERSION = 'v3'; // 버전 업데이트
 
-// 간단한 해시 함수 (보안용이 아닌 난독화용)
-const simpleHash = (str) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return 'h_' + Math.abs(hash).toString(16);
-};
-
-// 비밀번호 검증 (해시 비교 또는 평문 비교)
-const verifyPassword = (inputPassword, storedHash) => {
-  // 저장된 해시와 입력 비밀번호의 해시 비교
-  if (storedHash.startsWith('h_')) {
-    return simpleHash(inputPassword) === storedHash;
-  }
-  // 평문 비교 (레거시 지원)
-  return inputPassword === storedHash;
-};
-
-// 기본 관리자 계정
-const getDefaultUsers = () => [
+// 기본 관리자 계정 (평문 비밀번호 - 프론트엔드 전용)
+const DEFAULT_USERS = [
   {
     id: 'user001',
     username: 'admin',
-    passwordHash: simpleHash('jungho2025!admin'),
+    password: 'jungho2025!admin', // 평문 비밀번호
     name: '최고 관리자',
     email: 'admin@jungho.com',
     role: 'super_admin',
@@ -67,57 +47,36 @@ export const AuthProvider = ({ children }) => {
 
   // 사용자 데이터 로드
   useEffect(() => {
-    const loadUsers = async () => {
+    const loadUsers = () => {
       try {
         // 버전 체크 - 이전 버전 데이터 초기화
         const authVersion = localStorage.getItem('auth_version');
-        if (authVersion !== 'v2') {
+        if (authVersion !== AUTH_VERSION) {
           console.log('인증 시스템 업그레이드: 기존 데이터 초기화');
           localStorage.removeItem('admin_users');
-          localStorage.setItem('auth_version', 'v2');
+          localStorage.setItem('auth_version', AUTH_VERSION);
         }
 
-        // localStorage에서 먼저 확인
+        // localStorage에서 확인
         const savedUsers = localStorage.getItem('admin_users');
         if (savedUsers) {
           const parsedUsers = JSON.parse(savedUsers);
-          // 새 해시 형식인지 확인 (h_로 시작)
-          const isNewFormat = parsedUsers.every(u => u.passwordHash && u.passwordHash.startsWith('h_'));
-          if (parsedUsers.length > 0 && isNewFormat) {
+          if (parsedUsers.length > 0 && parsedUsers[0].password) {
+            console.log('localStorage에서 사용자 로드:', parsedUsers.length, '명');
             setUsers(parsedUsers);
             setIsLoading(false);
             return;
-          } else {
-            // 이전 형식이면 초기화
-            console.log('이전 해시 형식 감지, 기본 관리자로 초기화');
-            localStorage.removeItem('admin_users');
           }
-        }
-
-        // localStorage에 없으면 JSON 파일에서 로드 시도
-        try {
-          const response = await fetch('/data/admin-users-2025-12-16.json');
-          if (response.ok) {
-            const data = await response.json();
-            if (data.users && data.users.length > 0) {
-              setUsers(data.users);
-              localStorage.setItem('admin_users', JSON.stringify(data.users));
-              setIsLoading(false);
-              return;
-            }
-          }
-        } catch (fetchError) {
-          console.log('JSON 파일 로드 실패, 기본 관리자 사용');
         }
 
         // 기본 관리자 계정 사용
-        const defaultUsers = getDefaultUsers();
-        setUsers(defaultUsers);
-        localStorage.setItem('admin_users', JSON.stringify(defaultUsers));
+        console.log('기본 관리자 계정 생성');
+        setUsers(DEFAULT_USERS);
+        localStorage.setItem('admin_users', JSON.stringify(DEFAULT_USERS));
       } catch (error) {
         console.error('사용자 데이터 로드 실패:', error);
-        const defaultUsers = getDefaultUsers();
-        setUsers(defaultUsers);
+        setUsers(DEFAULT_USERS);
+        localStorage.setItem('admin_users', JSON.stringify(DEFAULT_USERS));
       }
       setIsLoading(false);
     };
@@ -155,26 +114,36 @@ export const AuthProvider = ({ children }) => {
 
   // 로그인 처리
   const handleLogin = async (username, password) => {
+    console.log('로그인 시도:', username);
+    console.log('등록된 사용자:', users.map(u => u.username));
+    
     const foundUser = users.find(u => u.username === username);
+    console.log('찾은 사용자:', foundUser ? foundUser.username : '없음');
 
-    if (foundUser && verifyPassword(password, foundUser.passwordHash)) {
-      const updatedUser = { 
-        ...foundUser, 
-        lastLogin: new Date().toISOString().split('T')[0] 
-      };
+    if (foundUser) {
+      console.log('비밀번호 비교:', password === foundUser.password);
       
-      setUser(updatedUser);
-      setIsAuthenticated(true);
-      sessionStorage.setItem('authenticated_user', JSON.stringify(updatedUser));
-      sessionStorage.setItem('login_time', new Date().toISOString());
+      if (password === foundUser.password) {
+        const updatedUser = { 
+          ...foundUser, 
+          lastLogin: new Date().toISOString().split('T')[0] 
+        };
+        
+        setUser(updatedUser);
+        setIsAuthenticated(true);
+        sessionStorage.setItem('authenticated_user', JSON.stringify(updatedUser));
+        sessionStorage.setItem('login_time', new Date().toISOString());
 
-      setUsers(prevUsers => prevUsers.map(u => 
-        u.id === updatedUser.id ? updatedUser : u
-      ));
+        setUsers(prevUsers => prevUsers.map(u => 
+          u.id === updatedUser.id ? updatedUser : u
+        ));
 
-      return { success: true, user: updatedUser };
+        console.log('로그인 성공!');
+        return { success: true, user: updatedUser };
+      }
     }
     
+    console.log('로그인 실패');
     return { success: false, message: '아이디 또는 비밀번호가 올바르지 않습니다.' };
   };
 
@@ -196,11 +165,10 @@ export const AuthProvider = ({ children }) => {
       return { success: false, message: '비밀번호는 6자 이상이어야 합니다.' };
     }
 
-    const passwordHash = simpleHash(newUserData.password);
     const newUser = {
       id: 'user' + Date.now(),
       username: newUserData.username,
-      passwordHash,
+      password: newUserData.password, // 평문 저장
       name: newUserData.name,
       email: newUserData.email,
       role: newUserData.role,
@@ -216,22 +184,13 @@ export const AuthProvider = ({ children }) => {
   const updateUser = (userId, updatedFields) => {
     setUsers(prevUsers => prevUsers.map(u => {
       if (u.id === userId) {
-        const updatedUser = { ...u, ...updatedFields };
-        if (updatedFields.password) {
-          updatedUser.passwordHash = simpleHash(updatedFields.password);
-          delete updatedUser.password;
-        }
-        return updatedUser;
+        return { ...u, ...updatedFields };
       }
       return u;
     }));
 
     if (user && user.id === userId) {
       const updatedSessionUser = { ...user, ...updatedFields };
-      if (updatedFields.password) {
-        updatedSessionUser.passwordHash = simpleHash(updatedFields.password);
-        delete updatedSessionUser.password;
-      }
       setUser(updatedSessionUser);
       sessionStorage.setItem('authenticated_user', JSON.stringify(updatedSessionUser));
     }

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import ImageUploader from '../../components/ImageUploader';
 import FirebaseStorageTest from '../../components/FirebaseStorageTest';
+import { useAuth } from '../../contexts/AuthContext';
 
 /**
  * V2 관리자 페이지
@@ -10,9 +11,11 @@ import FirebaseStorageTest from '../../components/FirebaseStorageTest';
  */
 const AdminPageV2 = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const auth = useAuth();
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [saveStatus, setSaveStatus] = useState('');
   
@@ -156,14 +159,12 @@ const AdminPageV2 = () => {
     }
   ]);
 
-  // 세션에서 인증 상태 확인
+  // 인증 상태 확인 및 데이터 로드
   useEffect(() => {
-    const authStatus = sessionStorage.getItem('admin_v2_authenticated');
-    if (authStatus === 'true') {
-      setIsAuthenticated(true);
+    if (auth.isAuthenticated) {
       loadData();
     }
-  }, []);
+  }, [auth.isAuthenticated]);
 
   // 데이터 로드
   const loadData = () => {
@@ -267,23 +268,38 @@ const AdminPageV2 = () => {
   };
 
   // 로그인 처리
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (password === 'admin123') {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('admin_v2_authenticated', 'true');
+    setAuthError('');
+    
+    if (!username.trim()) {
+      setAuthError('아이디를 입력하세요.');
+      return;
+    }
+    if (!password.trim()) {
+      setAuthError('비밀번호를 입력하세요.');
+      return;
+    }
+
+    setIsLoggingIn(true);
+    
+    const result = await auth.login(username.trim(), password);
+    
+    if (result.success) {
       setAuthError('');
       loadData();
     } else {
-      setAuthError('비밀번호가 올바르지 않습니다.');
+      setAuthError(result.message);
       setPassword('');
     }
+    
+    setIsLoggingIn(false);
   };
 
   // 로그아웃
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    sessionStorage.removeItem('admin_v2_authenticated');
+    auth.logout();
+    setUsername('');
     setPassword('');
   };
 
@@ -482,7 +498,7 @@ const AdminPageV2 = () => {
   };
 
   // 로그인 화면
-  if (!isAuthenticated) {
+  if (!auth.isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
         <motion.div 
@@ -514,6 +530,20 @@ const AdminPageV2 = () => {
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                아이디
+              </label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
+                placeholder="아이디를 입력하세요"
+                autoFocus
+              />
+            </div>
+            <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 비밀번호
               </label>
@@ -524,25 +554,33 @@ const AdminPageV2 = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
                 placeholder="비밀번호를 입력하세요"
-                autoFocus
               />
-              {authError && (
-                <p className="mt-2 text-sm text-red-600 flex items-center">
-                  <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  {authError}
-                </p>
-              )}
             </div>
+            
+            {authError && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg text-sm flex items-center">
+                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                {authError}
+              </div>
+            )}
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 rounded-lg font-semibold hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transform transition-all hover:scale-[1.02] active:scale-[0.98]"
+              disabled={isLoggingIn}
+              className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 rounded-lg font-semibold hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transform transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
             >
-              로그인
+              {isLoggingIn ? '로그인 중...' : '로그인'}
             </button>
           </form>
+          
+          {/* 기본 계정 안내 */}
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+              🔑 기본 계정: <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">admin</code> / <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">jungho2025!admin</code>
+            </p>
+          </div>
 
           {/* 비밀번호 힌트 제거됨 */}
         </motion.div>
@@ -598,6 +636,17 @@ const AdminPageV2 = () => {
             </div>
             
             <div className="flex items-center space-x-4">
+              {/* 로그인 사용자 정보 */}
+              {auth.user && (
+                <div className="flex items-center space-x-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                  <span className="text-sm text-gray-600 dark:text-gray-300">
+                    👤 <span className="font-medium">{auth.user.name}</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                      ({auth.user.role === 'super_admin' ? '최고관리자' : auth.user.role === 'admin' ? '관리자' : '편집자'})
+                    </span>
+                  </span>
+                </div>
+              )}
               <button
                 onClick={() => window.open('/', '_blank')}
                 className="text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 flex items-center space-x-1"

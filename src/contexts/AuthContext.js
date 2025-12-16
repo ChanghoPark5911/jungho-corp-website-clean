@@ -1,5 +1,18 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import bcrypt from 'bcryptjs';
+
+// 간단한 해시 함수 (브라우저 호환)
+const simpleHash = (str) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return 'hash_' + Math.abs(hash).toString(16);
+};
+
+const hashPassword = (password) => simpleHash(password);
+const comparePassword = (password, hash) => simpleHash(password) === hash;
 
 // 역할별 권한 정의 (3단계: 최고관리자, 관리자, 편집자)
 export const ROLES = {
@@ -29,7 +42,7 @@ const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30분
 const DEFAULT_ADMIN = {
   id: 'user001',
   username: 'admin',
-  passwordHash: '$2a$10$8K1p/a0dR1xqM8K3hQh1S.z1J1J1J1J1J1J1J1J1J1J1J1J1J1J1', // jungho2025!admin
+  passwordHash: hashPassword('jungho2025!admin'),
   name: '최고 관리자',
   email: 'admin@jungho.com',
   role: 'super_admin',
@@ -75,7 +88,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         // 기본 관리자 계정 사용
-        const defaultHash = bcrypt.hashSync('jungho2025!admin', 10);
+        const defaultHash = hashPassword('jungho2025!admin');
         const defaultUsers = [{
           ...DEFAULT_ADMIN,
           passwordHash: defaultHash
@@ -85,7 +98,7 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         console.error('사용자 데이터 로드 실패:', error);
         // 오류 시 기본 관리자 계정 사용
-        const defaultHash = bcrypt.hashSync('jungho2025!admin', 10);
+        const defaultHash = hashPassword('jungho2025!admin');
         setUsers([{ ...DEFAULT_ADMIN, passwordHash: defaultHash }]);
       }
       setIsLoading(false);
@@ -128,7 +141,7 @@ export const AuthProvider = ({ children }) => {
   const handleLogin = async (username, password) => {
     const foundUser = users.find(u => u.username === username);
 
-    if (foundUser && bcrypt.compareSync(password, foundUser.passwordHash)) {
+    if (foundUser && comparePassword(password, foundUser.passwordHash)) {
       const updatedUser = { 
         ...foundUser, 
         lastLogin: new Date().toISOString().split('T')[0] 
@@ -168,7 +181,7 @@ export const AuthProvider = ({ children }) => {
       return { success: false, message: '비밀번호는 6자 이상이어야 합니다.' };
     }
 
-    const passwordHash = bcrypt.hashSync(newUserData.password, 10);
+    const passwordHash = hashPassword(newUserData.password);
     const newUser = {
       id: 'user' + Date.now(),
       username: newUserData.username,
@@ -190,7 +203,7 @@ export const AuthProvider = ({ children }) => {
       if (u.id === userId) {
         const updatedUser = { ...u, ...updatedFields };
         if (updatedFields.password) {
-          updatedUser.passwordHash = bcrypt.hashSync(updatedFields.password, 10);
+          updatedUser.passwordHash = hashPassword(updatedFields.password);
           delete updatedUser.password;
         }
         return updatedUser;
@@ -202,7 +215,7 @@ export const AuthProvider = ({ children }) => {
     if (user && user.id === userId) {
       const updatedSessionUser = { ...user, ...updatedFields };
       if (updatedFields.password) {
-        updatedSessionUser.passwordHash = bcrypt.hashSync(updatedFields.password, 10);
+        updatedSessionUser.passwordHash = hashPassword(updatedFields.password);
         delete updatedSessionUser.password;
       }
       setUser(updatedSessionUser);

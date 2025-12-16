@@ -2119,6 +2119,44 @@ const UsersTab = ({ data, setData, onSave }) => {
           >
             💾 저장하기
           </button>
+          <button
+            onClick={() => {
+              try {
+                const exportData = {
+                  exportedAt: new Date().toISOString(),
+                  description: '정호그룹 관리자 사용자 데이터',
+                  version: 'v3',
+                  users: data.map(user => ({
+                    id: user.id,
+                    username: user.username,
+                    password: user.password,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    createdAt: user.createdAt,
+                    lastLogin: user.lastLogin
+                  }))
+                };
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `admin-users-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                alert('✅ JSON 파일 다운로드 완료!\n\n📁 다운로드한 파일을:\n1. public/data/ 폴더에 복사\n2. Git 커밋 & 푸시\n3. Vercel 자동 배포 대기\n\n✨ 사용자 정보가 영구적으로 저장됩니다!');
+              } catch (error) {
+                console.error('JSON 내보내기 실패:', error);
+                alert('❌ JSON 내보내기 실패: ' + error.message);
+              }
+            }}
+            className="px-6 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg flex items-center space-x-2"
+          >
+            <span>📥</span>
+            <span>JSON 내보내기</span>
+          </button>
         </div>
       </div>
 

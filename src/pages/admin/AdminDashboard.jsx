@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
   const [stats, setStats] = useState({ projects: 0, videos: 0, faqs: 0 });
 
   // 인증 확인
   useEffect(() => {
-    const isAuthenticated = sessionStorage.getItem('adminAuthenticated');
     if (!isAuthenticated) {
       navigate('/admin-new/login');
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
 
   // 통계 로드
   useEffect(() => {
@@ -25,7 +26,7 @@ const AdminDashboard = () => {
         
         setStats({
           projects: projectsData.projects?.length || 0,
-          videos: 0, // 홍보영상은 나중에
+          videos: 0,
           faqs: faqsData.faqs?.length || 0
         });
       } catch (error) {
@@ -33,14 +34,20 @@ const AdminDashboard = () => {
       }
     };
     
-    loadStats();
-  }, []);
+    if (isAuthenticated) {
+      loadStats();
+    }
+  }, [isAuthenticated]);
 
   const handleLogout = () => {
-    sessionStorage.removeItem('adminAuthenticated');
-    sessionStorage.removeItem('adminLoginTime');
+    logout();
     navigate('/admin-new/login');
   };
+
+  // 인증되지 않은 경우 렌더링하지 않음
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -69,6 +76,11 @@ const AdminDashboard = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              {user && (
+                <span className="text-sm text-gray-600 dark:text-gray-300">
+                  👤 {user.name} ({user.role === 'super_admin' ? '최고관리자' : user.role === 'admin' ? '관리자' : '편집자'})
+                </span>
+              )}
               <button
                 onClick={() => navigate('/')}
                 className="text-gray-600 dark:text-gray-300 hover:text-blue-600 text-sm"
@@ -190,10 +202,10 @@ const AdminDashboard = () => {
             </div>
             <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
               <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                로그인 상태
+                로그인 사용자
               </div>
               <div className="text-lg font-bold text-gray-900 dark:text-white">
-                활성
+                {user?.name || '알 수 없음'}
               </div>
             </div>
           </div>

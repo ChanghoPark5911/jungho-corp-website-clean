@@ -1,0 +1,26 @@
+{
+  "exportedAt": "2025-12-16T02:03:16.760Z",
+  "description": "정호그룹 관리자 사용자 데이터 (비밀번호 해시 포함)",
+  "users": [
+    {
+      "id": "user001",
+      "username": "admin",
+      "passwordHash": "hash_29ae3e9a",
+      "name": "관리자",
+      "email": "admin@jungho.com",
+      "role": "super_admin",
+      "createdAt": "2025-01-01",
+      "lastLogin": "2025-12-16"
+    },
+    {
+      "id": "user1765847369723",
+      "username": "admin01",
+      "passwordHash": "hash_733b691b",
+      "name": "박창호",
+      "email": "chpark00@junghocorp.com",
+      "role": "admin",
+      "createdAt": "2025-12-16",
+      "lastLogin": "2025-12-16"
+    }
+  ]
+}

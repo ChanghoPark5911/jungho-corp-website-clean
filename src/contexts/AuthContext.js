@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
   // 사용자 데이터 로드
   useEffect(() => {
-    const loadUsers = () => {
+    const loadUsers = async () => {
       try {
         // 버전 체크 - 이전 버전 데이터 초기화
         const authVersion = localStorage.getItem('auth_version');
@@ -67,6 +67,24 @@ export const AuthProvider = ({ children }) => {
             setIsLoading(false);
             return;
           }
+        }
+
+        // JSON 파일에서 로드 시도
+        try {
+          console.log('JSON 파일에서 사용자 데이터 로드 시도...');
+          const response = await fetch('/data/admin-users-2025-12-16.json');
+          if (response.ok) {
+            const data = await response.json();
+            if (data.users && data.users.length > 0 && data.users[0].password) {
+              console.log('JSON 파일에서 사용자 로드:', data.users.length, '명');
+              setUsers(data.users);
+              localStorage.setItem('admin_users', JSON.stringify(data.users));
+              setIsLoading(false);
+              return;
+            }
+          }
+        } catch (fetchError) {
+          console.log('JSON 파일 로드 실패:', fetchError);
         }
 
         // 기본 관리자 계정 사용

@@ -179,6 +179,8 @@ function App() {
             <Route path="/v2/subsidiaries/jungho-tlc" element={<Suspense fallback={<PageLoader />}><LayoutV2><TlcDetailPageV2 /></LayoutV2></Suspense>} />
             <Route path="/v2/subsidiaries/illutech" element={<Suspense fallback={<PageLoader />}><LayoutV2><IllutechDetailPageV2 /></LayoutV2></Suspense>} />
             <Route path="/v2/subsidiaries/jungho-texcom" element={<Suspense fallback={<PageLoader />}><LayoutV2><TexcomDetailPageV2 /></LayoutV2></Suspense>} />
+            <Route path="/v2/subsidiaries/jungho-texcom/rss" element={<Suspense fallback={<PageLoader />}><LayoutV2><TexcomRssPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/subsidiaries/jungho-texcom/textile" element={<Suspense fallback={<PageLoader />}><LayoutV2><TexcomTextilePage /></LayoutV2></Suspense>} />
             <Route path="/v2/media" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaPageHybrid /></LayoutV2></Suspense>} />
             <Route path="/v2/media/promotion" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaPromotionPage /></LayoutV2></Suspense>} />
             <Route path="/v2/media/sns" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaSNSPage /></LayoutV2></Suspense>} />

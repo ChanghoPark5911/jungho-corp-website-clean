@@ -122,34 +122,88 @@ const ClarusDetailPage = () => {
   // 주요 제품/서비스 (Classic 버전 콘텐츠 적용)
   const products = [
     {
-      name: currentLanguage === 'en' ? 'Lighting Control System' : '조명제어시스템',
+      name: currentLanguage === 'en' ? 'Lighting Control Business | Lighting Control System' : '조명제어 사업 | Lighting Control System',
       description: currentLanguage === 'en'
-        ? 'IoT-based integrated lighting control for buildings and facilities'
-        : 'IoT 기반 건물 및 시설물 통합 조명 제어',
+        ? 'Expanding domestic and international business based on self-developed lighting control system'
+        : '자체 개발한 조명제어시스템을 기반으로 국내외 사업 전개',
       features: currentLanguage === 'en' 
-        ? ['Remote Control', 'Energy Saving', 'Schedule Management', 'Real-time Monitoring']
-        : ['원격 제어', '에너지 절감', '스케줄 관리', '실시간 모니터링'],
-      imagePath: '/images/clarus/lighting-control-diagram.png'
+        ? [
+            'Simple and intuitive UI (User Interface)',
+            'Real-time on/off/level control and monitoring through GUI-based monitoring screen',
+            'Daily, weekly, monthly, holiday, and specific date schedule control',
+            'Power consumption data per individual circuit',
+            'Scenario function',
+            'Auto-save operation log, print, view, report, and alarm functions',
+            'System expansion function',
+            'Security function'
+          ]
+        : [
+            '간편하고 직관적인 UI (User Interface)',
+            'GUI 편집을 통해 완성된 모니터링 화면으로 실시간 점·소등·레벨 제어 및 감시',
+            '일간, 주간, 월간, 휴일, 특정일별 스케줄 설정 제어 기능',
+            '개별회로 별 전력사용량 제공',
+            '시나리오 기능',
+            '운행 일지 자동 저장, 인쇄 및 열람, 보고서, 알람 기능',
+            '시스템 확장 기능',
+            '보안 기능'
+          ],
+      imagePath: '/images/clarus/lighting-control-system-diagram.png'
     },
     {
-      name: currentLanguage === 'en' ? 'Power Monitoring System' : '전력감시시스템',
+      name: currentLanguage === 'en' ? 'Power Monitoring Business | Power Monitoring System' : '전력감시 사업 | Power Monitoring System',
       description: currentLanguage === 'en'
-        ? 'Real-time power consumption monitoring and analysis'
-        : '실시간 전력 사용량 감시 및 분석',
+        ? 'Development and supply of power monitoring solutions for efficient energy management'
+        : '효율적인 에너지 관리를 위한 전력감시 솔루션 개발 및 공급',
       features: currentLanguage === 'en'
-        ? ['Power Measurement', 'Data Analysis', 'Report Generation', 'Alert System']
-        : ['전력 계측', '데이터 분석', '리포트 생성', '알람 시스템'],
-      imagePath: '/images/clarus/power-monitoring-diagram.png'
+        ? [
+            'Simple and intuitive UI (User Interface)',
+            'Real-time power usage monitoring through GUI-based monitoring screen',
+            'Power quality analysis (voltage, current, power factor, harmonics)',
+            'Daily, weekly, monthly, yearly power usage statistics and reports',
+            'Peak power management and demand control',
+            'Alarm and notification system for abnormal power conditions',
+            'Energy cost analysis and optimization suggestions',
+            'System expansion and integration function'
+          ]
+        : [
+            '간편하고 직관적인 UI (User Interface)',
+            'GUI 편집을 통해 완성된 모니터링 화면으로 실시간 전력 사용량 감시',
+            '전력 품질 분석 (전압, 전류, 역률, 고조파)',
+            '일간, 주간, 월간, 연간 전력 사용량 통계 및 리포트',
+            '피크 전력 관리 및 수요 제어',
+            '이상 전력 상태에 대한 알람 및 알림 시스템',
+            '에너지 비용 분석 및 최적화 제안',
+            '시스템 확장 및 통합 기능'
+          ],
+      imagePath: '/images/clarus/power-monitoring-system-diagram.png'
     },
     {
-      name: currentLanguage === 'en' ? 'Export Business' : '해외사업(수출)',
+      name: currentLanguage === 'en' ? 'Software Business | Energy Manager System' : 'Software 사업 | Energy Manager System',
       description: currentLanguage === 'en'
-        ? 'Building global export infrastructure for Clarus lighting control products'
-        : 'Clarus 조명제어 제품의 해외수출 인프라 구축',
+        ? 'Over 30 years of continuous development and evolution in energy management software'
+        : '30년 이상 지속적으로 발전해온 에너지 관리 소프트웨어',
       features: currentLanguage === 'en'
-        ? ['North America/Europe advanced markets, China/Taiwan', 'Southeast Asian emerging markets including Vietnam/Philippines']
-        : ['북미/유럽 선진시장, 중국/대만', '베트남/필리핀 등 동남아 신흥시장'],
-      imagePath: '/images/clarus/export-business-map.png'
+        ? [
+            '1991: Sirius31 - First generation control software',
+            '1998: Light View - Lighting monitoring system',
+            '2003: Light Manager - Integrated lighting control',
+            '2005: Light Manager II - Advanced GUI-based system',
+            '2013: Energy Manager 4 - Power & lighting integrated management',
+            '2018: Energy Manager 5 Compact - Latest generation smart building solution',
+            'Continuous software upgrade and technical support',
+            'Customized solutions for customer requirements'
+          ]
+        : [
+            '1991년: Sirius31 - 1세대 제어 소프트웨어',
+            '1998년: Light View - 조명 모니터링 시스템',
+            '2003년: Light Manager - 통합 조명 제어',
+            '2005년: Light Manager II - 고급 GUI 기반 시스템',
+            '2013년: Energy Manager 4 - 전력·조명 통합 관리',
+            '2018년: Energy Manager 5 Compact - 최신 스마트빌딩 솔루션',
+            '지속적인 소프트웨어 업그레이드 및 기술지원',
+            '고객 요구사항에 맞춘 커스터마이징 솔루션'
+          ],
+      imagePath: '/images/clarus/energy-manager-system-timeline.png'
     }
   ];
 
@@ -267,25 +321,14 @@ const ClarusDetailPage = () => {
             animate="visible"
             variants={staggerContainer}
           >
-            {/* 로고와 회사명을 나란히 배치 */}
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-              <img 
-                src="/images/logos/clarus-logo.png" 
-                alt="클라루스 로고" 
-                className="h-8 sm:h-10 w-auto object-contain"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 대체 아이콘 표시
-                  e.target.style.display = 'none';
-                  e.target.nextElementSibling.style.display = 'inline-block';
-                }}
-              />
-              <span className="text-4xl sm:text-6xl hidden">🔆</span>
+            {/* 회사명 */}
+            <motion.div variants={fadeInUp} className="flex flex-col items-center justify-center">
               <div className="flex flex-col items-center -space-y-1 sm:-space-y-2">
                 <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
                   {currentLanguage === 'en' ? 'CLARUS' : '클라루스'}
                 </h1>
                 <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                  {currentLanguage === 'en' ? '클라루스' : 'CLARUS Co., Ltd.'}
+                  {currentLanguage === 'en' ? '클라루스' : 'CLARUS INC.'}
                 </p>
               </div>
             </motion.div>
@@ -295,8 +338,8 @@ const ClarusDetailPage = () => {
               variants={fadeInUp}
             >
               {currentLanguage === 'en'
-                ? 'Creating customer value and future together with innovative technology and quality'
-                : '혁신기술에 의한 고객가치 Creator'}
+                ? 'Leading Technology Innovation and Global Business'
+                : '기술혁신과 글로벌 비지니스를 선도합니다.'}
             </motion.p>
 
             <motion.div 
@@ -308,26 +351,72 @@ const ClarusDetailPage = () => {
                   {currentLanguage === 'en' ? 'Established' : '설립'}
                 </span>
                 <div className="text-xl font-bold text-cyan-600 dark:text-cyan-400">
-                  {currentLanguage === 'en' ? '2009' : '2009년'}
+                  {currentLanguage === 'en' ? '2002' : '2002년'}
                 </div>
               </div>
               <div className="px-6 py-3 bg-white dark:bg-gray-800 rounded-lg shadow-md">
                 <span className="text-sm text-gray-600 dark:text-gray-400">
-                  {currentLanguage === 'en' ? 'Business Field 1' : '사업분야 1'}
+                  {currentLanguage === 'en' ? 'Business Field' : '사업분야'}
                 </span>
-                <div className="text-xl font-bold text-cyan-600 dark:text-cyan-400">
-                  {currentLanguage === 'en' ? 'Lighting Control · IoT' : '조명제어 · IoT'}
-                </div>
-              </div>
-              <div className="px-6 py-3 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                <span className="text-sm text-gray-600 dark:text-gray-400">
-                  {currentLanguage === 'en' ? 'Business Field 2' : '사업분야 2'}
-                </span>
-                <div className="text-xl font-bold text-cyan-600 dark:text-cyan-400">
-                  {currentLanguage === 'en' ? 'Power Control, Electrical Safety' : '전력제어, 전기안전'}
+                <div className="text-lg font-bold text-cyan-600 dark:text-cyan-400">
+                  BEMS / IoT
                 </div>
               </div>
             </motion.div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* 회사 소개 */}
+      <motion.section 
+        className="py-12 bg-white dark:bg-gray-900"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div variants={fadeInUp} className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+              {currentLanguage === 'en' ? 'Company Introduction' : '회사 소개'}
+            </h2>
+            <div className="space-y-4 text-lg leading-relaxed">
+              {currentLanguage === 'en' ? (
+                <>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
+                    <span className="font-semibold text-cyan-600 dark:text-cyan-400">CLARUS</span> provides 
+                    lighting and power control solutions optimized for field environments based on a wide product lineup.
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
+                    We have continuously developed core technologies for smart building management and energy savings, including 
+                    <span className="font-semibold"> E/F2-BUS-based integrated control technology</span>, IoT and wired/wireless communication technologies, 
+                    energy management software, and electrical safety IoT devices.
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
+                    We have maximized scalability and maintainability by developing our own system software, and supply products that meet rapidly changing global standards.
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
+                    CLARUS will continue to <span className="font-semibold text-cyan-600 dark:text-cyan-400">create customer value and future together with innovative technology and quality.</span>
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
+                    <span className="font-semibold text-cyan-600 dark:text-cyan-400">클라루스</span>는 
+                    폭넓은 제품 라인업을 바탕으로 현장 환경에 최적화된 조명·전력 제어 솔루션을 제공합니다.
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
+                    <span className="font-semibold">E/F2-BUS 기반의 통합제어 기술</span>과 IoT 및 유·무선 통신 기술, 
+                    에너지 관리 소프트웨어, 전기안전 IoT 장치 등 스마트 빌딩 관리와 에너지 절감을 위한 핵심 기술을 지속적으로 발전시켜 왔습니다.
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
+                    자체 시스템 소프트웨어를 개발하여 확장성과 유지관리성을 극대화하였으며, 급변하는 글로벌 기준에 부합하는 제품을 공급하고 있습니다.
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
+                    앞으로도 클라루스는 <span className="font-semibold text-cyan-600 dark:text-cyan-400">혁신기술에 의한 고객가치 Creator로서 함께 성장해 가겠습니다.</span>
+                  </p>
+                </>
+              )}
+            </div>
           </motion.div>
         </div>
       </motion.section>
@@ -347,20 +436,13 @@ const ClarusDetailPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* 섹션 헤더 */}
           <div className="text-center mb-16">
-            <div className="inline-block mb-4 px-6 py-2 bg-cyan-100 dark:bg-cyan-900/30 rounded-full">
-              <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400">
-                {currentLanguage === 'en' ? '⭐ Core Competencies' : '⭐ 핵심 역량'}
-              </span>
-            </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               {currentLanguage === 'en' 
                 ? "CLARUS's 4 Core Competencies"
                 : '클라루스의 4대 핵심 역량'}
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              {currentLanguage === 'en'
-                ? 'The only R&D center in the group, leading production, export, and online sales'
-                : '그룹 내 유일한 R&D 센터 보유, 생산·수출·온라인 영업 주도'}
+              End-to-End SupplyChain
             </p>
           </div>
 
@@ -404,19 +486,14 @@ const ClarusDetailPage = () => {
                   <div className={`absolute inset-0 bg-gradient-to-br ${bgGradientMap[comp.borderColor]} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                   
                   <div className="relative z-10">
-                    {/* 상단: 아이콘 + 제목 */}
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className={`flex-shrink-0 w-14 h-14 bg-gradient-to-br ${iconGradientMap[comp.borderColor]} rounded-xl flex items-center justify-center text-2xl shadow-lg transform group-hover:rotate-12 transition-transform duration-300`}>
-                        {comp.icon}
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
-                          {currentLanguage === 'en' ? comp.titleEn : comp.titleKo}
-                        </h3>
-                        <p className={`${textColorMap[comp.borderColor]} font-semibold text-sm`}>
-                          {currentLanguage === 'en' ? comp.subtitleEn : comp.subtitleKo}
-                        </p>
-                      </div>
+                    {/* 상단: 제목 */}
+                    <div className="mb-4">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                        {currentLanguage === 'en' ? comp.titleEn : comp.titleKo}
+                      </h3>
+                      <p className={`${textColorMap[comp.borderColor]} font-semibold text-sm`}>
+                        {currentLanguage === 'en' ? comp.subtitleEn : comp.subtitleKo}
+                      </p>
                     </div>
 
                     {/* 본문: 왼쪽 텍스트 + 오른쪽 이미지 */}
@@ -497,257 +574,8 @@ const ClarusDetailPage = () => {
             })}
           </div>
 
-          {/* 하단 강조 문구 */}
-          <div className="mt-16 text-center">
-            <div className="inline-block px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl shadow-xl">
-              <p className="text-white text-lg sm:text-xl font-bold">
-                {currentLanguage === 'en'
-                  ? '🏆 Leading the Group\'s Technology Innovation and Global Business'
-                  : '🏆 그룹의 기술혁신과 글로벌 비즈니스를 선도합니다'}
-              </p>
-            </div>
-          </div>
         </div>
       </section>
-
-      {/* 회사 소개 */}
-      <motion.section 
-        className="py-12 bg-white dark:bg-gray-900"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
-      >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div variants={fadeInUp} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-              {currentLanguage === 'en' ? 'Company Introduction' : '회사 소개'}
-            </h2>
-            <div className="space-y-4 text-lg leading-relaxed">
-              {currentLanguage === 'en' ? (
-                <>
-                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    <span className="font-semibold text-cyan-600 dark:text-cyan-400">CLARUS</span> provides 
-                    lighting and power control solutions optimized for field environments based on a wide product lineup.
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    We have continuously developed core technologies for smart building management and energy savings, including 
-                    <span className="font-semibold"> E/F2-BUS-based integrated control technology</span>, IoT and wired/wireless communication technologies, 
-                    energy management software, and electrical safety IoT devices.
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    We have maximized scalability and maintainability by developing our own system software, and supply products that meet rapidly changing global standards.
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    CLARUS will continue to <span className="font-semibold text-cyan-600 dark:text-cyan-400">create customer value and future together with innovative technology and quality.</span>
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    <span className="font-semibold text-cyan-600 dark:text-cyan-400">클라루스</span>는 
-                    폭넓은 제품 라인업을 바탕으로 현장 환경에 최적화된 조명·전력 제어 솔루션을 제공합니다.
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    <span className="font-semibold">E/F2-BUS 기반의 통합제어 기술</span>과 IoT 및 유·무선 통신 기술, 
-                    에너지 관리 소프트웨어, 전기안전 IoT 장치 등 스마트 빌딩 관리와 에너지 절감을 위한 핵심 기술을 지속적으로 발전시켜 왔습니다.
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    자체 시스템 소프트웨어를 개발하여 확장성과 유지관리성을 극대화하였으며, 급변하는 글로벌 기준에 부합하는 제품을 공급하고 있습니다.
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    앞으로도 클라루스는 <span className="font-semibold text-cyan-600 dark:text-cyan-400">혁신기술에 의한 고객가치 Creator로서 함께 성장해 가겠습니다.</span>
-                  </p>
-                </>
-              )}
-            </div>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* MAGIC CLARUS 브랜드 소개 */}
-      <motion.section 
-        className="py-20 bg-gradient-to-br from-red-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-850 dark:to-gray-900 relative overflow-hidden"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
-      >
-        {/* 배경 패턴 */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
-            backgroundSize: '50px 50px'
-          }} />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* 브랜드 헤더 */}
-          <motion.div variants={fadeInUp} className="text-center mb-16">
-            <div className="inline-block mb-6 px-6 py-2 bg-red-100 dark:bg-red-900/30 rounded-full">
-              <span className="text-sm font-bold text-red-600 dark:text-red-400">
-                {currentLanguage === 'en' ? '🛍️ Brand Product' : '🛍️ 브랜드 제품'}
-              </span>
-            </div>
-            
-            {/* MAGIC CLARUS 로고 */}
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <img 
-                src="/images/logos/magic-clarus-logo.png" 
-                alt="MAGIC CLARUS 로고" 
-                className="h-16 w-auto object-contain"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                }}
-              />
-              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
-                {currentLanguage === 'en' ? 'MAGIC CLARUS' : '브랜드 MAGIC CLARUS'}
-              </h2>
-            </div>
-
-            <p className="text-2xl font-semibold text-red-600 dark:text-red-400 mb-4">
-              {currentLanguage === 'en' 
-                ? 'Easy Install & Easy Control'
-                : '쉽게 설치하고, 앱으로 직관적으로 제어하세요'}
-            </p>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              {currentLanguage === 'en'
-                ? 'Experience a more convenient and efficient smart lighting solution'
-                : '가정의 조명·전력을 더 똑똑하고 편하게 바꿉니다'}
-            </p>
-          </motion.div>
-
-          {/* 특징 카드 */}
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
-            variants={staggerContainer}
-          >
-            <motion.div
-              variants={fadeInUp}
-              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-red-200 dark:border-red-800"
-            >
-              <div className="text-4xl mb-4">🔧</div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                {currentLanguage === 'en' ? 'Easy Installation' : '간편설치'}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {currentLanguage === 'en'
-                  ? 'Quick setup without complicated wiring or configuration'
-                  : '복잡한 배선/설정 없이 빠르게 셋업'}
-              </p>
-            </motion.div>
-
-            <motion.div
-              variants={fadeInUp}
-              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-red-200 dark:border-red-800"
-            >
-              <div className="text-4xl mb-4">📱</div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                {currentLanguage === 'en' ? 'Easy Control' : '쉬운 제어'}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {currentLanguage === 'en'
-                  ? 'Intuitive with one switch, convenient with app'
-                  : '스위치 하나로 직관적, 앱으로 편리하게'}
-              </p>
-            </motion.div>
-
-            <motion.div
-              variants={fadeInUp}
-              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-red-200 dark:border-red-800"
-            >
-              <div className="text-4xl mb-4">🏠</div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                {currentLanguage === 'en' ? 'Expandability' : '확장성'}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {currentLanguage === 'en'
-                  ? 'Gradual upgrade from one room to entire home'
-                  : '방 하나부터 집 전체까지 단계적으로 업그레이드'}
-              </p>
-            </motion.div>
-
-            <motion.div
-              variants={fadeInUp}
-              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-red-200 dark:border-red-800"
-            >
-              <div className="text-4xl mb-4">✅</div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                {currentLanguage === 'en' ? 'Reliable Quality' : '안심 품질'}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {currentLanguage === 'en'
-                  ? '40 years of CLARUS tradition for everyday use'
-                  : '일상에서 매일 쓰는 제품이니까, 40년 전통의 클라루스로'}
-              </p>
-            </motion.div>
-          </motion.div>
-
-          {/* 타겟 고객 */}
-          <motion.div 
-            variants={fadeInUp}
-            className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl mb-12"
-          >
-            <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">
-              {currentLanguage === 'en' ? '🎯 Perfect For' : '🎯 이런 분들께 추천합니다'}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-              <div className="p-4">
-                <div className="text-3xl mb-3">🌟</div>
-                <p className="text-gray-700 dark:text-gray-200">
-                  {currentLanguage === 'en'
-                    ? 'Starting your first smart home'
-                    : '첫 스마트홈을 시작하려는 분'}
-                </p>
-              </div>
-              <div className="p-4">
-                <div className="text-3xl mb-3">🎁</div>
-                <p className="text-gray-700 dark:text-gray-200">
-                  {currentLanguage === 'en'
-                    ? 'Want to gift convenient lighting/power control to parents'
-                    : '부모님 댁에 편한 조명/전원 제어를 선물하고 싶은 분'}
-                </p>
-              </div>
-              <div className="p-4">
-                <div className="text-3xl mb-3">💰</div>
-                <p className="text-gray-700 dark:text-gray-200">
-                  {currentLanguage === 'en'
-                    ? 'Want to save on electricity bills and time'
-                    : '집안 전기요금과 시간을 아끼고 싶은 분'}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* CTA 버튼 */}
-          <motion.div 
-            variants={fadeInUp}
-            className="text-center"
-          >
-            <motion.a
-              href="https://www.magicclarus.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white text-lg font-bold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span>🛒</span>
-              <span>
-                {currentLanguage === 'en' 
-                  ? 'Visit MAGIC CLARUS Online Store'
-                  : 'MAGIC CLARUS 온라인 쇼핑몰 방문하기'}
-              </span>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </motion.a>
-            <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
-              {currentLanguage === 'en'
-                ? 'Check product details, purchase, and technical support'
-                : '제품 상세정보, 구매 및 기술지원 안내'}
-            </p>
-          </motion.div>
-        </div>
-      </motion.section>
 
       {/* 주요 제품/서비스 */}
       <motion.section 
@@ -796,21 +624,63 @@ const ClarusDetailPage = () => {
                       {product.description}
                     </p>
                     
-                    {/* 주요 기능 */}
+                    {/* 주요 기능 또는 타임라인 */}
                     <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                       <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-                        {currentLanguage === 'en' ? '▪ Key Features:' : index === 2 ? '▪ 대상:' : '▪ 주요 기능:'}
+                        {currentLanguage === 'en' ? '▪ Key Features:' : index === 2 ? '▪ 소프트웨어 발전 역사:' : '▪ 주요 기능:'}
                       </h4>
-                      <div className="space-y-2">
-                        {product.features.map((feature, idx) => (
-                          <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
-                            <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">
-                              {index === 2 ? '-' : '✓'}
-                            </span>
-                            <span>{feature}</span>
+                      
+                      {/* 세 번째 항목(Software 사업)은 타임라인 형태로 표시 */}
+                      {index === 2 ? (
+                        <div className="relative">
+                          {/* 타임라인 라인 */}
+                          <div className="absolute left-3 top-2 bottom-2 w-0.5 bg-gradient-to-b from-blue-500 via-blue-400 to-blue-300 dark:from-blue-400 dark:via-blue-500 dark:to-blue-600"></div>
+                          
+                          <div className="space-y-3">
+                            {product.features.slice(0, 6).map((feature, idx) => {
+                              const year = feature.match(/^(\d{4})/)?.[1] || '';
+                              const content = feature.replace(/^\d{4}년?:?\s*/, '');
+                              return (
+                                <div key={idx} className="flex items-start gap-4 relative pl-8">
+                                  {/* 타임라인 포인트 */}
+                                  <div className="absolute left-0 w-6 h-6 bg-blue-500 dark:bg-blue-400 rounded-full flex items-center justify-center shadow-md z-10">
+                                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                                  </div>
+                                  
+                                  {/* 년도 배지 */}
+                                  <div className="flex-shrink-0 px-2 py-1 bg-blue-100 dark:bg-blue-900/50 rounded text-blue-700 dark:text-blue-300 font-bold text-xs min-w-[50px] text-center">
+                                    {year}
+                                  </div>
+                                  
+                                  {/* 내용 */}
+                                  <span className="text-gray-700 dark:text-gray-200 text-sm flex-1">{content}</span>
+                                </div>
+                              );
+                            })}
                           </div>
-                        ))}
-                      </div>
+                          
+                          {/* 추가 기능 (타임라인 외) */}
+                          {product.features.length > 6 && (
+                            <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700 space-y-2">
+                              {product.features.slice(6).map((feature, idx) => (
+                                <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
+                                  <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">✓</span>
+                                  <span>{feature}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          {product.features.map((feature, idx) => (
+                            <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
+                              <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">✓</span>
+                              <span>{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
 

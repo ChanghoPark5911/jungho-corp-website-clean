@@ -557,13 +557,13 @@ const AdminPageV2 = () => {
               />
             </div>
             
-            {authError && (
+              {authError && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg text-sm flex items-center">
                 <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
-                {authError}
-              </div>
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  {authError}
+            </div>
             )}
 
             <button
@@ -817,10 +817,10 @@ const DashboardTab = () => {
       {/* 관리 기능 바로가기 */}
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="p-6 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border border-green-200 dark:border-green-700">
-          <h3 className="text-lg font-bold text-green-900 dark:text-green-100 mb-1">🎬 미디어/PR 관리</h3>
+            <h3 className="text-lg font-bold text-green-900 dark:text-green-100 mb-1">🎬 미디어/PR 관리</h3>
           <p className="text-sm text-green-800 dark:text-green-200 mb-3">프로젝트 영상, 홍보영상, SNS 링크를 관리하세요</p>
           <p className="text-xs text-green-600 dark:text-green-400">위의 "미디어/PR" 탭에서 관리할 수 있습니다</p>
-        </div>
+          </div>
         <div className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
           <h3 className="text-lg font-bold text-purple-900 dark:text-purple-100 mb-1">💬 고객센터 관리</h3>
           <p className="text-sm text-purple-800 dark:text-purple-200 mb-3">FAQ, 문의사항을 관리하세요</p>

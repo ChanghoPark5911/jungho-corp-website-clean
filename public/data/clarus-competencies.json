@@ -7,16 +7,24 @@
       "titleEn": "R&D Center",
       "subtitleKo": "연구개발센터",
       "subtitleEn": "Research & Development",
-      "descriptionKo": "그룹 내 유일한 연구개발센터로서 조명/전력제어 시스템의 핵심 기술을 개발합니다",
-      "descriptionEn": "The only R&D center within the group, developing core technologies for lighting and power control systems",
+      "descriptionKo": "조명/전력제어 시스템의 핵심 기술을 개발합니다.",
+      "descriptionEn": "Developing core technologies for lighting and power control systems",
       "features": [
         {
           "ko": "기업부설 연구소 운영",
           "en": "Corporate Research Institute"
         },
         {
-          "ko": "IoT 및 무선통신 기술 개발",
-          "en": "IoT & Wireless Communication Technology"
+          "ko": "IoT 및 유무선 통신 기술 개발",
+          "en": "IoT & Wired/Wireless Communication Technology"
+        },
+        {
+          "ko": "특허 출원",
+          "en": "Patent Applications"
+        },
+        {
+          "ko": "국책 과제 수행",
+          "en": "Government R&D Projects"
         }
       ],
       "imagePath": "/images/clarus/competencies/rnd-center.jpg",
@@ -37,8 +45,16 @@
           "en": "In-house Production System"
         },
         {
-          "ko": "품질인증 획득 (UL/cUL, KC, FCC)",
-          "en": "Quality Certification (UL/cUL, KC, FCC)"
+          "ko": "직접생산확인 증명서 보유",
+          "en": "Direct Production Certificate"
+        },
+        {
+          "ko": "ISO 9001, 14001 획득",
+          "en": "ISO 9001, 14001 Certified"
+        },
+        {
+          "ko": "품질인증 획득 (UL, FCC, KC, K, Q …)",
+          "en": "Quality Certification (UL, FCC, KC, K, Q …)"
         }
       ],
       "imagePath": "/images/clarus/competencies/production-facility.jpg",
@@ -51,16 +67,16 @@
       "titleEn": "Export Business",
       "subtitleKo": "해외수출",
       "subtitleEn": "Global Market",
-      "descriptionKo": "그룹 수출을 담당하며, 북미·유럽·아시아 등 글로벌 시장으로 진출합니다",
-      "descriptionEn": "Leading group exports, expanding into global markets including North America, Europe, and Asia",
+      "descriptionKo": "북미·유럽·아시아 등 글로벌 시장을 중심으로 제품을 공급합니다.",
+      "descriptionEn": "Supplying products to global markets including North America, Europe, and Asia",
       "features": [
         {
-          "ko": "북미·유럽 선진시장",
-          "en": "North America & Europe"
+          "ko": "북미 시장 : 미국, 캐나다, 멕시코",
+          "en": "North America: USA, Canada, Mexico"
         },
         {
-          "ko": "중국·대만·동남아 신흥시장",
-          "en": "China, Taiwan, Southeast Asia"
+          "ko": "아시아 시장 : 대만, 중국, 베트남, 인도네시아 등",
+          "en": "Asia: Taiwan, China, Vietnam, Indonesia, etc."
         }
       ],
       "imagePath": "/images/clarus/competencies/export-business.jpg",
@@ -73,16 +89,20 @@
       "titleEn": "Online Shopping Mall",
       "subtitleKo": "온라인 영업",
       "subtitleEn": "E-Commerce",
-      "descriptionKo": "MAGIC CLARUS 브랜드로 국내 온라인 판매 및 고객 직접 소통을 담당합니다",
-      "descriptionEn": "Operating MAGIC CLARUS brand for domestic online sales and direct customer communication",
+      "descriptionKo": "Magic CLARUS 브랜드로 온라인쇼핑몰을 통해 제품을 판매합니다",
+      "descriptionEn": "Selling products through online shopping malls under the Magic CLARUS brand",
       "features": [
         {
-          "ko": "네이버 스마트스토어",
+          "ko": "Magic CLARUS (자사몰)",
+          "en": "Magic CLARUS (Official Mall)"
+        },
+        {
+          "ko": "네이버 스마트 스토어",
           "en": "Naver Smart Store"
         },
         {
-          "ko": "쿠팡 및 자사몰 운영",
-          "en": "Coupang & Official Mall"
+          "ko": "쿠팡",
+          "en": "Coupang"
         }
       ],
       "imagePath": "/images/clarus/competencies/online-shopping.jpg",
@@ -90,15 +110,3 @@
     }
   ]
 }
-
-
-
-
-
-
-
-
-
-
-
-

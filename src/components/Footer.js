@@ -258,16 +258,9 @@ const Footer = () => {
               <a
                 href="/admin"
                 className="text-white/30 hover:text-secondary transition-colors duration-200 text-xs"
-                title="관리자 (홈페이지/다국어)"
+                title="통합 관리자"
               >
                 ⚙
-              </a>
-              <a
-                href="/admin-new/login"
-                className="text-white/30 hover:text-secondary transition-colors duration-200 text-xs"
-                title="관리자 (프로젝트/홍보영상)"
-              >
-                📁
               </a>
             </div>
           </div>

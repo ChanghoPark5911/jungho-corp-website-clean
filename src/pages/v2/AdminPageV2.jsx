@@ -524,8 +524,8 @@ const AdminPageV2 = () => {
                 </svg>
               </div>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">홈화면 관리자 로그인</h2>
-            <p className="text-gray-600 dark:text-gray-400">정호그룹 홈화면 문구 관리 페이지</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">통합 관리자 로그인</h2>
+            <p className="text-gray-600 dark:text-gray-400">정호그룹 홈페이지 통합 관리 시스템</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
@@ -588,15 +588,19 @@ const AdminPageV2 = () => {
     );
   }
 
-  // 관리자 대시보드
-  const tabs = [
-    { id: 'dashboard', label: '대시보드', icon: '📊' },
-    { id: 'v2home', label: '메인 홈페이지', icon: '🏠' },
-    { id: 'pages', label: '정적 페이지', icon: '📄' },
-    // 미디어 관리는 /admin-new/media 로 이동됨
-    { id: 'i18n', label: '다국어 관리', icon: '🌐' },
-    { id: 'users', label: '사용자 관리', icon: '👥' },
+  // 관리자 대시보드 - 통합 탭 구조
+  const allTabs = [
+    { id: 'dashboard', label: '대시보드', icon: '📊', permission: 'dashboard' },
+    { id: 'v2home', label: '메인 홈페이지', icon: '🏠', permission: 'homepage' },
+    { id: 'pages', label: '정적 페이지', icon: '📄', permission: 'homepage' },
+    { id: 'media', label: '미디어/PR', icon: '🎬', permission: 'media' },
+    { id: 'support', label: '고객센터', icon: '💬', permission: 'support' },
+    { id: 'i18n', label: '다국어 관리', icon: '🌐', permission: 'i18n' },
+    { id: 'users', label: '사용자 관리', icon: '👥', permission: 'users' },
   ];
+  
+  // 역할별 접근 가능 탭 필터링
+  const tabs = allTabs.filter(tab => auth.canAccessMenu(tab.permission));
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -625,12 +629,12 @@ const AdminPageV2 = () => {
                 </div>
                 <div className="text-left">
                   <h1 className="text-lg font-bold text-gray-900 dark:text-white flex items-center">
-                    V2 관리자
+                    통합 관리자
                     <svg className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
                   </h1>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">정호그룹 V2 (클릭하여 홈으로)</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">정호그룹 홈페이지 관리 (클릭하여 홈으로)</p>
                 </div>
               </button>
             </div>
@@ -713,7 +717,8 @@ const AdminPageV2 = () => {
           {activeTab === 'dashboard' && <DashboardTab />}
           {activeTab === 'v2home' && <V2HomeTab data={v2HomeData} setData={setV2HomeData} onSave={saveV2HomeData} />}
           {activeTab === 'pages' && <PagesTab data={pagesData} setData={setPagesData} onSave={savePagesData} />}
-          {/* 미디어 관리는 /admin-new/media 로 이동됨 */}
+          {activeTab === 'media' && <MediaTab />}
+          {activeTab === 'support' && <SupportTab />}
           {activeTab === 'i18n' && i18nData && <I18nTab data={i18nData} setData={setI18nData} onSave={saveI18nData} />}
           {activeTab === 'users' && <UsersTab data={usersData} setData={setUsersData} onSave={saveUsersData} />}
         </div>
@@ -798,26 +803,892 @@ const DashboardTab = () => {
       
       {/* 빠른 시작 가이드 */}
       <div className="mt-6 p-6 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
-        <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">💡 빠른 시작</h3>
-        <ul className="space-y-2 text-blue-800 dark:text-blue-200">
-          <li>• <strong>메인 홈페이지</strong>: Hero와 Gateway 섹션을 관리하세요</li>
+        <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">💡 빠른 시작 가이드</h3>
+        <ul className="space-y-2 text-blue-800 dark:text-blue-200 text-sm">
+          <li>• <strong>메인 홈페이지</strong>: Hero 섹션과 Gateway 카드를 관리하세요</li>
           <li>• <strong>정적 페이지</strong>: ABOUT 페이지 콘텐츠를 수정하세요</li>
+          <li>• <strong>미디어/PR</strong>: 프로젝트 영상, 홍보영상, SNS 링크를 관리하세요</li>
+          <li>• <strong>고객센터</strong>: FAQ를 추가하고 관리하세요</li>
           <li>• <strong>다국어 관리</strong>: 한국어/영어 번역을 관리하세요</li>
+          <li>• <strong>사용자 관리</strong>: 관리자 계정을 추가하고 권한을 설정하세요</li>
         </ul>
       </div>
 
-      {/* 미디어 관리 바로가기 */}
-      <div className="mt-6 p-6 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border border-green-200 dark:border-green-700">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-bold text-green-900 dark:text-green-100 mb-1">🎬 미디어/PR 관리</h3>
-            <p className="text-sm text-green-800 dark:text-green-200">프로젝트 영상, 홍보영상, SNS 링크를 관리하세요</p>
-          </div>
+      {/* 관리 기능 바로가기 */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="p-6 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border border-green-200 dark:border-green-700">
+          <h3 className="text-lg font-bold text-green-900 dark:text-green-100 mb-1">🎬 미디어/PR 관리</h3>
+          <p className="text-sm text-green-800 dark:text-green-200 mb-3">프로젝트 영상, 홍보영상, SNS 링크를 관리하세요</p>
+          <p className="text-xs text-green-600 dark:text-green-400">위의 "미디어/PR" 탭에서 관리할 수 있습니다</p>
+        </div>
+        <div className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
+          <h3 className="text-lg font-bold text-purple-900 dark:text-purple-100 mb-1">💬 고객센터 관리</h3>
+          <p className="text-sm text-purple-800 dark:text-purple-200 mb-3">FAQ, 문의사항을 관리하세요</p>
+          <p className="text-xs text-purple-600 dark:text-purple-400">위의 "고객센터" 탭에서 관리할 수 있습니다</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// 미디어/PR 관리 탭 (통합)
+const MediaTab = () => {
+  const [activeSubTab, setActiveSubTab] = useState('projects');
+  const [mediaData, setMediaData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saveStatus, setSaveStatus] = useState('');
+
+  // 데이터 로드
+  useEffect(() => {
+    loadMediaData();
+  }, []);
+
+  const loadMediaData = async () => {
+    try {
+      let finalData = {
+        projects: [],
+        promotionVideos: [],
+        technicalDocs: [],
+        intellectualProperty: [],
+        ipStats: { total: 0, patents: 0, designs: 0, software: 0 },
+        snsLinks: {}
+      };
+
+      // JSON 파일에서 기본 데이터 로드
+      try {
+        const response = await fetch('/data/admin-media.json');
+        if (response.ok) {
+          const jsonData = await response.json();
+          finalData.projects = jsonData.projects || [];
+          finalData.promotionVideos = jsonData.promotionVideos || [];
+          finalData.snsLinks = jsonData.snsLinks || {};
+        }
+      } catch (e) {
+        console.log('admin-media.json 로드 실패');
+      }
+
+      // 프로젝트 JSON 로드
+      try {
+        const projectsResponse = await fetch('/data/projects.json');
+        if (projectsResponse.ok) {
+          const projectsData = await projectsResponse.json();
+          if (projectsData.projects) {
+            finalData.projects = projectsData.projects;
+          }
+        }
+      } catch (e) {
+        console.log('projects.json 로드 실패');
+      }
+
+      // localStorage에서 추가 데이터 병합
+      const localData = localStorage.getItem('projects-data');
+      if (localData) {
+        const parsedLocal = JSON.parse(localData);
+        if (parsedLocal.projects?.length > 0) finalData.projects = parsedLocal.projects;
+        if (parsedLocal.promotionVideos?.length > 0) finalData.promotionVideos = parsedLocal.promotionVideos;
+        if (parsedLocal.snsLinks) finalData.snsLinks = parsedLocal.snsLinks;
+      }
+
+      setMediaData(finalData);
+      setLoading(false);
+    } catch (error) {
+      console.error('데이터 로드 실패:', error);
+      setMediaData({ projects: [], promotionVideos: [], snsLinks: {} });
+      setLoading(false);
+    }
+  };
+
+  const saveMediaData = () => {
+    setSaveStatus('저장 중...');
+    try {
+      localStorage.setItem('projects-data', JSON.stringify(mediaData));
+      
+      // v2_media_data도 함께 업데이트
+      const v2MediaData = { promotionVideos: mediaData.promotionVideos || [] };
+      localStorage.setItem('v2_media_data', JSON.stringify(v2MediaData));
+      
+      window.dispatchEvent(new CustomEvent('projectsUpdated', { detail: mediaData }));
+      
+      setSaveStatus('✅ 저장 완료!');
+      setTimeout(() => setSaveStatus(''), 3000);
+    } catch (error) {
+      setSaveStatus('❌ 저장 실패');
+      setTimeout(() => setSaveStatus(''), 3000);
+    }
+  };
+
+  const exportAllData = () => {
+    try {
+      const exportData = {
+        projects: mediaData.projects || [],
+        promotionVideos: mediaData.promotionVideos || [],
+        snsLinks: mediaData.snsLinks || {},
+        lastUpdated: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
+      const jsonString = JSON.stringify(exportData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `admin-media-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      alert(`✅ 데이터 내보내기 완료!\n\n📁 영구 저장 방법:\n1. 다운로드한 파일을 public/data/admin-media.json에 복사\n2. Git 커밋 & 푸시\n3. 배포 완료!`);
+    } catch (error) {
+      console.error('내보내기 실패:', error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="text-center">
+          <div className="text-4xl mb-4">⏳</div>
+          <p className="text-gray-600 dark:text-gray-400">데이터 로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">미디어/PR 관리</h2>
+        <div className="flex gap-3">
+          {saveStatus && (
+            <span className="px-4 py-2 text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 rounded-lg">
+              {saveStatus}
+            </span>
+          )}
           <button
-            onClick={() => window.location.href = '/admin-new/login'}
-            className="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all shadow-lg"
+            onClick={saveMediaData}
+            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all"
           >
-            📁 미디어 관리 →
+            💾 저장
+          </button>
+          <button
+            onClick={exportAllData}
+            className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all"
+          >
+            📥 JSON 내보내기
+          </button>
+        </div>
+      </div>
+
+      {/* 서브 탭 */}
+      <div className="flex space-x-4 mb-6 border-b border-gray-200 dark:border-gray-700">
+        {[
+          { id: 'projects', label: '🏢 프로젝트 영상', count: mediaData?.projects?.length || 0 },
+          { id: 'videos', label: '📺 홍보영상', count: mediaData?.promotionVideos?.length || 0 },
+          { id: 'sns', label: '🔗 SNS 링크', count: null },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveSubTab(tab.id)}
+            className={`pb-3 px-2 text-sm font-medium border-b-2 transition-colors ${
+              activeSubTab === tab.id
+                ? 'border-primary-600 text-primary-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            {tab.label} {tab.count !== null && `(${tab.count})`}
+          </button>
+        ))}
+      </div>
+
+      {/* 프로젝트 영상 */}
+      {activeSubTab === 'projects' && (
+        <MediaProjectsSection 
+          projects={mediaData?.projects || []} 
+          setMediaData={setMediaData}
+          mediaData={mediaData}
+        />
+      )}
+
+      {/* 홍보영상 */}
+      {activeSubTab === 'videos' && (
+        <MediaVideosSection 
+          videos={mediaData?.promotionVideos || []}
+          setMediaData={setMediaData}
+          mediaData={mediaData}
+        />
+      )}
+
+      {/* SNS 링크 */}
+      {activeSubTab === 'sns' && (
+        <MediaSNSSection 
+          snsLinks={mediaData?.snsLinks || {}}
+          setMediaData={setMediaData}
+          mediaData={mediaData}
+        />
+      )}
+    </div>
+  );
+};
+
+// 미디어 - 프로젝트 섹션
+const MediaProjectsSection = ({ projects, setMediaData, mediaData }) => {
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
+
+  const handleDelete = (projectId) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      const newProjects = projects.filter(p => p.id !== projectId);
+      setMediaData({ ...mediaData, projects: newProjects });
+    }
+  };
+
+  const handleAdd = (newProject) => {
+    const maxId = projects.reduce((max, p) => Math.max(max, p.id || 0), 0);
+    const projectWithId = { ...newProject, id: maxId + 1 };
+    setMediaData({ ...mediaData, projects: [...projects, projectWithId] });
+    setShowAddForm(false);
+  };
+
+  const handleEdit = (updatedProject) => {
+    const newProjects = projects.map(p => 
+      p.id === updatedProject.id ? updatedProject : p
+    );
+    setMediaData({ ...mediaData, projects: newProjects });
+    setEditingProject(null);
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          총 {projects.length}개의 프로젝트가 등록되어 있습니다.
+        </p>
+        <button
+          onClick={() => setShowAddForm(true)}
+          className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium"
+        >
+          + 새 프로젝트 추가
+        </button>
+      </div>
+
+      {/* 프로젝트 목록 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {projects.sort((a, b) => (b.year || 0) - (a.year || 0)).map((project) => (
+          <div key={project.id} className="bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div className="h-40 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+              {project.image || project.imageUrl ? (
+                <img 
+                  src={project.image || project.imageUrl} 
+                  alt={project.name || project.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+              ) : (
+                <span className="text-gray-400">📷 이미지 없음</span>
+              )}
+            </div>
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
+                  {project.category}
+                </span>
+                <span className="text-xs text-gray-500">{project.year}</span>
+              </div>
+              <h3 className="font-bold text-gray-900 dark:text-white mb-3 line-clamp-2">
+                {project.name || project.title}
+              </h3>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setEditingProject(project)}
+                  className="flex-1 text-sm bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-3 py-1.5 rounded"
+                >
+                  수정
+                </button>
+                <button
+                  onClick={() => handleDelete(project.id)}
+                  className="flex-1 text-sm bg-red-100 dark:bg-red-900/30 hover:bg-red-200 text-red-700 dark:text-red-400 px-3 py-1.5 rounded"
+                >
+                  삭제
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 추가/수정 모달 */}
+      {(showAddForm || editingProject) && (
+        <MediaProjectFormModal
+          project={editingProject}
+          onSave={editingProject ? handleEdit : handleAdd}
+          onCancel={() => {
+            setShowAddForm(false);
+            setEditingProject(null);
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+// 미디어 - 프로젝트 추가/수정 모달
+const MediaProjectFormModal = ({ project, onSave, onCancel }) => {
+  const [formData, setFormData] = useState(
+    project || {
+      name: '',
+      category: '업무시설',
+      image: '',
+      year: new Date().getFullYear()
+    }
+  );
+
+  const categories = ['업무시설', '공공시설', '주거시설', '상업시설', '문화·의료·교육', '생산·물류·데이터센터'];
+  const years = Array.from({ length: 11 }, (_, i) => new Date().getFullYear() - i);
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          {project ? '프로젝트 수정' : '새 프로젝트 추가'}
+        </h3>
+        
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              프로젝트명
+            </label>
+            <input
+              type="text"
+              value={formData.name || formData.title || ''}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value, title: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              placeholder="프로젝트명 입력"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              카테고리
+            </label>
+            <select
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+            >
+              {categories.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              연도
+            </label>
+            <select
+              value={formData.year}
+              onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+            >
+              {years.map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              이미지 URL
+            </label>
+            <input
+              type="text"
+              value={formData.image || formData.imageUrl || ''}
+              onChange={(e) => setFormData({ ...formData, image: e.target.value, imageUrl: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              placeholder="/images/projects/..."
+            />
+          </div>
+        </div>
+        
+        <div className="flex gap-3 mt-6">
+          <button
+            onClick={onCancel}
+            className="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600"
+          >
+            취소
+          </button>
+          <button
+            onClick={() => onSave(formData)}
+            className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+          >
+            {project ? '수정' : '추가'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// 미디어 - 홍보영상 섹션
+const MediaVideosSection = ({ videos, setMediaData, mediaData }) => {
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingVideo, setEditingVideo] = useState(null);
+
+  const handleDelete = (videoId) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      const newVideos = videos.filter(v => v.id !== videoId);
+      setMediaData({ ...mediaData, promotionVideos: newVideos });
+    }
+  };
+
+  const handleAdd = (newVideo) => {
+    const videoWithId = { ...newVideo, id: 'video' + Date.now() };
+    setMediaData({ ...mediaData, promotionVideos: [...videos, videoWithId] });
+    setShowAddForm(false);
+  };
+
+  const handleEdit = (updatedVideo) => {
+    const newVideos = videos.map(v => v.id === updatedVideo.id ? updatedVideo : v);
+    setMediaData({ ...mediaData, promotionVideos: newVideos });
+    setEditingVideo(null);
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          총 {videos.length}개의 홍보영상이 등록되어 있습니다.
+        </p>
+        <button
+          onClick={() => setShowAddForm(true)}
+          className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium"
+        >
+          + 새 영상 추가
+        </button>
+      </div>
+
+      {/* 영상 목록 */}
+      <div className="space-y-3">
+        {videos.map((video) => (
+          <div key={video.id} className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+            <div className="w-32 h-20 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center flex-shrink-0">
+              {video.thumbnail || video.thumbnailUrl ? (
+                <img src={video.thumbnail || video.thumbnailUrl} alt={video.title} className="w-full h-full object-cover rounded" />
+              ) : (
+                <span className="text-2xl">📺</span>
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-medium text-gray-900 dark:text-white truncate">{video.title}</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{video.category} • {video.date}</p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setEditingVideo(video)}
+                className="text-sm bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 px-3 py-1.5 rounded"
+              >
+                수정
+              </button>
+              <button
+                onClick={() => handleDelete(video.id)}
+                className="text-sm bg-red-100 dark:bg-red-900/30 hover:bg-red-200 text-red-700 dark:text-red-400 px-3 py-1.5 rounded"
+              >
+                삭제
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 추가/수정 모달 */}
+      {(showAddForm || editingVideo) && (
+        <MediaVideoFormModal
+          video={editingVideo}
+          onSave={editingVideo ? handleEdit : handleAdd}
+          onCancel={() => {
+            setShowAddForm(false);
+            setEditingVideo(null);
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+// 미디어 - 영상 추가/수정 모달
+const MediaVideoFormModal = ({ video, onSave, onCancel }) => {
+  const [formData, setFormData] = useState(
+    video || {
+      title: '',
+      category: '회사소개',
+      youtubeUrl: '',
+      thumbnail: '',
+      description: '',
+      date: new Date().toISOString().split('T')[0]
+    }
+  );
+
+  const categories = ['회사소개', '계열사', '제품', '기술', '이벤트'];
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          {video ? '영상 수정' : '새 영상 추가'}
+        </h3>
+        
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">제목</label>
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              placeholder="영상 제목"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">카테고리</label>
+            <select
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+            >
+              {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">YouTube URL</label>
+            <input
+              type="text"
+              value={formData.youtubeUrl || ''}
+              onChange={(e) => setFormData({ ...formData, youtubeUrl: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              placeholder="https://www.youtube.com/watch?v=..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">썸네일 URL</label>
+            <input
+              type="text"
+              value={formData.thumbnail || formData.thumbnailUrl || ''}
+              onChange={(e) => setFormData({ ...formData, thumbnail: e.target.value, thumbnailUrl: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              placeholder="/images/thumbnails/..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">날짜</label>
+            <input
+              type="date"
+              value={formData.date}
+              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+        </div>
+        
+        <div className="flex gap-3 mt-6">
+          <button onClick={onCancel} className="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg">취소</button>
+          <button onClick={() => onSave(formData)} className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg">
+            {video ? '수정' : '추가'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// 미디어 - SNS 링크 섹션
+const MediaSNSSection = ({ snsLinks, setMediaData, mediaData }) => {
+  const [links, setLinks] = useState(snsLinks);
+
+  const handleChange = (key, value) => {
+    const newLinks = { ...links, [key]: value };
+    setLinks(newLinks);
+    setMediaData({ ...mediaData, snsLinks: newLinks });
+  };
+
+  const snsFields = [
+    { key: 'youtube', label: 'YouTube', icon: '📺', placeholder: 'https://www.youtube.com/@...' },
+    { key: 'instagram', label: 'Instagram', icon: '📸', placeholder: 'https://www.instagram.com/...' },
+    { key: 'naverBlog', label: '네이버 블로그', icon: '📝', placeholder: 'https://blog.naver.com/...' },
+    { key: 'facebook', label: 'Facebook', icon: '👥', placeholder: 'https://www.facebook.com/...' },
+  ];
+
+  return (
+    <div>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        홈페이지에 표시될 SNS 링크를 관리합니다.
+      </p>
+      <div className="space-y-4">
+        {snsFields.map(field => (
+          <div key={field.key}>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {field.icon} {field.label}
+            </label>
+            <input
+              type="url"
+              value={links[field.key] || ''}
+              onChange={(e) => handleChange(field.key, e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              placeholder={field.placeholder}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// 고객센터 관리 탭 (통합)
+const SupportTab = () => {
+  const [faqData, setFaqData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saveStatus, setSaveStatus] = useState('');
+  const [editingFaq, setEditingFaq] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+
+  useEffect(() => {
+    loadFaqData();
+  }, []);
+
+  const loadFaqData = async () => {
+    try {
+      // localStorage 우선
+      const localData = localStorage.getItem('admin-faq-data');
+      if (localData) {
+        setFaqData(JSON.parse(localData));
+        setLoading(false);
+        return;
+      }
+
+      // JSON 파일에서 로드
+      const response = await fetch('/data/admin-faqs.json');
+      const data = await response.json();
+      setFaqData(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('FAQ 데이터 로드 실패:', error);
+      setFaqData({ faqs: [], categories: [] });
+      setLoading(false);
+    }
+  };
+
+  const saveFaqData = () => {
+    setSaveStatus('저장 중...');
+    try {
+      localStorage.setItem('admin-faq-data', JSON.stringify(faqData));
+      setSaveStatus('✅ 저장 완료!');
+      setTimeout(() => setSaveStatus(''), 3000);
+    } catch (error) {
+      setSaveStatus('❌ 저장 실패');
+      setTimeout(() => setSaveStatus(''), 3000);
+    }
+  };
+
+  const exportFaqData = () => {
+    try {
+      const jsonString = JSON.stringify(faqData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `faqs-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      alert('✅ FAQ 데이터 내보내기 완료!\n\npublic/data/admin-faqs.json에 복사 후 Git 푸시하세요.');
+    } catch (error) {
+      console.error('내보내기 실패:', error);
+    }
+  };
+
+  const handleDelete = (faqId) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      const newFaqs = faqData.faqs.filter(f => f.id !== faqId);
+      setFaqData({ ...faqData, faqs: newFaqs });
+    }
+  };
+
+  const handleAdd = (newFaq) => {
+    const maxNum = faqData.faqs.reduce((max, f) => {
+      const numPart = parseInt(f.id.toString().replace(/\D/g, '')) || 0;
+      return Math.max(max, numPart);
+    }, 0);
+    
+    const faqWithId = { 
+      ...newFaq, 
+      id: `faq${String(maxNum + 1).padStart(3, '0')}`,
+      views: 0,
+      helpful: 0
+    };
+    setFaqData({ ...faqData, faqs: [...faqData.faqs, faqWithId] });
+    setShowAddForm(false);
+  };
+
+  const handleEdit = (updatedFaq) => {
+    const newFaqs = faqData.faqs.map(f => f.id === updatedFaq.id ? updatedFaq : f);
+    setFaqData({ ...faqData, faqs: newFaqs });
+    setEditingFaq(null);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="text-center">
+          <div className="text-4xl mb-4">⏳</div>
+          <p className="text-gray-600 dark:text-gray-400">데이터 로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">고객센터 관리</h2>
+        <div className="flex gap-3">
+          {saveStatus && (
+            <span className="px-4 py-2 text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 rounded-lg">
+              {saveStatus}
+            </span>
+          )}
+          <button
+            onClick={saveFaqData}
+            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold"
+          >
+            💾 저장
+          </button>
+          <button
+            onClick={exportFaqData}
+            className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold"
+          >
+            📥 JSON 내보내기
+          </button>
+        </div>
+      </div>
+
+      {/* FAQ 목록 헤더 */}
+      <div className="flex justify-between items-center mb-4">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          총 {faqData?.faqs?.length || 0}개의 FAQ가 등록되어 있습니다.
+        </p>
+        <button
+          onClick={() => setShowAddForm(true)}
+          className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium"
+        >
+          + 새 FAQ 추가
+        </button>
+      </div>
+
+      {/* FAQ 목록 */}
+      <div className="space-y-3">
+        {faqData?.faqs?.map((faq) => (
+          <div key={faq.id} className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <span className="inline-block text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded mb-2">
+                  {faq.category}
+                </span>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2">Q. {faq.question}</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">A. {faq.answer}</p>
+              </div>
+              <div className="flex gap-2 ml-4">
+                <button
+                  onClick={() => setEditingFaq(faq)}
+                  className="text-sm bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 px-3 py-1.5 rounded"
+                >
+                  수정
+                </button>
+                <button
+                  onClick={() => handleDelete(faq.id)}
+                  className="text-sm bg-red-100 dark:bg-red-900/30 hover:bg-red-200 text-red-700 dark:text-red-400 px-3 py-1.5 rounded"
+                >
+                  삭제
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 추가/수정 모달 */}
+      {(showAddForm || editingFaq) && (
+        <FaqFormModal
+          faq={editingFaq}
+          categories={faqData?.categories || ['일반', '기술', '서비스', '기타']}
+          onSave={editingFaq ? handleEdit : handleAdd}
+          onCancel={() => {
+            setShowAddForm(false);
+            setEditingFaq(null);
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+// FAQ 추가/수정 모달
+const FaqFormModal = ({ faq, categories, onSave, onCancel }) => {
+  const [formData, setFormData] = useState(
+    faq || {
+      question: '',
+      answer: '',
+      category: categories[0] || '일반'
+    }
+  );
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          {faq ? 'FAQ 수정' : '새 FAQ 추가'}
+        </h3>
+        
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">카테고리</label>
+            <select
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+            >
+              {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">질문</label>
+            <input
+              type="text"
+              value={formData.question}
+              onChange={(e) => setFormData({ ...formData, question: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              placeholder="자주 묻는 질문을 입력하세요"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">답변</label>
+            <textarea
+              value={formData.answer}
+              onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
+              rows="5"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+              placeholder="답변을 입력하세요"
+            />
+          </div>
+        </div>
+        
+        <div className="flex gap-3 mt-6">
+          <button onClick={onCancel} className="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg">취소</button>
+          <button onClick={() => onSave(formData)} className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg">
+            {faq ? '수정' : '추가'}
           </button>
         </div>
       </div>
@@ -1096,710 +1967,6 @@ const V2HomeTab = ({ data, setData, onSave }) => {
     </div>
   );
 };
-
-// 미디어 관리 탭
-const MediaTab = ({ data, setData, onSave, exportToJSON, copyToClipboard }) => (
-  <div>
-    <div className="flex items-center justify-between mb-6">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">미디어 관리</h2>
-      <div className="flex gap-3">
-        <button
-          onClick={onSave}
-          className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg"
-        >
-          💾 임시 저장 (localStorage)
-        </button>
-        <button
-          onClick={copyToClipboard}
-          className="px-6 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg"
-        >
-          📋 클립보드에 복사 (추천!)
-        </button>
-        <button
-          onClick={exportToJSON}
-          className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
-        >
-          📥 JSON 파일 다운로드
-        </button>
-      </div>
-    </div>
-
-    {/* SNS 링크 */}
-    <div className="mb-6">
-      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">🔗 SNS 링크</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {Object.entries(data.snsLinks).map(([key, value]) => (
-          <div key={key}>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 capitalize">
-              {key === 'naverBlog' ? '네이버 블로그' : key}
-            </label>
-            <input
-              type="url"
-              value={value}
-              onChange={(e) => setData({...data, snsLinks: {...data.snsLinks, [key]: e.target.value}})}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-              placeholder={`https://...`}
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-
-    {/* 홍보영상 관리 */}
-    <div>
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white">🎬 홍보영상 관리</h3>
-        <button
-          onClick={() => {
-            const newVideo = {
-              id: Date.now(),
-              title: '새 홍보영상',
-              category: 'company',
-              description: '영상 설명을 입력하세요',
-              thumbnail: '🎬',
-              videoType: 'youtube', // 'youtube' | 'mp4'
-              videoUrl: '',
-              youtubeUrl: '',
-              mp4Url: '',
-              mp4File: null,
-              duration: '0:00',
-              date: new Date().toISOString().split('T')[0],
-              views: '0'
-            };
-            setData({
-              ...data,
-              promotionVideos: [...(data.promotionVideos || []), newVideo]
-            });
-          }}
-          className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all"
-        >
-          ➕ 새 영상 추가
-        </button>
-      </div>
-
-      <div className="space-y-4">
-        {(data.promotionVideos || []).length === 0 ? (
-          <div className="p-8 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
-            <div className="text-6xl mb-4">🎬</div>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              등록된 홍보영상이 없습니다
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-500">
-              위의 "새 영상 추가" 버튼을 클릭하여 홍보영상을 추가하세요
-            </p>
-          </div>
-        ) : (
-          (data.promotionVideos || []).map((video, index) => (
-            <div key={video.id} className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-3">
-                  <span className="text-3xl">{video.thumbnail}</span>
-                  <div>
-                    <input
-                      type="text"
-                      value={video.title}
-                      onChange={(e) => {
-                        const updated = [...data.promotionVideos];
-                        updated[index] = { ...updated[index], title: e.target.value };
-                        setData({ ...data, promotionVideos: updated });
-                      }}
-                      className="text-lg font-bold text-gray-900 dark:text-white bg-transparent border-b border-gray-300 dark:border-gray-600 focus:border-primary-500 outline-none"
-                      placeholder="영상 제목"
-                    />
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    if (window.confirm('이 영상을 삭제하시겠습니까?')) {
-                      setData({
-                        ...data,
-                        promotionVideos: data.promotionVideos.filter((_, i) => i !== index)
-                      });
-                    }
-                  }}
-                  className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
-                >
-                  🗑️ 삭제
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* 영상 소스 타입 선택 */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    영상 소스 타입
-                  </label>
-                  <select
-                    value={video.videoType || 'youtube'}
-                    onChange={(e) => {
-                      const updated = [...data.promotionVideos];
-                      updated[index] = { ...updated[index], videoType: e.target.value };
-                      setData({ ...data, promotionVideos: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                  >
-                    <option value="youtube">📺 YouTube</option>
-                    <option value="mp4">🎬 MP4 파일</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    카테고리
-                  </label>
-                  <select
-                    value={video.category}
-                    onChange={(e) => {
-                      const updated = [...data.promotionVideos];
-                      updated[index] = { ...updated[index], category: e.target.value };
-                      setData({ ...data, promotionVideos: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                  >
-                    <option value="company">기업 소개</option>
-                    <option value="subsidiaries">계열사</option>
-                    <option value="technology">기술 소개</option>
-                    <option value="awards">수상 및 인증</option>
-                    <option value="events">이벤트</option>
-                  </select>
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    썸네일 이모지
-                  </label>
-                  <input
-                    type="text"
-                    value={video.thumbnail}
-                    onChange={(e) => {
-                      const updated = [...data.promotionVideos];
-                      updated[index] = { ...updated[index], thumbnail: e.target.value };
-                      setData({ ...data, promotionVideos: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                    placeholder="🎬"
-                  />
-                </div>
-
-                {/* YouTube 타입일 때 */}
-                {(!video.videoType || video.videoType === 'youtube') && (
-                  <>
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        YouTube URL (임베드용)
-                      </label>
-                      <input
-                        type="text"
-                        value={video.videoUrl}
-                        onChange={(e) => {
-                          const updated = [...data.promotionVideos];
-                          updated[index] = { ...updated[index], videoUrl: e.target.value };
-                          setData({ ...data, promotionVideos: updated });
-                        }}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                        placeholder="https://www.youtube.com/embed/VIDEO_ID"
-                      />
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        💡 YouTube 영상에서 "공유" → "퍼가기" → URL 복사
-                      </p>
-                    </div>
-
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        YouTube URL (공유용)
-                      </label>
-                      <input
-                        type="text"
-                        value={video.youtubeUrl || ''}
-                        onChange={(e) => {
-                          const updated = [...data.promotionVideos];
-                          updated[index] = { ...updated[index], youtubeUrl: e.target.value };
-                          setData({ ...data, promotionVideos: updated });
-                        }}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                        placeholder="https://youtu.be/VIDEO_ID"
-                      />
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        💡 YouTube 영상에서 "공유" → 짧은 URL 복사
-                      </p>
-                    </div>
-                  </>
-                )}
-
-                {/* MP4 타입일 때 */}
-                {video.videoType === 'mp4' && (
-                  <>
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        MP4 파일 URL (권장)
-                      </label>
-                      <input
-                        type="text"
-                        value={video.mp4Url || ''}
-                        onChange={(e) => {
-                          const updated = [...data.promotionVideos];
-                          updated[index] = { 
-                            ...updated[index], 
-                            mp4Url: e.target.value,
-                            videoUrl: e.target.value // 재생용
-                          };
-                          setData({ ...data, promotionVideos: updated });
-                        }}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                        placeholder="https://your-cloud-storage.com/video.mp4"
-                      />
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        💡 Google Drive, Dropbox, AWS S3 등에 업로드한 MP4 파일의 직접 링크를 입력하세요
-                      </p>
-                    </div>
-
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        또는 파일 직접 업로드 (작은 파일만, 최대 5MB)
-                      </label>
-                      <input
-                        type="file"
-                        accept="video/mp4,video/webm,video/ogg"
-                        onChange={(e) => {
-                          const file = e.target.files[0];
-                          if (file) {
-                            // 파일 크기 체크 (5MB = 5 * 1024 * 1024 bytes)
-                            if (file.size > 5 * 1024 * 1024) {
-                              alert('파일 크기가 너무 큽니다. 5MB 이하의 파일만 업로드할 수 있습니다.\n\n큰 파일은 클라우드 스토리지에 업로드 후 URL을 입력하세요.');
-                              e.target.value = '';
-                              return;
-                            }
-
-                            // FileReader로 파일을 base64로 변환
-                            const reader = new FileReader();
-                            reader.onload = (event) => {
-                              const updated = [...data.promotionVideos];
-                              updated[index] = { 
-                                ...updated[index], 
-                                mp4File: file.name,
-                                mp4Url: event.target.result,
-                                videoUrl: event.target.result
-                              };
-                              setData({ ...data, promotionVideos: updated });
-                            };
-                            reader.readAsDataURL(file);
-                          }
-                        }}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
-                      />
-                      <div className="flex items-start space-x-2 mt-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-                        <span className="text-yellow-600 dark:text-yellow-400">⚠️</span>
-                        <div className="text-xs text-yellow-700 dark:text-yellow-300">
-                          <p className="font-semibold mb-1">주의사항:</p>
-                          <ul className="list-disc list-inside space-y-1">
-                            <li>직접 업로드는 5MB 이하의 작은 파일만 가능합니다</li>
-                            <li>큰 파일은 YouTube나 클라우드 스토리지 사용을 권장합니다</li>
-                            <li>브라우저 캐시를 지우면 업로드한 파일이 삭제될 수 있습니다</li>
-                          </ul>
-                        </div>
-                      </div>
-                      {video.mp4File && (
-                        <p className="text-xs text-green-600 dark:text-green-400 mt-2">
-                          ✅ 업로드된 파일: {video.mp4File}
-                        </p>
-                      )}
-                    </div>
-                  </>
-                )}
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    영상 설명
-                  </label>
-                  <textarea
-                    value={video.description}
-                    onChange={(e) => {
-                      const updated = [...data.promotionVideos];
-                      updated[index] = { ...updated[index], description: e.target.value };
-                      setData({ ...data, promotionVideos: updated });
-                    }}
-                    rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                    placeholder="영상 설명을 입력하세요"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    영상 길이
-                  </label>
-                  <input
-                    type="text"
-                    value={video.duration}
-                    onChange={(e) => {
-                      const updated = [...data.promotionVideos];
-                      updated[index] = { ...updated[index], duration: e.target.value };
-                      setData({ ...data, promotionVideos: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                    placeholder="5:20"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    업로드 날짜
-                  </label>
-                  <input
-                    type="date"
-                    value={video.date}
-                    onChange={(e) => {
-                      const updated = [...data.promotionVideos];
-                      updated[index] = { ...updated[index], date: e.target.value };
-                      setData({ ...data, promotionVideos: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                  />
-                </div>
-              </div>
-
-              {/* 미리보기 */}
-              {video.videoUrl && (
-                <div className="mt-4">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    미리보기
-                  </label>
-                  <div className="aspect-video bg-black rounded-lg overflow-hidden">
-                    {(!video.videoType || video.videoType === 'youtube') ? (
-                      <iframe
-                        src={video.videoUrl}
-                        title={video.title}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="w-full h-full"
-                      />
-                    ) : (
-                      <video
-                        controls
-                        className="w-full h-full"
-                        src={video.videoUrl}
-                      >
-                        <source src={video.videoUrl} type="video/mp4" />
-                        브라우저가 비디오 재생을 지원하지 않습니다.
-                      </video>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-
-    {/* PDF 기술자료 관리 */}
-    <div>
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white">📄 PDF 기술자료 관리</h3>
-        <button
-          onClick={() => {
-            const newDoc = {
-              id: Date.now(),
-              title: '새 기술자료',
-              category: 'technical',
-              description: '자료 설명을 입력하세요',
-              thumbnail: '📄',
-              fileUrl: '',
-              fileName: '',
-              fileSize: '',
-              subsidiary: 'clarus',
-              date: new Date().toISOString().split('T')[0],
-              downloads: 0,
-              language: 'ko',
-              tags: []
-            };
-            setData({
-              ...data,
-              technicalDocuments: [...(data.technicalDocuments || []), newDoc]
-            });
-          }}
-          className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all"
-        >
-          ➕ 새 자료 추가
-        </button>
-      </div>
-
-      <div className="space-y-4">
-        {(data.technicalDocuments || []).length === 0 ? (
-          <div className="p-8 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
-            <div className="text-6xl mb-4">📄</div>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              등록된 PDF 기술자료가 없습니다
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-500">
-              위의 "새 자료 추가" 버튼을 클릭하여 PDF 자료를 추가하세요
-            </p>
-          </div>
-        ) : (
-          (data.technicalDocuments || []).map((doc, index) => (
-            <div key={doc.id} className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-3">
-                  <span className="text-3xl">{doc.thumbnail}</span>
-                  <div>
-                    <input
-                      type="text"
-                      value={doc.title}
-                      onChange={(e) => {
-                        const updated = [...data.technicalDocuments];
-                        updated[index] = { ...updated[index], title: e.target.value };
-                        setData({ ...data, technicalDocuments: updated });
-                      }}
-                      className="text-lg font-bold text-gray-900 dark:text-white bg-transparent border-b border-gray-300 dark:border-gray-600 focus:border-primary-500 outline-none"
-                      placeholder="자료 제목"
-                    />
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    if (window.confirm('이 자료를 삭제하시겠습니까?')) {
-                      setData({
-                        ...data,
-                        technicalDocuments: data.technicalDocuments.filter((_, i) => i !== index)
-                      });
-                    }
-                  }}
-                  className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
-                >
-                  🗑️ 삭제
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* 카테고리 */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    카테고리
-                  </label>
-                  <select
-                    value={doc.category}
-                    onChange={(e) => {
-                      const updated = [...data.technicalDocuments];
-                      updated[index] = { ...updated[index], category: e.target.value };
-                      setData({ ...data, technicalDocuments: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                  >
-                    <option value="technical">기술서</option>
-                    <option value="product">제품 카탈로그</option>
-                    <option value="case-study">시공 사례</option>
-                    <option value="manual">매뉴얼</option>
-                    <option value="solution">솔루션 가이드</option>
-                  </select>
-                </div>
-
-                {/* 계열사 */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    관련 계열사
-                  </label>
-                  <select
-                    value={doc.subsidiary}
-                    onChange={(e) => {
-                      const updated = [...data.technicalDocuments];
-                      updated[index] = { ...updated[index], subsidiary: e.target.value };
-                      setData({ ...data, technicalDocuments: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                  >
-                    <option value="group">정호그룹</option>
-                    <option value="clarus">클라루스</option>
-                    <option value="tlc">정호티엘씨</option>
-                    <option value="illutech">일루텍</option>
-                    <option value="texcom">정호텍스컴</option>
-                  </select>
-                </div>
-
-                {/* PDF 파일 URL */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    PDF 파일 URL
-                  </label>
-                  <input
-                    type="text"
-                    value={doc.fileUrl || ''}
-                    onChange={(e) => {
-                      const updated = [...data.technicalDocuments];
-                      updated[index] = { ...updated[index], fileUrl: e.target.value };
-                      setData({ ...data, technicalDocuments: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                    placeholder="/documents/clarus/filename.pdf"
-                  />
-                  {doc.fileUrl && /[\u3131-\uD79D\s()]/.test(doc.fileUrl) && (
-                    <p className="text-xs text-orange-600 dark:text-orange-400 mt-1 font-semibold">
-                      ⚠️ 경고: 파일명에 한글, 공백, 괄호가 있습니다. 영문 소문자와 하이픈(-)만 사용하는 것을 권장합니다.
-                    </p>
-                  )}
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    💡 권장 형식: /documents/clarus/clarus-catalog-2024.pdf
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    📂 로컬 파일: public/documents 폴더에 파일 추가 후 /documents/계열사/파일명.pdf 형식으로 입력
-                  </p>
-                </div>
-
-                {/* 파일 정보 */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    파일명
-                  </label>
-                  <input
-                    type="text"
-                    value={doc.fileName || ''}
-                    onChange={(e) => {
-                      const updated = [...data.technicalDocuments];
-                      updated[index] = { ...updated[index], fileName: e.target.value };
-                      setData({ ...data, technicalDocuments: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                    placeholder="lighting-control-technical.pdf"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    파일 크기
-                  </label>
-                  <input
-                    type="text"
-                    value={doc.fileSize || ''}
-                    onChange={(e) => {
-                      const updated = [...data.technicalDocuments];
-                      updated[index] = { ...updated[index], fileSize: e.target.value };
-                      setData({ ...data, technicalDocuments: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                    placeholder="15MB"
-                  />
-                </div>
-
-                {/* 설명 */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    자료 설명
-                  </label>
-                  <textarea
-                    value={doc.description}
-                    onChange={(e) => {
-                      const updated = [...data.technicalDocuments];
-                      updated[index] = { ...updated[index], description: e.target.value };
-                      setData({ ...data, technicalDocuments: updated });
-                    }}
-                    rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                    placeholder="자료 설명을 입력하세요"
-                  />
-                </div>
-
-                {/* 언어 & 날짜 */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    언어
-                  </label>
-                  <select
-                    value={doc.language}
-                    onChange={(e) => {
-                      const updated = [...data.technicalDocuments];
-                      updated[index] = { ...updated[index], language: e.target.value };
-                      setData({ ...data, technicalDocuments: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                  >
-                    <option value="ko">한국어</option>
-                    <option value="en">English</option>
-                    <option value="both">한/영 병기</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    등록 날짜
-                  </label>
-                  <input
-                    type="date"
-                    value={doc.date}
-                    onChange={(e) => {
-                      const updated = [...data.technicalDocuments];
-                      updated[index] = { ...updated[index], date: e.target.value };
-                      setData({ ...data, technicalDocuments: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                  />
-                </div>
-
-                {/* 썸네일 이모지 */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    썸네일 이모지
-                  </label>
-                  <input
-                    type="text"
-                    value={doc.thumbnail}
-                    onChange={(e) => {
-                      const updated = [...data.technicalDocuments];
-                      updated[index] = { ...updated[index], thumbnail: e.target.value };
-                      setData({ ...data, technicalDocuments: updated });
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                    placeholder="📄"
-                  />
-                </div>
-              </div>
-
-              {/* 미리보기 링크 */}
-              {doc.fileUrl && (
-                <div className="mt-4 flex items-center space-x-2">
-                  <a
-                    href={doc.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors inline-flex items-center space-x-2"
-                  >
-                    <span>👁</span>
-                    <span>파일 열기 / 다운로드</span>
-                  </a>
-                  <button
-                    onClick={() => {
-                      // 경로 검증
-                      if (doc.fileUrl.startsWith('/documents/')) {
-                        alert('✅ 경로가 올바릅니다!\n\n실제 파일이 있는지 확인:\n' + window.location.origin + doc.fileUrl);
-                      } else {
-                        alert('⚠️ 경로 확인\n\n현재: ' + doc.fileUrl + '\n권장: /documents/계열사/파일명.pdf');
-                      }
-                    }}
-                    className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors inline-flex items-center space-x-2"
-                  >
-                    <span>🔍</span>
-                    <span>경로 검증</span>
-                  </button>
-                </div>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-
-    {/* 영구 저장 안내 */}
-    <div className="mt-8 p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border border-green-200 dark:border-green-800">
-      <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2 flex items-center">
-        💡 영구 저장 방법 (홍보영상 & 기술문서)
-      </h3>
-      <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
-        <li>• <strong className="text-blue-600 dark:text-blue-400">임시 저장</strong>: localStorage에 저장 (브라우저 캐시 지우면 삭제됨)</li>
-        <li>• <strong className="text-green-600 dark:text-green-400">영구 저장</strong>: "클립보드에 복사" 또는 "JSON 다운로드" → <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">public/data/admin-media.json</code>에 저장 → Git 커밋</li>
-        <li>• 영구 저장 후에는 <strong>모든 사용자가 배포 버전에서도 데이터를 볼 수 있습니다!</strong></li>
-      </ul>
-    </div>
-  </div>
-);
 
 // 정적 페이지 관리 탭
 const PagesTab = ({ data, setData, onSave }) => {

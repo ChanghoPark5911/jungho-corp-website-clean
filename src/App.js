@@ -135,33 +135,24 @@ function App() {
             
             {/* 
               ===================================
-              관리자 페이지 - 두 시스템 병행 운영
+              통합 관리자 시스템
               ===================================
-              - /admin: 기존 AdminPageV2 (Hero, 정적페이지, 다국어)
-              - /admin-new: 새 시스템 (프로젝트/홍보영상 관리)
+              /admin: 통합 관리자 대시보드
+              - 홈페이지 관리, 미디어/PR, 고객센터, 다국어, 사용자 관리 통합
+              - 역할별 접근 권한 자동 필터링
               ===================================
             */}
             <Route path="/admin" element={<AdminPageV2 />} />
             <Route path="/v2/admin" element={<AdminPageV2 />} />
-
-            {/* 
-              ===================================
-              새 관리자 시스템 (Phase 1 - 독립적)
-              ===================================
-              - /admin-new/login: 로그인
-              - /admin-new/dashboard: 대시보드
-              - /admin-new/media: 미디어 관리 (예정)
-              - /admin-new/support: 고객센터 관리 (예정)
-              ===================================
-            */}
+            
+            {/* 기존 admin-new 경로들은 /admin으로 리다이렉트 (하위 호환성) */}
             <Route path="/admin-new/test" element={<Suspense fallback={<PageLoader />}><AdminTest /></Suspense>} />
-            <Route path="/admin-new/login" element={<Suspense fallback={<PageLoader />}><AdminLogin /></Suspense>} />
-            <Route path="/admin-new/dashboard" element={<Suspense fallback={<PageLoader />}><AdminDashboard /></Suspense>} />
-            <Route path="/admin-new/media" element={<Suspense fallback={<PageLoader />}><MediaManager /></Suspense>} />
-            <Route path="/admin-new/support" element={<Suspense fallback={<PageLoader />}><SupportManager /></Suspense>} />
-            {/* 다국어 관리는 /admin 에서 관리 */}
+            <Route path="/admin-new/login" element={<Navigate to="/admin" replace />} />
+            <Route path="/admin-new/dashboard" element={<Navigate to="/admin" replace />} />
+            <Route path="/admin-new/media" element={<Navigate to="/admin" replace />} />
+            <Route path="/admin-new/support" element={<Navigate to="/admin" replace />} />
             <Route path="/admin-new/i18n" element={<Navigate to="/admin" replace />} />
-            <Route path="/admin-new" element={<Navigate to="/admin-new/login" replace />} />
+            <Route path="/admin-new" element={<Navigate to="/admin" replace />} />
             
             {/* V2 버전 (모던 MegaMenu 스타일) 🚀 */}
             <Route path="/v2" element={<Suspense fallback={<PageLoader />}><LayoutV2><HomePageV2 /></LayoutV2></Suspense>} />

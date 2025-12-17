@@ -151,25 +151,37 @@ const TlcDetailPage = () => {
     }
   ];
 
-  // 연혁 및 성과 (2011-2018)
+  // 연혁 및 성과 (2004-2025)
   const achievements = currentLanguage === 'en' ? [
-    '2018: Received Excellence Award at Seoul LED & OLED EXPO, Supplied to Icheon Gyeongdeok Parc.1',
-    '2017: Received Excellence Award at Seoul LED & OLED EXPO, Group CEO received Legal Education Completion Award',
-    '2016: Received Excellence Award at Seoul LED & OLED EXPO, Participated in Egypt LFI Exhibition, Received International Exhibition Convention Award at Seoul LED/OLED Meeting, Selected as Excellent Company Representative by Gyeonggi Intellectual Property Center',
-    '2015: Participated in Dubai Lighting Fair (LFI), Participated in LED/OLED International Exhibition/International Exhibition Convention Company Award, Excellent Company Representative/Commissioner of Korean Intellectual Property Office Award by Gyeonggi Intellectual Property Center',
-    '2014: Developed SI/FMS products, Supplied high-rise buildings and luxury hotel projects (5-star hotels/hospitals, hotel surveillance systems), Received Construction New Technology Award',
-    '2013: Received CLARUS Brand Creation Company Award (Small and Medium Business Administration)',
-    '2012: Exported building control system overseas (Singapore, Indonesia)',
-    '2011: Received Excellent Product Selection Award (Small and Medium Business Administration)'
+    '2025: Energy Manager 5 (EM5) Lighting/Power Software, D-Type Program Switch 6 models, Google Android, Apple iOS EF2 Setting App launched',
+    '2024: Programmable Controller and Building Management System using it Patent Application',
+    '2023: Magic CLARUS Online E-commerce Platform Development and Sales Launch',
+    '2021: Prime Minister Award for Excellent New Technology Development Company (Electrical Safety Device Integrated Lighting and Heating Control Device)',
+    '2020: Ladder-Less Remote Control System Platform Development, Ministry of Trade, Industry and Energy "Industrial Convergence Leading Company" Selected',
+    '2019: Lighting Fair International, Philadelphia USA - LED/OLED Lighting Exhibition / Hong Kong Autumn International Lighting Exhibition',
+    '2018: Lighting Fair International, Chicago USA - LED/OLED Lighting Exhibition / Domestic Dealer Sales System Established',
+    '2017: Group CEO received Minister of Land, Infrastructure and Transport Award',
+    '2016: Lighting Fair International, San Diego USA / International LED/OLED Exhibition Prime Minister Award (Wireless TOUCH LCD SWITCH) / Building Equipment, Power and Lighting Integrated Control System Patent Registration',
+    '2015: Lighting Fair International, New York / Minister of Trade, Industry and Energy Award (10A Hybrid Terminal Unit) / Industrial Convergence Leading Company and Product Designation (Building Automation Control System) / Top 100 Products in Asia (Lighting Automation Control System)',
+    '2014: SI/FMS Operation SOFTWARE Development',
+    '2013: GS (Good Software) Certification (No:13-0033) / Direct Production Certification (Automatic Control Panel, Automatic Switch, Instrumentation Control Device) / USA Nexlight, Canada Douglass, Gentec, Vietnam Dealer Contract',
+    '2012~2010: Power Control System Software / All Product Quality Certifications: UL/cUL, KC/FCC',
+    '2004: New Headquarters Building Construction (Nonhyeon-dong, Gangnam-gu, Seoul)'
   ] : [
-    '2018년: 서울 LED & OLED EXPO 대한민국우수전시업체상 수상, 이천경덕 Parc.1 공급',
-    '2017년: 서울 LED & OLED EXPO 대한민국우수전시업체상 수상, 그룹 CEO 법률교육 이수상 수상',
-    '2016년: 서울 LED & OLED EXPO 대한민국우수전시업체상 수상, 이집트 LFI 전시회 참가, 서울 LED/OLED회 국제전시컨벤션상 수상, 경기지식재산센터 우수기업 대표',
-    '2015년: 두바이 라이팅페어 참가 (LFI), LED/OLED 국제 전시회 참가/국제전시컨벤션기업상, 경기지식재산센터 우수기업 대표/특허청장상',
-    '2014년: SI/FMS 제품 개발, 초고층빌딩 및 고급호텔 프로젝트 납품 (5성급 호텔/병원, 호텔 감시시스템), 건설신기술대상 수상',
-    '2013년: CLARUS 브랜드 창조 기업상 수상 (중소기업청)',
-    '2012년: 빌딩관제시스템 해외수출 (싱가포르, 인도네시아)',
-    '2011년: 우수상품 선정상 수상 (중소기업청)'
+    '2025년: Energy Manager 5 (EM5) 조명/전력 소프트웨어, D-Type Program Switch 6종, Google Android, Apple iOS EF2 Setting App 신제품 출시',
+    '2024년: 프로그래머블 콘트롤러 및 이를 이용한 빌딩 관리 시스템 특허출원',
+    '2023년: Magic CLARUS 온라인 E커머스 플랫폼 구축 및 판매개시',
+    '2021년: 신기술 개발우수업체 국무총리상 수상 (전기안전장치 융합형 조명 및 전열제어 장치)',
+    '2020년: Ladder-Less 원격제어 시스템 플랫폼 개발, 산업통상자원부장관 \'산업융합 선도기업\' 선정',
+    '2019년: Lighting Fair International, Philadelphia USA 참가 - LED/OLED 조명 전시회 / 홍콩 추계 국제 조명 전시회 참가',
+    '2018년: Lighting Fair International, Chicago USA 참가 - LED/OLED 조명 전시회 참가 / 국내 대리점 판매 체계 구축',
+    '2017년: 그룹 CEO 국토교통부 장관상 수상',
+    '2016년: Lighting Fair International, San Diego USA 참가 / 국제LED/OLED회 참가 국무총리상 수상 (무선 TOUCH LCD SWITCH) / 건물의 설비, 전력 및 조명 통합 제어 시스템 특허등록',
+    '2015년: Lighting Fair International, New York 참가 / 산업자원부 장관상 수상 (10A Hybrid Terminal Unit) / 산업융합선도기업 및 융합품목 지정 (건물자동제어시스템) / 아시아를 빛낸 100대 제품 선정 (조명자동제어시스템)',
+    '2014년: SI/FMS 운영 SOFTWARE 개발',
+    '2013년: GS(Good Software) 인증 획득 (인증번호:13-0033) / 직접생산확인증명 (자동제어반, 자동점멸기, 계장(계측)제어장치) / 미국 Nexlight, 캐나다 Douglass, Gentec, 베트남 대리점 계약',
+    '2012~2010년: 전력제어시스템 Software / 전 제품 품질인증 취득: UL/cUL, KC/FCC 인증',
+    '2004년: 4월 신사옥 신축 이전 (서울시 강남구 논현동)'
   ];
 
   return (

@@ -90,18 +90,8 @@ const TlcDetailPage = () => {
     }
   };
 
-  // 주요 제품/서비스 (Classic 버전 콘텐츠 적용)
+  // 주요 제품/서비스 (순서: 조명제어 → 전력모니터링 → 통합SI)
   const products = [
-    {
-      name: currentLanguage === 'en' ? 'Integrated SI System Supply' : '통합 SI 시스템 공급',
-      description: currentLanguage === 'en'
-        ? 'IT system that maximizes building efficiency and safety by integrating multiple subsystems'
-        : '다수하위시스템을 통합하여 건물의 효율성, 안전성을 극대화하는 IT 시스템',
-      features: currentLanguage === 'en' 
-        ? ['Central Management (System Integration)', 'Energy Optimization', 'Fault Detection', 'Remote Monitoring']
-        : ['중앙관리(시스템통합)', '에너지 최적화', '고장감지', '원격모니터링'],
-      imagePath: '/images/tlc/integrated-si-system.png'
-    },
     {
       name: currentLanguage === 'en' ? 'Lighting Control System Solution' : '조명제어시스템 솔루션 구축',
       description: currentLanguage === 'en'
@@ -121,6 +111,16 @@ const TlcDetailPage = () => {
         ? ['System Design', 'Construction', 'Operation Management', 'Technical Support']
         : ['시스템 설계', '시공', '운영관리', '기술지원'],
       imagePath: '/images/tlc/power-monitoring-solution.png'
+    },
+    {
+      name: currentLanguage === 'en' ? 'Integrated SI System (SI/FMS) Implementation' : '통합 SI 시스템(SI/FMS) 구현',
+      description: currentLanguage === 'en'
+        ? 'IT system that maximizes building efficiency and safety by integrating multiple subsystems'
+        : '다수하위시스템을 통합하여 건물의 효율성, 안전성을 극대화하는 IT 시스템',
+      features: currentLanguage === 'en' 
+        ? ['Central Management (System Integration)', 'Energy Optimization', 'Fault Detection', 'Remote Monitoring']
+        : ['중앙관리(시스템통합)', '에너지 최적화', '고장감지', '원격모니터링'],
+      imagePath: '/images/tlc/integrated-si-system.png'
     }
   ];
 
@@ -267,7 +267,7 @@ const TlcDetailPage = () => {
                   {currentLanguage === 'en' ? 'Business Field' : '사업분야'}
                 </span>
                 <div className="text-xl font-bold text-primary-600 dark:text-primary-400">
-                  {currentLanguage === 'en' ? 'Integrated Lighting & Power Control' : '조명·전력 통합 제어'}
+                  {currentLanguage === 'en' ? 'Lighting Control / Power Monitoring & SI/FMS' : '조명제어/전력감시 및 SI/FMS'}
                 </div>
               </div>
             </motion.div>
@@ -304,13 +304,10 @@ const TlcDetailPage = () => {
                 <>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
                     <span className="font-semibold text-primary-600 dark:text-primary-400">정호티엘씨</span>는 
-                    조명·전력 통합 감시·제어(SI/FMS)와 스마트 주차장 조명등의 풍부한 국내 납품 실적을 바탕으로 대규모 현장의 안정적인 운영을 지원합니다.
+                    조명제어, 전력감시, SI/FMS 시스템 등 빌딩 자동 제어 분야에서 <span className="font-semibold">40년 이상 축적된 기술력</span>을 바탕으로 시장을 선도하고 있으며, 풍부한 국내 납품 실적을 바탕으로 대규모 현장의 안정적인 운영을 지원합니다.
                   </p>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    전력제어, 조명제어, SI/FMS 등 빌딩 자동 제어 분야에서 <span className="font-semibold">40년 이상 축적된 기술력</span>을 바탕으로 시장을 선도하고 있습니다.
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    고객 맞춤형 솔루션 제공을 통해 <span className="font-semibold text-primary-600 dark:text-primary-400">에너지 절감과 사용자 편의성</span>을 동시에 실현하고 있습니다.
+                    또한 고객 맞춤형 솔루션을 제공하여 <span className="font-semibold text-primary-600 dark:text-primary-400">에너지 절감과 사용자 편의성 제고</span>를 동시에 실현하고 있습니다.
                   </p>
                 </>
               )}
@@ -331,11 +328,6 @@ const TlcDetailPage = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               {currentLanguage === 'en' ? 'Main Products & Services' : '주요 제품 및 서비스'}
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              {currentLanguage === 'en' 
-                ? 'Providing various building automation solutions'
-                : '다양한 빌딩 자동화 솔루션을 제공합니다'}
-            </p>
           </motion.div>
 
           <motion.div 

@@ -120,9 +120,22 @@ const TlcDetailPage = () => {
       description: currentLanguage === 'en'
         ? 'Design, construction, and operation management support for optimal power monitoring systems in commercial buildings, public facilities, and data/logistics centers'
         : '상가빌딩, 공공시설, 데이터/물류센터의 최적 전력감시시스템 설계, 시공, 운영관리 지원',
-      features: currentLanguage === 'en'
-        ? ['System Design', 'Construction', 'Operation Management', 'Technical Support']
-        : ['시스템 설계', '시공', '운영관리', '기술지원'],
+      // 두 열 구조로 표시
+      twoColumns: true,
+      column1: {
+        title: currentLanguage === 'en' ? '1. Real-time Power Usage Monitoring & Analysis' : '1. 실시간 전력사용량 감시 및 분석',
+        subtitle: currentLanguage === 'en' ? '▪ Key System Features:' : '▪ 시스템 주요 기능:',
+        features: currentLanguage === 'en'
+          ? ['Power Metering', 'Data Analysis', 'Report Generation', 'Alarm System', 'Emergency Response Strategy', 'Energy Usage Analysis']
+          : ['전력계측', '데이터 분석', '리포트 생성', '경보/알람시스템', '비상시 대응전략', '에너지 사용 분석']
+      },
+      column2: {
+        title: currentLanguage === 'en' ? '2. Power Monitoring System Design, Construction, Operation Support' : '2. 전력감시시스템 설계, 시공, 운영관리 지원',
+        subtitle: currentLanguage === 'en' ? '▪ Main Services:' : '▪ 주요 업무:',
+        features: currentLanguage === 'en'
+          ? ['System Design', 'Construction', 'Operation Management', 'Technical Support']
+          : ['시스템 설계', '시공', '운영관리', '기술지원']
+      },
       imagePath: '/images/tlc/power-monitoring-solution.png'
     },
     {

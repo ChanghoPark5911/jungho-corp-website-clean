@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../../hooks/useI18n';
 import { useTheme } from '../../../contexts/ThemeContext';
+import ProjectProcessSection from '../../../components/tlc/ProjectProcessSection';
 
 const TlcDetailPage = () => {
   const navigate = useNavigate();
@@ -148,38 +149,6 @@ const TlcDetailPage = () => {
         : ['중앙관리(시스템통합)', '에너지 최적화', '고장감지', '원격모니터링'],
       imagePath: '/images/tlc/integrated-si-system.png'
     }
-  ];
-
-  // 핵심 강점
-  const strengths = [
-      {
-        title: currentLanguage === 'en' ? '40 Years of Expertise' : '40년 노하우',
-        description: currentLanguage === 'en'
-          ? 'Lighting control technology and experience accumulated since 1982'
-          : '1982년부터 축적된 조명 제어 기술과 경험',
-        icon: '🏆'
-      },
-      {
-        title: currentLanguage === 'en' ? 'Technical Capabilities' : '기술력',
-        description: currentLanguage === 'en'
-          ? 'Domestic and international certifications and patents'
-          : '국내외 인증 획득 및 특허 보유',
-        icon: '🔬'
-      },
-      {
-        title: currentLanguage === 'en' ? 'Energy Savings' : '에너지 절감',
-        description: currentLanguage === 'en'
-          ? 'Solutions enabling up to 40% energy savings'
-          : '최대 40% 에너지 절감 가능한 솔루션',
-        icon: '🌱'
-      },
-      {
-        title: currentLanguage === 'en' ? 'Customization' : '고객 맞춤',
-        description: currentLanguage === 'en'
-          ? 'Optimized solutions for each project'
-          : '프로젝트별 최적화된 솔루션 제공',
-        icon: '🎯'
-      }
   ];
 
   // 연혁 및 성과 (2011-2018)
@@ -488,48 +457,8 @@ const TlcDetailPage = () => {
         </div>
       </motion.section>
 
-      {/* 핵심 강점 */}
-      <motion.section 
-        className="py-20 bg-white dark:bg-gray-900"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div variants={fadeInUp} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {currentLanguage === 'en' ? 'Core Strengths' : '핵심 강점'}
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              {currentLanguage === 'en'
-                ? "Jungho TLC's differentiated capabilities"
-                : '정호티엘씨만의 차별화된 역량'}
-            </p>
-          </motion.div>
-
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-            variants={staggerContainer}
-          >
-            {strengths.map((strength, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                whileHover={{ scale: 1.03 }}
-                className="bg-gradient-to-br from-primary-50 to-green-50 dark:from-gray-800 dark:to-gray-850 rounded-xl p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-primary-200 dark:border-gray-700"
-              >
-                <div className="text-5xl mb-4">{strength.icon}</div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
-                  {strength.title}
-                </h3>
-                <p className="text-gray-700 dark:text-white text-lg">
-                  {strength.description}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
+      {/* 프로젝트 프로세스 */}
+      <ProjectProcessSection />
 
       {/* 연혁 및 성과 */}
       <motion.section 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../../hooks/useI18n';
 import { useTheme } from '../../../contexts/ThemeContext';
@@ -436,26 +436,28 @@ const TlcDetailPage = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            className="space-y-4"
-            variants={staggerContainer}
-          >
-            {(showAllAchievements ? achievements : achievements.slice(0, 5)).map((achievement, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                whileHover={{ x: 5 }}
-                className="flex items-start gap-4 bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300"
-              >
-                <div className="flex-shrink-0 w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
-                  <span className="text-primary-600 dark:text-primary-400 font-bold">{index + 1}</span>
-                </div>
-                <p className="text-gray-700 dark:text-white text-lg flex-1">
-                  {achievement}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
+          <div className="space-y-4">
+            <AnimatePresence mode="sync">
+              {(showAllAchievements ? achievements : achievements.slice(0, 5)).map((achievement, index) => (
+                <motion.div
+                  key={`achievement-${index}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.15, delay: index > 4 ? (index - 5) * 0.03 : 0 }}
+                  whileHover={{ x: 5 }}
+                  className="flex items-start gap-4 bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="flex-shrink-0 w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                    <span className="text-primary-600 dark:text-primary-400 font-bold">{index + 1}</span>
+                  </div>
+                  <p className="text-gray-700 dark:text-white text-lg flex-1">
+                    {achievement}
+                  </p>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
 
           {/* 더보기/접기 버튼 */}
           {achievements.length > 5 && (

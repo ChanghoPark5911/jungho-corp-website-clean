@@ -23,7 +23,7 @@ export const ROLE_INFO = {
 
 const AuthContext = createContext(null);
 const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30분
-const AUTH_VERSION = 'v3'; // 버전 업데이트
+const AUTH_VERSION = 'v4'; // 버전 업데이트 - admin01 계정 동기화
 
 // 기본 관리자 계정 (평문 비밀번호 - 프론트엔드 전용)
 const DEFAULT_USERS = [

@@ -97,9 +97,22 @@ const TlcDetailPage = () => {
       description: currentLanguage === 'en'
         ? 'Design, construction, and operation management support for lighting control systems in commercial buildings, office buildings, and data/logistics centers'
         : '상가 및 오피스 빌딩, 데이터/물류센터의 조명제어시스템 설계, 시공, 운영관리 지원',
-      features: currentLanguage === 'en'
-        ? ['System Design', 'Construction', 'Operation Management', 'Technical Support']
-        : ['시스템 설계', '시공', '운영관리', '기술지원'],
+      // 두 열 구조로 표시
+      twoColumns: true,
+      column1: {
+        title: currentLanguage === 'en' ? '1. IoT-based Building & Facility Lighting Control System' : '1. IoT 기반 건물 및 시설물 조명제어시스템',
+        subtitle: currentLanguage === 'en' ? '▪ Key System Features:' : '▪ 시스템 주요 기능:',
+        features: currentLanguage === 'en'
+          ? ['Remote Control', 'Energy Saving', 'Schedule Management', 'Real-time Monitoring']
+          : ['원격 제어', '에너지 절감', '스케줄 관리', '실시간 모니터링']
+      },
+      column2: {
+        title: currentLanguage === 'en' ? '2. Lighting Control System Design, Construction, Operation Support' : '2. 조명제어시스템 설계, 시공, 운영관리 지원',
+        subtitle: currentLanguage === 'en' ? '▪ Main Services:' : '▪ 주요 업무:',
+        features: currentLanguage === 'en'
+          ? ['System Design', 'Construction', 'Operation Management', 'Technical Support']
+          : ['시스템 설계', '시공', '운영관리', '기술지원']
+      },
       imagePath: '/images/tlc/lighting-control-solution.png'
     },
     {
@@ -359,20 +372,62 @@ const TlcDetailPage = () => {
                         {product.description}
                       </p>
                       
-                      {/* 주요 기능 */}
-                      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-                          {currentLanguage === 'en' ? '▪ Key Features:' : '▪ 주요 기능:'}
-                        </h4>
-                        <div className="space-y-2">
-                          {product.features.map((feature, idx) => (
-                            <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
-                              <span className="text-purple-600 dark:text-purple-400 font-bold mt-0.5">✓</span>
-                              <span>{feature}</span>
+                      {/* 두 열 구조 (조명제어시스템용) */}
+                      {product.twoColumns ? (
+                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* 첫 번째 열 */}
+                            <div>
+                              <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                                {product.column1.title}
+                              </h4>
+                              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
+                                {product.column1.subtitle}
+                              </p>
+                              <div className="space-y-1">
+                                {product.column1.features.map((feature, idx) => (
+                                  <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
+                                    <span className="text-purple-600 dark:text-purple-400 font-bold mt-0.5">✓</span>
+                                    <span>{feature}</span>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
-                          ))}
+                            {/* 두 번째 열 */}
+                            <div>
+                              <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                                {product.column2.title}
+                              </h4>
+                              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
+                                {product.column2.subtitle}
+                              </p>
+                              <div className="space-y-1">
+                                {product.column2.features.map((feature, idx) => (
+                                  <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
+                                    <span className="text-purple-600 dark:text-purple-400 font-bold mt-0.5">✓</span>
+                                    <span>{feature}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        /* 기존 단일 열 구조 */
+                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                            {currentLanguage === 'en' ? '▪ Key Features:' : '▪ 주요 기능:'}
+                          </h4>
+                          <div className="space-y-2">
+                            {product.features && product.features.map((feature, idx) => (
+                              <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
+                                <span className="text-purple-600 dark:text-purple-400 font-bold mt-0.5">✓</span>
+                                <span>{feature}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* 우측: 다이어그램/이미지 공간 (1/3) */}

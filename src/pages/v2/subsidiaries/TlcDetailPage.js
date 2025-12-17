@@ -10,65 +10,12 @@ const TlcDetailPage = () => {
   const location = useLocation();
   const { t, currentLanguage } = useI18n();
   const { isDarkMode } = useTheme();
-  const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [showAllAchievements, setShowAllAchievements] = React.useState(false);
 
   // 현재 경로가 Hybrid인지 확인하여 뒤로가기 경로 설정
   const isHybrid = location.pathname.startsWith('/hybrid');
   const backPath = isHybrid ? '/hybrid' : '/';
-
-  // JSON 파일에서 PDF 자료 로드 (우선), localStorage는 백업 (정호티엘씨 관련만)
-  React.useEffect(() => {
-    const loadDocuments = async () => {
-      try {
-        // 1. JSON 파일에서 로드 시도 (우선) - 캐시 방지
-        const timestamp = new Date().getTime();
-        const response = await fetch(`/data/technical-docs.json?v=${timestamp}`, {
-          cache: 'no-cache',
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
-          }
-        });
-        
-        if (response.ok) {
-          const jsonData = await response.json();
-          if (jsonData.documents && Array.isArray(jsonData.documents)) {
-            // 정호티엘씨 관련 자료만 필터링
-            const tlcDocs = jsonData.documents.filter(
-              doc => doc.subsidiary === 'tlc'
-            );
-            setTechnicalDocuments(tlcDocs);
-            console.log('✅ JSON 파일에서 정호티엘씨 자료 로드:', tlcDocs.length, '개');
-            return;
-          }
-        }
-        
-        // 2. JSON 파일 실패 시 localStorage에서 로드 (백업)
-        const savedMediaData = localStorage.getItem('v2_media_data');
-        if (savedMediaData) {
-          const parsedData = JSON.parse(savedMediaData);
-          if (parsedData.technicalDocuments) {
-            const tlcDocs = parsedData.technicalDocuments.filter(
-              doc => doc.subsidiary === 'tlc'
-            );
-            setTechnicalDocuments(tlcDocs);
-            console.log('✅ localStorage에서 정호티엘씨 자료 로드:', tlcDocs.length, '개');
-          }
-        }
-      } catch (error) {
-        console.error('PDF 자료 로드 실패:', error);
-      }
-    };
-
-    loadDocuments();
-
-    // 데이터 업데이트 이벤트 리스너
-    const handleUpdate = () => loadDocuments();
-    window.addEventListener('v2MediaDataUpdated', handleUpdate);
-    return () => window.removeEventListener('v2MediaDataUpdated', handleUpdate);
-  }, []);
 
   // 애니메이션 variants
   const fadeInUp = {
@@ -543,86 +490,6 @@ const TlcDetailPage = () => {
         </div>
       </motion.section>
 
-      {/* PDF 자료 다운로드 섹션 */}
-      {technicalDocuments.length > 0 && (
-        <motion.section
-          className="py-20 bg-white dark:bg-gray-900"
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div className="text-center mb-12" variants={fadeInUp}>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                {currentLanguage === 'en' ? '📥 Technical Documents' : '📥 기술자료 다운로드'}
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-400">
-                {currentLanguage === 'en' 
-                  ? 'Download technical specifications and product catalogs'
-                  : '제품 사양서 및 기술 카탈로그를 다운로드하세요'}
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {technicalDocuments.map((doc, index) => (
-                <motion.div
-                  key={doc.id}
-                  variants={fadeInUp}
-                  whileHover={{ y: -5 }}
-                  className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border border-gray-200 dark:border-gray-700"
-                >
-                  {/* 썸네일 */}
-                  <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-primary-100 to-green-100 dark:from-primary-900 dark:to-green-900 mb-4">
-                    <span className="text-4xl">{doc.thumbnail}</span>
-                  </div>
-
-                  {/* 제목 */}
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                    {doc.title}
-                  </h3>
-
-                  {/* 설명 */}
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
-                    {doc.description}
-                  </p>
-
-                  {/* 정보 */}
-                  <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
-                    <span>📄 {doc.fileSize}</span>
-                    <span>{doc.language === 'ko' ? '🇰🇷' : doc.language === 'en' ? '🇺🇸' : '🌐'}</span>
-                  </div>
-
-                  {/* 다운로드 버튼 */}
-                  <a
-                    href={doc.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full py-3 bg-gradient-to-r from-primary-500 to-green-500 hover:from-primary-600 hover:to-green-600 text-white rounded-lg font-semibold text-center transition-all duration-300"
-                    onClick={(e) => {
-                      // 파일이 없는 경우 경고
-                      if (!doc.fileUrl) {
-                        e.preventDefault();
-                        alert(currentLanguage === 'en' ? 'File URL is not set' : '파일 URL이 설정되지 않았습니다');
-                        return;
-                      }
-                      
-                      // 한글/공백이 있는 경우 인코딩된 URL로 열기
-                      if (/[\u3131-\uD79D\s]/.test(doc.fileUrl)) {
-                        e.preventDefault();
-                        const encodedUrl = doc.fileUrl.split('/').map(part => encodeURIComponent(part)).join('/');
-                        window.open(encodedUrl, '_blank');
-                      }
-                    }}
-                  >
-                    📥 {currentLanguage === 'en' ? 'View / Download' : '보기 / 다운로드'}
-                  </a>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.section>
-      )}
-
       {/* 연락처 */}
       <motion.section 
         className="py-20 bg-gradient-to-br from-primary-50 to-green-50 dark:from-gray-900 dark:to-gray-800"
@@ -641,8 +508,8 @@ const TlcDetailPage = () => {
                 <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Phone:' : '전화:'}
                 </span>
-                <a href="tel:02-515-5018" className="text-primary-600 dark:text-primary-400 hover:underline">
-                  02-515-5018
+                <a href="tel:02-553-3631" className="text-primary-600 dark:text-primary-400 hover:underline">
+                  02-553-3631
                 </a>
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">
@@ -650,8 +517,8 @@ const TlcDetailPage = () => {
                 <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Email:' : '이메일:'}
                 </span>
-                <a href="mailto:tlc@junghocorp.com" className="text-primary-600 dark:text-primary-400 hover:underline">
-                  tlc@junghocorp.com
+                <a href="mailto:support@junghocorp.com" className="text-primary-600 dark:text-primary-400 hover:underline">
+                  support@junghocorp.com
                 </a>
               </div>
               <div className="flex items-center justify-center gap-3 text-lg">

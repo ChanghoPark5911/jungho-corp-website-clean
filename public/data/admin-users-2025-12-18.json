@@ -1,0 +1,37 @@
+{
+  "exportedAt": "2025-12-18T00:24:50.864Z",
+  "description": "정호그룹 관리자 사용자 데이터",
+  "version": "v3",
+  "users": [
+    {
+      "id": "user001",
+      "username": "admin",
+      "password": "jungho2025!admin",
+      "name": "최고 관리자",
+      "email": "admin@jungho.com",
+      "role": "super_admin",
+      "createdAt": "2025-01-01",
+      "lastLogin": "2025-12-18"
+    },
+    {
+      "id": "user1765864149302",
+      "username": "admin01",
+      "password": "admin01!",
+      "name": "박창호",
+      "email": "chpark00@junghocorp.com",
+      "role": "admin",
+      "createdAt": "2025-12-16",
+      "lastLogin": "2025-12-17"
+    },
+    {
+      "id": "user1766016421372",
+      "username": "testuser",
+      "password": "test123!",
+      "name": "홍길동",
+      "email": "test00@naver.com",
+      "role": "editor",
+      "createdAt": "2025-12-18",
+      "lastLogin": "2025-12-18"
+    }
+  ]
+}

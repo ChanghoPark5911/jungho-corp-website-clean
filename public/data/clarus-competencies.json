@@ -94,15 +94,18 @@
       "features": [
         {
           "ko": "Magic CLARUS (자사몰)",
-          "en": "Magic CLARUS (Official Mall)"
+          "en": "Magic CLARUS (Official Mall)",
+          "link": "https://www.magicclarus.com"
         },
         {
           "ko": "네이버 스마트 스토어",
-          "en": "Naver Smart Store"
+          "en": "Naver Smart Store",
+          "link": "https://smartstore.naver.com/magicclarus"
         },
         {
           "ko": "쿠팡",
-          "en": "Coupang"
+          "en": "Coupang",
+          "link": "https://www.coupang.com/vp/products/7335515220"
         }
       ],
       "imagePath": "/images/clarus/competencies/online-shopping.jpg",

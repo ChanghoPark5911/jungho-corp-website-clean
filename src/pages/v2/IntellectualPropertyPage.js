@@ -31,16 +31,25 @@ const IntellectualPropertyPage = () => {
   const [intellectualPropertyCertificates, setCertificates] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // JSON에서 데이터 로드
+  // JSON에서 데이터 로드 (캐시 방지)
   useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await fetch('/data/intellectual-property.json');
+        const timestamp = new Date().getTime();
+        const response = await fetch(`/data/intellectual-property.json?v=${timestamp}`, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
         if (response.ok) {
           const data = await response.json();
           setStats(data.stats || { total: 0, patents: 0, designs: 0, software: 0 });
           setCertificates(data.certificates || []);
           console.log('✅ 지적재산권 데이터 로드:', data.certificates?.length || 0, '개');
+        } else {
+          console.error('지적재산권 데이터 응답 실패:', response.status);
         }
       } catch (error) {
         console.error('지적재산권 데이터 로드 실패:', error);
@@ -190,40 +199,55 @@ const IntellectualPropertyPage = () => {
           </motion.div>
 
           {/* 주요 인증서 갤러리 */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeInUp}
-          >
+          <div>
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
               {currentLanguage === 'en' ? 'Major Certifications & Registrations' : '주요 인증 및 등록'}
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {intellectualPropertyCertificates.map((cert) => (
-                <motion.div
-                  key={cert.id}
-                  variants={fadeInUp}
-                  whileHover={{ y: -5 }}
-                  className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
-                >
-                  <div className="text-5xl mb-4 text-center">{cert.thumbnail}</div>
-                  <div className="inline-block px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-full text-xs font-semibold mb-3">
-                    {cert.category}
+            
+            {/* 로딩 상태 */}
+            {isLoading && (
+              <div className="text-center py-12">
+                <div className="animate-spin w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p className="text-gray-600 dark:text-gray-400">데이터를 불러오는 중...</p>
+              </div>
+            )}
+            
+            {/* 데이터 없음 */}
+            {!isLoading && intellectualPropertyCertificates.length === 0 && (
+              <div className="text-center py-12 bg-gray-100 dark:bg-gray-800 rounded-xl">
+                <div className="text-4xl mb-4">📭</div>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {currentLanguage === 'en' ? 'No certification data available' : '인증 데이터가 없습니다'}
+                </p>
+              </div>
+            )}
+            
+            {/* 인증서 카드 그리드 */}
+            {!isLoading && intellectualPropertyCertificates.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {intellectualPropertyCertificates.map((cert) => (
+                  <div
+                    key={cert.id}
+                    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                  >
+                    <div className="text-5xl mb-4 text-center">{cert.thumbnail}</div>
+                    <div className="inline-block px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-full text-xs font-semibold mb-3">
+                      {cert.category}
+                    </div>
+                    <h4 className="text-base font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                      {cert.title}
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                      {cert.description}
+                    </p>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      {new Date(cert.date).toLocaleDateString('ko-KR')}
+                    </div>
                   </div>
-                  <h4 className="text-base font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
-                    {cert.title}
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                    {cert.description}
-                  </p>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">
-                    {new Date(cert.date).toLocaleDateString('ko-KR')}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* 안내 메시지 */}
           <motion.div

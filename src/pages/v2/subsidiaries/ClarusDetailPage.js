@@ -180,8 +180,8 @@ const ClarusDetailPage = () => {
     {
       name: currentLanguage === 'en' ? 'Software Business | Energy Manager System' : 'Software 사업 | Energy Manager System',
       description: currentLanguage === 'en'
-        ? 'Over 30 years of continuous development and evolution in energy management software'
-        : '30년 이상 지속적으로 발전해온 에너지 관리 소프트웨어',
+        ? 'Energy management optimization with lighting/power facility monitoring, Demand Control, power restoration sequence control functions'
+        : '조명/전력설비 감시, Demand Control, 정·복전 시퀀스제어 기능 등 에너지 관리 최적화 시현',
       features: currentLanguage === 'en'
         ? [
             '1991: Sirius31 - First generation control software',
@@ -204,38 +204,6 @@ const ClarusDetailPage = () => {
             '고객 요구사항에 맞춘 커스터마이징 솔루션'
           ],
       imagePath: '/images/clarus/energy-manager-system-timeline.png'
-    }
-  ];
-
-  // 핵심 기술
-  const technologies = [
-    {
-      title: currentLanguage === 'en' ? 'IoT-based Smart Lighting Control' : 'IoT기반 스마트 조명제어',
-      description: currentLanguage === 'en'
-        ? 'Smart lighting management solution for efficient energy savings'
-        : '효율적 에너지 절감을 위한 스마트 조명 관리 솔루션',
-      icon: '🌐'
-    },
-    {
-      title: currentLanguage === 'en' ? 'Power Monitoring and Control Solution' : '전력감시 및 제어 솔루션',
-      description: currentLanguage === 'en'
-        ? 'Stable monitoring and operation of distribution panels through power monitoring'
-        : '전력 모니터링을 통한 안정적인 수배전반 감시운영',
-      icon: '⚡'
-    },
-    {
-      title: currentLanguage === 'en' ? 'Integrated Building Resource Management Solution' : '빌딩 자원관리 종합 솔루션',
-      description: currentLanguage === 'en'
-        ? 'Integrated building management platform providing comfortable and safe operating environment'
-        : '쾌적하고 안전한 운영 환경을 제공하는 통합 빌딩 관리 플랫폼',
-      icon: '🏆'
-    },
-    {
-      title: currentLanguage === 'en' ? 'Electrical Safety Management Solution' : '전기안전관리 솔루션',
-      description: currentLanguage === 'en'
-        ? 'Safety IoT device technology that detects electrical hazards such as fire and electric shock in advance'
-        : '화재·감전 등 전기 재해를 사전에 감지하는 안전IoT장치 기술',
-      icon: '☁️'
     }
   ];
 
@@ -509,7 +477,18 @@ const ClarusDetailPage = () => {
                           {comp.features.map((feature, idx) => (
                             <div key={idx} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                               <span className={`font-semibold ${textColorMap[comp.borderColor]}`}>✓</span>
-                              <span>{currentLanguage === 'en' ? feature.en : feature.ko}</span>
+                              {feature.link ? (
+                                <a 
+                                  href={feature.link} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className={`${textColorMap[comp.borderColor]} hover:underline font-medium transition-colors`}
+                                >
+                                  {currentLanguage === 'en' ? feature.en : feature.ko} ↗
+                                </a>
+                              ) : (
+                                <span>{currentLanguage === 'en' ? feature.en : feature.ko}</span>
+                              )}
                             </div>
                           ))}
                         </div>
@@ -587,7 +566,7 @@ const ClarusDetailPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div variants={fadeInUp} className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {currentLanguage === 'en' ? 'Main Products & Services' : '주요 제품 및 서비스'}
+              {currentLanguage === 'en' ? 'Main Business & Services' : '주요 사업 및 서비스'}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
               {currentLanguage === 'en' 
@@ -721,49 +700,6 @@ const ClarusDetailPage = () => {
                     )}
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* 핵심 기술 */}
-      <motion.section 
-        className="py-20 bg-white dark:bg-gray-900"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div variants={fadeInUp} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {currentLanguage === 'en' ? 'Core Technologies' : '핵심 기술'}
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              {currentLanguage === 'en'
-                ? "CLARUS's differentiated technological capabilities"
-                : '클라루스만의 차별화된 기술력'}
-            </p>
-          </motion.div>
-
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-            variants={staggerContainer}
-          >
-            {technologies.map((tech, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                whileHover={{ scale: 1.03 }}
-                className="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-gray-800 dark:to-gray-850 rounded-xl p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-cyan-200 dark:border-gray-700"
-              >
-                <div className="text-5xl mb-4">{tech.icon}</div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
-                  {tech.title}
-                </h3>
-                <p className="text-gray-700 dark:text-white text-lg tech-description">
-                  {tech.description}
-                </p>
               </motion.div>
             ))}
           </motion.div>

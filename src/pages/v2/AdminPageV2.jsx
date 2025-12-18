@@ -146,18 +146,7 @@ const AdminPageV2 = () => {
     ]
   });
 
-  // 사용자 데이터
-  const [usersData, setUsersData] = useState([
-    {
-      id: 'user001',
-      username: 'admin123',
-      name: '관리자',
-      email: 'admin@jungho.com',
-      role: 'super_admin',
-      createdAt: '2024-01-01',
-      lastLogin: '2024-11-10 10:30'
-    }
-  ]);
+  // 사용자 데이터는 AuthContext에서 관리 (auth.users 사용)
 
   // 인증 상태 확인 및 데이터 로드
   useEffect(() => {
@@ -213,14 +202,7 @@ const AdminPageV2 = () => {
       }
     }
 
-    const savedUsers = localStorage.getItem('v2_users_data');
-    if (savedUsers) {
-      try {
-        setUsersData(JSON.parse(savedUsers));
-      } catch (error) {
-        console.error('사용자 데이터 로드 실패:', error);
-      }
-    }
+    // 사용자 데이터는 AuthContext에서 자동으로 관리됨
 
     // i18n 데이터 로드 (JSON 파일 기본값 + localStorage 번역 병합)
     const loadI18nData = async () => {
@@ -463,11 +445,11 @@ const AdminPageV2 = () => {
     }
   };
 
-  // 사용자 데이터 저장
+  // 사용자 데이터 저장 (AuthContext에서 자동 저장되므로 성공 메시지만 표시)
   const saveUsersData = () => {
     setSaveStatus('saving');
     try {
-      localStorage.setItem('v2_users_data', JSON.stringify(usersData));
+      // AuthContext가 자동으로 localStorage('admin_users')에 저장함
       setSaveStatus('success');
       setTimeout(() => {
         setSaveStatus('');
@@ -720,7 +702,7 @@ const AdminPageV2 = () => {
           {activeTab === 'media' && <MediaTab />}
           {activeTab === 'support' && <SupportTab />}
           {activeTab === 'i18n' && i18nData && <I18nTab data={i18nData} setData={setI18nData} onSave={saveI18nData} />}
-          {activeTab === 'users' && <UsersTab data={usersData} setData={setUsersData} onSave={saveUsersData} />}
+          {activeTab === 'users' && <UsersTab auth={auth} onSave={saveUsersData} />}
         </div>
       </div>
     </div>
@@ -2183,8 +2165,8 @@ const PagesTab = ({ data, setData, onSave }) => {
   );
 };
 
-// 사용자 관리 탭
-const UsersTab = ({ data, setData, onSave }) => {
+// 사용자 관리 탭 - AuthContext와 통합
+const UsersTab = ({ auth, onSave }) => {
   const [showAddModal, setShowAddModal] = React.useState(false);
   const [editingUser, setEditingUser] = React.useState(null);
   const [formData, setFormData] = React.useState({
@@ -2195,55 +2177,68 @@ const UsersTab = ({ data, setData, onSave }) => {
     role: 'editor'
   });
 
+  // AuthContext에서 사용자 목록 가져오기
+  const data = auth.users || [];
+
   const roles = [
     { value: 'super_admin', label: '최고 관리자', color: 'bg-red-100 text-red-800', icon: '👑' },
     { value: 'admin', label: '관리자', color: 'bg-blue-100 text-blue-800', icon: '⭐' },
-    { value: 'editor', label: '편집자', color: 'bg-green-100 text-green-800', icon: '✏️' },
-    { value: 'viewer', label: '열람자', color: 'bg-gray-100 text-gray-800', icon: '👁️' }
+    { value: 'editor', label: '편집자', color: 'bg-green-100 text-green-800', icon: '✏️' }
   ];
 
-  // 사용자 추가
+  // 사용자 추가 - AuthContext의 registerUser 사용
   const handleAddUser = () => {
     if (!formData.username || !formData.name || !formData.email || !formData.password) {
       alert('모든 필드를 입력해주세요.');
       return;
     }
 
-    const newUser = {
-      id: 'user' + Date.now(),
+    // AuthContext의 registerUser 함수 사용
+    const result = auth.registerUser({
       username: formData.username,
       name: formData.name,
       email: formData.email,
-      role: formData.role,
-      createdAt: new Date().toISOString().split('T')[0],
-      lastLogin: '-'
-    };
+      password: formData.password,
+      role: formData.role
+    });
 
-    setData([...data, newUser]);
-    setShowAddModal(false);
-    setFormData({ username: '', name: '', email: '', password: '', role: 'editor' });
+    if (result.success) {
+      setShowAddModal(false);
+      setFormData({ username: '', name: '', email: '', password: '', role: 'editor' });
+      alert('✅ 사용자가 추가되었습니다!\n\n새 사용자는 이제 바로 로그인할 수 있습니다.');
+    } else {
+      alert('❌ ' + result.message);
+    }
   };
 
-  // 사용자 수정
+  // 사용자 수정 - AuthContext의 updateUser 사용
   const handleUpdateUser = () => {
-    const updatedUsers = data.map(user => 
-      user.id === editingUser.id 
-        ? { ...user, name: formData.name, email: formData.email, role: formData.role }
-        : user
-    );
-    setData(updatedUsers);
+    const updateData = {
+      name: formData.name,
+      email: formData.email,
+      role: formData.role
+    };
+    
+    // 비밀번호가 입력된 경우에만 업데이트
+    if (formData.password && formData.password.length >= 6) {
+      updateData.password = formData.password;
+    }
+    
+    auth.updateUser(editingUser.id, updateData);
     setEditingUser(null);
     setFormData({ username: '', name: '', email: '', password: '', role: 'editor' });
+    alert('✅ 사용자 정보가 수정되었습니다.');
   };
 
-  // 사용자 삭제
+  // 사용자 삭제 - AuthContext의 deleteUser 사용
   const handleDeleteUser = (userId) => {
     if (userId === 'user001') {
       alert('기본 관리자 계정은 삭제할 수 없습니다.');
       return;
     }
     if (window.confirm('정말 이 사용자를 삭제하시겠습니까?')) {
-      setData(data.filter(user => user.id !== userId));
+      auth.deleteUser(userId);
+      alert('✅ 사용자가 삭제되었습니다.');
     }
   };
 

@@ -5,18 +5,16 @@
   "users": [
     {
       "id": "user001",
-      "username": "admin",
-      "password": "jungho2025!admin",
-      "name": "최고 관리자",
+      "username": "admin123",
+      "name": "관리자",
       "email": "admin@jungho.com",
       "role": "super_admin",
-      "createdAt": "2025-01-01",
-      "lastLogin": "-"
+      "createdAt": "2024-01-01",
+      "lastLogin": "2024-11-10 10:30"
     },
     {
       "id": "user1765864149302",
       "username": "admin01",
-      "password": "admin01!",
       "name": "박창호",
       "email": "chpark00@junghocorp.com",
       "role": "admin",

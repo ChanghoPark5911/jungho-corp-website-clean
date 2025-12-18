@@ -49,7 +49,7 @@ const SubsidiariesPage = () => {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' }
+      transition: { duration: 0.3, ease: 'easeOut' }
     }
   };
 
@@ -167,7 +167,7 @@ const SubsidiariesPage = () => {
           className="hidden md:block absolute top-24 right-8 text-right z-10"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
         >
           <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
             {currentLanguage === 'en' ? 'CURRENT PAGE' : '현재 페이지'}
@@ -388,7 +388,7 @@ const SubsidiariesPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.3, delay: 0.15 }}
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
               {t('home.subsidiariesPage.cta.title') || (currentLanguage === 'en' ? 'Growing Together - Jungho Group' : '함께 성장하는 정호그룹')}

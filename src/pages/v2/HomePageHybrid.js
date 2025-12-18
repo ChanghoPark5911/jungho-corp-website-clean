@@ -348,14 +348,14 @@ const HomePageHybrid = () => {
         className="py-16 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-gray-800"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.3 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               {currentLanguage === 'en' ? 'Jungho Group GATEWAY' : '정호그룹 GATEWAY'}
@@ -488,7 +488,7 @@ const HomePageHybrid = () => {
           className="mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.3 }}
         >
           <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -529,7 +529,7 @@ const HomePageHybrid = () => {
           className="mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          transition={{ duration: 0.3, delay: 0.05 }}
         >
           <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -574,7 +574,7 @@ const HomePageHybrid = () => {
           className="mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
         >
           <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -615,7 +615,7 @@ const HomePageHybrid = () => {
           className="mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.3, delay: 0.15 }}
         >
           <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -722,7 +722,7 @@ const HomePageHybrid = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.3 }}
         >
           <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -871,7 +871,7 @@ const HomePageHybrid = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.3 }}
         >
           <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 dark:from-blue-700 dark:via-purple-700 dark:to-pink-700 text-white rounded-2xl p-8 shadow-2xl overflow-hidden relative">
             {/* 배경 장식 */}

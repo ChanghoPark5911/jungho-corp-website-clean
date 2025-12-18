@@ -28,10 +28,10 @@ const SmallBanner = ({
       className="relative bg-gray-100 dark:bg-gray-800 overflow-hidden border-b-4 border-blue-600 dark:border-blue-500"
       style={{ height }}
     >
-      {/* 배경 이미지 (메인) - 매우 선명하게! ⭐ 부드러운 전환 효과 추가 */}
+      {/* 배경 이미지 (메인) - 최적화 */}
       {backgroundImage && (
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-90 dark:opacity-85 transition-all duration-1000 ease-in-out"
+          className="absolute inset-0 bg-cover bg-center opacity-90 dark:opacity-85 transition-opacity duration-300"
           style={{
             backgroundImage: `url("${encodedBackgroundImage}")`,
           }}

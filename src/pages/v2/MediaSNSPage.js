@@ -59,18 +59,18 @@ const MediaSNSPage = () => {
     loadSnsLinks();
   }, []);
 
-  // 애니메이션 variants
+  // 애니메이션 variants (최적화)
   const fadeInUp = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' }
+      transition: { duration: 0.3, ease: 'easeOut' }
     }
   };
 
   const staggerContainer = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {

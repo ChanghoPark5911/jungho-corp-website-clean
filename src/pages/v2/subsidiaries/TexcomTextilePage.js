@@ -138,7 +138,7 @@ const TexcomTextilePage = () => {
             <motion.div 
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.3 }}
             >
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-4xl">🏭</span>
@@ -176,7 +176,7 @@ const TexcomTextilePage = () => {
               className="text-center lg:text-right"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
             >
               <h2 className="text-2xl sm:text-3xl font-bold text-purple-700 dark:text-purple-400 mb-6">
                 {currentLanguage === 'en' ? 'Bridging Textile Industry and Fashion' : '섬유 산업과 패션을 잇는 가교'}

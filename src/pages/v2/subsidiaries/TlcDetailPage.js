@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../../hooks/useI18n';
 import { useTheme } from '../../../contexts/ThemeContext';
@@ -98,37 +98,150 @@ const TlcDetailPage = () => {
     }
   ];
 
-  // 연혁 및 성과 (2004-2025)
-  const achievements = currentLanguage === 'en' ? [
-    '2025: Energy Manager 5 (EM5) Lighting/Power Software, D-Type Program Switch 6 models, Google Android, Apple iOS EF2 Setting App launched',
-    '2024: Programmable Controller and Building Management System using it Patent Application',
-    '2023: Magic CLARUS Online E-commerce Platform Development and Sales Launch',
-    '2021: Prime Minister Award for Excellent New Technology Development Company (Electrical Safety Device Integrated Lighting and Heating Control Device)',
-    '2020: Ladder-Less Remote Control System Platform Development, Ministry of Trade, Industry and Energy "Industrial Convergence Leading Company" Selected',
-    '2019: Lighting Fair International, Philadelphia USA - LED/OLED Lighting Exhibition / Hong Kong Autumn International Lighting Exhibition',
-    '2018: Lighting Fair International, Chicago USA - LED/OLED Lighting Exhibition / Domestic Dealer Sales System Established',
-    '2017: Group CEO received Minister of Land, Infrastructure and Transport Award',
-    '2016: Lighting Fair International, San Diego USA / International LED/OLED Exhibition Prime Minister Award (Wireless TOUCH LCD SWITCH) / Building Equipment, Power and Lighting Integrated Control System Patent Registration',
-    '2015: Lighting Fair International, New York / Minister of Trade, Industry and Energy Award (10A Hybrid Terminal Unit) / Industrial Convergence Leading Company and Product Designation (Building Automation Control System) / Top 100 Products in Asia (Lighting Automation Control System)',
-    '2014: SI/FMS Operation SOFTWARE Development',
-    '2013: GS (Good Software) Certification (No:13-0033) / Direct Production Certification (Automatic Control Panel, Automatic Switch, Instrumentation Control Device) / USA Nexlight, Canada Douglass, Gentec, Vietnam Dealer Contract',
-    '2012~2010: Power Control System Software / All Product Quality Certifications: UL/cUL, KC/FCC',
-    '2004: New Headquarters Building Construction (Nonhyeon-dong, Gangnam-gu, Seoul)'
-  ] : [
-    '2025년: Energy Manager 5 (EM5) 조명/전력 소프트웨어, D-Type Program Switch 6종, Google Android, Apple iOS EF2 Setting App 신제품 출시',
-    '2024년: 프로그래머블 콘트롤러 및 이를 이용한 빌딩 관리 시스템 특허출원',
-    '2023년: Magic CLARUS 온라인 E커머스 플랫폼 구축 및 판매개시',
-    '2021년: 신기술 개발우수업체 국무총리상 수상 (전기안전장치 융합형 조명 및 전열제어 장치)',
-    '2020년: Ladder-Less 원격제어 시스템 플랫폼 개발, 산업통상자원부장관 \'산업융합 선도기업\' 선정',
-    '2019년: Lighting Fair International, Philadelphia USA 참가 - LED/OLED 조명 전시회 / 홍콩 추계 국제 조명 전시회 참가',
-    '2018년: Lighting Fair International, Chicago USA 참가 - LED/OLED 조명 전시회 참가 / 국내 대리점 판매 체계 구축',
-    '2017년: 그룹 CEO 국토교통부 장관상 수상',
-    '2016년: Lighting Fair International, San Diego USA 참가 / 국제LED/OLED회 참가 국무총리상 수상 (무선 TOUCH LCD SWITCH) / 건물의 설비, 전력 및 조명 통합 제어 시스템 특허등록',
-    '2015년: Lighting Fair International, New York 참가 / 산업자원부 장관상 수상 (10A Hybrid Terminal Unit) / 산업융합선도기업 및 융합품목 지정 (건물자동제어시스템) / 아시아를 빛낸 100대 제품 선정 (조명자동제어시스템)',
-    '2014년: SI/FMS 운영 SOFTWARE 개발',
-    '2013년: GS(Good Software) 인증 획득 (인증번호:13-0033) / 직접생산확인증명 (자동제어반, 자동점멸기, 계장(계측)제어장치) / 미국 Nexlight, 캐나다 Douglass, Gentec, 베트남 대리점 계약',
-    '2012~2010년: 전력제어시스템 Software / 전 제품 품질인증 취득: UL/cUL, KC/FCC 인증',
-    '2004년: 4월 신사옥 신축 이전 (서울시 강남구 논현동)'
+  // 연혁 및 성과 (2004-2025) - 일루텍 형식
+  const achievements = [
+    {
+      year: '2025',
+      items: currentLanguage === 'en'
+        ? [
+            'Energy Manager 5 (EM5) Lighting/Power Software launched',
+            'D-Type Program Switch 6 models launched',
+            'Google Android, Apple iOS EF2 Setting App launched'
+          ]
+        : [
+            'Energy Manager 5 (EM5) 조명/전력 소프트웨어 신제품 출시',
+            'D-Type Program Switch 6종 신제품 출시',
+            'Google Android, Apple iOS EF2 Setting App 출시'
+          ]
+    },
+    {
+      year: '2024',
+      items: currentLanguage === 'en'
+        ? ['Programmable Controller and Building Management System using it Patent Application']
+        : ['프로그래머블 콘트롤러 및 이를 이용한 빌딩 관리 시스템 특허출원']
+    },
+    {
+      year: '2023',
+      items: currentLanguage === 'en'
+        ? ['Magic CLARUS Online E-commerce Platform Development and Sales Launch']
+        : ['Magic CLARUS 온라인 E커머스 플랫폼 구축 및 판매개시']
+    },
+    {
+      year: '2021',
+      items: currentLanguage === 'en'
+        ? ['Prime Minister Award for Excellent New Technology Development Company (Electrical Safety Device Integrated Lighting and Heating Control Device)']
+        : ['신기술 개발우수업체 국무총리상 수상 (전기안전장치 융합형 조명 및 전열제어 장치)']
+    },
+    {
+      year: '2020',
+      items: currentLanguage === 'en'
+        ? [
+            'Ladder-Less Remote Control System Platform Development',
+            'Ministry of Trade, Industry and Energy "Industrial Convergence Leading Company" Selected'
+          ]
+        : [
+            'Ladder-Less 원격제어 시스템 플랫폼 개발',
+            '산업통상자원부장관 \'산업융합 선도기업\' 선정'
+          ]
+    },
+    {
+      year: '2019',
+      items: currentLanguage === 'en'
+        ? [
+            'Lighting Fair International, Philadelphia USA - LED/OLED Lighting Exhibition',
+            'Hong Kong Autumn International Lighting Exhibition'
+          ]
+        : [
+            'Lighting Fair International, Philadelphia USA 참가 - LED/OLED 조명 전시회',
+            '홍콩 추계 국제 조명 전시회 참가'
+          ]
+    },
+    {
+      year: '2018',
+      items: currentLanguage === 'en'
+        ? [
+            'Lighting Fair International, Chicago USA - LED/OLED Lighting Exhibition',
+            'Domestic Dealer Sales System Established'
+          ]
+        : [
+            'Lighting Fair International, Chicago USA 참가 - LED/OLED 조명 전시회 참가',
+            '국내 대리점 판매 체계 구축'
+          ]
+    },
+    {
+      year: '2017',
+      items: currentLanguage === 'en'
+        ? ['Group CEO received Minister of Land, Infrastructure and Transport Award']
+        : ['그룹 CEO 국토교통부 장관상 수상']
+    },
+    {
+      year: '2016',
+      items: currentLanguage === 'en'
+        ? [
+            'Lighting Fair International, San Diego USA',
+            'International LED/OLED Exhibition Prime Minister Award (Wireless TOUCH LCD SWITCH)',
+            'Building Equipment, Power and Lighting Integrated Control System Patent Registration'
+          ]
+        : [
+            'Lighting Fair International, San Diego USA 참가',
+            '국제LED/OLED전시회 참가 국무총리상 수상 (무선 TOUCH LCD SWITCH)',
+            '건물의 설비, 전력 및 조명 통합 제어 시스템 특허등록'
+          ]
+    },
+    {
+      year: '2015',
+      items: currentLanguage === 'en'
+        ? [
+            'Lighting Fair International, New York',
+            'Minister of Trade, Industry and Energy Award (10A Hybrid Terminal Unit)',
+            'Industrial Convergence Leading Company and Product Designation (Building Automation Control System)',
+            'Top 100 Products in Asia (Lighting Automation Control System)'
+          ]
+        : [
+            'Lighting Fair International, New York 참가',
+            '산업자원부 장관상 수상 (10A Hybrid Terminal Unit)',
+            '산업융합선도기업 및 융합품목 지정 (건물자동제어시스템)',
+            '아시아를 빛낸 100대 제품 선정 (조명자동제어시스템)'
+          ]
+    },
+    {
+      year: '2014',
+      items: currentLanguage === 'en'
+        ? ['SI/FMS Operation SOFTWARE Development']
+        : ['SI/FMS 운영 SOFTWARE 개발']
+    },
+    {
+      year: '2013',
+      items: currentLanguage === 'en'
+        ? [
+            'GS (Good Software) Certification (No:13-0033)',
+            'Direct Production Certification (Automatic Control Panel, Automatic Switch, Instrumentation Control Device)',
+            'USA Nexlight, Canada Douglass, Gentec, Vietnam Dealer Contract'
+          ]
+        : [
+            'GS(Good Software) 인증 획득 (인증번호:13-0033)',
+            '직접생산확인증명 (자동제어반, 자동점멸기, 계장(계측)제어장치)',
+            '미국 Nexlight, 캐나다 Douglass, Gentec, 베트남 대리점 계약'
+          ]
+    },
+    {
+      year: '2010-2012',
+      items: currentLanguage === 'en'
+        ? [
+            'Power Control System Software Development',
+            'All Product Quality Certifications: UL/cUL, KC/FCC'
+          ]
+        : [
+            '전력제어시스템 Software 개발',
+            '전 제품 품질인증 취득: UL/cUL, KC/FCC 인증'
+          ]
+    },
+    {
+      year: '2004',
+      items: currentLanguage === 'en'
+        ? ['New Headquarters Building Construction (Nonhyeon-dong, Gangnam-gu, Seoul)']
+        : ['신사옥 신축 이전 (서울시 강남구 논현동)']
+    }
   ];
 
   return (
@@ -172,25 +285,14 @@ const TlcDetailPage = () => {
             animate="visible"
             variants={staggerContainer}
           >
-            {/* 로고와 회사명을 나란히 배치 */}
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-              <img 
-                src="/images/logos/junghotlc.png" 
-                alt="정호티엘씨 로고" 
-                className="h-8 sm:h-10 w-auto object-contain"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 대체 아이콘 표시
-                  e.target.style.display = 'none';
-                  e.target.nextElementSibling.style.display = 'inline-block';
-                }}
-              />
-              <span className="text-4xl sm:text-6xl hidden">💡</span>
+            {/* 회사명 */}
+            <motion.div variants={fadeInUp} className="flex flex-col items-center justify-center">
               <div className="flex flex-col items-center -space-y-1 sm:-space-y-2">
                 <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
                   {currentLanguage === 'en' ? 'Jungho TLC' : '정호티엘씨'}
                 </h1>
                 <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                  {currentLanguage === 'en' ? '정호티엘씨' : 'Jungho TLC Co., Ltd.'}
+                  {currentLanguage === 'en' ? '정호티엘씨' : 'JUNGHO TLC Co., Ltd.'}
                 </p>
               </div>
             </motion.div>
@@ -421,7 +523,7 @@ const TlcDetailPage = () => {
 
       {/* 연혁 및 성과 */}
       <motion.section 
-        className="py-20 bg-gray-50 dark:bg-gray-800"
+        className="py-20 bg-white dark:bg-gray-900"
         initial="hidden"
         animate="visible"
         variants={staggerContainer}
@@ -436,40 +538,43 @@ const TlcDetailPage = () => {
             </p>
           </motion.div>
 
-          <div className="space-y-4">
-            <AnimatePresence mode="sync">
-              {(showAllAchievements ? achievements : achievements.slice(0, 5)).map((achievement, index) => (
-                <motion.div
-                  key={`achievement-${index}`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.15, delay: index > 4 ? (index - 5) * 0.03 : 0 }}
-                  whileHover={{ x: 5 }}
-                  className="flex items-start gap-4 bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300"
-                >
-                  <div className="flex-shrink-0 w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
-                    <span className="text-primary-600 dark:text-primary-400 font-bold">{index + 1}</span>
-                  </div>
-                  <p className="text-gray-700 dark:text-white text-lg flex-1">
-                    {achievement}
-                  </p>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+          <div className="space-y-0">
+            {(showAllAchievements ? achievements : achievements.slice(0, 5)).map((yearData, index) => (
+              <div
+                key={yearData.year}
+                className="flex border-b border-gray-200 dark:border-gray-700 py-8 first:pt-0 last:border-b-0"
+              >
+                {/* 년도 - 큰 글씨 */}
+                <div className="flex-shrink-0 w-24 sm:w-32">
+                  <span className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
+                    {yearData.year}
+                  </span>
+                </div>
+                
+                {/* 내용 리스트 */}
+                <div className="flex-1 pl-6 sm:pl-8">
+                  <ul className="space-y-2">
+                    {yearData.items.map((item, itemIndex) => (
+                      <li 
+                        key={itemIndex}
+                        className="flex items-start gap-2 text-gray-700 dark:text-gray-300"
+                      >
+                        <span className="text-gray-400 dark:text-gray-500 mt-0.5">-</span>
+                        <span className="text-base sm:text-lg">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* 더보기/접기 버튼 */}
           {achievements.length > 5 && (
-            <motion.div 
-              className="mt-8 text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
+            <div className="mt-8 text-center">
               <button
                 onClick={() => setShowAllAchievements(!showAllAchievements)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
               >
                 {showAllAchievements ? (
                   <>
@@ -487,7 +592,7 @@ const TlcDetailPage = () => {
                   </>
                 )}
               </button>
-            </motion.div>
+            </div>
           )}
         </div>
       </motion.section>

@@ -103,24 +103,18 @@ const ClarusDetailPage = () => {
         : '효율적인 에너지 관리를 위한 전력감시 솔루션 개발 및 공급',
       features: currentLanguage === 'en'
         ? [
-            'Simple and intuitive UI (User Interface)',
-            'Real-time power usage monitoring through GUI-based monitoring screen',
-            'Power quality analysis (voltage, current, power factor, harmonics)',
-            'Daily, weekly, monthly, yearly power usage statistics and reports',
-            'Peak power management and demand control',
-            'Alarm and notification system for abnormal power conditions',
-            'Energy cost analysis and optimization suggestions',
-            'System expansion and integration function'
+            'Maximum Demand Power Control (Demand Control)',
+            'Power On/Off Sequence Control',
+            'Power Monitoring and Alarm Display',
+            'Report Function',
+            'Communication Driver and External System Data Provision'
           ]
         : [
-            '간편하고 직관적인 UI (User Interface)',
-            'GUI 편집을 통해 완성된 모니터링 화면으로 실시간 전력 사용량 감시',
-            '전력 품질 분석 (전압, 전류, 역률, 고조파)',
-            '일간, 주간, 월간, 연간 전력 사용량 통계 및 리포트',
-            '피크 전력 관리 및 수요 제어',
-            '이상 전력 상태에 대한 알람 및 알림 시스템',
-            '에너지 비용 분석 및 최적화 제안',
-            '시스템 확장 및 통합 기능'
+            '최대 수요 전력 제어 (Demand Control)',
+            '정·복전 제어',
+            '전력감시 및 경보표시',
+            '보고서 기능',
+            '통신 드라이버 및 외부 시스템 데이터 제공'
           ],
       imagePath: '/images/clarus/power-monitoring-system-diagram.png'
     },
@@ -136,9 +130,8 @@ const ClarusDetailPage = () => {
             '2003: Light Manager - Integrated lighting control',
             '2005: Light Manager II - Advanced GUI-based system',
             '2013: Energy Manager 4 - Power & lighting integrated management',
-            '2018: Energy Manager 5 Compact - Latest generation smart building solution',
-            'Continuous software upgrade and technical support',
-            'Customized solutions for customer requirements'
+            '2018: IPC Web Browser - Integrated management solution via internet',
+            '2025: Energy Manager 5 - Latest smart building solution'
           ]
         : [
             '1991년: Sirius31 - 1세대 제어 소프트웨어',
@@ -146,7 +139,15 @@ const ClarusDetailPage = () => {
             '2003년: Light Manager - 통합 조명 제어',
             '2005년: Light Manager II - 고급 GUI 기반 시스템',
             '2013년: Energy Manager 4 - 전력·조명 통합 관리',
-            '2018년: Energy Manager 5 Compact - 최신 스마트빌딩 솔루션',
+            '2018년: IPC Web Browser - 인터넷을 통한 통합관리 솔루션',
+            '2025년: Energy Manager 5 - 최신 스마트빌딩 솔루션'
+          ],
+      futureDirections: currentLanguage === 'en'
+        ? [
+            'Continuous software upgrade and technical support',
+            'Customized solutions for customer requirements'
+          ]
+        : [
             '지속적인 소프트웨어 업그레이드 및 기술지원',
             '고객 요구사항에 맞춘 커스터마이징 솔루션'
           ],
@@ -154,45 +155,182 @@ const ClarusDetailPage = () => {
     }
   ];
 
-  // 주요 실적 (연도별)
-  const achievements = currentLanguage === 'en' ? [
-    '2025: Launched Energy Manager 5 (EM5) lighting/power software, 6 new D-Type Program Switch models, Google Android/Apple iOS EF2 Setting App',
-    '2024: Upgraded Single Pole Relay UL/cUL 20A 30A approval performance, developed and launched Double Pole Relay driving Kit',
-    '2023: Established Magic CLARUS online e-commerce platform and started sales (Naver, Coupang), launched upgraded IPC optimized for Zero Energy Buildings',
-    '2022: Launched Energy Harvesting wireless Stand Alone (Kinetic) switch products, obtained KC electrical appliance safety certification for electronic switch wireless relay module',
-    '2020: Developed Ladder-Less remote control system platform, launched remote setting products for motion sensors/light sensors',
-    '2018: Launched web-based distributed control devices (IPC, SPC)',
-    '2014: Obtained K-Mark performance certification and Q-Mark quality certification (Building Automation Control System)',
-    '2013: Obtained GS (Good Software) certification (13-0033), FCC (Part 15 Class A, B) certification for all lighting control system products',
-    '2012: Developed Energy Manager 4 (EM4) (Windows7 64bit Version)',
-    '2010-2011: Developed power control system software, parking control solution, access control solution ACS',
-    '2009: Changed company name to CLARUS Korea Co., Ltd., established corporate research institute, obtained UL/CUL certification for 20A HID RELAY',
-    '2008: Developed 20A Relay and relay control Terminal Unit',
-    '2007: Developed CLARUS DALI EASYCON lighting control system (DLU, DSU, DBU) using DALI ballast',
-    '2006: Developed Lighting Manager II ARS system software dedicated to lighting control',
-    '2005: Developed Lighting Manager II software (lighting control via Intranet, Ethernet)',
-    '2004: Developed Lighting Manager software (Windows 2000, XP Version)',
-    '2003: Developed E/F2-BUS lighting control system, devices, and programs, new SNU/SIU and E/F2-BUS configuration program',
-    '2002: Established Jungho Light Tech Co., Ltd.'
-  ] : [
-    '2025년: Energy Manager 5 (EM5) 조명/전력 소프트웨어 신제품 출시, D-Type Program Switch 6종 신제품 출시, Google Android/Apple iOS EF2 Setting App 출시',
-    '2024년: Single Pole Relay UL/cUL 20A 30A 승인 성능 업그레이드, Double Pole Relay 구동 Kit 개발 및 출시',
-    '2023년: Magic CLARUS 온라인 E커머스 플랫폼 구축 및 판매개시 (Naver, Coupang), Zero Energy Building 최적화 IPC 업그레이드 출시',
-    '2022년: Energy Harvesting 무배선 Stand Alone (Kinetic) 스위치 제품 출시, 전자식 스위치 무선수신 릴레이 모듈 KC전기용품안전인증 획득',
-    '2020년: Ladder-Less 원격제어 시스템 플랫폼 개발, 인체감지센서/조도센서 원격 설정 제품 출시',
-    '2018년: 웹 기반 분산 제어장치 (IPC, SPC) 출시',
-    '2014년: 성능인증 K마크/품질인증 Q마크 인증 획득 (건물자동제어시스템)',
-    '2013년: GS(Good Software) 인증 획득 (13-0033), 조명제어 시스템 전 품목 FCC(Part 15 Class A, B) 인증 획득',
-    '2012년: Energy Manager 4 (EM4) 개발 (Windows7 64bit Version)',
-    '2010년~2011년: 전력제어시스템 Software, 주차관제솔루션, 출입관제솔루션 ACS 개발',
-    '2009년: ㈜클라루스코리아로 상호 변경, 기업부설 연구소 설립, 20A HID RELAY UL/CUL 인증 획득',
-    '2008년: 20A Relay 개발, Relay 제어용 Terminal Unit 개발',
-    '2007년: DALI 안정기를 이용한 CLARUS DALI EASYCON 조명제어 시스템 (DLU, DSU, DBU) 개발',
-    '2006년: 조명제어 전용 Software Lighting Manager II ARS 시스템 소프트웨어 개발',
-    '2005년: Lighting Manager II 소프트웨어 개발 (Intranet, Ethernet을 통한 조명제어)',
-    '2004년: Lighting Manager 소프트웨어 개발 (Windows 2000, XP Version)',
-    '2003년: E/F2-BUS 조명제어 시스템 및 디바이스, 프로그램 개발, 신형 SNU/SIU와 E/F2-BUS 설정용 프로그램 개발',
-    '2002년: ㈜정호라이트테크 설립'
+  // 주요 실적 (연도별) - 일루텍 형식
+  const achievements = [
+    {
+      year: '2025',
+      items: currentLanguage === 'en'
+        ? [
+            'Launched Energy Manager 5 (EM5) lighting/power software',
+            'Launched 6 new D-Type Program Switch models',
+            'Released Google Android/Apple iOS EF2 Setting App'
+          ]
+        : [
+            'Energy Manager 5 (EM5) 조명/전력 소프트웨어 신제품 출시',
+            'D-Type Program Switch 6종 신제품 출시',
+            'Google Android/Apple iOS EF2 Setting App 출시'
+          ]
+    },
+    {
+      year: '2024',
+      items: currentLanguage === 'en'
+        ? [
+            'Upgraded Single Pole Relay UL/cUL 20A 30A approval performance',
+            'Developed and launched Double Pole Relay driving Kit'
+          ]
+        : [
+            'Single Pole Relay UL/cUL 20A 30A 승인 성능 업그레이드',
+            'Double Pole Relay 구동 Kit 개발 및 출시'
+          ]
+    },
+    {
+      year: '2023',
+      items: currentLanguage === 'en'
+        ? [
+            'Established Magic CLARUS online e-commerce platform and started sales (Naver, Coupang)',
+            'Launched upgraded IPC optimized for Zero Energy Buildings'
+          ]
+        : [
+            'Magic CLARUS 온라인 E커머스 플랫폼 구축 및 판매개시 (Naver, Coupang)',
+            'Zero Energy Building 최적화 IPC 업그레이드 출시'
+          ]
+    },
+    {
+      year: '2022',
+      items: currentLanguage === 'en'
+        ? [
+            'Launched Energy Harvesting wireless Stand Alone (Kinetic) switch products',
+            'Obtained KC electrical appliance safety certification for electronic switch wireless relay module'
+          ]
+        : [
+            'Energy Harvesting 무배선 Stand Alone (Kinetic) 스위치 제품 출시',
+            '전자식 스위치 무선수신 릴레이 모듈 KC전기용품안전인증 획득'
+          ]
+    },
+    {
+      year: '2020',
+      items: currentLanguage === 'en'
+        ? [
+            'Developed Ladder-Less remote control system platform',
+            'Launched remote setting products for motion sensors/light sensors'
+          ]
+        : [
+            'Ladder-Less 원격제어 시스템 플랫폼 개발',
+            '인체감지센서/조도센서 원격 설정 제품 출시'
+          ]
+    },
+    {
+      year: '2018',
+      items: currentLanguage === 'en'
+        ? ['Launched web-based distributed control devices (IPC, SPC)']
+        : ['웹 기반 분산 제어장치 (IPC, SPC) 출시']
+    },
+    {
+      year: '2014',
+      items: currentLanguage === 'en'
+        ? ['Obtained K-Mark performance certification and Q-Mark quality certification (Building Automation Control System)']
+        : ['성능인증 K마크/품질인증 Q마크 인증 획득 (건물자동제어시스템)']
+    },
+    {
+      year: '2013',
+      items: currentLanguage === 'en'
+        ? [
+            'Obtained GS (Good Software) certification (13-0033)',
+            'FCC (Part 15 Class A, B) certification for all lighting control system products'
+          ]
+        : [
+            'GS(Good Software) 인증 획득 (13-0033)',
+            '조명제어 시스템 전 품목 FCC(Part 15 Class A, B) 인증 획득'
+          ]
+    },
+    {
+      year: '2012',
+      items: currentLanguage === 'en'
+        ? ['Developed Energy Manager 4 (EM4) (Windows7 64bit Version)']
+        : ['Energy Manager 4 (EM4) 개발 (Windows7 64bit Version)']
+    },
+    {
+      year: '2010-2011',
+      items: currentLanguage === 'en'
+        ? [
+            'Developed power control system software',
+            'Developed parking control solution',
+            'Developed access control solution ACS'
+          ]
+        : [
+            '전력제어시스템 Software 개발',
+            '주차관제솔루션 개발',
+            '출입관제솔루션 ACS 개발'
+          ]
+    },
+    {
+      year: '2009',
+      items: currentLanguage === 'en'
+        ? [
+            'Changed company name to CLARUS Korea Co., Ltd.',
+            'Established corporate research institute',
+            'Obtained UL/CUL certification for 20A HID RELAY'
+          ]
+        : [
+            '㈜클라루스코리아로 상호 변경',
+            '기업부설 연구소 설립',
+            '20A HID RELAY UL/CUL 인증 획득'
+          ]
+    },
+    {
+      year: '2008',
+      items: currentLanguage === 'en'
+        ? [
+            'Developed 20A Relay',
+            'Developed relay control Terminal Unit'
+          ]
+        : [
+            '20A Relay 개발',
+            'Relay 제어용 Terminal Unit 개발'
+          ]
+    },
+    {
+      year: '2007',
+      items: currentLanguage === 'en'
+        ? ['Developed CLARUS DALI EASYCON lighting control system (DLU, DSU, DBU) using DALI ballast']
+        : ['DALI 안정기를 이용한 CLARUS DALI EASYCON 조명제어 시스템 (DLU, DSU, DBU) 개발']
+    },
+    {
+      year: '2006',
+      items: currentLanguage === 'en'
+        ? ['Developed Lighting Manager II ARS system software dedicated to lighting control']
+        : ['조명제어 전용 Software Lighting Manager II ARS 시스템 소프트웨어 개발']
+    },
+    {
+      year: '2005',
+      items: currentLanguage === 'en'
+        ? ['Developed Lighting Manager II software (lighting control via Intranet, Ethernet)']
+        : ['Lighting Manager II 소프트웨어 개발 (Intranet, Ethernet을 통한 조명제어)']
+    },
+    {
+      year: '2004',
+      items: currentLanguage === 'en'
+        ? ['Developed Lighting Manager software (Windows 2000, XP Version)']
+        : ['Lighting Manager 소프트웨어 개발 (Windows 2000, XP Version)']
+    },
+    {
+      year: '2003',
+      items: currentLanguage === 'en'
+        ? [
+            'Developed E/F2-BUS lighting control system, devices, and programs',
+            'Developed new SNU/SIU and E/F2-BUS configuration program'
+          ]
+        : [
+            'E/F2-BUS 조명제어 시스템 및 디바이스, 프로그램 개발',
+            '신형 SNU/SIU와 E/F2-BUS 설정용 프로그램 개발'
+          ]
+    },
+    {
+      year: '2002',
+      items: currentLanguage === 'en'
+        ? ['Established Jungho Light Tech Co., Ltd.']
+        : ['㈜정호라이트테크 설립']
+    }
   ];
 
   return (
@@ -426,7 +564,7 @@ const ClarusDetailPage = () => {
                                   rel="noopener noreferrer"
                                   className={`${textColorMap[comp.borderColor]} hover:underline font-medium transition-colors`}
                                 >
-                                  {currentLanguage === 'en' ? feature.en : feature.ko} ↗
+                                  {currentLanguage === 'en' ? feature.en : feature.ko}
                                 </a>
                               ) : (
                                 <span>{currentLanguage === 'en' ? feature.en : feature.ko}</span>
@@ -548,21 +686,24 @@ const ClarusDetailPage = () => {
                     {/* 주요 기능 또는 타임라인 */}
                     <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                       <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-                        {currentLanguage === 'en' ? '▪ Key Features:' : index === 2 ? '▪ 소프트웨어 발전 역사:' : '▪ 주요 기능:'}
+                        {currentLanguage === 'en' ? '▪ Key Features' : index === 2 ? '▪ 소프트웨어 발전 역사' : '▪ 주요 기능'}
                       </h4>
                       
                       {/* 세 번째 항목(Software 사업)은 타임라인 형태로 표시 */}
                       {index === 2 ? (
                         <div className="relative">
-                          {/* 타임라인 라인 */}
-                          <div className="absolute left-3 top-2 bottom-2 w-0.5 bg-gradient-to-b from-blue-500 via-blue-400 to-blue-300 dark:from-blue-400 dark:via-blue-500 dark:to-blue-600"></div>
-                          
+                          {/* 타임라인 */}
                           <div className="space-y-3">
-                            {product.features.slice(0, 6).map((feature, idx) => {
+                            {product.features.map((feature, idx) => {
                               const year = feature.match(/^(\d{4})/)?.[1] || '';
                               const content = feature.replace(/^\d{4}년?:?\s*/, '');
+                              const isLast = idx === product.features.length - 1;
                               return (
                                 <div key={idx} className="flex items-start gap-4 relative pl-8">
+                                  {/* 타임라인 세로선 (마지막 항목 제외) */}
+                                  {!isLast && (
+                                    <div className="absolute left-[11px] top-6 h-full w-0.5 bg-blue-300 dark:bg-blue-600"></div>
+                                  )}
                                   {/* 타임라인 포인트 */}
                                   <div className="absolute left-0 w-6 h-6 bg-blue-500 dark:bg-blue-400 rounded-full flex items-center justify-center shadow-md z-10">
                                     <div className="w-2 h-2 bg-white rounded-full"></div>
@@ -580,15 +721,20 @@ const ClarusDetailPage = () => {
                             })}
                           </div>
                           
-                          {/* 추가 기능 (타임라인 외) */}
-                          {product.features.length > 6 && (
-                            <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700 space-y-2">
-                              {product.features.slice(6).map((feature, idx) => (
-                                <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
-                                  <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">✓</span>
-                                  <span>{feature}</span>
-                                </div>
-                              ))}
+                          {/* 향후 추진방향 */}
+                          {product.futureDirections && product.futureDirections.length > 0 && (
+                            <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                              <h5 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                                {currentLanguage === 'en' ? '▪ Future Directions' : '▪ 향후 추진방향'}
+                              </h5>
+                              <div className="space-y-2">
+                                {product.futureDirections.map((direction, idx) => (
+                                  <div key={idx} className="flex items-start gap-2 text-gray-700 dark:text-gray-200 text-sm">
+                                    <span className="text-blue-600 dark:text-blue-400 font-bold mt-0.5">✓</span>
+                                    <span>{direction}</span>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           )}
                         </div>
@@ -650,7 +796,7 @@ const ClarusDetailPage = () => {
 
       {/* 연혁 및 성과 */}
       <motion.section 
-        className="py-20 bg-gray-50 dark:bg-gray-800"
+        className="py-20 bg-white dark:bg-gray-900"
         initial="hidden"
         animate="visible"
         variants={staggerContainer}
@@ -665,38 +811,43 @@ const ClarusDetailPage = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            className="space-y-4"
-            variants={staggerContainer}
-          >
-            {(showAllAchievements ? achievements : achievements.slice(0, 5)).map((achievement, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                whileHover={{ x: 5 }}
-                className="flex items-start gap-4 bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300"
+          <div className="space-y-0">
+            {(showAllAchievements ? achievements : achievements.slice(0, 5)).map((yearData, index) => (
+              <div
+                key={yearData.year}
+                className="flex border-b border-gray-200 dark:border-gray-700 py-8 first:pt-0 last:border-b-0"
               >
-                <div className="flex-shrink-0 w-8 h-8 bg-cyan-100 dark:bg-cyan-900/30 rounded-full flex items-center justify-center">
-                  <span className="text-cyan-600 dark:text-cyan-400 font-bold">{index + 1}</span>
+                {/* 년도 - 큰 글씨 */}
+                <div className="flex-shrink-0 w-24 sm:w-32">
+                  <span className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
+                    {yearData.year}
+                  </span>
                 </div>
-                <p className="text-gray-700 dark:text-white text-lg flex-1 tech-description">
-                  {achievement}
-                </p>
-              </motion.div>
+                
+                {/* 내용 리스트 */}
+                <div className="flex-1 pl-6 sm:pl-8">
+                  <ul className="space-y-2">
+                    {yearData.items.map((item, itemIndex) => (
+                      <li 
+                        key={itemIndex}
+                        className="flex items-start gap-2 text-gray-700 dark:text-gray-300"
+                      >
+                        <span className="text-gray-400 dark:text-gray-500 mt-0.5">-</span>
+                        <span className="text-base sm:text-lg">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             ))}
-          </motion.div>
+          </div>
 
           {/* 더보기/접기 버튼 */}
           {achievements.length > 5 && (
-            <motion.div 
-              className="mt-8 text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
+            <div className="mt-8 text-center">
               <button
                 onClick={() => setShowAllAchievements(!showAllAchievements)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
               >
                 {showAllAchievements ? (
                   <>
@@ -714,7 +865,7 @@ const ClarusDetailPage = () => {
                   </>
                 )}
               </button>
-            </motion.div>
+            </div>
           )}
         </div>
       </motion.section>

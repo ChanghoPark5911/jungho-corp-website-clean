@@ -29,51 +29,134 @@ const TexcomDetailPage = () => {
     visible: { opacity: 1, transition: { staggerChildren: 0, delayChildren: 0 } }
   };
 
-  // 연혁 및 성과 데이터 (최신순 정렬)
-  const achievements = currentLanguage === 'en' ? [
-    '2024.11: RSS Division entered Market Kurly',
-    '2023.09: RSS Division entered 29cm, Musinsa, W Concept',
-    '2022.05: THE AUTOFINDER trademark registration',
-    '2021.04: Established RSS Division and launched REDSSOCKSOO',
-    '2020.02: Launched automatic transfer device THE AUTOFINDER',
-    '2017.11: Agency agreement with Lindauer Dornier GmbH, Germany',
-    '2007.01: Company name changed to Jungho TEXCOM Co., Ltd.',
-    '2005.01: Agency agreement with Mesdan S.p.A, Italy',
-    '2005.01: Agency agreement with Lenzing Instruments, Austria',
-    '2002.01: Agency agreement with Benninger Zell GmbH, Germany',
-    '2001.09: Agency agreement with Texkimp Limited, UK',
-    '2001.03: Agency agreement with Temafa, Germany',
-    '2000.11: Agency agreement with Novibra GmbH, Germany',
-    '1998.03: Agency agreement with Braecker, Switzerland',
-    '1996.01: Agency agreement with Steinemann, Switzerland',
-    '1991.08: Agency agreement with Luwa, Switzerland',
-    '1990.09: Agency agreement with Crosrol, UK',
-    '1988.01: Agency agreement with Textechno, Germany',
-    '1985.05: Agency agreement with Kato, Japan',
-    '1984.07: Agency agreement with Saurer-Allma, Germany',
-    '1982: Founded Jungho Trading Co.'
-  ] : [
-    '2024년 11월: RSS 사업부 마켓컬리 입점',
-    '2023년 9월: RSS 사업부 29cm, 무신사, W컨셉 입점',
-    '2022년 5월: THE AUTOFINDER (디 오토파인더) 상표권 등록',
-    '2021년 4월: RSS 사업부 설립 및 레드싹수 런칭',
-    '2020년 2월: 자동 전사장치 THE AUTOFINDER (디 오토파인더) 출시',
-    '2017년 11월: 독일 Lindauer Dornier GmbH 사와 Agency 협약',
-    '2007년 1월: ㈜정호텍스컴으로 상호 변경',
-    '2005년 1월: 이탈리아 Mesdan S.p.A 사와 Agency 협약',
-    '2005년 1월: 오스트리아 Lenzing Instruments 사와 Agency 협약',
-    '2002년 1월: 독일 Benninger Zell GmbH 사와 Agency 협약',
-    '2001년 9월: 영국 Texkimp Limited 사와 Agency 협약',
-    '2001년 3월: 독일 Temafa 사와 Agency 협약',
-    '2000년 11월: 독일 Novibra GmbH 사와 Agency 협약',
-    '1998년 3월: 스위스 Braecker 사와 Agency 협약',
-    '1996년 1월: 스위스 Steinemann 사와 Agency 협약',
-    '1991년 8월: 스위스 Luwa 사와 Agency 협약',
-    '1990년 9월: 영국 Crosrol 사와 Agency 협약',
-    '1988년 1월: 독일 Textechno 사와 Agency 협약',
-    '1985년 5월: 일본 Kato 사와 Agency 협약',
-    '1984년 7월: 독일 Saurer-Allma 사와 Agency 협약',
-    '1982년: 정호물산 설립'
+  // 연혁 및 성과 데이터 (최신순 정렬) - 일루텍 형식
+  const achievements = [
+    {
+      year: '2024',
+      items: currentLanguage === 'en'
+        ? ['RSS Division entered Market Kurly']
+        : ['RSS 사업부 마켓컬리 입점']
+    },
+    {
+      year: '2023',
+      items: currentLanguage === 'en'
+        ? ['RSS Division entered 29cm, Musinsa, W Concept']
+        : ['RSS 사업부 29cm, 무신사, W컨셉 입점']
+    },
+    {
+      year: '2022',
+      items: currentLanguage === 'en'
+        ? ['THE AUTOFINDER trademark registration']
+        : ['THE AUTOFINDER (디 오토파인더) 상표권 등록']
+    },
+    {
+      year: '2021',
+      items: currentLanguage === 'en'
+        ? ['Established RSS Division and launched REDSSOCKSOO']
+        : ['RSS 사업부 설립 및 레드싹수 런칭']
+    },
+    {
+      year: '2020',
+      items: currentLanguage === 'en'
+        ? ['Launched automatic transfer device THE AUTOFINDER']
+        : ['자동 전사장치 THE AUTOFINDER (디 오토파인더) 출시']
+    },
+    {
+      year: '2017',
+      items: currentLanguage === 'en'
+        ? ['Agency agreement with Lindauer Dornier GmbH, Germany']
+        : ['독일 Lindauer Dornier GmbH 사와 Agency 협약']
+    },
+    {
+      year: '2007',
+      items: currentLanguage === 'en'
+        ? ['Company name changed to Jungho TEXCOM Co., Ltd.']
+        : ['㈜정호텍스컴으로 상호 변경']
+    },
+    {
+      year: '2005',
+      items: currentLanguage === 'en'
+        ? [
+            'Agency agreement with Mesdan S.p.A, Italy',
+            'Agency agreement with Lenzing Instruments, Austria'
+          ]
+        : [
+            '이탈리아 Mesdan S.p.A 사와 Agency 협약',
+            '오스트리아 Lenzing Instruments 사와 Agency 협약'
+          ]
+    },
+    {
+      year: '2002',
+      items: currentLanguage === 'en'
+        ? ['Agency agreement with Benninger Zell GmbH, Germany']
+        : ['독일 Benninger Zell GmbH 사와 Agency 협약']
+    },
+    {
+      year: '2001',
+      items: currentLanguage === 'en'
+        ? [
+            'Agency agreement with Texkimp Limited, UK',
+            'Agency agreement with Temafa, Germany'
+          ]
+        : [
+            '영국 Texkimp Limited 사와 Agency 협약',
+            '독일 Temafa 사와 Agency 협약'
+          ]
+    },
+    {
+      year: '2000',
+      items: currentLanguage === 'en'
+        ? ['Agency agreement with Novibra GmbH, Germany']
+        : ['독일 Novibra GmbH 사와 Agency 협약']
+    },
+    {
+      year: '1998',
+      items: currentLanguage === 'en'
+        ? ['Agency agreement with Braecker, Switzerland']
+        : ['스위스 Braecker 사와 Agency 협약']
+    },
+    {
+      year: '1996',
+      items: currentLanguage === 'en'
+        ? ['Agency agreement with Steinemann, Switzerland']
+        : ['스위스 Steinemann 사와 Agency 협약']
+    },
+    {
+      year: '1991',
+      items: currentLanguage === 'en'
+        ? ['Agency agreement with Luwa, Switzerland']
+        : ['스위스 Luwa 사와 Agency 협약']
+    },
+    {
+      year: '1990',
+      items: currentLanguage === 'en'
+        ? ['Agency agreement with Crosrol, UK']
+        : ['영국 Crosrol 사와 Agency 협약']
+    },
+    {
+      year: '1988',
+      items: currentLanguage === 'en'
+        ? ['Agency agreement with Textechno, Germany']
+        : ['독일 Textechno 사와 Agency 협약']
+    },
+    {
+      year: '1985',
+      items: currentLanguage === 'en'
+        ? ['Agency agreement with Kato, Japan']
+        : ['일본 Kato 사와 Agency 협약']
+    },
+    {
+      year: '1984',
+      items: currentLanguage === 'en'
+        ? ['Agency agreement with Saurer-Allma, Germany']
+        : ['독일 Saurer-Allma 사와 Agency 협약']
+    },
+    {
+      year: '1982',
+      items: currentLanguage === 'en'
+        ? ['Founded Jungho Trading Co.']
+        : ['정호물산 설립']
+    }
   ];
 
   // 사업부 데이터
@@ -141,24 +224,14 @@ const TexcomDetailPage = () => {
             animate="visible"
             variants={staggerContainer}
           >
-            {/* 로고와 회사명을 나란히 배치 - 일루텍과 동일한 형식 */}
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-              <img 
-                src="/images/logos/junghotexcom.png" 
-                alt="정호텍스컴 로고" 
-                className="h-8 sm:h-10 w-auto object-contain"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.nextElementSibling.style.display = 'inline-block';
-                }}
-              />
-              <span className="text-4xl sm:text-6xl hidden">🏭</span>
+            {/* 회사명 */}
+            <motion.div variants={fadeInUp} className="flex flex-col items-center justify-center">
               <div className="flex flex-col items-center -space-y-1 sm:-space-y-2">
                 <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
-                  {currentLanguage === 'en' ? 'JUNGHOTEXCOM' : '정호텍스컴'}
+                  {currentLanguage === 'en' ? 'JUNGHO TEXCOM' : '정호텍스컴'}
                 </h1>
                 <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                  {currentLanguage === 'en' ? '정호텍스컴' : 'Jungho TEXCOM Co., Ltd.'}
+                  {currentLanguage === 'en' ? '정호텍스컴' : 'JUNGHO TEXCOM Co., Ltd.'}
                 </p>
               </div>
             </motion.div>
@@ -335,7 +408,7 @@ const TexcomDetailPage = () => {
 
       {/* 연혁 및 성과 섹션 - 일루텍과 동일한 형식 */}
       <motion.section 
-        className="py-16 bg-gray-50 dark:bg-gray-800"
+        className="py-16 bg-white dark:bg-gray-900"
         initial="hidden"
         animate="visible"
         variants={staggerContainer}
@@ -343,7 +416,7 @@ const TexcomDetailPage = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div className="text-center mb-10" variants={fadeInUp}>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              📊 {currentLanguage === 'en' ? 'History & Achievements' : '연혁 및 성과'}
+              {currentLanguage === 'en' ? 'History & Achievements' : '연혁 및 성과'}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
               {currentLanguage === 'en' 
@@ -352,37 +425,43 @@ const TexcomDetailPage = () => {
             </p>
           </motion.div>
 
-          <div className="space-y-4">
-            {(showAllAchievements ? achievements : achievements.slice(0, 5)).map((achievement, index) => (
-              <motion.div
-                key={`achievement-${index}`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                whileHover={{ x: 5 }}
-                className="flex items-start gap-4 bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300"
+          <div className="space-y-0">
+            {(showAllAchievements ? achievements : achievements.slice(0, 5)).map((yearData, index) => (
+              <div
+                key={yearData.year}
+                className="flex border-b border-gray-200 dark:border-gray-700 py-8 first:pt-0 last:border-b-0"
               >
-                <div className="flex-shrink-0 w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-                  <span className="text-purple-600 dark:text-purple-400 font-bold">{index + 1}</span>
+                {/* 년도 - 큰 글씨 */}
+                <div className="flex-shrink-0 w-24 sm:w-32">
+                  <span className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
+                    {yearData.year}
+                  </span>
                 </div>
-                <p className="text-gray-700 dark:text-white text-lg flex-1">
-                  {achievement}
-                </p>
-              </motion.div>
+                
+                {/* 내용 리스트 */}
+                <div className="flex-1 pl-6 sm:pl-8">
+                  <ul className="space-y-2">
+                    {yearData.items.map((item, itemIndex) => (
+                      <li 
+                        key={itemIndex}
+                        className="flex items-start gap-2 text-gray-700 dark:text-gray-300"
+                      >
+                        <span className="text-gray-400 dark:text-gray-500 mt-0.5">-</span>
+                        <span className="text-base sm:text-lg">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             ))}
           </div>
 
           {/* 더보기/접기 버튼 */}
           {achievements.length > 5 && (
-            <motion.div 
-              className="mt-8 text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
+            <div className="mt-8 text-center">
               <button
                 onClick={() => setShowAllAchievements(!showAllAchievements)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
               >
                 {showAllAchievements ? (
                   <>
@@ -400,7 +479,7 @@ const TexcomDetailPage = () => {
                   </>
                 )}
               </button>
-            </motion.div>
+            </div>
           )}
         </div>
       </motion.section>

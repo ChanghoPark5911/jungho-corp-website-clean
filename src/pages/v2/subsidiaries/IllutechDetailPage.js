@@ -10,40 +10,10 @@ const IllutechDetailPage = () => {
   const { t, currentLanguage } = useI18n();
   const { isDarkMode } = useTheme();
   const [technicalDocuments, setTechnicalDocuments] = React.useState([]);
-  const [showAllAchievements, setShowAllAchievements] = React.useState(false);
-  const [products, setProducts] = React.useState([]);
 
   // 현재 경로가 Hybrid인지 확인하여 뒤로가기 경로 설정
   const isHybrid = location.pathname.startsWith('/hybrid');
   const backPath = isHybrid ? '/hybrid' : '/';
-
-  // 제품 데이터 로드
-  React.useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const timestamp = new Date().getTime();
-        const response = await fetch(`/data/illutech-products.json?v=${timestamp}`, {
-          cache: 'no-cache',
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
-          }
-        });
-        
-        if (response.ok) {
-          const jsonData = await response.json();
-          if (jsonData.products && Array.isArray(jsonData.products)) {
-            setProducts(jsonData.products);
-            console.log('✅ 일루텍 제품 데이터 로드:', jsonData.products.length, '개');
-          }
-        }
-      } catch (error) {
-        console.error('일루텍 제품 데이터 로드 실패:', error);
-      }
-    };
-
-    loadProducts();
-  }, []);
 
   // JSON 파일에서 PDF 자료 로드 (우선), localStorage는 백업 (일루텍 관련만)
   React.useEffect(() => {
@@ -118,54 +88,86 @@ const IllutechDetailPage = () => {
     }
   };
 
-
-  // 핵심 강점
-  const strengths = [
-      {
-        title: currentLanguage === 'en' ? 'High-Efficiency LED' : '고효율 LED',
-        description: currentLanguage === 'en'
-          ? 'LED technology with excellent energy efficiency'
-          : '에너지 효율이 뛰어난 LED 기술',
-        icon: '⚡'
-      },
-      {
-        title: currentLanguage === 'en' ? 'Eco-Friendly' : '친환경',
-        description: currentLanguage === 'en'
-          ? 'Eco-friendly materials and manufacturing processes'
-          : '친환경 소재 및 제조 공정',
-        icon: '🌿'
-      },
-      {
-        title: currentLanguage === 'en' ? 'Quality Control' : '품질 관리',
-        description: currentLanguage === 'en'
-          ? 'Rigorous quality management system'
-          : '엄격한 품질 관리 시스템',
-        icon: '✅'
-      },
-      {
-        title: currentLanguage === 'en' ? 'Diverse Product Line' : '다양한 제품군',
-        description: currentLanguage === 'en'
-          ? 'Customized LED lighting for each application'
-          : '용도별 맞춤형 LED 조명',
-        icon: '🎨'
-      }
-  ];
-
-  // 연혁 및 성과 (2010-2015)
-  const achievements = currentLanguage === 'en' ? [
-    '2015: Participated in LED/OLED International Exhibition/International Exhibition Convention Company Award, Passed new LED product evaluation, Added high-efficiency factory lighting brand authorization',
-    '2014: Received Startup Company Award (Small and Medium Business Administration), Completed integrated product development for Korea Expressway Corporation and metropolitan area projects',
-    '2013: Received Startup Company Award (Small and Medium Business Administration)',
-    '2012: Obtained Electrical Appliance Safety Certification for LED safety lights (8 types), Registered products with Korea Electric Power Corporation and Korea East-West Power',
-    '2011: Obtained Electrical Appliance Safety Certification for LED street light "LuBlo", Registered products with Korea Electric Power Corporation, Developed LED security lights and achieved overseas exports, Registered as Korea Electric Power Corporation designated construction company',
-    '2010: Obtained KS certification for LED security lights, Passed new LED security light product evaluation, Supplied products to hospitals, hotels, and industrial sites, Supplied special lighting products'
-  ] : [
-    '2015년: LED/OLED 국제 전시회 참가/국제전시컨벤션기업상, 신제품 LED 평가품 합격, 고효율 공장등 브랜드 등록자 권한 추가',
-    '2014년: 창업기업상 수상 (중소기업청), 한국도로공사 및 수도권 프로젝트 통합 제품개발 완료',
-    '2013년: 창업기업상 수상 (중소기업청)',
-    '2012년: LED 안전등(8종) 전기용품안전인증 획득, 한국전력 제품 등록, 동부발전 제품 등록',
-    '2011년: LED 가로등 \'LuBlo\' 전기용품안전인증 획득, 한국전력 제품 등록, LED 보안등 개발 및 해외수출 달성, 한국전력 지정공사 업체 등록',
-    '2010년: LED 보안등 KS인증 획득, LED 보안등 신제품 합격, 병원·호텔·산업용 제품 공급, 특수조명 제품 공급'
+  // 연혁 및 성과 (2010-2015) - 새로운 형식
+  const achievements = [
+    {
+      year: '2015',
+      items: currentLanguage === 'en' 
+        ? [
+            'Participated in LED/OLED Lighting Exhibition / Building Energy Saving Solution',
+            'Obtained high-efficiency certification for tube-type LED',
+            'Won President\'s Award at Korea Expressway Corporation Street Light Design Contest'
+          ]
+        : [
+            'LED/OLED 조명 전시회 참가 / 빌딩에너지절감솔루션',
+            '직관형 LED 고효율 취득',
+            '도로공사 가로등 디자인 공모전 사장상 수상'
+          ]
+    },
+    {
+      year: '2014',
+      items: currentLanguage === 'en'
+        ? [
+            'Held Customer Seminar (Samjung Hotel)',
+            'National project for light pollution prevention security lights, park lights, and agricultural damage prevention shields'
+          ]
+        : [
+            '고객세미나 개최(삼정호텔)',
+            '빛공해 방지용 보안등, 공원등, 농사피해방지 차광판 국책과제 수행'
+          ]
+    },
+    {
+      year: '2013',
+      items: currentLanguage === 'en'
+        ? ['Held Customer Seminar (Samjung Hotel)']
+        : ['고객세미나 개최(삼정호텔)']
+    },
+    {
+      year: '2012',
+      items: currentLanguage === 'en'
+        ? [
+            'Obtained high-efficiency equipment certification for LED lighting (8 types)',
+            'Supplied and installed lighting for district courts',
+            'Supplied and installed parking lot lighting'
+          ]
+        : [
+            'LED조명등(8종) 고효율기자재 인증 획득',
+            '지방법원 조명등 납품 및 설치',
+            '주차장 조명등 납품 및 설치'
+          ]
+    },
+    {
+      year: '2011',
+      items: currentLanguage === 'en'
+        ? [
+            'Obtained high-efficiency equipment certification for LED multi-purpose light "LuBlo"',
+            'Supplied and installed lighting for district courts',
+            'Developed LED explosion-proof lights and obtained explosion-proof certification',
+            'Registered as KEPCO qualified supplier'
+          ]
+        : [
+            'LED다목적등, \'LuBlo\' 고효율기자재인증 획득',
+            '지방법원 조명등 납품 및 설치',
+            'LED방폭등 개발 및 방폭인증 획득',
+            '한국전력 유자격 공급자 등록'
+          ]
+    },
+    {
+      year: '2010',
+      items: currentLanguage === 'en'
+        ? [
+            'Obtained KS certification for LED industrial lighting',
+            'Launched new LED lighting products',
+            'Supplied to Kori, Yeonggwang, Shinwolseong nuclear power plants',
+            'Supplied to ports and industrial complexes'
+          ]
+        : [
+            'LED산업용 조명등 KS인증 획득',
+            'LED조명등 신제품 출시',
+            '고리, 영광, 신월성, 원자력발전소 등 납품',
+            '항구 및 공단지역 등 납품'
+          ]
+    }
   ];
 
   return (
@@ -209,19 +211,8 @@ const IllutechDetailPage = () => {
             animate="visible"
             variants={staggerContainer}
           >
-            {/* 로고와 회사명을 나란히 배치 */}
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-              <img 
-                src="/images/logos/junghoillutech.png" 
-                alt="일루텍 로고" 
-                className="h-8 sm:h-10 w-auto object-contain"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 대체 아이콘 표시
-                  e.target.style.display = 'none';
-                  e.target.nextElementSibling.style.display = 'inline-block';
-                }}
-              />
-              <span className="text-4xl sm:text-6xl hidden">💡</span>
+            {/* 회사명 */}
+            <motion.div variants={fadeInUp} className="flex flex-col items-center justify-center">
               <div className="flex flex-col items-center -space-y-1 sm:-space-y-2">
                 <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
                   {currentLanguage === 'en' ? 'ILLUTECH' : '일루텍'}
@@ -310,126 +301,384 @@ const IllutechDetailPage = () => {
         </div>
       </motion.section>
 
-      {/* 주요 제품/서비스 */}
-      <section 
-        className="py-20 bg-gray-50 dark:bg-gray-800"
-      >
+      {/* 주요 사업 분야 */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div variants={fadeInUp} className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {currentLanguage === 'en' ? 'Main Products & Services' : '주요 제품 및 서비스'}
+              {currentLanguage === 'en' ? 'Business Areas' : '주요 사업 분야'}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
               {currentLanguage === 'en' 
-                ? 'Providing various industrial LED lighting solutions'
-                : '다양한 산업용 LED 조명 솔루션을 제공합니다'}
+                ? 'Specialized LED lighting solutions for various industries'
+                : '다양한 산업 분야를 위한 전문 LED 조명 솔루션'}
             </p>
           </motion.div>
 
-          <div className="space-y-8">
-            {products.map((product, index) => (
-              <div
-                key={product.id}
-                className="bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden hover:scale-[1.02]"
-              >
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
-                  {/* 왼쪽: 텍스트 내용 (60%) */}
-                  <div className="md:col-span-3 p-8 flex flex-col justify-center">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="text-5xl">{product.icon}</div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                        {currentLanguage === 'en' ? product.nameEn : product.nameKo}
-                      </h3>
+          {/* 사업분야 1: 경관조명 사업 */}
+          <div className="mb-16">
+            {/* 사업분야 헤더 */}
+            <div className="bg-gradient-to-r from-orange-600 to-amber-500 text-white rounded-t-xl px-6 py-4">
+              <h3 className="text-2xl font-bold flex items-center gap-2">
+                <span>●</span>
+                {currentLanguage === 'en' 
+                  ? 'Architectural Lighting System' 
+                  : '경관조명 사업 | Architectural Lighting System'}
+              </h3>
+            </div>
+            
+            <div className="bg-white dark:bg-gray-900 rounded-b-xl shadow-lg border border-gray-200 dark:border-gray-700 border-t-0 overflow-hidden">
+              {/* 사업 소개 */}
+              <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                <div className="space-y-2 text-gray-700 dark:text-gray-200">
+                  <p className="flex items-start gap-2">
+                    <span className="text-orange-500 mt-1">✓</span>
+                    <span>
+                      {currentLanguage === 'en'
+                        ? 'Design and construction of eco-friendly architectural lighting pursuing Identity, Beauty, and Safety of buildings through various light presentations'
+                        : '빛의 다양한 연출로 건축물의 Identity, Beauty, Safety를 추구하는 친환경적인 경관조명의 설계 및 시공'}
+                    </span>
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <span className="text-orange-500 mt-1">✓</span>
+                    <span>
+                      {currentLanguage === 'en'
+                        ? 'Building differentiated landscape systems including energy savings through LED lighting, lighting control + IT + architectural lighting'
+                        : 'LED조명기구를 활용으로 에너지 절감은 물론 조명제어 + IT + 경관조명 등 차별화된 경관시스템 구축'}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              {/* 경관조명의 역할 */}
+              <div className="p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 border-l-4 border-orange-500 pl-3">
+                  {currentLanguage === 'en' ? 'Role of Architectural Lighting' : '경관조명의 역할'}
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-700 dark:text-gray-200">
+                  <p className="flex items-start gap-2">
+                    <span className="text-orange-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'Providing stability and comfort through architectural lighting' : '경관조명으로 인한 안정감 및 편안함 제공'}</span>
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <span className="text-orange-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'Implementing the overall city layout' : '도시의 전체적인 Lay-out 구현'}</span>
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <span className="text-orange-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'City disaster prevention and crime prevention' : '도시의 방재 및 방범 가능'}</span>
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <span className="text-orange-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'Creating beautiful cities and promoting urban development' : '아름다운 도시의 조성 및 도시발전의 진흥 수단'}</span>
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <span className="text-orange-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'Providing leisure to users through pleasant street creation' : '쾌적한 거리조성으로 인한 이용자들에게 여가 제공'}</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* 적용 분야 카드 */}
+              <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* 복합 쇼핑몰 */}
+                  <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                    <div className="bg-gray-100 dark:bg-gray-800 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                      <h5 className="font-bold text-gray-900 dark:text-white text-center">
+                        {currentLanguage === 'en' ? 'Shopping Complex' : '복합 쇼핑몰'}
+                      </h5>
                     </div>
-                    <p className="text-lg text-gray-600 dark:text-gray-200 leading-relaxed">
-                      {currentLanguage === 'en' ? product.descriptionEn : product.descriptionKo}
-                    </p>
-                  </div>
-                  
-                  {/* 오른쪽: 이미지 (40%) */}
-                  <div className="md:col-span-2 relative h-64 md:h-auto min-h-[240px] bg-gradient-to-br from-orange-50 to-amber-50 dark:from-gray-800 dark:to-gray-850 flex items-center justify-center p-6">
-                    {product.imagePath ? (
-                      <>
-                        <img
-                          src={product.imagePath}
-                          alt={currentLanguage === 'en' ? product.nameEn : product.nameKo}
-                          className="w-full h-full object-contain"
+                    <div className="p-4">
+                      <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300 mb-4">
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-0.5">✓</span>
+                          <span>{currentLanguage === 'en' ? 'Multimedia lighting presentation using LED fixtures' : 'LED조명기구를 이용한 멀티미디어 조명 연출'}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-0.5">✓</span>
+                          <span>{currentLanguage === 'en' ? 'Efficient management linked with automatic lighting control system' : '자동조명제어시스템과 연계된 효율적인 관리'}</span>
+                        </li>
+                      </ul>
+                      {/* 이미지 공간 */}
+                      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg h-32 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
+                        <img 
+                          src="/images/illutech/architectural/shopping-complex.jpg" 
+                          alt="Shopping Complex"
+                          className="w-full h-full object-cover rounded-lg"
                           onError={(e) => {
-                            // 이미지 로드 실패 시 대체 아이콘 표시
                             e.target.style.display = 'none';
                             e.target.nextElementSibling.style.display = 'flex';
                           }}
                         />
-                        {/* 이미지 로드 실패 시 대체 UI */}
-                        <div className="hidden flex-col items-center justify-center text-center p-8">
-                          <div className="text-6xl mb-4">{product.icon}</div>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 font-semibold">
-                            {currentLanguage === 'en' ? 'Image Coming Soon' : '이미지 준비중'}
-                          </p>
+                        <div className="hidden flex-col items-center justify-center text-gray-400 dark:text-gray-500">
+                          <span className="text-2xl mb-1">🏬</span>
+                          <span className="text-xs">{currentLanguage === 'en' ? 'Image' : '이미지'}</span>
                         </div>
-                      </>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center text-center p-8">
-                        <div className="text-6xl mb-4">{product.icon}</div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 font-semibold">
-                          {currentLanguage === 'en' ? 'Image Coming Soon' : '이미지 준비중'}
-                        </p>
                       </div>
-                    )}
+                    </div>
+                  </div>
+
+                  {/* 업무시설 */}
+                  <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                    <div className="bg-gray-100 dark:bg-gray-800 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                      <h5 className="font-bold text-gray-900 dark:text-white text-center">
+                        {currentLanguage === 'en' ? 'Office Buildings' : '업무시설'}
+                      </h5>
+                    </div>
+                    <div className="p-4">
+                      <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300 mb-4">
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-0.5">✓</span>
+                          <span>{currentLanguage === 'en' ? 'Emphasizing building\'s sense of place through upper floor lighting' : '상층부 조명연출로 건축물의 장소성을 강조'}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-0.5">✓</span>
+                          <span>{currentLanguage === 'en' ? 'Mid-floor lighting for volume emphasis, plaza lighting for night users' : '중층부 조명으로 볼륨감 강조, 광장조명으로 야간 편의 제공'}</span>
+                        </li>
+                      </ul>
+                      {/* 이미지 공간 */}
+                      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg h-32 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
+                        <img 
+                          src="/images/illutech/architectural/office-building.jpg" 
+                          alt="Office Building"
+                          className="w-full h-full object-cover rounded-lg"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextElementSibling.style.display = 'flex';
+                          }}
+                        />
+                        <div className="hidden flex-col items-center justify-center text-gray-400 dark:text-gray-500">
+                          <span className="text-2xl mb-1">🏢</span>
+                          <span className="text-xs">{currentLanguage === 'en' ? 'Image' : '이미지'}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 주거시설 */}
+                  <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                    <div className="bg-gray-100 dark:bg-gray-800 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                      <h5 className="font-bold text-gray-900 dark:text-white text-center">
+                        {currentLanguage === 'en' ? 'Residential Facilities' : '주거시설'}
+                      </h5>
+                    </div>
+                    <div className="p-4">
+                      <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300 mb-4">
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-0.5">✓</span>
+                          <span>{currentLanguage === 'en' ? 'Consistent lighting on upper floors to attract attention from distance' : '아파트 상부의 일관성 있는 조명 연출로 원거리에서도 시선 유도'}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-500 mt-0.5">✓</span>
+                          <span>{currentLanguage === 'en' ? 'Emphasizing apartment brand with LED Sign' : 'LED Sign으로 아파트 브랜드 강조'}</span>
+                        </li>
+                      </ul>
+                      {/* 이미지 공간 */}
+                      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg h-32 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
+                        <img 
+                          src="/images/illutech/architectural/residential.jpg" 
+                          alt="Residential"
+                          className="w-full h-full object-cover rounded-lg"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextElementSibling.style.display = 'flex';
+                          }}
+                        />
+                        <div className="hidden flex-col items-center justify-center text-gray-400 dark:text-gray-500">
+                          <span className="text-2xl mb-1">🏠</span>
+                          <span className="text-xs">{currentLanguage === 'en' ? 'Image' : '이미지'}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
+            </div>
+          </div>
+
+          {/* 사업분야 2: LED 조명 사업 */}
+          <div>
+            {/* 사업분야 헤더 */}
+            <div className="bg-gradient-to-r from-amber-600 to-yellow-500 text-white rounded-t-xl px-6 py-4">
+              <h3 className="text-2xl font-bold flex items-center gap-2">
+                <span>●</span>
+                {currentLanguage === 'en' 
+                  ? 'LED Lighting System' 
+                  : 'LED조명 사업 | LED Lighting System'}
+              </h3>
+            </div>
+            
+            <div className="bg-white dark:bg-gray-900 rounded-b-xl shadow-lg border border-gray-200 dark:border-gray-700 border-t-0 overflow-hidden">
+              {/* 사업 소개 */}
+              <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                <p className="flex items-start gap-2 text-gray-700 dark:text-gray-200">
+                  <span className="text-amber-500 mt-1">✓</span>
+                  <span>
+                    {currentLanguage === 'en'
+                      ? 'Development, manufacturing and supply of industrial Plant lights, street lights (commercial, solar), security lights, special lights, indoor lights, LED signs, and Media poles for replacing existing low-efficiency fixtures and eco-friendly Energy Saving'
+                      : '기존 저효율 등기구의 대체, 친환경 Energy Saving을 위한 산업용 Plant등, 가로등(상용, 태양광), 보안등, 특수등, 실내등, LED사인, Media pole의 개발, 제조 및 공급'}
+                  </span>
+                </p>
+              </div>
+
+              {/* 최고의 품질 */}
+              <div className="p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 border-l-4 border-amber-500 pl-3">
+                  {currentLanguage === 'en' ? 'Premium Quality' : '최고의 품질'}
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-700 dark:text-gray-200">
+                  <p className="flex items-start gap-2">
+                    <span className="text-amber-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'World\'s first development and supply of LED lighting for nuclear power plants' : '세계 최초 원자력발전소용 LED 조명등 개발 및 납품'}</span>
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <span className="text-amber-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'Obtained Nuclear Grade A and explosion-proof certification' : '원자력 A 등급 및 방폭인증 획득'}</span>
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <span className="text-amber-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'Registered as nuclear power plant auxiliary equipment supplier' : '원자력발전소 보조기기 공급업체 등록'}</span>
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <span className="text-amber-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'Advanced research facilities' : '첨단연구시설 보유'}</span>
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <span className="text-amber-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'Multiple patents owned' : '다수의 특허 보유'}</span>
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <span className="text-amber-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'Energy Winner Award recipient' : '에너지 위너상 수상'}</span>
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <span className="text-amber-500">✓</span>
+                    <span>{currentLanguage === 'en' ? 'KS certification and high-efficiency energy equipment certification' : 'KS인증 및 고효율에너지 기자재 인증 취득'}</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* LED 조명등 제품 */}
+              <div className="p-6">
+                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 text-orange-600 dark:text-orange-400">
+                  {currentLanguage === 'en' ? 'LED Lighting Products' : 'LED 조명등'}
+                </h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  {/* 발전소용 조명등 */}
+                  <div className="text-center">
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 mb-2">
+                      <img 
+                        src="/images/illutech/led/power-plant.jpg" 
+                        alt="Power Plant Lighting"
+                        className="w-full h-auto object-cover"
+                        onError={(e) => {
+                          e.target.parentNode.innerHTML = '<div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 py-6"><span class="text-2xl">💡</span></div>';
+                        }}
+                      />
+                    </div>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {currentLanguage === 'en' ? 'Power Plant Lighting' : '발전소용 조명등'}
+                    </p>
+                  </div>
+
+                  {/* 공장용 조명등, 보안등 */}
+                  <div className="text-center">
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 mb-2">
+                      <img 
+                        src="/images/illutech/led/factory-security.jpg" 
+                        alt="Factory & Security Lighting"
+                        className="w-full h-auto object-cover"
+                        onError={(e) => {
+                          e.target.parentNode.innerHTML = '<div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 py-6"><span class="text-2xl">🏭</span></div>';
+                        }}
+                      />
+                    </div>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {currentLanguage === 'en' ? 'Factory & Security' : '공장용 조명등, 보안등'}
+                    </p>
+                  </div>
+
+                  {/* 횡단보도 안경등 */}
+                  <div className="text-center">
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 mb-2">
+                      <img 
+                        src="/images/illutech/led/crosswalk.jpg" 
+                        alt="Crosswalk Safety Lighting"
+                        className="w-full h-auto object-cover"
+                        onError={(e) => {
+                          e.target.parentNode.innerHTML = '<div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 py-6"><span class="text-2xl">🚦</span></div>';
+                        }}
+                      />
+                    </div>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {currentLanguage === 'en' ? 'Crosswalk Safety' : '횡단보도 안경등'}
+                    </p>
+                  </div>
+
+                  {/* 방폭등 */}
+                  <div className="text-center">
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 mb-2">
+                      <img 
+                        src="/images/illutech/led/explosion-proof.jpg" 
+                        alt="Explosion-Proof Lighting"
+                        className="w-full h-auto object-cover"
+                        onError={(e) => {
+                          e.target.parentNode.innerHTML = '<div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 py-6"><span class="text-2xl">⚡</span></div>';
+                        }}
+                      />
+                    </div>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {currentLanguage === 'en' ? 'Explosion-Proof' : '방폭등'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* LED 산업등 Type / LuBlo style */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  {/* LED 산업등 Type */}
+                  <div>
+                    <h5 className="text-sm font-bold text-red-600 dark:text-red-400 mb-3">
+                      {currentLanguage === 'en' ? 'LED Industrial Type' : 'LED 산업등 Type'}
+                    </h5>
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
+                      <img 
+                        src="/images/illutech/led/industrial-type.jpg" 
+                        alt="LED Industrial Type"
+                        className="w-full h-auto object-cover"
+                        onError={(e) => {
+                          e.target.parentNode.innerHTML = '<div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 py-8"><span class="text-3xl mb-1">🔦</span><span class="text-xs">' + (currentLanguage === 'en' ? 'Image' : '이미지') + '</span></div>';
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* LuBlo Style */}
+                  <div>
+                    <h5 className="text-sm font-bold text-red-600 dark:text-red-400 mb-3">
+                      LuBlo Style
+                    </h5>
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
+                      <img 
+                        src="/images/illutech/led/lublo-style.jpg" 
+                        alt="LuBlo Style"
+                        className="w-full h-auto object-cover"
+                        onError={(e) => {
+                          e.target.parentNode.innerHTML = '<div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 py-8"><span class="text-3xl mb-1">💡</span><span class="text-xs">' + (currentLanguage === 'en' ? 'Image' : '이미지') + '</span></div>';
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 핵심 강점 */}
-      <motion.section 
-        className="py-20 bg-white dark:bg-gray-900"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div variants={fadeInUp} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {currentLanguage === 'en' ? 'Core Strengths' : '핵심 강점'}
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              {currentLanguage === 'en'
-                ? "ILLUTECH's differentiated capabilities"
-                : '일루텍만의 차별화된 역량'}
-            </p>
-          </motion.div>
-
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-            variants={staggerContainer}
-          >
-            {strengths.map((strength, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                whileHover={{ scale: 1.03 }}
-                className="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-gray-800 dark:to-gray-850 rounded-xl p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-orange-200 dark:border-gray-700"
-              >
-                <div className="text-5xl mb-4">{strength.icon}</div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
-                  {strength.title}
-                </h3>
-                <p className="text-gray-700 dark:text-white text-lg">
-                  {strength.description}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
-
       {/* 연혁 및 성과 */}
       <motion.section 
-        className="py-20 bg-gray-50 dark:bg-gray-800"
+        className="py-20 bg-white dark:bg-gray-900"
         initial="hidden"
         animate="visible"
         variants={staggerContainer}
@@ -444,57 +693,37 @@ const IllutechDetailPage = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            className="space-y-4"
-            variants={staggerContainer}
-          >
-            {(showAllAchievements ? achievements : achievements.slice(0, 5)).map((achievement, index) => (
+          <div className="space-y-0">
+            {achievements.map((yearData, index) => (
               <motion.div
-                key={index}
+                key={yearData.year}
                 variants={fadeInUp}
-                whileHover={{ x: 5 }}
-                className="flex items-start gap-4 bg-white dark:bg-gray-900 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300"
+                className="flex border-b border-gray-200 dark:border-gray-700 py-8 first:pt-0 last:border-b-0"
               >
-                <div className="flex-shrink-0 w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
-                  <span className="text-orange-600 dark:text-orange-400 font-bold">{index + 1}</span>
+                {/* 년도 - 큰 글씨 */}
+                <div className="flex-shrink-0 w-24 sm:w-32">
+                  <span className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
+                    {yearData.year}
+                  </span>
                 </div>
-                <p className="text-gray-700 dark:text-white text-lg flex-1">
-                  {achievement}
-                </p>
+                
+                {/* 내용 리스트 */}
+                <div className="flex-1 pl-6 sm:pl-8">
+                  <ul className="space-y-2">
+                    {yearData.items.map((item, itemIndex) => (
+                      <li 
+                        key={itemIndex}
+                        className="flex items-start gap-2 text-gray-700 dark:text-gray-300"
+                      >
+                        <span className="text-gray-400 dark:text-gray-500 mt-0.5">-</span>
+                        <span className="text-base sm:text-lg">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </motion.div>
             ))}
-          </motion.div>
-
-          {/* 더보기/접기 버튼 */}
-          {achievements.length > 5 && (
-            <motion.div 
-              className="mt-8 text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <button
-                onClick={() => setShowAllAchievements(!showAllAchievements)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-              >
-                {showAllAchievements ? (
-                  <>
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                    </svg>
-                    {currentLanguage === 'en' ? 'Show Less' : '접기'}
-                  </>
-                ) : (
-                  <>
-                    {currentLanguage === 'en' ? `View All ${achievements.length} Achievements` : `전체 ${achievements.length}개 연혁 보기`}
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </>
-                )}
-              </button>
-            </motion.div>
-          )}
+          </div>
         </div>
       </motion.section>
 

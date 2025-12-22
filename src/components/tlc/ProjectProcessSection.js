@@ -17,6 +17,7 @@ const ProjectProcessSection = () => {
         '초기 솔루션 제안'
       ],
       customerCheckpoints: ['요구사항 명확화', '예산 범위 설정', '일정 협의'],
+      imagePath: '/images/tlc/process/step1-consultation.png',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -36,6 +37,7 @@ const ProjectProcessSection = () => {
         '시공도면 및 상세도 작성'
       ],
       customerCheckpoints: ['설계안 검토', '조도 및 분위기 확인', '최종 설계 승인'],
+      imagePath: '/images/tlc/process/step2-design.png',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
@@ -55,6 +57,7 @@ const ProjectProcessSection = () => {
         '경쟁력 있는 최종 견적 제시'
       ],
       customerCheckpoints: ['견적서 검토', '가격 협의', '계약 조건 확인'],
+      imagePath: '/images/tlc/process/step3-quotation.png',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
@@ -74,6 +77,7 @@ const ProjectProcessSection = () => {
         '계약 체결 및 착공 준비'
       ],
       customerCheckpoints: ['계약서 검토', '보증 조건 확인', '최종 계약 체결'],
+      imagePath: '/images/tlc/process/step4-contract.png',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -93,6 +97,7 @@ const ProjectProcessSection = () => {
         '품질 검수 및 조정'
       ],
       customerCheckpoints: ['시공 진행 상황 확인', '중간 점검', '최종 시공 완료 확인'],
+      imagePath: '/images/tlc/process/step5-construction.png',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -112,6 +117,7 @@ const ProjectProcessSection = () => {
         'A/S 계약 및 정기 점검 일정 협의'
       ],
       customerCheckpoints: ['시스템 동작 확인', '사용법 교육 완료', '인수인계 완료'],
+      imagePath: '/images/tlc/process/step6-completion.png',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -218,6 +224,44 @@ const ProjectProcessSection = () => {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                  </div>
+
+                  {/* 단계별 대표 이미지 영역 */}
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <div className="w-full h-[200px] bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden flex items-center justify-center">
+                      {processSteps[activeStep].imagePath ? (
+                        <img 
+                          src={processSteps[activeStep].imagePath}
+                          alt={`${processSteps[activeStep].title} 단계 이미지`}
+                          className="w-full h-full object-contain p-2"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                      ) : null}
+                      <div 
+                        className={`flex-col items-center justify-center text-center ${processSteps[activeStep].imagePath ? 'hidden' : 'flex'}`}
+                        style={{ display: processSteps[activeStep].imagePath ? 'none' : 'flex' }}
+                      >
+                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-3">
+                          <span className="text-3xl">{
+                            activeStep === 0 ? '💬' :
+                            activeStep === 1 ? '📐' :
+                            activeStep === 2 ? '📋' :
+                            activeStep === 3 ? '📝' :
+                            activeStep === 4 ? '🏗️' :
+                            '✅'
+                          }</span>
+                        </div>
+                        <p className="text-sm text-gray-500 font-medium">
+                          {processSteps[activeStep].title} 단계
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          이미지 준비중
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

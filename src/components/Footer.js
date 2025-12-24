@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { COMPANY_INFO, SUBSIDIARIES, SOCIAL_LINKS, GROUP_LINKS } from '../utils/constants';
 import { Typography } from './ui';
 import { useI18n } from '../hooks/useI18n';
@@ -255,13 +256,13 @@ const Footer = () => {
                 {t('footer.terms')}
               </a>
               <span className="text-white/30">|</span>
-              <a
-                href="/admin"
+              <Link
+                to="/admin-new/login"
                 className="text-white/30 hover:text-secondary transition-colors duration-200 text-xs"
                 title="통합 관리자"
               >
                 ⚙
-              </a>
+              </Link>
             </div>
           </div>
 

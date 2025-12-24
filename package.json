@@ -1,7 +1,7 @@
 {
   "name": "jungho-corp-website",
   "version": "0.1.0",
-  "homepage": "https://jungho-corp-website-clean.vercel.app",
+  "homepage": "/",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",

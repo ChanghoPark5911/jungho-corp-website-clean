@@ -304,7 +304,7 @@ const Header = ({ imageData = {} }) => {
             <button
               className="hidden lg:flex px-3 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg items-center space-x-2"
               onClick={() => {
-                window.open('/admin', '_blank');
+                window.open('/#/admin-new/login', '_blank');
               }}
               aria-label={t('header.navigation.admin') || '통합 관리자 메뉴'}
             >
@@ -420,7 +420,7 @@ const Header = ({ imageData = {} }) => {
               <button
                 className="w-full px-4 py-4 text-base font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg transition-all duration-200 shadow-md flex items-center justify-center space-x-2"
                 onClick={() => {
-                  window.open('/admin', '_blank');
+                  window.open('/#/admin-new/login', '_blank');
                   setIsMobileMenuOpen(false);
                 }}
               >

@@ -79,6 +79,8 @@ module.exports = {
       },
       spacing: {
         '18': '4.5rem',
+        '22': '5.5rem',
+        '28': '7rem',
         '88': '22rem',
         // 반응형 간격 추가
         'section-mobile': '2.5rem',    // 40px
@@ -110,6 +112,7 @@ module.exports = {
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',
         'slide-up': 'slideUp 0.5s ease-out',
+        'slide-down': 'slideDown 0.3s ease-out',
         'scale-in': 'scaleIn 0.3s ease-out',
         'bounce-slow': 'bounce-slow 2s infinite',
         'pulse-slow': 'pulse-slow 3s infinite',
@@ -122,6 +125,10 @@ module.exports = {
         },
         slideUp: {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideDown: {
+          '0%': { opacity: '0', transform: 'translateY(-10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         scaleIn: {

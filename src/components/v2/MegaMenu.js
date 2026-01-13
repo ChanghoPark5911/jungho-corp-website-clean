@@ -16,6 +16,7 @@ const MegaMenu = ({ version = 'v2' }) => {
   const pathPrefix = version === 'hybrid' ? '/hybrid' : '';
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openMobileSubmenu, setOpenMobileSubmenu] = useState(null); // 모바일 아코디언 메뉴
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -106,6 +107,7 @@ const MegaMenu = ({ version = 'v2' }) => {
     navigate(path);
     setActiveMenu(null);
     setMobileMenuOpen(false);
+    setOpenMobileSubmenu(null); // 하위메뉴 상태 초기화
   }, [navigate]);
 
   const handleExternalLink = useCallback((url) => {
@@ -114,6 +116,7 @@ const MegaMenu = ({ version = 'v2' }) => {
   }, []);
 
   return (
+    <>
     <header 
       className={`
         fixed top-0 left-0 right-0 z-[100] 
@@ -323,7 +326,10 @@ const MegaMenu = ({ version = 'v2' }) => {
             {/* 햄버거 버튼 (모바일/태블릿) - 언어 선택기보다 먼저 */}
             {!isDesktop && (
               <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                onClick={() => {
+                  setMobileMenuOpen(!mobileMenuOpen);
+                  if (mobileMenuOpen) setOpenMobileSubmenu(null); // 닫을 때 하위메뉴 초기화
+                }}
                 className="p-2.5 rounded-lg text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all shadow-sm border border-gray-200 dark:border-gray-700"
                 aria-label="메뉴 열기"
               >
@@ -362,63 +368,6 @@ const MegaMenu = ({ version = 'v2' }) => {
           </div>
         </div>
       </nav>
-
-      {/* 모바일 메뉴 */}
-      {mobileMenuOpen && !isDesktop && (
-        <div className="fixed inset-0 top-16 sm:top-20 bg-white dark:bg-gray-900 z-50 overflow-y-auto animate-slide-down shadow-lg">
-          <div className="px-4 py-6 space-y-4">
-            {menuStructure.map((menu) => (
-              <div key={menu.id} className="border-b border-gray-200 dark:border-gray-700 pb-4">
-                <button
-                  onClick={() => {
-                    // "그룹사" 메뉴는 클릭해도 이동하지 않음 (서브메뉴만 사용)
-                    if (menu.id !== 'subsidiaries') {
-                      handleNavigation(menu.path);
-                    }
-                  }}
-                  className={`w-full text-left text-lg font-semibold text-gray-900 dark:text-white mb-2 ${menu.id === 'subsidiaries' ? 'cursor-default' : 'cursor-pointer'}`}
-                >
-                  {menu.label}
-                </button>
-                <div className="pl-4 space-y-2">
-                  {menu.submenu.map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleNavigation(item.path)}
-                      className="w-full flex items-center space-x-3 py-2 text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400"
-                    >
-                      <span className="text-xl">{item.icon}</span>
-                      <span>{item.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            {/* 패밀리 사이트 */}
-            <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
-              <div className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                {t('nav.family') || '패밀리 사이트'}
-              </div>
-              <div className="pl-4 space-y-2">
-                {familySites.map((site, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleExternalLink(site.url)}
-                    className="w-full flex items-center space-x-3 py-2 text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400"
-                  >
-                    <span className="text-xl">{site.icon}</span>
-                    <span>{site.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      )}
-
-      {/* 메가메뉴 오버레이 제거 - 깜박임 방지 */}
 
       {/* CSS 애니메이션 스타일 - 최적화 버전 */}
       <style>{`
@@ -487,6 +436,105 @@ const MegaMenu = ({ version = 'v2' }) => {
         }
       `}</style>
     </header>
+
+    {/* 모바일 메뉴 - 아코디언 방식 (주메뉴만 표시, 클릭 시 하위메뉴 펼침) */}
+    {mobileMenuOpen && !isDesktop && (
+      <div 
+        className="fixed left-0 right-0 bottom-0 bg-white dark:bg-gray-900 z-[99] overflow-y-auto animate-slide-down shadow-2xl border-t border-gray-200 dark:border-gray-700"
+        style={{ top: '72px' }}
+      >
+        <div className="px-6 py-6 space-y-2">
+          {menuStructure.map((menu) => (
+            <div key={menu.id} className="border-b border-gray-100 dark:border-gray-800">
+              {/* 주메뉴 버튼 */}
+              <button
+                onClick={() => {
+                  // 아코디언 토글
+                  setOpenMobileSubmenu(openMobileSubmenu === menu.id ? null : menu.id);
+                }}
+                className="w-full flex items-center justify-between py-4 text-lg font-bold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              >
+                <span>{menu.label}</span>
+                {/* 화살표 아이콘 */}
+                <svg 
+                  className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${openMobileSubmenu === menu.id ? 'rotate-180' : ''}`}
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              {/* 하위메뉴 (아코디언) */}
+              <div 
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  openMobileSubmenu === menu.id ? 'max-h-96 opacity-100 pb-4' : 'max-h-0 opacity-0'
+                }`}
+              >
+                <div className="pl-4 space-y-1">
+                  {menu.submenu.map((item, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleNavigation(item.path)}
+                      className="w-full flex items-center space-x-3 py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all"
+                    >
+                      <span className="text-xl">{item.icon}</span>
+                      <span className="text-base">{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* 패밀리 사이트 (아코디언) */}
+          <div className="border-b border-gray-100 dark:border-gray-800">
+            <button
+              onClick={() => {
+                setOpenMobileSubmenu(openMobileSubmenu === 'family' ? null : 'family');
+              }}
+              className="w-full flex items-center justify-between py-4 text-lg font-bold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+            >
+              <span>{t('nav.family') || '패밀리 사이트'}</span>
+              <svg 
+                className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${openMobileSubmenu === 'family' ? 'rotate-180' : ''}`}
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            <div 
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                openMobileSubmenu === 'family' ? 'max-h-96 opacity-100 pb-4' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <div className="pl-4 space-y-1">
+                {familySites.map((site, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleExternalLink(site.url)}
+                    className="w-full flex items-center justify-between py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="text-xl">{site.icon}</span>
+                      <span className="text-base">{site.label}</span>
+                    </div>
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 };
 

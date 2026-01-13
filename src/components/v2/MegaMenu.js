@@ -17,6 +17,7 @@ const MegaMenu = ({ version = 'v2' }) => {
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // 화면 크기 감지
   useEffect(() => {
@@ -26,6 +27,16 @@ const MegaMenu = ({ version = 'v2' }) => {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // 스크롤 감지 - Glassmorphism 효과 전환
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // 메뉴 구조 정의 (버전별 경로 prefix 적용)
@@ -103,9 +114,22 @@ const MegaMenu = ({ version = 'v2' }) => {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[100] bg-white dark:bg-gray-900 shadow-md">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+    <header 
+      className={`
+        fixed top-0 left-0 right-0 z-[100] 
+        transition-all duration-500 ease-out
+        ${isScrolled 
+          ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl shadow-lg border-b border-gray-200/50 dark:border-gray-700/50' 
+          : 'bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-sm'
+        }
+      `}
+      style={{
+        backdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'blur(12px) saturate(150%)',
+        WebkitBackdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'blur(12px) saturate(150%)',
+      }}
+    >
+      <nav className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
+        <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
           {/* 로고 */}
           <Link to={version === 'hybrid' ? '/hybrid' : '/v2'} className="flex items-center space-x-2 sm:space-x-3 group flex-shrink-0">
             <img 
@@ -164,15 +188,22 @@ const MegaMenu = ({ version = 'v2' }) => {
                     {menu.label}
                   </button>
 
-                  {/* 서브메뉴 드롭다운 - CSS 애니메이션 (간격 제거) */}
+                  {/* 서브메뉴 드롭다운 - Glassmorphism 스타일 */}
                   {menu.submenu && (
                     <div
                       className={`
-                        absolute left-0 top-full w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl 
-                        border border-gray-200 dark:border-gray-700 py-2 overflow-hidden
+                        absolute left-0 top-full w-60 
+                        bg-white/95 dark:bg-gray-800/95 
+                        backdrop-blur-xl rounded-xl shadow-2xl 
+                        border border-gray-200/60 dark:border-gray-700/60 
+                        py-3 overflow-hidden
                         dropdown-menu
                         ${activeMenu === menu.id ? 'dropdown-menu-show' : ''}
                       `}
+                      style={{
+                        backdropFilter: 'blur(20px) saturate(180%)',
+                        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                      }}
                     >
                       {menu.submenu.map((item, index) => (
                         <button
@@ -219,11 +250,18 @@ const MegaMenu = ({ version = 'v2' }) => {
 
                 <div
                   className={`
-                    absolute left-0 top-full w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl 
-                    border border-gray-200 dark:border-gray-700 py-2 overflow-hidden
+                    absolute left-0 top-full w-60 
+                    bg-white/95 dark:bg-gray-800/95 
+                    backdrop-blur-xl rounded-xl shadow-2xl 
+                    border border-gray-200/60 dark:border-gray-700/60 
+                    py-3 overflow-hidden
                     dropdown-menu
                     ${activeMenu === 'family' ? 'dropdown-menu-show' : ''}
                   `}
+                  style={{
+                    backdropFilter: 'blur(20px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                  }}
                 >
                   {familySites.map((site, index) => (
                     <button

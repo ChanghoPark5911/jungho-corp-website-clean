@@ -73,8 +73,9 @@ module.exports = {
         },
       },
       fontFamily: {
-        'korean': ['Noto Sans KR', 'sans-serif'],
-        'english': ['Montserrat', 'Noto Sans KR', 'sans-serif'],
+        'korean': ['Pretendard Variable', 'Pretendard', 'Noto Sans KR', 'sans-serif'],
+        'english': ['Pretendard Variable', 'Pretendard', 'Montserrat', 'Noto Sans KR', 'sans-serif'],
+        'pretendard': ['Pretendard Variable', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'Helvetica Neue', 'sans-serif'],
       },
       spacing: {
         '18': '4.5rem',

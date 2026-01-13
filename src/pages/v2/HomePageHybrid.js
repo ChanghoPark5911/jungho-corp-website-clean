@@ -334,23 +334,26 @@ const HomePageHybrid = () => {
         </div>
       )}
 
-      {/* 배너 - Hero 섹션 (관리자에서 수정 가능) */}
+      {/* 배너 - Hero 섹션 (세련된 슬로건 + Glassmorphism) */}
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'Since 1982' : '1982년 설립'}
-        title={heroTitle}
+        sloganLight={currentLanguage === 'en' ? '40 Years of Trust' : '40년의 신뢰'}
+        sloganBold={currentLanguage === 'en' ? 'Technology Lighting the Future' : '미래를 밝히는 기술'}
         description={heroDescription}
         backgroundImage={selectedBackground}
-        height="700px"
+        height="100vh"
+        ctaText={currentLanguage === 'en' ? 'Explore More' : '자세히 보기'}
+        onCtaClick={scrollToSubsidiaries}
       />
 
       {/* Gateway 빠른 접근 섹션 */}
       <motion.section 
-        className="py-16 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-gray-800"
+        className="py-24 lg:py-32 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-gray-800"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
           <motion.div 
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -481,11 +484,11 @@ const HomePageHybrid = () => {
         </div>
       </motion.section>
 
-      {/* 메인 콘텐츠 - 풀 너비 레이아웃 */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* 메인 콘텐츠 - 기업용 여유로운 레이아웃 */}
+      <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 py-16 lg:py-24">
         {/* 회사 소개 */}
         <motion.section 
-          className="mb-12"
+          className="mb-20 lg:mb-28"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -526,7 +529,7 @@ const HomePageHybrid = () => {
 
         {/* 주요 성과 지표 */}
         <motion.section 
-          className="mb-12"
+          className="mb-20 lg:mb-28"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05 }}
@@ -571,7 +574,7 @@ const HomePageHybrid = () => {
 
         {/* 주요 사업 분야 */}
         <motion.section 
-          className="mb-12"
+          className="mb-20 lg:mb-28"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
@@ -609,106 +612,139 @@ const HomePageHybrid = () => {
           </div>
         </motion.section>
 
-        {/* 계열사 소개 */}
+        {/* 계열사 소개 - 정돈된 Grid 레이아웃 */}
         <motion.section 
           id="subsidiaries-section"
-          className="mb-12"
+          className="mb-20 lg:mb-28"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.15 }}
         >
-          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-10">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               {currentLanguage === 'en' ? 'Our Subsidiaries' : '계열사 소개'}
             </h2>
-            <p className="text-sm text-gray-400 dark:text-gray-400">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               {currentLanguage === 'en' ? 'Four Specialized Companies' : '4개의 전문 기업'}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* 반응형 Grid: 모바일 1열, 태블릿 2열, 데스크톱 2x2 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8">
             {subsidiaries.map((company, index) => (
               <motion.div 
                 key={company.id}
-                className="group bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-transparent rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                className="group relative bg-white dark:bg-gray-800 overflow-hidden cursor-pointer"
                 onClick={() => navigate(company.path)}
-                whileHover={{ scale: 1.02, y: -8 }}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                style={{ borderRadius: '12px' }}
               >
-                {/* 이미지 헤더 */}
-                <div className="relative h-48 overflow-hidden">
-                  {company.id === 'texcom' ? (
-                    // 정호텍스컴 슬라이드쇼
-                    <>
-                      {texcomImages.map((image, idx) => (
-                        <img
-                          key={idx}
-                          src={image}
-                          alt={`${company.name} ${idx + 1}`}
-                          className={`absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-1000 ${
-                            idx === texcomImageIndex ? 'opacity-100' : 'opacity-0'
-                          }`}
-                          onError={(e) => {
-                            console.error(`❌ 이미지 로드 실패: ${image}`);
-                          }}
-                          onLoad={() => {
-                            console.log(`✅ 이미지 로드 성공: ${image}`);
-                          }}
+                {/* 카드 컨테이너 - Hover 시 위로 올라가고 그림자 깊어짐 */}
+                <div 
+                  className="h-full border border-gray-200 dark:border-gray-700 
+                    shadow-md hover:shadow-2xl 
+                    transform hover:-translate-y-2 
+                    transition-all duration-400 ease-out
+                    overflow-hidden"
+                  style={{ borderRadius: '12px' }}
+                >
+                  {/* 이미지 헤더 - 비율 고정 */}
+                  <div className="relative h-52 overflow-hidden">
+                    {company.id === 'texcom' ? (
+                      // 정호텍스컴 슬라이드쇼
+                      <>
+                        {texcomImages.map((image, idx) => (
+                          <img
+                            key={idx}
+                            src={image}
+                            alt={`${company.name} ${idx + 1}`}
+                            className={`absolute inset-0 w-full h-full object-cover 
+                              group-hover:scale-105 transition-transform duration-700 ease-out
+                              ${idx === texcomImageIndex ? 'opacity-100' : 'opacity-0'}`}
+                            style={{ transition: 'opacity 0.8s ease-in-out, transform 0.7s ease-out' }}
+                          />
+                        ))}
+                        <div className={`absolute inset-0 bg-gradient-to-br ${company.gradient} opacity-30 group-hover:opacity-20 transition-opacity duration-300`} />
+                      </>
+                    ) : (
+                      // 다른 계열사 이미지
+                      <>
+                        <img 
+                          src={company.image} 
+                          alt={company.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                         />
-                      ))}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${company.gradient} opacity-40`}></div>
-                    </>
-                  ) : (
-                    // 다른 계열사 기본 이미지
-                    <>
-                      <div className={`absolute inset-0 bg-gradient-to-br ${company.gradient} opacity-60`}></div>
-                      <img 
-                        src={company.image} 
-                        alt={company.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                    </>
-                  )}
-                  <div className="absolute top-4 right-4 z-10">
-                    <span className="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold rounded-full shadow-lg">
-                      {currentLanguage === 'en' ? 'Est.' : '설립'} {company.established}
-                    </span>
+                        <div className={`absolute inset-0 bg-gradient-to-br ${company.gradient} opacity-50 group-hover:opacity-30 transition-opacity duration-300`} />
+                      </>
+                    )}
+                    
+                    {/* 설립년도 배지 */}
+                    <div className="absolute top-4 right-4 z-10">
+                      <span className="px-3 py-1.5 bg-white/95 backdrop-blur-sm text-gray-800 text-xs font-bold shadow-lg"
+                        style={{ borderRadius: '8px' }}>
+                        {currentLanguage === 'en' ? 'Est.' : '설립'} {company.established}
+                      </span>
+                    </div>
+                    
+                    {/* 아이콘 - 하단 좌측 */}
+                    <div className="absolute bottom-4 left-5 z-10">
+                      <div 
+                        className="w-14 h-14 bg-white/95 backdrop-blur-sm shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                        style={{ borderRadius: '12px' }}
+                      >
+                        <span className="text-3xl">{company.icon}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="absolute bottom-4 left-4 flex items-center gap-2 z-10">
-                    <div className="text-4xl drop-shadow-lg">{company.icon}</div>
-                  </div>
-                </div>
 
-                {/* 카드 본문 */}
-                <div className="p-6">
-                  <div className="mb-4">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
-                      {company.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">
-                      {company.nameEn}
+                  {/* 카드 본문 - 정돈된 간격 */}
+                  <div className="p-6">
+                    {/* 회사명 영역 - 아이콘과의 간격 확보 */}
+                    <div className="mb-5">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1.5 
+                        group-hover:text-primary-600 dark:group-hover:text-primary-400 
+                        transition-colors duration-300">
+                        {company.name}
+                      </h3>
+                      <p className="text-xs text-gray-500 dark:text-gray-500 tracking-wide">
+                        {company.nameEn}
+                      </p>
+                    </div>
+
+                    {/* 설명 - 적절한 줄 간격 */}
+                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-5 min-h-[48px]">
+                      {company.description}
                     </p>
-                  </div>
 
-                  <p className="text-gray-700 dark:text-gray-200 mb-4 leading-relaxed">
-                    {company.description}
-                  </p>
-
-                  <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                      <strong className="text-gray-900 dark:text-white">
-                        {currentLanguage === 'en' ? 'Business:' : '사업분야:'}
-                      </strong>{' '}
-                      {company.business}
-                    </p>
-                    <button
-                      className={`group/btn w-full px-4 py-3 bg-gradient-to-r ${company.gradient} text-white font-semibold rounded-lg shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2`}
-                    >
-                      {currentLanguage === 'en' ? 'Details' : '상세보기'}
-                      <span className="group-hover/btn:translate-x-1 transition-transform duration-300">→</span>
-                    </button>
+                    {/* 사업분야 & 버튼 */}
+                    <div className="pt-5 border-t border-gray-100 dark:border-gray-700">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 flex items-start gap-2">
+                        <span className="font-semibold text-gray-700 dark:text-gray-300 shrink-0">
+                          {currentLanguage === 'en' ? 'Business:' : '사업분야:'}
+                        </span>
+                        <span className="text-gray-600 dark:text-gray-400">{company.business}</span>
+                      </p>
+                      
+                      <button
+                        className={`w-full px-5 py-3.5 bg-gradient-to-r ${company.gradient} 
+                          text-white font-semibold text-sm
+                          shadow-md group-hover:shadow-lg 
+                          transform group-hover:-translate-y-0.5 
+                          transition-all duration-300 
+                          flex items-center justify-center gap-2`}
+                        style={{ borderRadius: '10px' }}
+                      >
+                        {currentLanguage === 'en' ? 'View Details' : '상세보기'}
+                        <svg 
+                          className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" 
+                          fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -716,158 +752,271 @@ const HomePageHybrid = () => {
           </div>
         </motion.section>
 
-        {/* 주요 연혁 타임라인 */}
+        {/* 주요 연혁 타임라인 - 40년 역사 */}
         <motion.section 
-          className="mb-12"
+          className="mb-20 lg:mb-28"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-8">
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              {currentLanguage === 'en' ? 'Major Milestones' : '주요 연혁'}
+              {currentLanguage === 'en' ? '40 Years of History' : '40년의 발자취'}
             </h2>
-            <p className="text-sm text-gray-400 dark:text-gray-400">
-              {currentLanguage === 'en' ? 'Our Growth Journey' : '정호그룹의 성장 여정'}
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {currentLanguage === 'en' ? '1982 - Present | Our Growth Journey' : '1982년 ~ 현재 | 정호그룹의 성장 여정'}
             </p>
           </div>
 
           <div className="relative">
-            {/* 수직 타임라인 바 */}
-            <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-green-600 via-blue-600 to-purple-600 dark:from-green-500 dark:via-blue-500 dark:to-purple-500"></div>
+            {/* 수직 타임라인 바 - 그라데이션 강화 */}
+            <div className="absolute left-6 md:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-600 via-green-500 via-purple-500 to-emerald-600" />
 
-            <div className="space-y-8">
-              {/* 2018 - Clarus */}
-              <motion.div 
-                className="relative flex gap-6"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="flex-shrink-0 w-16 flex justify-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg border-4 border-white dark:border-gray-900">
-                    💡
-                  </div>
-                </div>
+            <div className="space-y-6">
+              {/* 연혁 데이터 배열 */}
+              {[
+                {
+                  year: '2024',
+                  title: currentLanguage === 'en' ? 'New Corporate Website Launch' : '그룹 홈페이지 리뉴얼',
+                  description: currentLanguage === 'en' 
+                    ? 'Launch of modernized corporate website with enhanced UX'
+                    : '현대적 디자인과 향상된 사용자 경험의 새로운 홈페이지 오픈',
+                  icon: '🌐',
+                  gradient: 'from-blue-500 to-indigo-500',
+                  isHighlight: false
+                },
+                {
+                  year: '2020',
+                  title: currentLanguage === 'en' ? 'Smart Factory Solutions' : '스마트 팩토리 솔루션 개발',
+                  description: currentLanguage === 'en' 
+                    ? 'Development of IoT-based smart factory lighting control system'
+                    : 'IoT 기반 스마트 팩토리 조명제어 시스템 개발 및 상용화',
+                  icon: '🏭',
+                  gradient: 'from-cyan-500 to-blue-500',
+                  isHighlight: false
+                },
+                {
+                  year: '2018',
+                  title: currentLanguage === 'en' ? 'CLARUS Establishment' : '클라루스 설립',
+                  description: currentLanguage === 'en' 
+                    ? 'AI-powered smart office technology, next-generation automation'
+                    : 'AI 기반 스마트 오피스 기술 출시, 차세대 자동화 시장 진출',
+                  icon: '💡',
+                  gradient: 'from-blue-500 to-cyan-500',
+                  isHighlight: false
+                },
+                {
+                  year: '2015',
+                  title: currentLanguage === 'en' ? 'LED Lighting Export Expansion' : 'LED 조명 해외수출 확대',
+                  description: currentLanguage === 'en' 
+                    ? 'Export expansion to Southeast Asia, Middle East, and Europe'
+                    : '동남아, 중동, 유럽 등 해외 시장 수출 본격화',
+                  icon: '🌏',
+                  gradient: 'from-teal-500 to-green-500',
+                  isHighlight: false
+                },
+                {
+                  year: '2010',
+                  title: currentLanguage === 'en' ? 'ILLUTECH Establishment' : '일루텍 설립',
+                  description: currentLanguage === 'en' 
+                    ? 'Entry into industrial & special LED lighting market'
+                    : '산업·특수 LED 조명 시장 진출, 원전용 특수조명 개발',
+                  icon: '⚡',
+                  gradient: 'from-orange-500 to-red-500',
+                  isHighlight: false
+                },
+                {
+                  year: '2005',
+                  title: currentLanguage === 'en' ? 'Power Monitoring System' : '전력감시시스템 개발',
+                  description: currentLanguage === 'en' 
+                    ? 'Development of integrated power monitoring and control system'
+                    : '통합 전력감시제어 시스템 개발, 에너지 절감 솔루션 출시',
+                  icon: '📊',
+                  gradient: 'from-yellow-500 to-orange-500',
+                  isHighlight: false
+                },
+                {
+                  year: '2000',
+                  title: currentLanguage === 'en' ? 'Building Automation Expansion' : '빌딩 자동화 사업 확대',
+                  description: currentLanguage === 'en' 
+                    ? 'Major expansion into building automation and power control systems'
+                    : '빌딩 자동화 시스템 및 전력 제어 사업 본격 확대',
+                  icon: '🏢',
+                  gradient: 'from-purple-500 to-pink-500',
+                  isHighlight: false
+                },
+                {
+                  year: '1995',
+                  title: currentLanguage === 'en' ? 'Dimming Control Technology' : '조광제어 기술 혁신',
+                  description: currentLanguage === 'en' 
+                    ? 'Development of advanced dimming control technology for public facilities'
+                    : '공공시설용 조광제어 기술 개발, 국내 최초 디지털 조광기 출시',
+                  icon: '🔆',
+                  gradient: 'from-amber-500 to-yellow-500',
+                  isHighlight: false
+                },
+                {
+                  year: '1990',
+                  title: currentLanguage === 'en' ? 'Textile Machinery Division' : '섬유기계 사업 진출',
+                  description: currentLanguage === 'en' 
+                    ? 'Establishment of TEXCOM, entry into textile machinery business'
+                    : '정호텍스컴 설립, 섬유기계 및 시험기 사업 시작',
+                  icon: '🧵',
+                  gradient: 'from-rose-500 to-pink-500',
+                  isHighlight: false
+                },
+                {
+                  year: '1982',
+                  title: currentLanguage === 'en' ? '🎉 JUNGHO Group Foundation' : '🎉 정호그룹 설립',
+                  description: currentLanguage === 'en' 
+                    ? 'The beginning of our 40-year journey in lighting control business'
+                    : '조명 제어 사업의 시작, 40년 역사의 첫 걸음을 내딛다',
+                  icon: '🌟',
+                  gradient: 'from-green-500 to-emerald-500',
+                  isHighlight: true
+                }
+              ].map((item, index) => (
                 <motion.div 
-                  className="flex-1 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:border-blue-400 dark:hover:border-blue-600 transition-all duration-300"
-                  whileHover={{ scale: 1.02, x: 5 }}
+                  key={item.year}
+                  className="relative flex gap-4 md:gap-6"
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
                 >
-                  <span className="inline-block px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-bold rounded-full mb-3">
-                    2018
-                  </span>
-                  <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                    {currentLanguage === 'en' ? 'Clarus Foundation' : '클라루스 설립'}
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {currentLanguage === 'en' 
-                      ? 'Launch of AI-powered smart office technology, marking our entry into next-generation automation'
-                      : 'AI 기반 스마트 오피스 기술 출시, 차세대 자동화 시장 진출'}
-                  </p>
+                  {/* 타임라인 노드 */}
+                  <div className="flex-shrink-0 w-12 md:w-16 flex justify-center relative z-10">
+                    <div className={`w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br ${item.gradient} rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-gray-900 transition-transform duration-300 hover:scale-110`}>
+                      <span className="text-lg md:text-xl">{item.icon}</span>
+                    </div>
+                  </div>
+                  
+                  {/* 카드 */}
+                  <motion.div 
+                    className={`flex-1 rounded-xl p-5 md:p-6 shadow-md hover:shadow-xl transition-all duration-300 cursor-default
+                      ${item.isHighlight 
+                        ? 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/20 border-2 border-green-400 dark:border-green-600' 
+                        : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                      }`}
+                    whileHover={{ x: 8, scale: 1.01 }}
+                    style={{ borderRadius: '12px' }}
+                  >
+                    <div className="flex flex-wrap items-center gap-3 mb-3">
+                      <span className={`inline-block px-3 py-1.5 bg-gradient-to-r ${item.gradient} text-white text-xs font-bold rounded-full shadow-sm`}>
+                        {item.year}
+                      </span>
+                      <h4 className={`text-lg md:text-xl font-bold ${item.isHighlight ? 'text-green-800 dark:text-green-200' : 'text-gray-900 dark:text-white'}`}>
+                        {item.title}
+                      </h4>
+                    </div>
+                    <p className={`text-sm leading-relaxed ${item.isHighlight ? 'text-green-700 dark:text-green-300 font-medium' : 'text-gray-600 dark:text-gray-400'}`}>
+                      {item.description}
+                    </p>
+                  </motion.div>
                 </motion.div>
-              </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.section>
 
-              {/* 2010 - ILLUTECH */}
-              <motion.div 
-                className="relative flex gap-6"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-              >
-                <div className="flex-shrink-0 w-16 flex justify-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg border-4 border-white dark:border-gray-900">
-                    ⚡
-                  </div>
-                </div>
-                <motion.div 
-                  className="flex-1 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:border-orange-400 dark:hover:border-orange-600 transition-all duration-300"
-                  whileHover={{ scale: 1.02, x: 5 }}
-                >
-                  <span className="inline-block px-3 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold rounded-full mb-3">
-                    2010
-                  </span>
-                  <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                    {currentLanguage === 'en' ? 'ILLUTECH Foundation' : '일루텍 설립'}
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {currentLanguage === 'en' 
-                      ? 'Entry into industrial & special LED lighting market with innovative solutions'
-                      : '혁신적인 솔루션으로 산업·특수 LED 조명 시장 진출'}
-                  </p>
-                </motion.div>
-              </motion.div>
+        {/* 인증 및 특허 섹션 - Grayscale to Color Effect */}
+        <motion.section 
+          className="mb-20 lg:mb-28"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-10">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {currentLanguage === 'en' ? 'Certifications & Patents' : '인증 및 특허'}
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {currentLanguage === 'en' ? 'Our Achievements & Recognition' : '40년간 축적된 기술력의 증거'}
+            </p>
+          </div>
 
-              {/* 2000 - Business Expansion */}
-              <motion.div 
-                className="relative flex gap-6"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <div className="flex-shrink-0 w-16 flex justify-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg border-4 border-white dark:border-gray-900">
-                    🏢
-                  </div>
-                </div>
-                <motion.div 
-                  className="flex-1 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:border-purple-400 dark:hover:border-purple-600 transition-all duration-300"
-                  whileHover={{ scale: 1.02, x: 5 }}
+          {/* 인증 마크 그리드 */}
+          <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8 md:p-10 border border-gray-200 dark:border-gray-700">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
+              {[
+                { name: 'ISO 9001', desc: currentLanguage === 'en' ? 'Quality Management' : '품질경영시스템', icon: '🏆' },
+                { name: 'ISO 14001', desc: currentLanguage === 'en' ? 'Environmental Management' : '환경경영시스템', icon: '🌿' },
+                { name: 'CE', desc: currentLanguage === 'en' ? 'European Conformity' : '유럽인증', icon: '🇪🇺' },
+                { name: 'KC', desc: currentLanguage === 'en' ? 'Korea Certification' : '국가통합인증', icon: '🇰🇷' },
+                { name: currentLanguage === 'en' ? 'Patent 50+' : '특허 50+', desc: currentLanguage === 'en' ? 'Registered Patents' : '등록특허', icon: '📜' },
+                { name: currentLanguage === 'en' ? 'Venture' : '벤처기업', desc: currentLanguage === 'en' ? 'Venture Certified' : '기술혁신기업', icon: '🚀' },
+                { name: 'GS', desc: currentLanguage === 'en' ? 'Good Software' : 'GS인증', icon: '💻' },
+                { name: currentLanguage === 'en' ? 'NEP' : '신제품인증', desc: currentLanguage === 'en' ? 'New Excellent Product' : '우수신기술제품', icon: '⭐' },
+                { name: currentLanguage === 'en' ? 'Innobiz' : '이노비즈', desc: currentLanguage === 'en' ? 'Innovation Business' : '기술혁신형중소기업', icon: '💡' },
+                { name: currentLanguage === 'en' ? 'Main-Biz' : '메인비즈', desc: currentLanguage === 'en' ? 'Management Innovation' : '경영혁신형중소기업', icon: '📈' },
+                { name: currentLanguage === 'en' ? 'Family Friendly' : '가족친화', desc: currentLanguage === 'en' ? 'Family Friendly' : '가족친화인증기업', icon: '👨‍👩‍👧‍👦' },
+                { name: currentLanguage === 'en' ? 'Green Tech' : '녹색기술', desc: currentLanguage === 'en' ? 'Green Technology' : '녹색기술인증', icon: '🌱' },
+              ].map((cert, index) => (
+                <motion.div
+                  key={cert.name}
+                  className="group relative"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
-                  <span className="inline-block px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold rounded-full mb-3">
-                    2000
-                  </span>
-                  <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                    {currentLanguage === 'en' ? 'Business Expansion' : '사업 확장'}
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {currentLanguage === 'en' 
-                      ? 'Significant expansion into building automation systems and power control'
-                      : '빌딩 자동화 시스템 및 전력 제어 사업 본격 확대'}
-                  </p>
+                  <div 
+                    className="flex flex-col items-center p-4 md:p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-green-400 dark:hover:border-green-500 group-hover:-translate-y-1"
+                    style={{ borderRadius: '12px' }}
+                  >
+                    {/* 아이콘 - Grayscale → Color */}
+                    <div 
+                      className="text-4xl md:text-5xl mb-3 transition-all duration-500 grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100"
+                    >
+                      {cert.icon}
+                    </div>
+                    {/* 인증명 */}
+                    <h4 className="text-sm md:text-base font-bold text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-300 text-center">
+                      {cert.name}
+                    </h4>
+                    {/* 설명 */}
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {cert.desc}
+                    </p>
+                  </div>
                 </motion.div>
-              </motion.div>
+              ))}
+            </div>
 
-              {/* 1982 - Foundation */}
-              <motion.div 
-                className="relative flex gap-6"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-              >
-                <div className="flex-shrink-0 w-16 flex justify-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg border-4 border-white dark:border-gray-900">
-                    🌟
-                  </div>
-                </div>
-                <motion.div 
-                  className="flex-1 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-2 border-green-400 dark:border-green-600 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300"
-                  whileHover={{ scale: 1.02, x: 5 }}
-                >
-                  <span className="inline-block px-3 py-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white text-xs font-bold rounded-full mb-3">
-                    1982
-                  </span>
-                  <h4 className="text-xl font-bold text-green-900 dark:text-green-100 mb-2">
-                    {currentLanguage === 'en' ? '🎉 Company Foundation' : '🎉 정호그룹 설립'}
-                  </h4>
-                  <p className="text-sm text-green-700 dark:text-green-300 leading-relaxed font-medium">
-                    {currentLanguage === 'en' 
-                      ? 'The beginning of our journey in lighting control business'
-                      : '조명 제어 사업의 시작, 40년 역사의 첫 걸음'}
-                  </p>
-                </motion.div>
-              </motion.div>
+            {/* 하단 통계 */}
+            <div className="mt-10 pt-8 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+                {[
+                  { number: '50+', label: currentLanguage === 'en' ? 'Patents' : '등록특허' },
+                  { number: '12', label: currentLanguage === 'en' ? 'Certifications' : '인증현황' },
+                  { number: '100+', label: currentLanguage === 'en' ? 'Awards' : '수상실적' },
+                ].map((stat, index) => (
+                  <motion.div 
+                    key={stat.label}
+                    className="text-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
+                  >
+                    <div className="text-3xl md:text-4xl font-bold text-green-600 dark:text-green-400 mb-1">
+                      {stat.number}
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      {stat.label}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </motion.section>
 
         {/* 고객지원 및 연락처 안내 */}
         <motion.section 
-          className="mb-8"
+          className="mb-16 lg:mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

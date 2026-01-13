@@ -119,37 +119,37 @@ const MegaMenu = ({ version = 'v2' }) => {
         fixed top-0 left-0 right-0 z-[100] 
         transition-all duration-500 ease-out
         ${isScrolled 
-          ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl shadow-lg border-b border-gray-200/50 dark:border-gray-700/50' 
-          : 'bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-sm'
+          ? 'bg-white/85 dark:bg-gray-900/85 shadow-lg border-b border-gray-200/30 dark:border-gray-700/30' 
+          : 'bg-white/60 dark:bg-gray-900/60 shadow-sm'
         }
       `}
       style={{
-        backdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'blur(12px) saturate(150%)',
-        WebkitBackdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'blur(12px) saturate(150%)',
+        backdropFilter: 'blur(10px) saturate(150%)',
+        WebkitBackdropFilter: 'blur(10px) saturate(150%)',
       }}
     >
       <nav className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
-        <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
-          {/* 로고 */}
-          <Link to={version === 'hybrid' ? '/hybrid' : '/v2'} className="flex items-center space-x-2 sm:space-x-3 group flex-shrink-0">
+        <div className="flex items-center justify-between h-18 sm:h-22 lg:h-28">
+          {/* 로고 - 크기 확대 */}
+          <Link to={version === 'hybrid' ? '/hybrid' : '/v2'} className="flex items-center space-x-3 sm:space-x-4 group flex-shrink-0">
             <img 
               src="/images/logos/jungho-logo.png" 
               alt="정호그룹 로고" 
-              className="h-7 sm:h-9 lg:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              className="h-10 sm:h-12 lg:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
               onError={(e) => {
                 // 이미지 로드 실패 시 대체 로고 표시
                 e.target.style.display = 'none';
                 e.target.nextElementSibling.style.display = 'flex';
               }}
             />
-            <div className="w-7 h-7 sm:w-9 sm:h-9 lg:w-12 lg:h-12 bg-primary-600 rounded-lg items-center justify-center hidden">
-              <span className="text-lg sm:text-xl lg:text-2xl font-bold text-white">JH</span>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-primary-600 rounded-lg items-center justify-center hidden">
+              <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">JH</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-sm sm:text-base lg:text-xl font-bold text-gray-900 dark:text-white">
+              <span className="text-base sm:text-lg lg:text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
                 {t('header.title') || '정호그룹'}
               </span>
-              <span className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">
+              <span className="text-[10px] sm:text-xs lg:text-sm text-gray-500 dark:text-gray-400 tracking-wide">
                 Jungho Group
               </span>
             </div>
@@ -159,7 +159,7 @@ const MegaMenu = ({ version = 'v2' }) => {
           <div className="flex items-center space-x-2">
             {/* 데스크톱 메뉴 */}
             {isDesktop && (
-              <div className="flex items-center space-x-1">
+              <div className="flex items-center space-x-2">
               {menuStructure.map((menu) => (
                 <div
                   key={menu.id}
@@ -175,17 +175,27 @@ const MegaMenu = ({ version = 'v2' }) => {
                       }
                     }}
                     className={`
-                      px-4 py-2 text-sm font-semibold rounded-lg
-                      transition-colors duration-150
+                      relative px-5 py-3 text-sm font-semibold
+                      transition-all duration-300 ease-out
                       ${
                         activeMenu === menu.id
-                          ? 'text-primary-600 bg-primary-50'
-                          : 'text-gray-900 dark:text-gray-200 hover:text-primary-600 hover:bg-gray-50'
+                          ? 'text-primary-600 dark:text-primary-400'
+                          : 'text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400'
                       }
                       ${menu.id === 'subsidiaries' ? 'cursor-default' : 'cursor-pointer'}
+                      group
                     `}
                   >
                     {menu.label}
+                    {/* Hover 언더라인 애니메이션 */}
+                    <span 
+                      className={`
+                        absolute bottom-1 left-1/2 -translate-x-1/2 
+                        h-0.5 bg-gradient-to-r from-primary-500 to-primary-600
+                        transition-all duration-300 ease-out
+                        ${activeMenu === menu.id ? 'w-4/5' : 'w-0 group-hover:w-4/5'}
+                      `}
+                    />
                   </button>
 
                   {/* 서브메뉴 드롭다운 - Glassmorphism 스타일 */}
@@ -236,16 +246,25 @@ const MegaMenu = ({ version = 'v2' }) => {
               >
                 <button
                   className={`
-                    px-4 py-2 text-sm font-semibold rounded-lg
-                    transition-colors duration-150
+                    relative px-5 py-3 text-sm font-semibold
+                    transition-all duration-300 ease-out group
                     ${
                       activeMenu === 'family'
-                        ? 'text-primary-600 bg-primary-50'
-                        : 'text-gray-900 dark:text-gray-200 hover:text-primary-600 hover:bg-gray-50'
+                        ? 'text-primary-600 dark:text-primary-400'
+                        : 'text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400'
                     }
                   `}
                 >
                   {t('nav.family') || '패밀리 사이트'}
+                  {/* Hover 언더라인 애니메이션 */}
+                  <span 
+                    className={`
+                      absolute bottom-1 left-1/2 -translate-x-1/2 
+                      h-0.5 bg-gradient-to-r from-primary-500 to-primary-600
+                      transition-all duration-300 ease-out
+                      ${activeMenu === 'family' ? 'w-4/5' : 'w-0 group-hover:w-4/5'}
+                    `}
+                  />
                 </button>
 
                 <div

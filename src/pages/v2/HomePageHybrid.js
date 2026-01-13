@@ -334,11 +334,11 @@ const HomePageHybrid = () => {
         </div>
       )}
 
-      {/* 배너 - Hero 섹션 (세련된 슬로건 + Glassmorphism) */}
+      {/* 배너 - Hero 섹션 (극대화된 폰트 대비 + Glassmorphism) */}
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'Since 1982' : '1982년 설립'}
-        sloganLight={currentLanguage === 'en' ? '40 Years of Trust' : '40년의 신뢰'}
-        sloganBold={currentLanguage === 'en' ? 'Technology Lighting the Future' : '미래를 밝히는 기술'}
+        sloganLight={currentLanguage === 'en' ? '40 YEARS OF TRUST' : '40년의 신뢰'}
+        sloganBold={currentLanguage === 'en' ? 'Lighting the Future' : '정호그룹이 밝히는 미래'}
         description={heroDescription}
         backgroundImage={selectedBackground}
         height="100vh"
@@ -527,48 +527,168 @@ const HomePageHybrid = () => {
           </div>
         </motion.section>
 
-        {/* 주요 성과 지표 */}
+        {/* 정호그룹의 기록 - 핵심 지표 대형 숫자 */}
         <motion.section 
-          className="mb-20 lg:mb-28"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.05 }}
+          className="mb-20 lg:mb-28 -mx-6 sm:-mx-10 lg:-mx-16 xl:-mx-20"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5 }}
         >
-          <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              {currentLanguage === 'en' ? 'Key Achievements' : '주요 성과'}
-            </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              {currentLanguage === 'en' ? 'JUNGHO Group by Numbers' : '숫자로 보는 정호그룹'}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { number: 40, suffix: '+', label: currentLanguage === 'en' ? 'Years of History' : '년 역사', gradient: 'from-blue-500 to-cyan-500' },
-              { number: 4, suffix: '', label: currentLanguage === 'en' ? 'Subsidiaries' : '개 계열사', gradient: 'from-purple-500 to-pink-500' },
-              { number: 200, suffix: '+', label: currentLanguage === 'en' ? 'Projects' : '개 프로젝트', gradient: 'from-orange-500 to-red-500' },
-              { number: 50, suffix: '+', label: currentLanguage === 'en' ? 'Billion KRW Sales' : '억원 매출', gradient: 'from-green-500 to-teal-500' }
-            ].map((stat, index) => (
+          <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-20 lg:py-28 relative overflow-hidden">
+            {/* 배경 장식 */}
+            <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-green-500/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+            <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+            
+            <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 relative">
+              {/* 섹션 타이틀 */}
               <motion.div 
-                key={index}
-                className={`bg-gradient-to-br ${stat.gradient} p-6 rounded-2xl text-white text-center shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300`}
-                whileHover={{ scale: 1.05 }}
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
               >
-                <div className="text-4xl font-bold mb-2">
-                  <CountUp 
-                    end={stat.number} 
-                    duration={2.5}
-                    suffix={stat.suffix}
-                    enableScrollSpy
-                    scrollSpyOnce
-                  />
-                </div>
-                <div className="text-sm font-medium opacity-90">
-                  {stat.label}
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+                  {currentLanguage === 'en' ? 'JUNGHO GROUP RECORDS' : '정호그룹의 기록'}
+                </h2>
+                <p className="text-gray-400 text-lg">
+                  {currentLanguage === 'en' ? '40 Years of Trust and Innovation' : '40년간 쌓아온 신뢰와 혁신의 증거'}
+                </p>
+              </motion.div>
+
+              {/* 핵심 지표 3개 */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+                {/* 40년 업력 */}
+                <motion.div 
+                  className="text-center group"
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                >
+                  <div className="relative inline-block mb-6">
+                    <span 
+                      className="text-7xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400 group-hover:from-blue-300 group-hover:to-cyan-300 transition-all duration-500"
+                      style={{ fontWeight: 900, lineHeight: 1 }}
+                    >
+                      <CountUp 
+                        end={40} 
+                        duration={2.5}
+                        enableScrollSpy
+                        scrollSpyOnce
+                      />
+                    </span>
+                    <span className="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-400 ml-1">+</span>
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                    {currentLanguage === 'en' ? 'Years of Experience' : '년 업력'}
+                  </h3>
+                  <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-xs mx-auto">
+                    {currentLanguage === 'en' 
+                      ? '1982 to Present - Accumulated expertise and trust'
+                      : '1982년부터 현재까지 축적된 전문성과 신뢰'}
+                  </p>
+                </motion.div>
+
+                {/* 1,000+ 프로젝트 */}
+                <motion.div 
+                  className="text-center group"
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  <div className="relative inline-block mb-6">
+                    <span 
+                      className="text-7xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-green-400 to-emerald-400 group-hover:from-green-300 group-hover:to-emerald-300 transition-all duration-500"
+                      style={{ fontWeight: 900, lineHeight: 1 }}
+                    >
+                      <CountUp 
+                        end={1000} 
+                        duration={2.5}
+                        separator=","
+                        enableScrollSpy
+                        scrollSpyOnce
+                      />
+                    </span>
+                    <span className="text-4xl md:text-5xl lg:text-6xl font-bold text-green-400 ml-1">+</span>
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                    {currentLanguage === 'en' ? 'Projects Completed' : '프로젝트 수행'}
+                  </h3>
+                  <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-xs mx-auto">
+                    {currentLanguage === 'en' 
+                      ? 'Successful projects in public and private sectors'
+                      : '공공·민간 분야 성공적인 프로젝트 수행 실적'}
+                  </p>
+                </motion.div>
+
+                {/* 국내 점유율 1위 */}
+                <motion.div 
+                  className="text-center group"
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                >
+                  <div className="relative inline-block mb-6">
+                    <span className="text-4xl md:text-5xl lg:text-6xl font-bold text-purple-400 mr-2">No.</span>
+                    <span 
+                      className="text-7xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-pink-400 group-hover:from-purple-300 group-hover:to-pink-300 transition-all duration-500"
+                      style={{ fontWeight: 900, lineHeight: 1 }}
+                    >
+                      <CountUp 
+                        end={1} 
+                        duration={1.5}
+                        enableScrollSpy
+                        scrollSpyOnce
+                      />
+                    </span>
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                    {currentLanguage === 'en' ? 'Market Leader' : '국내 점유율 1위'}
+                  </h3>
+                  <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-xs mx-auto">
+                    {currentLanguage === 'en' 
+                      ? 'Leading position in lighting control industry'
+                      : '조명제어 분야 국내 시장 점유율 1위 달성'}
+                  </p>
+                </motion.div>
+              </div>
+
+              {/* 하단 보조 지표 */}
+              <motion.div 
+                className="mt-16 pt-12 border-t border-gray-700/50"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+                  {[
+                    { number: 4, label: currentLanguage === 'en' ? 'Subsidiaries' : '계열사' },
+                    { number: 50, suffix: '+', label: currentLanguage === 'en' ? 'Patents' : '특허 보유' },
+                    { number: 12, label: currentLanguage === 'en' ? 'Certifications' : '인증 현황' },
+                    { number: 30, suffix: '+', label: currentLanguage === 'en' ? 'Export Countries' : '수출국' },
+                  ].map((item, index) => (
+                    <div key={index} className="text-center">
+                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">
+                        <CountUp 
+                          end={item.number} 
+                          duration={2}
+                          suffix={item.suffix || ''}
+                          enableScrollSpy
+                          scrollSpyOnce
+                        />
+                      </div>
+                      <div className="text-sm text-gray-500">{item.label}</div>
+                    </div>
+                  ))}
                 </div>
               </motion.div>
-            ))}
+            </div>
           </div>
         </motion.section>
 

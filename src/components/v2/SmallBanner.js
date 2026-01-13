@@ -85,24 +85,27 @@ const SmallBanner = ({
               </div>
             )}
 
-            {/* 메인 슬로건 - 폰트 두께 대비 */}
-            <h1 className="mb-8 leading-tight">
-              {/* 얇은 폰트 - '40년의 신뢰' */}
+            {/* 메인 슬로건 - 극대화된 폰트 두께 대비 + 좁은 행간 */}
+            <h1 className="mb-10" style={{ lineHeight: '1.1' }}>
+              {/* Light 폰트 - '40년의 신뢰' */}
               <span 
-                className="block text-white/90 text-2xl md:text-3xl lg:text-4xl font-light tracking-wide mb-3"
+                className="block text-white/85 text-xl md:text-2xl lg:text-3xl xl:text-4xl tracking-widest uppercase mb-2"
                 style={{ 
-                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
-                  fontWeight: 300,
+                  textShadow: '0 2px 15px rgba(0, 0, 0, 0.4)',
+                  fontWeight: 200,
+                  letterSpacing: '0.25em',
                 }}
               >
                 {sloganLight || defaultSloganLight}
               </span>
-              {/* 굵은 폰트 - '미래를 밝히는 기술' */}
+              {/* Extra Bold 폰트 - '정호그룹이 밝히는 미래' */}
               <span 
-                className="block text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight"
+                className="block text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl tracking-tight"
                 style={{ 
-                  textShadow: '0 4px 20px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.4)',
-                  fontWeight: 800,
+                  textShadow: '0 4px 30px rgba(0, 0, 0, 0.5), 0 2px 15px rgba(0, 0, 0, 0.3)',
+                  fontWeight: 900,
+                  letterSpacing: '-0.02em',
+                  lineHeight: '1.0',
                 }}
               >
                 {sloganBold || defaultSloganBold}

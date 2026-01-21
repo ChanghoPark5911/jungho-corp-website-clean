@@ -17,6 +17,46 @@ const TexcomRssPage = () => {
   const isHybrid = location.pathname.startsWith('/hybrid');
   const backPath = isHybrid ? '/hybrid/subsidiaries/jungho-texcom' : '/subsidiaries/jungho-texcom';
 
+  // 외부 사이트 preconnect - 페이지 로드 시 미리 연결 설정
+  React.useEffect(() => {
+    const domains = [
+      'https://redssocksoo.com',
+      'https://29cm.co.kr',
+      'https://musinsa.com',
+      'https://kurly.com',
+      'https://wconcept.co.kr',
+      'https://ssgood.com',
+      'https://oliveyoung.co.kr',
+      'https://10x10.co.kr',
+      'https://poom.co.kr'
+    ];
+    
+    // DNS prefetch 및 preconnect 링크 추가
+    domains.forEach(domain => {
+      // DNS Prefetch
+      const dnsPrefetch = document.createElement('link');
+      dnsPrefetch.rel = 'dns-prefetch';
+      dnsPrefetch.href = domain;
+      document.head.appendChild(dnsPrefetch);
+      
+      // Preconnect
+      const preconnect = document.createElement('link');
+      preconnect.rel = 'preconnect';
+      preconnect.href = domain;
+      preconnect.crossOrigin = 'anonymous';
+      document.head.appendChild(preconnect);
+    });
+
+    // Cleanup
+    return () => {
+      document.querySelectorAll('link[rel="dns-prefetch"], link[rel="preconnect"]').forEach(link => {
+        if (domains.some(d => link.href.includes(d.replace('https://', '')))) {
+          link.remove();
+        }
+      });
+    };
+  }, []);
+
   // 제품 이미지 목록 (12장)
   const productImages = [
     '/images/rss/products/product-01.jpg',
@@ -461,21 +501,16 @@ const TexcomRssPage = () => {
         </div>
       </motion.section>
 
-      {/* STOCKISTS 섹션 */}
-      <motion.section 
-        className="py-16 bg-gray-50 dark:bg-gray-800"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer}
-      >
+      {/* STOCKISTS 섹션 - 성능 최적화 버전 */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-4xl mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-10">
+          <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-gray-50 to-slate-100 dark:from-gray-800 dark:to-slate-700 border border-gray-200 dark:border-gray-600 rounded-full shadow-sm hover:shadow-md transition-all duration-300">
               <h2 className="text-2xl font-bold text-gray-700 dark:text-gray-200 leading-none">STOCKISTS</h2>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div variants={fadeInUp} className="text-center mb-8">
+          <div className="text-center mb-8">
             <p className="text-gray-700 dark:text-gray-300 mb-2">
               {currentLanguage === 'en' 
                 ? 'Meet RSS brands through various channels.'
@@ -486,22 +521,21 @@ const TexcomRssPage = () => {
                 ? '(Click the link below to go to the page.)'
                 : '(아래 링크를 통해 해당페이지로 이동됩니다.)'}
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div variants={fadeInUp} className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
             <div className="space-y-3">
               {stockists.map((store, index) => (
-                <motion.a
+                <a
                   key={index}
                   href={store.link}
                   target="_blank"
-                  rel="noopener noreferrer"
-                  className={`block p-4 rounded-xl border transition-all duration-300 ${
+                  rel="noopener noreferrer prefetch"
+                  className={`block p-4 rounded-xl border transition-all duration-150 hover:translate-x-1 ${
                     store.highlight 
                       ? 'bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-amber-200 dark:border-amber-700 shadow-sm hover:shadow-md'
                       : 'bg-gray-50 dark:bg-gray-700/50 border-gray-100 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm hover:shadow-md'
                   }`}
-                  whileHover={{ x: 5, scale: 1.01 }}
                 >
                   <div className="flex items-center gap-3">
                     <span className={`${store.highlight ? 'text-amber-500' : 'text-gray-400'} dark:text-gray-400`}>·</span>
@@ -517,12 +551,12 @@ const TexcomRssPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
                   </div>
-                </motion.a>
+                </a>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* 기업구매/제휴마케팅 문의 */}
       <motion.section 

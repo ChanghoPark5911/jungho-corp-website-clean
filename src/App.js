@@ -69,7 +69,6 @@ const AdminPageV2 = lazy(() => import('./pages/v2/AdminPageV2'));
 // 새 관리자 시스템 (Phase 1)
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
-const AdminTest = lazy(() => import('./pages/admin/AdminTest'));
 const MediaManager = lazy(() => import('./pages/admin/MediaManager'));
 const SupportManager = lazy(() => import('./pages/admin/SupportManager'));
 const I18nManager = lazy(() => import('./pages/admin/I18nManager'));
@@ -146,7 +145,6 @@ function App() {
             <Route path="/v2/admin" element={<AdminPageV2 />} />
             
             {/* 기존 admin-new 경로들은 /admin으로 리다이렉트 (하위 호환성) */}
-            <Route path="/admin-new/test" element={<Suspense fallback={<PageLoader />}><AdminTest /></Suspense>} />
             <Route path="/admin-new/login" element={<Navigate to="/admin" replace />} />
             <Route path="/admin-new/dashboard" element={<Navigate to="/admin" replace />} />
             <Route path="/admin-new/media" element={<Navigate to="/admin" replace />} />

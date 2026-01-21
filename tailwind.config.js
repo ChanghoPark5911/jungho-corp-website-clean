@@ -23,41 +23,55 @@ module.exports = {
     },
     extend: {
       colors: {
+        // Design System v1.0: Navy + Cyan + Gold
         primary: {
-          50: '#E8F5E9',
-          100: '#C8E6C9',
-          200: '#A5D6A7',
-          300: '#81C784',
-          400: '#66BB6A',
-          500: '#4CAF50',  // Accent Green
-          600: '#2E7D32',  // Primary Green (정호그룹 메인)
-          700: '#1B5E20',  // Dark Green
-          800: '#145A1C',
-          900: '#0D3F12',
+          50: '#E6EEF5',
+          100: '#CCDDED',
+          200: '#99BBDB',
+          300: '#6699C9',
+          400: '#3377B7',
+          500: '#003366',  // Primary Navy (정호그룹 메인)
+          600: '#002B57',  // Dark Navy
+          700: '#002347',  // Darker Navy
+          800: '#001B38',
+          900: '#001329',
+        },
+        secondary: {
+          50: '#E6F7FD',
+          100: '#B3E7F9',
+          500: '#00AEEF',  // Secondary Cyan
+          600: '#008FCC',
+          700: '#0070AA',
         },
         accent: {
-          50: '#FEF2F2',
-          100: '#FEE2E2',
-          500: '#EF4444',
-          600: '#DC2626',
-          700: '#B91C1C',
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          500: '#FFD700',  // Accent Gold
+          600: '#D4AF00',
+          700: '#AA8C00',
+        },
+        'dark-navy': {
+          700: '#004080',
+          800: '#003366',
+          900: '#002244',
         },
         'dark-green': {
-          700: '#15803D',
-          800: '#166534',
-          900: '#14532D',
+          700: '#004080',
+          800: '#003366',
+          900: '#002244',
         },
         'dark-blue': {
           800: '#1E40AF',
           900: '#1E3A8A',
         },
-        // 계열사별 브랜드 컬러
-        clarus: { 500: '#00897B' },      // 청록 그린
-        tlc: { 500: '#2E7D32' },         // 메인 그린
-        illutech: { 500: '#FFA726' },    // 오렌지 (LED 이미지)
-        texcom: { 500: '#7E57C2' },      // 퍼플 (패션 이미지)
-        rss: { 500: '#66BB6A' },         // 밝은 그린
-        'bright-green': '#6EE7B7',
+        // 계열사별 브랜드 컬러 (Navy/Cyan 톤)
+        clarus: { 500: '#0077B6' },      // Tech Blue
+        tlc: { 500: '#003366' },         // Main Navy
+        illutech: { 500: '#00AEEF' },    // Cyan (LED/Light)
+        texcom: { 500: '#5B8DEE' },      // Light Blue-Purple
+        rss: { 500: '#4A90D9' },         // Light Blue
+        'bright-cyan': '#00AEEF',
+        'bright-green': '#00AEEF',  // Cyan으로 대체 (호환성 유지)
         // 다크모드 색상 추가
         dark: {
           50: '#F9FAFB',

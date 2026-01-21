@@ -3,32 +3,33 @@
 @tailwind utilities;
 
 /* ===== 정호그룹 디자인 시스템 CSS 변수 ===== */
+/* Design System v1.0: Navy + Cyan + Gold */
 :root {
-  /* Primary Green Colors */
-  --primary-50: #ECFDF5;
-  --primary-100: #D1FAE5;
-  --primary-200: #A7F3D0;
-  --primary-300: #6EE7B7;
-  --primary-400: #34D399;
-  --primary-500: #10B981;  /* Main Brand Green */
-  --primary-600: #059669;
-  --primary-700: #047857;
-  --primary-800: #065F46;
-  --primary-900: #064E3B;
+  /* Primary Navy Colors (Deep Navy #003366 기반) */
+  --primary-50: #E6EEF5;
+  --primary-100: #CCDDED;
+  --primary-200: #99BBDB;
+  --primary-300: #6699C9;
+  --primary-400: #3377B7;
+  --primary-500: #003366;  /* Main Brand Navy */
+  --primary-600: #002B57;
+  --primary-700: #002347;
+  --primary-800: #001B38;
+  --primary-900: #001329;
 
-  /* Background Colors */
-  --bg-dark-green-700: #15803D;
-  --bg-dark-green-800: #166534;
-  --bg-dark-green-900: #14532D;
+  /* Background Colors (Navy 기반) */
+  --bg-dark-green-700: #004080;
+  --bg-dark-green-800: #003366;
+  --bg-dark-green-900: #002244;
   --bg-dark-blue-800: #1E40AF;
   --bg-dark-blue-900: #1E3A8A;
 
-  /* Accent Red Colors */
-  --accent-50: #FEF2F2;
-  --accent-100: #FEE2E2;
-  --accent-500: #EF4444;  /* Main Accent Red */
-  --accent-600: #DC2626;
-  --accent-700: #B91C1C;
+  /* Accent Gold/Yellow Colors (#FFD700 기반) */
+  --accent-50: #FFFBEB;
+  --accent-100: #FEF3C7;
+  --accent-500: #FFD700;  /* Main Accent Gold */
+  --accent-600: #D4AF00;
+  --accent-700: #AA8C00;
 
   /* Neutral Colors */
   --neutral-50: #F9FAFB;
@@ -40,19 +41,27 @@
   --neutral-800: #1F2937;
   --neutral-900: #111827;
 
-  /* 계열사별 Colors */
-  --clarus-500: #059669;    /* Tech Green-Blue */
-  --tlc-500: #10B981;       /* Pure Green (메인과 동일) */
-  --illutech-500: #22C55E;  /* Warm Green */
-  --texcom-500: #16A34A;    /* Green-Purple */
+  /* Secondary Cyan Color (#00AEEF 기반) */
+  --secondary-50: #E6F7FD;
+  --secondary-100: #B3E7F9;
+  --secondary-500: #00AEEF;  /* Main Secondary Cyan */
+  --secondary-600: #008FCC;
+  --secondary-700: #0070AA;
+
+  /* 계열사별 Colors (Navy/Cyan 톤으로 조정) */
+  --clarus-500: #0077B6;    /* Tech Blue */
+  --tlc-500: #003366;       /* Main Navy */
+  --illutech-500: #00AEEF;  /* Cyan (LED/Light 이미지) */
+  --texcom-500: #5B8DEE;    /* Light Blue-Purple */
 
   /* Text Colors */
-  --text-primary-light: #047857;
+  --text-primary-light: #003366;
   --text-secondary-light: #6B7280;
   --text-primary-dark: #FFFFFF;
   --text-secondary-dark: #D1D5DB;
-  --text-on-green: #FFFFFF;
-  --text-bright-green: #6EE7B7;  /* 아주 밝은 그린 색상 */
+  --text-on-navy: #FFFFFF;
+  --text-bright-cyan: #00AEEF;  /* Cyan 강조색 */
+  --text-bright-green: #00AEEF;  /* Cyan으로 대체 (호환성 유지) */
 
   /* Typography - Pretendard 기본, Noto Sans KR fallback */
   --font-family-korean: 'Pretendard Variable', 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -188,16 +197,17 @@ body {
 /* ===== Component Styles ===== */
 @layer components {
   /* Button System - Mobile First 반응형 */
+  /* Design System v1.0: Rounded 4px, 직선 위주 전문적 느낌 */
   .btn-primary {
-    @apply bg-primary-500 text-white px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 shadow-sm hover:bg-primary-600 hover:shadow-md hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply bg-primary-500 text-white px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded font-semibold text-sm md:text-base transition-all duration-300 shadow-sm hover:bg-primary-600 hover:shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
   }
 
   .btn-secondary {
-    @apply bg-transparent text-primary-500 border-2 border-primary-500 px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 hover:bg-primary-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply bg-transparent text-primary-500 border border-primary-500 px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded font-semibold text-sm md:text-base transition-all duration-300 hover:bg-primary-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
   }
 
   .btn-accent {
-    @apply bg-accent-500 text-white px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 shadow-sm hover:bg-accent-600 hover:shadow-md hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2;
+    @apply bg-accent-500 text-gray-900 px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded font-semibold text-sm md:text-base transition-all duration-300 shadow-sm hover:bg-accent-600 hover:shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2;
   }
 
   .btn-clarus { 
@@ -217,24 +227,25 @@ body {
   }
 
   /* Card System - Mobile First 반응형 */
+  /* Design System v1.0: Corner Radius 8px 이하, 은은한 그림자 */
   .card {
-    @apply bg-white rounded-xl p-4 md:p-6 shadow-sm border border-neutral-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 w-full md:w-auto focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply bg-white rounded-lg p-4 md:p-6 shadow-sm border border-neutral-200 transition-all duration-300 hover:shadow-md hover:-translate-y-1 w-full md:w-auto focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
   }
 
   .card-clarus { 
-    @apply border-l-4 border-l-clarus-500 hover:shadow-brand-green; 
+    @apply border-l-4 border-l-clarus-500 hover:shadow-md; 
   }
   
   .card-tlc { 
-    @apply border-l-4 border-l-tlc-500 hover:shadow-brand-green; 
+    @apply border-l-4 border-l-tlc-500 hover:shadow-md; 
   }
   
   .card-illutech { 
-    @apply border-l-4 border-l-illutech-500 hover:shadow-brand-green; 
+    @apply border-l-4 border-l-illutech-500 hover:shadow-md; 
   }
   
   .card-texcom { 
-    @apply border-l-4 border-l-texcom-500 hover:shadow-brand-green; 
+    @apply border-l-4 border-l-texcom-500 hover:shadow-md; 
   }
 
   /* Legacy Button Styles (for backward compatibility) */
@@ -331,7 +342,7 @@ body {
   }
 
   .hero-section {
-    @apply min-h-screen flex items-center justify-center text-center bg-dark-green-800 text-white relative py-16 md:py-24 lg:py-32;
+    @apply min-h-screen flex items-center justify-center text-center bg-primary-500 text-white relative py-16 md:py-24 lg:py-32;
   }
 
   /* Container System - Mobile First 반응형 (좌우 여백 확대 - 중앙 집중 여유로운 레이아웃) */

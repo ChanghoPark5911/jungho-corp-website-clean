@@ -715,13 +715,17 @@ const DashboardTab = () => {
     <div>
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">대시보드</h2>
       
-      {/* 통계 카드 */}
+      {/* 통계 카드 - 예시 데이터 */}
+      <div className="mb-2 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+        <span>ℹ️</span>
+        <span>아래 통계는 예시 데이터입니다. Google Analytics 연동 시 실제 데이터로 표시됩니다.</span>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: '페이지뷰', value: '12,345', icon: '👁️', color: 'blue' },
-          { label: '방문자', value: '1,234', icon: '👥', color: 'green' },
-          { label: '콘텐츠', value: '56', icon: '📄', color: 'purple' },
-          { label: '미디어', value: '23', icon: '🎬', color: 'orange' },
+          { label: '페이지뷰', value: '-', icon: '👁️', color: 'blue' },
+          { label: '방문자', value: '-', icon: '👥', color: 'green' },
+          { label: '콘텐츠', value: '-', icon: '📄', color: 'purple' },
+          { label: '미디어', value: '-', icon: '🎬', color: 'orange' },
         ].map((stat, index) => (
           <div key={index} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
             <div className="text-3xl mb-2">{stat.icon}</div>
@@ -730,58 +734,6 @@ const DashboardTab = () => {
           </div>
         ))}
       </div>
-      
-      {/* 버전 관리 섹션 - 최종 버전 결정 시까지 임시 숨김 */}
-      {/* 
-      <div className="mt-8 p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg border border-purple-200 dark:border-purple-700">
-        <h3 className="text-lg font-bold text-purple-900 dark:text-purple-100 mb-4 flex items-center gap-2">
-          🎨 버전 관리
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-blue-500 shadow-lg">
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="font-bold text-blue-600 dark:text-blue-400">V2 버전</h4>
-              <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-2 py-1 rounded">최신</span>
-            </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">모던한 MegaMenu와 풍부한 UI</p>
-            <button
-              onClick={() => window.open('/v2', '_blank')}
-              className="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-semibold transition-colors"
-            >
-              🚀 V2 보기
-            </button>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-green-500 shadow-lg">
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="font-bold text-green-600 dark:text-green-400">Hybrid 버전</h4>
-              <span className="text-xs bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 px-2 py-1 rounded">권장</span>
-            </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">V2 메뉴 + 최적화된 콘텐츠</p>
-            <button
-              onClick={() => window.open('/hybrid', '_blank')}
-              className="w-full px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-semibold transition-colors"
-            >
-              ✨ Hybrid 보기
-            </button>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-gray-400 shadow-lg">
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="font-bold text-gray-600 dark:text-gray-400">Classic 버전</h4>
-              <span className="text-xs bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">전통</span>
-            </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">전통적인 사이드바 레이아웃</p>
-            <button
-              onClick={() => window.open('/classic/about', '_blank')}
-              className="w-full px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-semibold transition-colors"
-            >
-              📋 Classic 보기
-            </button>
-          </div>
-        </div>
-      </div>
-      */}
       
       {/* 빠른 시작 가이드 */}
       <div className="mt-6 p-6 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700">

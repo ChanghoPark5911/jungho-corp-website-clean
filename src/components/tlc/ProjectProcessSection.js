@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useI18n } from '../../hooks/useI18n';
 
 const ProjectProcessSection = () => {

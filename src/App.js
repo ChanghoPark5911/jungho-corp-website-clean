@@ -171,12 +171,17 @@ function App() {
             <Route path="/v2/subsidiaries/jungho-texcom/rss" element={<Suspense fallback={<PageLoader />}><LayoutV2><TexcomRssPage /></LayoutV2></Suspense>} />
             <Route path="/v2/subsidiaries/jungho-texcom/textile" element={<Suspense fallback={<PageLoader />}><LayoutV2><TexcomTextilePage /></LayoutV2></Suspense>} />
             <Route path="/v2/media" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaPageHybrid /></LayoutV2></Suspense>} />
+            <Route path="/v2/media/news" element={<Suspense fallback={<PageLoader />}><LayoutV2><NewsPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/news" element={<Suspense fallback={<PageLoader />}><LayoutV2><NewsPage /></LayoutV2></Suspense>} />
             <Route path="/v2/media/promotion" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaPromotionPage /></LayoutV2></Suspense>} />
             <Route path="/v2/media/sns" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaSNSPage /></LayoutV2></Suspense>} />
             <Route path="/v2/media/technical-docs" element={<Suspense fallback={<PageLoader />}><LayoutV2><MediaTechnicalDocsPage /></LayoutV2></Suspense>} />
             <Route path="/v2/media/intellectual-property" element={<Suspense fallback={<PageLoader />}><LayoutV2><IntellectualPropertyPage /></LayoutV2></Suspense>} />
             <Route path="/v2/support" element={<Suspense fallback={<PageLoader />}><LayoutV2><SupportPageV2 /></LayoutV2></Suspense>} />
             <Route path="/v2/support/contact" element={<Suspense fallback={<PageLoader />}><LayoutV2><SupportPageV2 /></LayoutV2></Suspense>} />
+            <Route path="/v2/support/careers" element={<Suspense fallback={<PageLoader />}><LayoutV2><SupportPageV2 /></LayoutV2></Suspense>} />
+            <Route path="/v2/privacy" element={<Suspense fallback={<PageLoader />}><LayoutV2><PrivacyPage /></LayoutV2></Suspense>} />
+            <Route path="/v2/terms" element={<Suspense fallback={<PageLoader />}><LayoutV2><TermsPage /></LayoutV2></Suspense>} />
             
             {/* 클래식 버전 (전통적 스타일) - 레이아웃 없음 ⭐ */}
             <Route path="/classic" element={<HomePageClassic />} />
@@ -194,7 +199,7 @@ function App() {
             <Route path="/hybrid/about/location" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><AboutLocationPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/business" element={<BusinessPageHybrid />} />
             <Route path="/hybrid/media" element={<MediaPageHybrid />} />
-            <Route path="/hybrid/media/news" element={<NewsPage />} />
+            <Route path="/hybrid/media/news" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><NewsPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/news" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><NewsPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/news/notice" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><NewsPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/projects" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><ProjectsPageV2 /></HybridLayout></Suspense>} />
@@ -205,6 +210,7 @@ function App() {
             <Route path="/hybrid/support" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SupportPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/support/report" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SupportPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/support/contact" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SupportPageV2 /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/support/careers" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SupportPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><SubsidiariesPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries/clarus" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><ClarusDetailPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/subsidiaries/jungho-tlc" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><TlcDetailPageV2 /></HybridLayout></Suspense>} />
@@ -224,6 +230,8 @@ function App() {
             <Route path="/classic/about/location" element={<AboutLocationPage />} />
             <Route path="/classic/business" element={<BusinessPage />} />
             <Route path="/classic/media" element={<MediaPageHybrid />} />
+            <Route path="/classic/media/news" element={<NewsPage />} />
+            <Route path="/classic/news" element={<NewsPage />} />
             <Route path="/classic/media/promotion" element={<Suspense fallback={<PageLoader />}><MediaPromotionPage /></Suspense>} />
             <Route path="/classic/media/technical-docs" element={<Suspense fallback={<PageLoader />}><MediaTechnicalDocsPage /></Suspense>} />
             <Route path="/classic/media/sns" element={<Suspense fallback={<PageLoader />}><MediaSNSPage /></Suspense>} />
@@ -234,6 +242,7 @@ function App() {
             <Route path="/classic/subsidiaries/illutech" element={<IllutechDetailClassic />} />
             <Route path="/classic/subsidiaries/jungho-texcom" element={<TexcomDetailClassic />} />
             <Route path="/classic/support" element={<SupportPageV2 />} />
+            <Route path="/classic/support/careers" element={<SupportPageV2 />} />
             
             {/* v1 라우트 (이전 버전) */}
             <Route path="/v1/*" element={
@@ -278,12 +287,15 @@ function App() {
                   <Route path="/subsidiaries/jungho-texcom/textile" element={<TexcomTextilePage />} />
                   <Route path="/projects" element={<ProjectsPageV2 />} />
                   <Route path="/media" element={<MediaPageHybrid />} />
+                  <Route path="/media/news" element={<NewsPage />} />
+                  <Route path="/news" element={<NewsPage />} />
                   <Route path="/media/sns" element={<MediaSNSPage />} />
                   <Route path="/media/promotion" element={<MediaPromotionPage />} />
                   <Route path="/media/technical-docs" element={<MediaTechnicalDocsPage />} />
                   <Route path="/support" element={<SupportPageV2 />} />
                   <Route path="/support/report" element={<SupportPageV2 />} />
                   <Route path="/support/contact" element={<SupportPageV2 />} />
+                  <Route path="/support/careers" element={<SupportPageV2 />} />
                   <Route path="/privacy" element={<PrivacyPage />} />
                   <Route path="/terms" element={<TermsPage />} />
                 </Routes>

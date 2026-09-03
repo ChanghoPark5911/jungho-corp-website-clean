@@ -311,7 +311,8 @@ const ProjectProcessSection = () => {
                           className="w-full h-full object-contain p-2"
                           onError={(e) => {
                             e.target.style.display = 'none';
-                            e.target.nextSibling.style.display = 'flex';
+                            const fallback = e.target.nextElementSibling;
+                            if (fallback) fallback.style.display = 'flex';
                           }}
                         />
                       ) : null}

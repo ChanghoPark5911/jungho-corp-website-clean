@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useMemo } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Footer = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [familySitesOpen, setFamilySitesOpen] = useState(false);
+
+  // MegaMenu / SubsidiariesPage와 동일한 prefix 규칙
+  const pathPrefix = useMemo(() => {
+    if (location.pathname.startsWith('/hybrid')) return '/hybrid';
+    if (location.pathname.startsWith('/classic')) return '/classic';
+    if (location.pathname.startsWith('/v2')) return '/v2';
+    return '';
+  }, [location.pathname]);
 
   const handleLinkClick = (e, path) => {
     e.preventDefault();
@@ -14,42 +23,44 @@ const Footer = () => {
     jungho: {
       title: 'JUNGHO',
       links: [
-        { label: '정호소개', path: '/hybrid/about/intro' },
-        { label: '비전', path: '/hybrid/about/vision' },
-        { label: '경영방침', path: '/hybrid/about/management' },
-        { label: '연혁 및 성과', path: '/hybrid/about/history' },
-        { label: 'CI', path: '/hybrid/about/ci' },
+        { label: '정호소개', path: `${pathPrefix}/about/intro` },
+        { label: '비전', path: `${pathPrefix}/about/vision` },
+        { label: '경영방침', path: `${pathPrefix}/about/management` },
+        { label: '연혁 및 성과', path: `${pathPrefix}/about/history` },
+        { label: 'CI', path: `${pathPrefix}/about/ci` },
       ]
     },
     subsidiaries: {
       title: 'SUBSIDIARIES',
       links: [
-        { label: '정호티엘씨', path: '/hybrid/subsidiaries/jungho-tlc' },
-        { label: '클라루스', path: '/hybrid/subsidiaries/clarus' },
-        { label: '일루텍', path: '/hybrid/subsidiaries/illutech' },
-        { label: '정호텍스컴', path: '/hybrid/subsidiaries/jungho-texcom' },
+        { label: '정호티엘씨', path: `${pathPrefix}/subsidiaries/jungho-tlc` },
+        { label: '클라루스', path: `${pathPrefix}/subsidiaries/clarus` },
+        { label: '일루텍', path: `${pathPrefix}/subsidiaries/illutech` },
+        { label: '정호텍스컴', path: `${pathPrefix}/subsidiaries/jungho-texcom` },
       ]
     },
     business: {
       title: 'BUSINESS',
       links: [
-        { label: '프로젝트', path: '/hybrid/projects' },
+        { label: '프로젝트', path: `${pathPrefix}/projects` },
       ]
     },
     news: {
       title: 'NEWS',
       links: [
-        { label: 'PR', path: '/hybrid/news' },
+        { label: 'PR', path: `${pathPrefix}/news` },
       ]
     },
     customer: {
       title: 'CUSTOMER',
       links: [
-        { label: '고객문의', path: '/hybrid/support/contact' },
-        { label: '자료실', path: '/hybrid/media/technical-docs' },
+        { label: '고객문의', path: `${pathPrefix}/support/contact` },
+        { label: '자료실', path: `${pathPrefix}/media/technical-docs` },
       ]
     }
   };
+
+  const privacyPath = `${pathPrefix}/privacy`;
 
   const familySites = [
     { label: 'Magic CLARUS', url: 'https://www.magicclarus.com/' },
@@ -155,8 +166,8 @@ const Footer = () => {
           <div className="min-w-[140px]">
             {/* 개인정보처리방침 */}
             <a
-              href="/hybrid/privacy"
-              onClick={(e) => handleLinkClick(e, '/hybrid/privacy')}
+              href={privacyPath}
+              onClick={(e) => handleLinkClick(e, privacyPath)}
               className="block text-[15px] font-bold text-white hover:text-gray-300 transition-colors mb-5 tracking-wide"
             >
               개인정보처리방침
@@ -273,4 +284,4 @@ const Footer = () => {
   );
 };
 
-export default Footer; 
+export default Footer;

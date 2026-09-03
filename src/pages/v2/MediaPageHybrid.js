@@ -13,10 +13,17 @@ const MediaPageHybrid = () => {
   const location = useLocation();
   const { currentLanguage } = useI18n();
 
-  // 현재 경로에 따라 버전 결정
+  // 현재 경로에 따라 버전 결정 (catch-all LayoutV2는 prefix 없음)
   const isHybrid = location.pathname.startsWith('/hybrid');
   const isClassic = location.pathname.startsWith('/classic');
-  const basePath = isHybrid ? '/hybrid' : isClassic ? '/classic' : '/v2';
+  const isStandaloneNav = isHybrid || isClassic;
+  const basePath = isHybrid
+    ? '/hybrid'
+    : isClassic
+      ? '/classic'
+      : location.pathname.startsWith('/v2')
+        ? '/v2'
+        : '';
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -38,6 +45,7 @@ const MediaPageHybrid = () => {
   };
 
   // 미디어 섹션 (경로는 현재 버전에 맞게 동적 설정)
+  // 뉴스는 MegaMenu와 동일하게 /news 경로 사용
   const mediaSections = [
     {
       id: 'news',
@@ -48,7 +56,7 @@ const MediaPageHybrid = () => {
       icon: '📰',
       color: 'from-blue-500 to-cyan-500',
       bgColor: 'bg-blue-50',
-      path: `${basePath}/media/news`,
+      path: `${basePath}/news`,
     },
     {
       id: 'promotion',
@@ -87,7 +95,10 @@ const MediaPageHybrid = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <TraditionalNav version="hybrid" />
+      {/* LayoutV2/HybridLayout 안에 이미 네비가 있으므로 standalone 경로에서만 표시 */}
+      {isStandaloneNav && (
+        <TraditionalNav version={isHybrid ? 'hybrid' : 'classic'} />
+      )}
 
       <SmallBanner
         subtitle={currentLanguage === 'en' ? 'JUNGHO Group' : '정호그룹'}
@@ -136,4 +147,3 @@ const MediaPageHybrid = () => {
 };
 
 export default MediaPageHybrid;
-

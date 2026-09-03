@@ -49,14 +49,24 @@ const HomePageHybrid = () => {
     loadHeroData();
   }, []);
 
-  // Hero 섹션 텍스트 (관리자 데이터 우선, 없으면 기본값)
-  const heroTitle = heroData?.mainTitle || (currentLanguage === 'en' 
-    ? 'Creating a Better Future with Innovative Technology'
-    : '혁신적인 기술로 더 나은 미래를 만듭니다');
-  
-  const heroDescription = heroData?.description || (currentLanguage === 'en'
-    ? 'JUNGHO Group is a global company providing innovative solutions in AI, IoT, logistics, and textile industries'
-    : '정호그룹은 AI, IoT, 물류, 텍스타일 등 다양한 분야에서 혁신적인 솔루션을 제공하는 글로벌 기업입니다');
+  // Hero 섹션 텍스트 (관리자 CMS 우선, 없으면 공통가이드 기본값)
+  const heroTitle = heroData?.mainTitle || (currentLanguage === 'en'
+    ? 'Precise Technology, Beautiful Experience'
+    : '기술은 정확하게, 경험은 아름답게');
+
+  const defaultHeroLines = currentLanguage === 'en'
+    ? [
+        'Evidence of expertise and trust accumulated since 1982',
+        'No.1 market share in the domestic lighting control sector',
+        'Successful project track record in public and private sectors',
+      ]
+    : [
+        '1982년부터 현재까지 축적된 전문성과 신뢰의 증거',
+        '조명제어 분야 국내 시장 점유율 1위 달성',
+        '공공·민간 분야 성공적인 프로젝트 수행 실적',
+      ];
+
+  const heroDescription = heroData?.description || null;
 
   // 정호텍스컴 배경 이미지 슬라이드쇼
   const [texcomImageIndex, setTexcomImageIndex] = useState(0);
@@ -92,54 +102,6 @@ const HomePageHybrid = () => {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
-
-  // 배경 이미지 옵션 (정호그룹 사업 관련 이미지)
-  const backgroundImages = [
-    {
-      id: 1,
-      name: currentLanguage === 'en' ? 'City Night View' : '도시 야경',
-      url: '/images/city_night_view.png',
-      description: currentLanguage === 'en' ? 'Beautiful city lights at night' : '화려한 도시 조명'
-    },
-    {
-      id: 2,
-      name: currentLanguage === 'en' ? 'Smart Building Control' : '스마트 빌딩 제어',
-      url: '/images/light_control.png',
-      description: currentLanguage === 'en' ? 'Building automation system' : '빌딩 자동화 시스템'
-    },
-    {
-      id: 3,
-      name: currentLanguage === 'en' ? 'Warehouse Control' : '창고 조명 제어',
-      url: '/images/warehouse_control.png',
-      description: currentLanguage === 'en' ? 'Smart warehouse lighting' : '스마트 창고 조명'
-    },
-    {
-      id: 4,
-      name: currentLanguage === 'en' ? 'Smart Home' : '스마트 홈',
-      url: '/images/warm_home.png',
-      description: currentLanguage === 'en' ? 'Warm home lighting control' : '따뜻한 가정 조명 제어'
-    }
-  ];
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [selectedBackground, setSelectedBackground] = useState(backgroundImages[0].url);
-  const [showImageSelector, setShowImageSelector] = useState(false);
-  const [isAutoPlay, setIsAutoPlay] = useState(true);
-
-  // 자동 슬라이드쇼 - 5초마다 이미지 전환
-  useEffect(() => {
-    if (!isAutoPlay) return;
-
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % backgroundImages.length;
-        setSelectedBackground(backgroundImages[nextIndex].url);
-        return nextIndex;
-      });
-    }, 5000); // 5초마다 전환
-
-    return () => clearInterval(interval);
-  }, [isAutoPlay, backgroundImages]);
 
   // 계열사 목록 (이미지 추가)
   const subsidiaries = [
@@ -265,9 +227,7 @@ const HomePageHybrid = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-white text-3xl md:text-5xl lg:text-6xl font-light leading-tight"
           >
-            {currentLanguage === 'en'
-              ? 'Precise Technology, Beautiful Experience'
-              : '기술은 정확하게, 경험은 아름답게'}
+            {heroTitle}
           </motion.h1>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -276,21 +236,13 @@ const HomePageHybrid = () => {
             className="mt-8 space-y-2 text-sm md:text-base lg:text-lg leading-relaxed"
             style={{ color: '#ffffff' }}
           >
-            <p className="!text-white" style={{ color: '#ffffff' }}>
-              {currentLanguage === 'en'
-                ? 'Evidence of expertise and trust accumulated since 1982'
-                : '1982년부터 현재까지 축적된 전문성과 신뢰의 증거'}
-            </p>
-            <p className="!text-white" style={{ color: '#ffffff' }}>
-              {currentLanguage === 'en'
-                ? 'No.1 market share in the domestic lighting control sector'
-                : '조명제어 분야 국내 시장 점유율 1위 달성'}
-            </p>
-            <p className="!text-white" style={{ color: '#ffffff' }}>
-              {currentLanguage === 'en'
-                ? 'Successful project track record in public and private sectors'
-                : '공공·민간 분야 성공적인 프로젝트 수행 실적'}
-            </p>
+            {heroDescription ? (
+              <p className="!text-white" style={{ color: '#ffffff' }}>{heroDescription}</p>
+            ) : (
+              defaultHeroLines.map((line) => (
+                <p key={line} className="!text-white" style={{ color: '#ffffff' }}>{line}</p>
+              ))
+            )}
           </motion.div>
         </div>
 

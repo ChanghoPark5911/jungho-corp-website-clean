@@ -23,37 +23,42 @@ module.exports = {
     },
     extend: {
       colors: {
-        // Design System v1.0: Navy + Cyan + Gold
+        // Design System v2.0: 공통가이드 기반 (2026-08)
+        // Main Background Color
+        'jungho-main': '#0e1841',  // 메인 배경색 (진한 네이비)
+        
         primary: {
           50: '#E6EEF5',
           100: '#CCDDED',
           200: '#99BBDB',
           300: '#6699C9',
           400: '#3377B7',
-          500: '#003366',  // Primary Navy (정호그룹 메인)
-          600: '#002B57',  // Dark Navy
-          700: '#002347',  // Darker Navy
-          800: '#001B38',
-          900: '#001329',
+          500: '#0e1841',  // NEW: 공통가이드 메인 컬러
+          600: '#0c1538',  // Dark
+          700: '#0a112f',  // Darker
+          800: '#080d26',
+          900: '#06091d',
+          DEFAULT: '#0e1841',
         },
         secondary: {
           50: '#E6F7FD',
           100: '#B3E7F9',
-          500: '#00AEEF',  // Secondary Cyan
-          600: '#008FCC',
-          700: '#0070AA',
+          500: '#2e91fe',  // NEW: 공통가이드 밝은 파랑
+          600: '#2580e5',
+          700: '#1c6fcc',
+          DEFAULT: '#2e91fe',
         },
         accent: {
           50: '#FFFBEB',
           100: '#FEF3C7',
-          500: '#FFD700',  // Accent Gold
+          500: '#FFD700',  // Accent Gold (유지)
           600: '#D4AF00',
           700: '#AA8C00',
         },
         'dark-navy': {
-          700: '#004080',
-          800: '#003366',
-          900: '#002244',
+          700: '#0e1841',
+          800: '#0c1538',
+          900: '#0a112f',
         },
         'dark-green': {
           700: '#004080',
@@ -64,14 +69,29 @@ module.exports = {
           800: '#1E40AF',
           900: '#1E3A8A',
         },
-        // 계열사별 브랜드 컬러 (Navy/Cyan 톤)
-        clarus: { 500: '#0077B6' },      // Tech Blue
-        tlc: { 500: '#003366' },         // Main Navy
-        illutech: { 500: '#00AEEF' },    // Cyan (LED/Light)
-        texcom: { 500: '#5B8DEE' },      // Light Blue-Purple
-        rss: { 500: '#4A90D9' },         // Light Blue
-        'bright-cyan': '#00AEEF',
-        'bright-green': '#00AEEF',  // Cyan으로 대체 (호환성 유지)
+        // 계열사별 브랜드 컬러 (공통가이드 2026-08)
+        clarus: { 
+          500: '#71000b',      // NEW: 와인색/다크레드
+          DEFAULT: '#71000b',
+        },
+        tlc: { 
+          500: '#2e91fe',      // NEW: 밝은 파랑
+          DEFAULT: '#2e91fe',
+        },
+        illutech: { 
+          500: '#2e91fe',      // NEW: 밝은 파랑
+          DEFAULT: '#2e91fe',
+        },
+        texcom: { 
+          500: '#0e1841',      // NEW: 기계사업부 (진한 네이비)
+          DEFAULT: '#0e1841',
+        },
+        rss: { 
+          500: '#000000',      // NEW: RSS사업부 (블랙)
+          DEFAULT: '#000000',
+        },
+        'bright-cyan': '#2e91fe',
+        'bright-green': '#2e91fe',  // 호환성 유지
         // 다크모드 색상 추가
         dark: {
           50: '#F9FAFB',
@@ -87,6 +107,7 @@ module.exports = {
         },
       },
       fontFamily: {
+        'sans': ['Pretendard Variable', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
         'korean': ['Pretendard Variable', 'Pretendard', 'Noto Sans KR', 'sans-serif'],
         'english': ['Pretendard Variable', 'Pretendard', 'Montserrat', 'Noto Sans KR', 'sans-serif'],
         'pretendard': ['Pretendard Variable', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'Helvetica Neue', 'sans-serif'],

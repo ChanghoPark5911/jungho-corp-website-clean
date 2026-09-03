@@ -165,20 +165,20 @@ const TexcomDetailPage = () => {
       id: 'textile',
       name: currentLanguage === 'en' ? 'Textile Machinery Division' : '섬유기계 사업부',
       description: currentLanguage === 'en'
-        ? 'Exclusive supply of world-class textile machinery and testing equipment from Germany, Switzerland, Austria, Japan, UK, etc.'
-        : '독일, 스위스, 오스트리아, 일본, 영국 등 세계적인 섬유기계 및 시험기 독점 공급',
+        ? 'Partnerships with Germany, Switzerland, Austria, Japan (Saurer, Benninger, Luwa, Texkimp, The Auto Finder, etc.)'
+        : '독일, 스위스, 오스트리아, 일본 파트너십 (Saurer, Benninger, Luwa, Texkimp, The Auto Finder 등)',
       icon: '🏭',
-      gradient: 'from-blue-500 to-indigo-600',
+      bgColor: '#0e1841',
       path: `${basePath}/textile`
     },
     {
       id: 'rss',
       name: currentLanguage === 'en' ? 'RSS Division' : 'RSS 사업부',
       description: currentLanguage === 'en'
-        ? 'Premium fashion brand business with REDSSOCKSOO and GUBBE'
-        : 'REDSSOCKSOO, GUBBE 프리미엄 패션 브랜드 사업',
+        ? 'REDSSOCKSOO, GUBBE brands and curated select shop listings'
+        : '레드싹수(REDSSOCKSOO), 굽베(GUBBE) 브랜드 및 감도 깊은 취향 셀렉트샵 입점',
       icon: '👔',
-      gradient: 'from-amber-500 to-orange-600',
+      bgColor: '#000000',
       path: `${basePath}/rss`
     }
   ];
@@ -224,8 +224,13 @@ const TexcomDetailPage = () => {
             animate="visible"
             variants={staggerContainer}
           >
-            {/* 회사명 */}
-            <motion.div variants={fadeInUp} className="flex flex-col items-center justify-center">
+            {/* 로고와 회사명 */}
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+              <img 
+                src="/assets/logos/logo-junghotexcom.png" 
+                alt="정호텍스컴 로고" 
+                className="h-10 sm:h-12 lg:h-14 w-auto object-contain"
+              />
               <div className="flex flex-col items-center -space-y-1 sm:-space-y-2">
                 <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
                   {currentLanguage === 'en' ? 'JUNGHO TEXCOM' : '정호텍스컴'}
@@ -300,7 +305,7 @@ const TexcomDetailPage = () => {
                 whileHover={{ scale: 1.02, y: -5 }}
               >
                 {/* 헤더 */}
-                <div className={`bg-gradient-to-r ${division.gradient} px-6 py-8 text-center`}>
+                <div className="px-6 py-8 text-center" style={{ backgroundColor: division.bgColor }}>
                   <span className="text-6xl mb-4 block">{division.icon}</span>
                   <h3 className="text-2xl font-bold text-white">
                     {division.name}
@@ -312,7 +317,10 @@ const TexcomDetailPage = () => {
                   <p className="text-gray-600 dark:text-gray-300 mb-6 text-center leading-relaxed">
                     {division.description}
                   </p>
-                  <button className={`w-full py-3 bg-gradient-to-r ${division.gradient} text-white font-semibold rounded-lg group-hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2`}>
+                  <button
+                    className="w-full py-3 text-white font-semibold rounded-lg group-hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                    style={{ backgroundColor: division.bgColor }}
+                  >
                     {currentLanguage === 'en' ? 'View Details' : '자세히 보기'}
                     <span className="group-hover:translate-x-1 transition-transform">→</span>
                   </button>
@@ -350,8 +358,8 @@ const TexcomDetailPage = () => {
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {currentLanguage === 'en'
-                  ? 'Exclusive supply from Germany, Switzerland, Austria, Japan, UK'
-                  : '독일, 스위스, 오스트리아, 일본, 영국 등 세계 유수 브랜드 독점 공급'}
+                  ? 'Saurer, Benninger, Luwa, Texkimp, The Auto Finder and more'
+                  : 'Saurer, Benninger, Luwa, Texkimp, The Auto Finder 등'}
               </p>
             </motion.div>
 

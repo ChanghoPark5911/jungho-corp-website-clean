@@ -247,104 +247,94 @@ const HomePageHybrid = () => {
 
   return (
     <HybridLayout>
-      {/* 배경 이미지 컨트롤 - 우측 하단 고정 */}
-      <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-3">
-        {/* 자동재생/일시정지 버튼 */}
-        <button
-          onClick={() => setIsAutoPlay(!isAutoPlay)}
-          className="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-primary-600 dark:text-primary-400 p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110"
-          title={isAutoPlay 
-            ? (currentLanguage === 'en' ? 'Pause Slideshow' : '슬라이드쇼 일시정지')
-            : (currentLanguage === 'en' ? 'Play Slideshow' : '슬라이드쇼 재생')
-          }
-        >
-          {isAutoPlay ? (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          ) : (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          )}
-        </button>
-
-        {/* 이미지 선택 버튼 */}
-        <button
-          onClick={() => setShowImageSelector(!showImageSelector)}
-          className="bg-primary-600 hover:bg-primary-700 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110"
-          title={currentLanguage === 'en' ? 'Change Background Image' : '배경 이미지 변경'}
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-        </button>
-
-        {/* 현재 이미지 인디케이터 */}
-        <div className="bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-lg text-center">
-          <span className="text-sm font-semibold text-primary-600 dark:text-primary-400">
-            {currentImageIndex + 1} / {backgroundImages.length}
-          </span>
+      {/* 히어로 섹션 - 공통가이드 PDF 기준 */}
+      <section className="relative min-h-screen bg-[#0e1841] flex flex-col items-center justify-center px-4">
+        {/* 중앙 콘텐츠 */}
+        <div className="text-center mb-24 max-w-4xl">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-white text-sm md:text-base tracking-widest mb-6"
+          >
+            정호그룹
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-white text-3xl md:text-5xl lg:text-6xl font-light leading-tight"
+          >
+            {currentLanguage === 'en'
+              ? 'Precise Technology, Beautiful Experience'
+              : '기술은 정확하게, 경험은 아름답게'}
+          </motion.h1>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="mt-8 space-y-2 text-sm md:text-base lg:text-lg leading-relaxed"
+            style={{ color: '#ffffff' }}
+          >
+            <p className="!text-white" style={{ color: '#ffffff' }}>
+              {currentLanguage === 'en'
+                ? 'Evidence of expertise and trust accumulated since 1982'
+                : '1982년부터 현재까지 축적된 전문성과 신뢰의 증거'}
+            </p>
+            <p className="!text-white" style={{ color: '#ffffff' }}>
+              {currentLanguage === 'en'
+                ? 'No.1 market share in the domestic lighting control sector'
+                : '조명제어 분야 국내 시장 점유율 1위 달성'}
+            </p>
+            <p className="!text-white" style={{ color: '#ffffff' }}>
+              {currentLanguage === 'en'
+                ? 'Successful project track record in public and private sectors'
+                : '공공·민간 분야 성공적인 프로젝트 수행 실적'}
+            </p>
+          </motion.div>
         </div>
-      </div>
 
-      {/* 배경 이미지 선택 패널 */}
-      {showImageSelector && (
-        <div className="fixed bottom-24 right-8 z-50 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 w-96 max-h-[70vh] overflow-y-auto">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-              {currentLanguage === 'en' ? 'Select Background' : '배경 이미지 선택'}
-            </h3>
+        {/* 하단 퀵 링크 버튼 (공통가이드 기준) */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="absolute bottom-12 left-0 right-0 px-4"
+        >
+          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
             <button
-              onClick={() => setShowImageSelector(false)}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              onClick={() => navigate('/hybrid/about/intro')}
+              className="border border-white/50 text-white py-4 px-4 text-sm md:text-base font-medium hover:bg-white/10 transition-all duration-300"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              {currentLanguage === 'en' ? 'About Jungho' : '정호소개'}
+            </button>
+            <button
+              onClick={() => navigate('/hybrid/subsidiaries')}
+              className="border border-white/50 text-white py-4 px-4 text-sm md:text-base font-medium hover:bg-white/10 transition-all duration-300"
+            >
+              {currentLanguage === 'en' ? 'Subsidiaries' : '계열사'}
+            </button>
+            <button
+              onClick={() => navigate('/hybrid/about/ci')}
+              className="border border-white/50 text-white py-4 px-4 text-sm md:text-base font-medium hover:bg-white/10 transition-all duration-300"
+            >
+              CI / BI
+            </button>
+            <button
+              onClick={() => navigate('/hybrid/about/history')}
+              className="border border-white/50 text-white py-4 px-4 text-sm md:text-base font-medium hover:bg-white/10 transition-all duration-300"
+            >
+              {currentLanguage === 'en' ? 'History' : '연혁 및 성과'}
+            </button>
+            <button
+              onClick={() => navigate('/hybrid/support/careers')}
+              className="border border-white/50 text-white py-4 px-4 text-sm md:text-base font-medium hover:bg-white/10 transition-all duration-300 col-span-2 md:col-span-1"
+            >
+              {currentLanguage === 'en' ? 'Careers' : '채용정보'}
             </button>
           </div>
-          
-          <div className="grid grid-cols-1 gap-4">
-            {backgroundImages.map((image) => (
-              <div
-                key={image.id}
-                onClick={() => {
-                  const index = backgroundImages.findIndex(img => img.id === image.id);
-                  setCurrentImageIndex(index);
-                  setSelectedBackground(image.url);
-                  setIsAutoPlay(false); // 수동 선택 시 자동재생 일시정지
-                  setShowImageSelector(false);
-                }}
-                className={`cursor-pointer rounded-xl overflow-hidden border-4 transition-all duration-300 ${
-                  selectedBackground === image.url
-                    ? 'border-primary-600 shadow-lg scale-105'
-                    : 'border-transparent hover:border-primary-300'
-                }`}
-              >
-                <div className="aspect-video bg-cover bg-center" style={{ backgroundImage: `url('${image.url}')` }} />
-                <div className="p-3 bg-gray-50 dark:bg-gray-700">
-                  <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{image.name}</h4>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{image.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 배너 - Hero 섹션 (극대화된 폰트 대비 + Glassmorphism) */}
-      <SmallBanner
-        subtitle={currentLanguage === 'en' ? 'Since 1982' : '1982년 설립'}
-        sloganLight={currentLanguage === 'en' ? '40 YEARS OF TRUST' : '40년의 신뢰'}
-        sloganBold={currentLanguage === 'en' ? 'Lighting the Future' : '정호그룹이 밝히는 미래'}
-        description={heroDescription}
-        backgroundImage={selectedBackground}
-        height="100vh"
-        ctaText={currentLanguage === 'en' ? 'Explore More' : '자세히 보기'}
-        onCtaClick={scrollToSubsidiaries}
-      />
+        </motion.div>
+      </section>
 
       {/* Gateway 빠른 접근 섹션 */}
       <motion.section 
@@ -554,13 +544,15 @@ const HomePageHybrid = () => {
                   {currentLanguage === 'en' ? 'JUNGHO GROUP RECORDS' : '정호그룹의 기록'}
                 </h2>
                 <p className="text-gray-400 text-lg">
-                  {currentLanguage === 'en' ? '40 Years of Trust and Innovation' : '40년간 쌓아온 신뢰와 혁신의 증거'}
+                  {currentLanguage === 'en'
+                    ? 'Evidence of expertise and trust accumulated since 1982'
+                    : '1982년부터 현재까지 축적된 전문성과 신뢰의 증거'}
                 </p>
               </motion.div>
 
               {/* 핵심 지표 3개 */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-                {/* 40년 업력 */}
+                {/* 국내 점유율 NO.1 */}
                 <motion.div 
                   className="text-center group"
                   initial={{ opacity: 0, y: 50 }}
@@ -569,26 +561,26 @@ const HomePageHybrid = () => {
                   transition={{ duration: 0.6, delay: 0.1 }}
                 >
                   <div className="relative inline-block mb-6">
+                    <span className="text-4xl md:text-5xl lg:text-6xl font-bold text-purple-400 mr-2">NO.</span>
                     <span 
-                      className="text-7xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400 group-hover:from-blue-300 group-hover:to-cyan-300 transition-all duration-500"
+                      className="text-7xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-pink-400 group-hover:from-purple-300 group-hover:to-pink-300 transition-all duration-500"
                       style={{ fontWeight: 900, lineHeight: 1 }}
                     >
                       <CountUp 
-                        end={40} 
-                        duration={2.5}
+                        end={1} 
+                        duration={1.5}
                         enableScrollSpy
                         scrollSpyOnce
                       />
                     </span>
-                    <span className="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-400 ml-1">+</span>
                   </div>
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                    {currentLanguage === 'en' ? 'Years of Experience' : '년 업력'}
+                    {currentLanguage === 'en' ? 'Market Share' : '국내 점유율'}
                   </h3>
                   <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-xs mx-auto">
                     {currentLanguage === 'en' 
-                      ? '1982 to Present - Accumulated expertise and trust'
-                      : '1982년부터 현재까지 축적된 전문성과 신뢰'}
+                      ? 'No.1 market share in lighting control'
+                      : '조명제어 분야 국내 시장 점유율 1위 달성'}
                   </p>
                 </motion.div>
 
@@ -616,7 +608,7 @@ const HomePageHybrid = () => {
                     <span className="text-4xl md:text-5xl lg:text-6xl font-bold text-green-400 ml-1">+</span>
                   </div>
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                    {currentLanguage === 'en' ? 'Projects Completed' : '프로젝트 수행'}
+                    {currentLanguage === 'en' ? 'Projects Completed' : '완료된 프로젝트'}
                   </h3>
                   <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-xs mx-auto">
                     {currentLanguage === 'en' 
@@ -625,7 +617,7 @@ const HomePageHybrid = () => {
                   </p>
                 </motion.div>
 
-                {/* 국내 점유율 1위 */}
+                {/* 40년 업력 */}
                 <motion.div 
                   className="text-center group"
                   initial={{ opacity: 0, y: 50 }}
@@ -634,26 +626,26 @@ const HomePageHybrid = () => {
                   transition={{ duration: 0.6, delay: 0.3 }}
                 >
                   <div className="relative inline-block mb-6">
-                    <span className="text-4xl md:text-5xl lg:text-6xl font-bold text-purple-400 mr-2">No.</span>
                     <span 
-                      className="text-7xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-pink-400 group-hover:from-purple-300 group-hover:to-pink-300 transition-all duration-500"
+                      className="text-7xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400 group-hover:from-blue-300 group-hover:to-cyan-300 transition-all duration-500"
                       style={{ fontWeight: 900, lineHeight: 1 }}
                     >
                       <CountUp 
-                        end={1} 
-                        duration={1.5}
+                        end={40} 
+                        duration={2.5}
                         enableScrollSpy
                         scrollSpyOnce
                       />
                     </span>
+                    <span className="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-400 ml-1">+</span>
                   </div>
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                    {currentLanguage === 'en' ? 'Market Leader' : '국내 점유율 1위'}
+                    {currentLanguage === 'en' ? 'Years of Experience' : '업력'}
                   </h3>
                   <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-xs mx-auto">
                     {currentLanguage === 'en' 
-                      ? 'Leading position in lighting control industry'
-                      : '조명제어 분야 국내 시장 점유율 1위 달성'}
+                      ? '1982 to Present - Accumulated expertise and trust'
+                      : '1982년부터 현재까지 축적된 전문성과 신뢰의 증거'}
                   </p>
                 </motion.div>
               </div>
@@ -668,9 +660,8 @@ const HomePageHybrid = () => {
               >
                 <div className="flex flex-wrap justify-center gap-8 md:gap-16">
                   {[
-                    { number: 4, label: currentLanguage === 'en' ? 'Subsidiaries' : '계열사' },
-                    { number: 50, suffix: '+', label: currentLanguage === 'en' ? 'Patents' : '특허 보유' },
-                    { number: 12, label: currentLanguage === 'en' ? 'Certifications' : '인증 현황' },
+                    { number: 50, suffix: '+', label: currentLanguage === 'en' ? 'Patents / Certifications' : '특허/인증' },
+                    { number: 12, suffix: '+', label: currentLanguage === 'en' ? 'Industry-Academia Collabs' : '산·학·연 협업' },
                     { number: 30, suffix: '+', label: currentLanguage === 'en' ? 'Export Countries' : '수출국' },
                   ].map((item, index) => (
                     <div key={index} className="text-center">
@@ -1040,7 +1031,7 @@ const HomePageHybrid = () => {
           </div>
         </motion.section>
 
-        {/* 인증 및 특허 섹션 - Grayscale to Color Effect */}
+        {/* 인증 및 제품 로고 섹션 - Grayscale to Color Effect */}
         <motion.section 
           className="mb-20 lg:mb-28"
           initial={{ opacity: 0, y: 20 }}
@@ -1050,29 +1041,37 @@ const HomePageHybrid = () => {
         >
           <div className="border-l-4 border-green-600 dark:border-green-500 pl-4 mb-10">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              {currentLanguage === 'en' ? 'Certifications & Patents' : '인증 및 특허'}
+              {currentLanguage === 'en' ? 'Global Certifications & Brands' : '글로벌 인증 및 브랜드'}
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {currentLanguage === 'en' ? 'Our Achievements & Recognition' : '40년간 축적된 기술력의 증거'}
             </p>
           </div>
 
-          {/* 인증 마크 그리드 */}
+          {/* 인증/브랜드 로고 그리드 + 중앙 제품 이미지 */}
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8 md:p-10 border border-gray-200 dark:border-gray-700">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
+            {/* 중앙 제품 이미지 */}
+            <div className="mb-10 flex justify-center">
+              <img
+                src="/images/clarus/lighting-control-system-diagram.png"
+                alt={currentLanguage === 'en' ? 'Lighting Control System' : '조명제어 시스템'}
+                className="max-h-48 md:max-h-64 w-auto object-contain rounded-xl"
+                onError={(e) => {
+                  e.target.src = '/images/light_control.png';
+                }}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 md:gap-8">
               {[
-                { name: 'ISO 9001', desc: currentLanguage === 'en' ? 'Quality Management' : '품질경영시스템', icon: '🏆' },
-                { name: 'ISO 14001', desc: currentLanguage === 'en' ? 'Environmental Management' : '환경경영시스템', icon: '🌿' },
-                { name: 'CE', desc: currentLanguage === 'en' ? 'European Conformity' : '유럽인증', icon: '🇪🇺' },
-                { name: 'KC', desc: currentLanguage === 'en' ? 'Korea Certification' : '국가통합인증', icon: '🇰🇷' },
-                { name: currentLanguage === 'en' ? 'Patent 50+' : '특허 50+', desc: currentLanguage === 'en' ? 'Registered Patents' : '등록특허', icon: '📜' },
-                { name: currentLanguage === 'en' ? 'Venture' : '벤처기업', desc: currentLanguage === 'en' ? 'Venture Certified' : '기술혁신기업', icon: '🚀' },
-                { name: 'GS', desc: currentLanguage === 'en' ? 'Good Software' : 'GS인증', icon: '💻' },
-                { name: currentLanguage === 'en' ? 'NEP' : '신제품인증', desc: currentLanguage === 'en' ? 'New Excellent Product' : '우수신기술제품', icon: '⭐' },
-                { name: currentLanguage === 'en' ? 'Innobiz' : '이노비즈', desc: currentLanguage === 'en' ? 'Innovation Business' : '기술혁신형중소기업', icon: '💡' },
-                { name: currentLanguage === 'en' ? 'Main-Biz' : '메인비즈', desc: currentLanguage === 'en' ? 'Management Innovation' : '경영혁신형중소기업', icon: '📈' },
-                { name: currentLanguage === 'en' ? 'Family Friendly' : '가족친화', desc: currentLanguage === 'en' ? 'Family Friendly' : '가족친화인증기업', icon: '👨‍👩‍👧‍👦' },
-                { name: currentLanguage === 'en' ? 'Green Tech' : '녹색기술', desc: currentLanguage === 'en' ? 'Green Technology' : '녹색기술인증', icon: '🌱' },
+                { name: 'CLARUS', desc: currentLanguage === 'en' ? 'Brand' : '브랜드', logo: '/assets/logos/logo-clarus.png' },
+                { name: 'Magic CLARUS', desc: currentLanguage === 'en' ? 'Brand' : '브랜드', logo: '/assets/logos/logo-magicclarus.png' },
+                { name: 'HiEF', desc: currentLanguage === 'en' ? 'Brand' : '브랜드', logo: '/assets/logos/logo-hief2.png' },
+                { name: 'UL LISTED', desc: currentLanguage === 'en' ? 'Safety Certification' : '안전인증', icon: 'UL' },
+                { name: 'KC', desc: currentLanguage === 'en' ? 'Korea Certification' : '국가통합인증', icon: 'KC' },
+                { name: 'FC', desc: currentLanguage === 'en' ? 'FCC Certification' : 'FCC 인증', icon: 'FC' },
+                { name: 'K-Mark', desc: currentLanguage === 'en' ? 'Performance Mark' : '성능인증', icon: 'K' },
+                { name: 'Q-Mark', desc: currentLanguage === 'en' ? 'Quality Mark' : '품질인증', icon: 'Q' },
               ].map((cert, index) => (
                 <motion.div
                   key={cert.name}
@@ -1083,20 +1082,25 @@ const HomePageHybrid = () => {
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
                   <div 
-                    className="flex flex-col items-center p-4 md:p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-green-400 dark:hover:border-green-500 group-hover:-translate-y-1"
+                    className="flex flex-col items-center justify-center p-4 md:p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-green-400 dark:hover:border-green-500 group-hover:-translate-y-1 min-h-[120px]"
                     style={{ borderRadius: '12px' }}
                   >
-                    {/* 아이콘 - Grayscale → Color */}
-                    <div 
-                      className="text-4xl md:text-5xl mb-3 transition-all duration-500 grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100"
-                    >
-                      {cert.icon}
-                    </div>
-                    {/* 인증명 */}
+                    {cert.logo ? (
+                      <img
+                        src={cert.logo}
+                        alt={cert.name}
+                        className="h-10 md:h-12 w-auto object-contain mb-3 transition-all duration-500 grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100"
+                      />
+                    ) : (
+                      <div className="h-10 md:h-12 mb-3 flex items-center justify-center transition-all duration-500 grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100">
+                        <span className="text-xl md:text-2xl font-black text-gray-700 dark:text-gray-200 tracking-tight">
+                          {cert.icon}
+                        </span>
+                      </div>
+                    )}
                     <h4 className="text-sm md:text-base font-bold text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-300 text-center">
                       {cert.name}
                     </h4>
-                    {/* 설명 */}
                     <p className="text-xs text-gray-500 dark:text-gray-500 mt-1 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       {cert.desc}
                     </p>
@@ -1109,9 +1113,9 @@ const HomePageHybrid = () => {
             <div className="mt-10 pt-8 border-t border-gray-200 dark:border-gray-700">
               <div className="flex flex-wrap justify-center gap-8 md:gap-16">
                 {[
-                  { number: '50+', label: currentLanguage === 'en' ? 'Patents' : '등록특허' },
-                  { number: '12', label: currentLanguage === 'en' ? 'Certifications' : '인증현황' },
-                  { number: '100+', label: currentLanguage === 'en' ? 'Awards' : '수상실적' },
+                  { number: '50+', label: currentLanguage === 'en' ? 'Patents / Certifications' : '특허/인증' },
+                  { number: '12+', label: currentLanguage === 'en' ? 'Industry-Academia Collabs' : '산·학·연 협업' },
+                  { number: '30+', label: currentLanguage === 'en' ? 'Export Countries' : '수출국' },
                 ].map((stat, index) => (
                   <motion.div 
                     key={stat.label}

@@ -195,6 +195,8 @@ function App() {
             <Route path="/hybrid/business" element={<BusinessPageHybrid />} />
             <Route path="/hybrid/media" element={<MediaPageHybrid />} />
             <Route path="/hybrid/media/news" element={<NewsPage />} />
+            <Route path="/hybrid/news" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><NewsPage /></HybridLayout></Suspense>} />
+            <Route path="/hybrid/news/notice" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><NewsPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/projects" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><ProjectsPageV2 /></HybridLayout></Suspense>} />
             <Route path="/hybrid/media/promotion" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><MediaPromotionPage /></HybridLayout></Suspense>} />
             <Route path="/hybrid/media/technical-docs" element={<Suspense fallback={<PageLoader />}><HybridLayout version="hybrid"><MediaTechnicalDocsPage /></HybridLayout></Suspense>} />

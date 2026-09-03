@@ -1,7 +1,30 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../../hooks/useI18n';
 import LanguageSelector from '../LanguageSelector';
+
+/** 계열사/페이지별 헤더 배경색 (공통가이드) */
+const HEADER_BG = {
+  main: '#0e1841',
+  tlc: '#2e91fe',
+  clarus: '#71000b',
+  illutech: '#2e91fe',
+  texcom: '#0e1841',
+  rss: '#000000',
+};
+
+const getHeaderBgByPath = (pathname) => {
+  if (pathname.includes('/subsidiaries/clarus')) return HEADER_BG.clarus;
+  if (pathname.includes('/subsidiaries/jungho-tlc') || pathname.includes('/subsidiaries/tlc')) return HEADER_BG.tlc;
+  if (pathname.includes('/subsidiaries/illutech')) return HEADER_BG.illutech;
+  if (pathname.includes('/jungho-texcom/rss') || pathname.includes('/texcom/rss') || pathname.includes('/subsidiaries/rss')) {
+    return HEADER_BG.rss;
+  }
+  if (pathname.includes('/subsidiaries/jungho-texcom') || pathname.includes('/subsidiaries/texcom')) {
+    return HEADER_BG.texcom;
+  }
+  return HEADER_BG.main;
+};
 
 /**
  * v2 MegaMenu 컴포넌트
@@ -11,14 +34,20 @@ import LanguageSelector from '../LanguageSelector';
  * @param {string} version - 버전 ('v2' 또는 'hybrid'), 기본값은 'v2'
  */
 const MegaMenu = ({ version = 'v2' }) => {
-  const { t, currentLanguage } = useI18n();
+  const { t } = useI18n();
   const navigate = useNavigate();
+  const location = useLocation();
   const pathPrefix = version === 'hybrid' ? '/hybrid' : '';
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMobileSubmenu, setOpenMobileSubmenu] = useState(null); // 모바일 아코디언 메뉴
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const headerBg = useMemo(
+    () => getHeaderBgByPath(location.pathname),
+    [location.pathname]
+  );
 
   // 화면 크기 감지
   useEffect(() => {
@@ -40,59 +69,62 @@ const MegaMenu = ({ version = 'v2' }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 메뉴 구조 정의 (버전별 경로 prefix 적용)
+  // 메뉴 구조 정의 (공통가이드 PDF 기준)
   const menuStructure = [
     {
-      id: 'about',
-      label: currentLanguage === 'en' ? 'ABOUT' : 'ABOUT',
+      id: 'jungho',
+      label: 'JUNGHO',
       path: `${pathPrefix}/about`,
       submenu: [
-        { label: t('nav.about.intro') || '정호소개', path: `${pathPrefix}/about/intro`, icon: '👋' },
-        { label: t('nav.about.vision') || '그룹비전 (IRGS)', path: `${pathPrefix}/about/vision`, icon: '🎯' },
-        { label: t('nav.about.management') || '경영방침', path: `${pathPrefix}/about/management`, icon: '📋' },
+        { label: '정호소개', path: `${pathPrefix}/about/intro`, icon: '👋' },
+        { label: '그룹비전 (IRGS)', path: `${pathPrefix}/about/vision`, icon: '🎯' },
+        { label: '경영방침', path: `${pathPrefix}/about/management`, icon: '📋' },
         { label: 'CI/BI', path: `${pathPrefix}/about/ci`, icon: '🎨' },
         { label: 'HISTORY', path: `${pathPrefix}/about/history`, icon: '📅' },
-        { label: t('nav.about.location') || '찾아오시는길', path: `${pathPrefix}/about/location`, icon: '📍' },
+        { label: '찾아오시는길', path: `${pathPrefix}/about/location`, icon: '📍' },
       ],
     },
     {
       id: 'subsidiaries',
-      label: t('nav.subsidiaries.main') || '그룹사',
+      label: 'SUBSIDIARIES',
       path: `${pathPrefix}/subsidiaries`,
       submenu: [
-        { label: t('nav.subsidiaries.tlc') || '정호티엘씨', path: `${pathPrefix}/subsidiaries/jungho-tlc`, icon: '⚡', color: 'tlc' },
-        { label: t('nav.subsidiaries.clarus') || '클라루스', path: `${pathPrefix}/subsidiaries/clarus`, icon: '💡', color: 'clarus' },
-        { label: t('nav.subsidiaries.illutech') || '일루텍', path: `${pathPrefix}/subsidiaries/illutech`, icon: '🔆', color: 'illutech' },
-        { label: t('nav.subsidiaries.texcom') || '정호텍스컴', path: `${pathPrefix}/subsidiaries/jungho-texcom`, icon: '🧵', color: 'texcom' },
+        { label: '정호티엘씨', path: `${pathPrefix}/subsidiaries/jungho-tlc`, icon: '⚡', color: 'tlc' },
+        { label: '클라루스', path: `${pathPrefix}/subsidiaries/clarus`, icon: '💡', color: 'clarus' },
+        { label: '일루텍', path: `${pathPrefix}/subsidiaries/illutech`, icon: '🔆', color: 'illutech' },
+        { label: '정호텍스컴', path: `${pathPrefix}/subsidiaries/jungho-texcom`, icon: '🧵', color: 'texcom' },
       ],
     },
     {
-      id: 'media',
-      label: t('nav.media.main') || '미디어/PR',
+      id: 'business',
+      label: 'BUSINESS',
       path: `${pathPrefix}/projects`,
       submenu: [
-        { label: t('nav.media.projects') || '프로젝트 영상', path: `${pathPrefix}/projects`, icon: '🏢' },
-        { label: t('nav.media.promotion') || '홍보영상', path: `${pathPrefix}/media/promotion`, icon: '📺' },
-        { label: t('nav.media.technicalDocs') || '기술자료실', path: `${pathPrefix}/media/technical-docs`, icon: '📄' },
-        { label: currentLanguage === 'en' ? 'Intellectual Property' : '지적재산권', path: `${pathPrefix}/media/intellectual-property`, icon: '🏆' },
+        { label: '프로젝트 영상', path: `${pathPrefix}/projects`, icon: '🏢' },
+        { label: '홍보영상', path: `${pathPrefix}/media/promotion`, icon: '📺' },
+        { label: '기술자료실', path: `${pathPrefix}/media/technical-docs`, icon: '📄' },
+        { label: '지적재산권', path: `${pathPrefix}/media/intellectual-property`, icon: '🏆' },
         { label: 'SNS', path: `${pathPrefix}/media/sns`, icon: '📱' },
       ],
     },
     {
-      id: 'support',
-      label: t('nav.support.main') || '고객센터',
-      path: `${pathPrefix}/support`,
+      id: 'news',
+      label: 'NEWS',
+      path: `${pathPrefix}/news`,
       submenu: [
-        { label: t('nav.support.report') || '지원 제보', path: `${pathPrefix}/support/report`, icon: '📝' },
-        { label: t('nav.support.contact') || '문의하기', path: `${pathPrefix}/support/contact`, icon: '📧' },
+        { label: '보도자료', path: `${pathPrefix}/news`, icon: '📰' },
+        { label: '공지사항', path: `${pathPrefix}/news/notice`, icon: '📢' },
       ],
     },
-  ];
-
-  // 패밀리 사이트
-  const familySites = [
-    { label: 'Magic CLARUS', url: 'https://www.magicclarus.com/', icon: '🛒' },
-    { label: 'REDSSOCKSOO', url: 'https://www.redssocksoo.com/', icon: '👕' },
+    {
+      id: 'customer',
+      label: 'CUSTOMER',
+      path: `${pathPrefix}/support`,
+      submenu: [
+        { label: '지원 제보', path: `${pathPrefix}/support/report`, icon: '📝' },
+        { label: '문의하기', path: `${pathPrefix}/support/contact`, icon: '📧' },
+      ],
+    },
   ];
 
   const handleMenuHover = useCallback((menuId) => {
@@ -110,49 +142,37 @@ const MegaMenu = ({ version = 'v2' }) => {
     setOpenMobileSubmenu(null); // 하위메뉴 상태 초기화
   }, [navigate]);
 
-  const handleExternalLink = useCallback((url) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
-    setActiveMenu(null);
-  }, []);
-
   return (
     <>
     <header 
       className={`
         fixed top-0 left-0 right-0 z-[100] 
         transition-all duration-500 ease-out
-        ${isScrolled 
-          ? 'bg-white/85 dark:bg-gray-900/85 shadow-lg border-b border-gray-200/30 dark:border-gray-700/30' 
-          : 'bg-white/60 dark:bg-gray-900/60 shadow-sm'
-        }
+        ${isScrolled ? 'shadow-lg' : 'shadow-sm'}
       `}
-      style={{
-        backdropFilter: 'blur(10px) saturate(150%)',
-        WebkitBackdropFilter: 'blur(10px) saturate(150%)',
-      }}
+      style={{ backgroundColor: headerBg }}
     >
       <nav className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
         <div className="flex items-center justify-between h-18 sm:h-22 lg:h-28">
-          {/* 로고 - 크기 확대 */}
+          {/* 좌측: 정호 심볼 로고 → 메인 홈 */}
           <Link to={version === 'hybrid' ? '/hybrid' : '/v2'} className="flex items-center space-x-3 sm:space-x-4 group flex-shrink-0">
             <img 
-              src="/images/logos/jungho-logo.png" 
+              src="/assets/logos/logo-jungho_ci.png" 
               alt="정호그룹 로고" 
-              className="h-10 sm:h-12 lg:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              className="h-8 sm:h-10 lg:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
               onError={(e) => {
-                // 이미지 로드 실패 시 대체 로고 표시
                 e.target.style.display = 'none';
                 e.target.nextElementSibling.style.display = 'flex';
               }}
             />
-            <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-primary-600 rounded-lg items-center justify-center hidden">
-              <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">JH</span>
+            <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-white rounded-lg items-center justify-center hidden">
+              <span className="text-lg sm:text-xl lg:text-2xl font-bold text-[#0e1841]">JH</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-base sm:text-lg lg:text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+              <span className="text-base sm:text-lg lg:text-xl font-bold text-white tracking-tight">
                 {t('header.title') || '정호그룹'}
               </span>
-              <span className="text-[10px] sm:text-xs lg:text-sm text-gray-500 dark:text-gray-400 tracking-wide">
+              <span className="text-[10px] sm:text-xs lg:text-sm text-white/70 tracking-wide">
                 Jungho Group
               </span>
             </div>
@@ -182,8 +202,8 @@ const MegaMenu = ({ version = 'v2' }) => {
                       transition-all duration-300 ease-out
                       ${
                         activeMenu === menu.id
-                          ? 'text-primary-600 dark:text-primary-400'
-                          : 'text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400'
+                          ? 'text-[#2e91fe]'
+                          : 'text-white hover:text-[#2e91fe]'
                       }
                       ${menu.id === 'subsidiaries' ? 'cursor-default' : 'cursor-pointer'}
                       group
@@ -194,7 +214,7 @@ const MegaMenu = ({ version = 'v2' }) => {
                     <span 
                       className={`
                         absolute bottom-1 left-1/2 -translate-x-1/2 
-                        h-0.5 bg-gradient-to-r from-primary-500 to-primary-600
+                        h-0.5 bg-gradient-to-r from-[#2e91fe] to-[#5ba8fe]
                         transition-all duration-300 ease-out
                         ${activeMenu === menu.id ? 'w-4/5' : 'w-0 group-hover:w-4/5'}
                       `}
@@ -241,85 +261,6 @@ const MegaMenu = ({ version = 'v2' }) => {
                 </div>
               ))}
 
-              {/* 패밀리 사이트 드롭다운 */}
-              <div
-                className="relative dropdown-container"
-                onMouseEnter={() => handleMenuHover('family')}
-                onMouseLeave={handleMenuLeave}
-              >
-                <button
-                  className={`
-                    relative px-5 py-3 text-sm font-semibold
-                    transition-all duration-300 ease-out group
-                    ${
-                      activeMenu === 'family'
-                        ? 'text-primary-600 dark:text-primary-400'
-                        : 'text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400'
-                    }
-                  `}
-                >
-                  {t('nav.family') || '패밀리 사이트'}
-                  {/* Hover 언더라인 애니메이션 */}
-                  <span 
-                    className={`
-                      absolute bottom-1 left-1/2 -translate-x-1/2 
-                      h-0.5 bg-gradient-to-r from-primary-500 to-primary-600
-                      transition-all duration-300 ease-out
-                      ${activeMenu === 'family' ? 'w-4/5' : 'w-0 group-hover:w-4/5'}
-                    `}
-                  />
-                </button>
-
-                <div
-                  className={`
-                    absolute left-0 top-full w-60 
-                    bg-white/95 dark:bg-gray-800/95 
-                    backdrop-blur-xl rounded-xl shadow-2xl 
-                    border border-gray-200/60 dark:border-gray-700/60 
-                    py-3 overflow-hidden
-                    dropdown-menu
-                    ${activeMenu === 'family' ? 'dropdown-menu-show' : ''}
-                  `}
-                  style={{
-                    backdropFilter: 'blur(20px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                  }}
-                >
-                  {familySites.map((site, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleExternalLink(site.url)}
-                      className="
-                        w-full flex items-center justify-between px-4 py-2
-                        text-left text-sm
-                        transition-all duration-150
-                        text-gray-700 dark:text-gray-200
-                        hover:text-primary-600 dark:hover:text-primary-300
-                        hover:bg-primary-50 dark:hover:bg-primary-900/20
-                        hover:translate-x-1
-                      "
-                    >
-                      <div className="flex items-center space-x-3">
-                        <span className="text-xl">{site.icon}</span>
-                        <span className="font-medium">{site.label}</span>
-                      </div>
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </button>
-                  ))}
-                </div>
-              </div>
               </div>
             )}
 
@@ -330,7 +271,7 @@ const MegaMenu = ({ version = 'v2' }) => {
                   setMobileMenuOpen(!mobileMenuOpen);
                   if (mobileMenuOpen) setOpenMobileSubmenu(null); // 닫을 때 하위메뉴 초기화
                 }}
-                className="p-2.5 rounded-lg text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all shadow-sm border border-gray-200 dark:border-gray-700"
+                className="p-2.5 rounded-lg text-white bg-[#1a2a5e] hover:bg-[#2e91fe] transition-all shadow-sm border border-[#2e91fe]/30"
                 aria-label="메뉴 열기"
               >
                 <svg
@@ -360,7 +301,7 @@ const MegaMenu = ({ version = 'v2' }) => {
             )}
 
             {/* 언어 선택 (항상 표시) */}
-            <div className="ml-2 lg:ml-4 lg:pl-4 lg:border-l lg:border-gray-200 lg:dark:border-gray-700">
+            <div className="ml-2 lg:ml-4 lg:pl-4 lg:border-l lg:border-[#1a2a5e]">
               <div className="scale-90 lg:scale-100">
                 <LanguageSelector />
               </div>
@@ -440,19 +381,19 @@ const MegaMenu = ({ version = 'v2' }) => {
     {/* 모바일 메뉴 - 아코디언 방식 (주메뉴만 표시, 클릭 시 하위메뉴 펼침) */}
     {mobileMenuOpen && !isDesktop && (
       <div 
-        className="fixed left-0 right-0 bottom-0 bg-white dark:bg-gray-900 z-[99] overflow-y-auto animate-slide-down shadow-2xl border-t border-gray-200 dark:border-gray-700"
-        style={{ top: '72px' }}
+        className="fixed left-0 right-0 bottom-0 z-[99] overflow-y-auto animate-slide-down shadow-2xl border-t border-white/10"
+        style={{ top: '72px', backgroundColor: headerBg }}
       >
         <div className="px-6 py-6 space-y-2">
           {menuStructure.map((menu) => (
-            <div key={menu.id} className="border-b border-gray-100 dark:border-gray-800">
+            <div key={menu.id} className="border-b border-[#1a2a5e]">
               {/* 주메뉴 버튼 */}
               <button
                 onClick={() => {
                   // 아코디언 토글
                   setOpenMobileSubmenu(openMobileSubmenu === menu.id ? null : menu.id);
                 }}
-                className="w-full flex items-center justify-between py-4 text-lg font-bold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                className="w-full flex items-center justify-between py-4 text-lg font-bold text-white hover:text-[#2e91fe] transition-colors"
               >
                 <span>{menu.label}</span>
                 {/* 화살표 아이콘 */}
@@ -477,7 +418,7 @@ const MegaMenu = ({ version = 'v2' }) => {
                     <button
                       key={index}
                       onClick={() => handleNavigation(item.path)}
-                      className="w-full flex items-center space-x-3 py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all"
+                      className="w-full flex items-center space-x-3 py-3 px-3 text-gray-300 hover:text-[#2e91fe] hover:bg-[#1a2a5e] rounded-lg transition-all"
                     >
                       <span className="text-xl">{item.icon}</span>
                       <span className="text-base">{item.label}</span>
@@ -488,49 +429,6 @@ const MegaMenu = ({ version = 'v2' }) => {
             </div>
           ))}
 
-          {/* 패밀리 사이트 (아코디언) */}
-          <div className="border-b border-gray-100 dark:border-gray-800">
-            <button
-              onClick={() => {
-                setOpenMobileSubmenu(openMobileSubmenu === 'family' ? null : 'family');
-              }}
-              className="w-full flex items-center justify-between py-4 text-lg font-bold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-            >
-              <span>{t('nav.family') || '패밀리 사이트'}</span>
-              <svg 
-                className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${openMobileSubmenu === 'family' ? 'rotate-180' : ''}`}
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            
-            <div 
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                openMobileSubmenu === 'family' ? 'max-h-96 opacity-100 pb-4' : 'max-h-0 opacity-0'
-              }`}
-            >
-              <div className="pl-4 space-y-1">
-                {familySites.map((site, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleExternalLink(site.url)}
-                    className="w-full flex items-center justify-between py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-all"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <span className="text-xl">{site.icon}</span>
-                      <span className="text-base">{site.label}</span>
-                    </div>
-                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     )}

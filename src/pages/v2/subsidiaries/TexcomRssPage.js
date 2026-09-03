@@ -100,13 +100,13 @@ const TexcomRssPage = () => {
     {
       id: 'redssocksoo',
       name: 'RSS REDSSOCKSOO',
-      logo: '/images/logos/redssocksoo.png',
+      logo: '/assets/logos/logo-redssocksoo.png',
       logoText: 'RSS REDSSOCKSOO\nlogo'
     },
     {
       id: 'gubbe',
       name: 'RSS GUBBE',
-      logo: '/images/logos/gubbe.png',
+      logo: '/assets/logos/logo-gubbe.png',
       logoText: 'RSS GUBBE\nlogo'
     }
   ];

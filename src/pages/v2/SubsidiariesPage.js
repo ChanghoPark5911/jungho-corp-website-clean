@@ -91,8 +91,8 @@ const SubsidiariesPage = () => {
       nameEn: 'CLARUS',
       nameKo: '클라루스',
       slogan: currentLanguage === 'en'
-        ? 'Customer Value Creator through Innovative Technology'
-        : '혁신기술에 의한 고객가치 Creator',
+        ? 'Leading Technology Innovation and Global Business'
+        : '기술혁신과 글로벌 비즈니스를 선도합니다.',
       description: currentLanguage === 'en'
         ? 'We have continuously developed core technologies for smart building management and energy saving, including E/F2-BUS-based integrated control technology, IoT and wired/wireless communication technology, and energy management software.'
         : 'E/F2-BUS 기반 통합제어 기술과 IoT 및 유·무선 통신 기술, 에너지 관리 소프트웨어 등 스마트 빌딩 관리와 에너지 절감을 위한 핵심 기술을 지속적으로 발전시켜 왔습니다.',

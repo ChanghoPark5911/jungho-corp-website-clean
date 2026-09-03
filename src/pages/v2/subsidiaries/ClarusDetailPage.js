@@ -337,7 +337,7 @@ const ClarusDetailPage = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 pt-20">
       {/* Hero Section */}
       <motion.section 
-        className="relative py-20 bg-gradient-to-br from-cyan-50 via-blue-50 to-cyan-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-gray-900 overflow-hidden"
+        className="relative py-20 bg-gradient-to-br from-red-50 via-rose-50 to-red-50 dark:from-gray-900 dark:via-red-950/20 dark:to-gray-900 overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -374,8 +374,13 @@ const ClarusDetailPage = () => {
             animate="visible"
             variants={staggerContainer}
           >
-            {/* 회사명 */}
-            <motion.div variants={fadeInUp} className="flex flex-col items-center justify-center">
+            {/* 로고와 회사명 */}
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+              <img 
+                src="/assets/logos/logo-clarus.png" 
+                alt="클라루스 로고" 
+                className="h-12 sm:h-16 lg:h-20 w-auto object-contain"
+              />
               <div className="flex flex-col items-center -space-y-1 sm:-space-y-2">
                 <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
                   {currentLanguage === 'en' ? 'CLARUS' : '클라루스'}
@@ -387,12 +392,12 @@ const ClarusDetailPage = () => {
             </motion.div>
 
             <motion.p 
-              className="text-lg sm:text-2xl lg:text-3xl text-cyan-600 dark:text-cyan-400 font-semibold max-w-3xl mx-auto pt-8 sm:pt-12 px-4"
+              className="text-lg sm:text-2xl lg:text-3xl text-[#71000b] font-semibold max-w-3xl mx-auto pt-8 sm:pt-12 px-4"
               variants={fadeInUp}
             >
               {currentLanguage === 'en'
                 ? 'Leading Technology Innovation and Global Business'
-                : '기술혁신과 글로벌 비지니스를 선도합니다.'}
+                : '기술혁신과 글로벌 비즈니스를 선도합니다.'}
             </motion.p>
 
             <motion.div 
@@ -403,7 +408,7 @@ const ClarusDetailPage = () => {
                 <span className="text-sm text-gray-600 dark:text-gray-400">
                   {currentLanguage === 'en' ? 'Established' : '설립'}
                 </span>
-                <div className="text-xl font-bold text-cyan-600 dark:text-cyan-400">
+                <div className="text-xl font-bold text-[#71000b]">
                   {currentLanguage === 'en' ? '2002' : '2002년'}
                 </div>
               </div>
@@ -411,7 +416,7 @@ const ClarusDetailPage = () => {
                 <span className="text-sm text-gray-600 dark:text-gray-400">
                   {currentLanguage === 'en' ? 'Business Field' : '사업분야'}
                 </span>
-                <div className="text-lg font-bold text-cyan-600 dark:text-cyan-400">
+                <div className="text-lg font-bold text-[#71000b]">
                   BEMS / IoT
                 </div>
               </div>
@@ -436,7 +441,7 @@ const ClarusDetailPage = () => {
               {currentLanguage === 'en' ? (
                 <>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    <span className="font-semibold text-cyan-600 dark:text-cyan-400">CLARUS</span> provides 
+                    <span className="font-semibold text-[#71000b]">CLARUS</span> provides 
                     lighting and power control solutions optimized for field environments based on a wide product lineup.
                   </p>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
@@ -448,13 +453,13 @@ const ClarusDetailPage = () => {
                     We have maximized scalability and maintainability by developing our own system software, and supply products that meet rapidly changing global standards.
                   </p>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    CLARUS will continue to <span className="font-semibold text-cyan-600 dark:text-cyan-400">create customer value and future together with innovative technology and quality.</span>
+                    CLARUS will continue to <span className="font-semibold text-[#71000b]">create customer value and future together with innovative technology and quality.</span>
                   </p>
                 </>
               ) : (
                 <>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    <span className="font-semibold text-cyan-600 dark:text-cyan-400">클라루스</span>는 
+                    <span className="font-semibold text-[#71000b]">클라루스</span>는 
                     폭넓은 제품 라인업을 바탕으로 현장 환경에 최적화된 조명·전력 제어 솔루션을 제공합니다.
                   </p>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
@@ -465,7 +470,7 @@ const ClarusDetailPage = () => {
                     자체 시스템 소프트웨어를 개발하여 확장성과 유지관리성을 극대화하였으며, 급변하는 글로벌 기준에 부합하는 제품을 공급하고 있습니다.
                   </p>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    앞으로도 클라루스는 <span className="font-semibold text-cyan-600 dark:text-cyan-400">혁신기술에 의한 고객가치 Creator로서 함께 성장해 가겠습니다.</span>
+                    앞으로도 클라루스는 <span className="font-semibold text-[#71000b]">혁신기술에 의한 고객가치 Creator로서 함께 성장해 가겠습니다.</span>
                   </p>
                 </>
               )}
@@ -476,7 +481,7 @@ const ClarusDetailPage = () => {
 
       {/* 클라루스의 4대 핵심 역량 */}
       <section 
-        className="py-20 bg-gradient-to-br from-white via-cyan-50 to-blue-50 dark:from-gray-900 dark:via-blue-950/30 dark:to-gray-900 relative overflow-hidden"
+        className="py-20 bg-gradient-to-br from-white via-red-50 to-rose-50 dark:from-gray-900 dark:via-red-950/30 dark:to-gray-900 relative overflow-hidden"
       >
         {/* 배경 패턴 */}
         <div className="absolute inset-0 opacity-5">
@@ -498,31 +503,31 @@ const ClarusDetailPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {competencies.map((comp, index) => {
               const borderColorMap = {
-                cyan: 'border-cyan-200 dark:border-cyan-800',
-                blue: 'border-blue-200 dark:border-blue-800',
-                emerald: 'border-emerald-200 dark:border-emerald-800',
+                cyan: 'border-red-200 dark:border-red-800',
+                blue: 'border-red-200 dark:border-red-800',
+                emerald: 'border-red-200 dark:border-red-800',
                 red: 'border-red-200 dark:border-red-800'
               };
 
               const bgGradientMap = {
-                cyan: 'from-cyan-50 dark:from-cyan-950/20',
-                blue: 'from-blue-50 dark:from-blue-950/20',
-                emerald: 'from-emerald-50 dark:from-emerald-950/20',
+                cyan: 'from-red-50 dark:from-red-950/20',
+                blue: 'from-red-50 dark:from-red-950/20',
+                emerald: 'from-red-50 dark:from-red-950/20',
                 red: 'from-red-50 dark:from-red-950/20'
               };
 
               const iconGradientMap = {
-                cyan: 'from-cyan-500 to-blue-500',
-                blue: 'from-blue-500 to-indigo-500',
-                emerald: 'from-emerald-500 to-teal-500',
-                red: 'from-red-500 to-pink-500'
+                cyan: 'from-[#71000b] to-[#8a0010]',
+                blue: 'from-[#71000b] to-[#8a0010]',
+                emerald: 'from-[#71000b] to-[#8a0010]',
+                red: 'from-[#71000b] to-[#8a0010]'
               };
 
               const textColorMap = {
-                cyan: 'text-cyan-600 dark:text-cyan-400',
-                blue: 'text-blue-600 dark:text-blue-400',
-                emerald: 'text-emerald-600 dark:text-emerald-400',
-                red: 'text-red-600 dark:text-red-400'
+                cyan: 'text-[#71000b]',
+                blue: 'text-[#71000b]',
+                emerald: 'text-[#71000b]',
+                red: 'text-[#71000b]'
               };
 
               return (
@@ -847,7 +852,7 @@ const ClarusDetailPage = () => {
             <div className="mt-8 text-center">
               <button
                 onClick={() => setShowAllAchievements(!showAllAchievements)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#71000b] to-[#8a0010] hover:from-[#8a0010] hover:to-[#71000b] text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
               >
                 {showAllAchievements ? (
                   <>
@@ -872,7 +877,7 @@ const ClarusDetailPage = () => {
 
       {/* 연락처 */}
       <motion.section 
-        className="py-20 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-gray-900 dark:to-gray-800"
+        className="py-20 bg-gradient-to-br from-red-50 to-rose-50 dark:from-gray-900 dark:to-gray-800"
         initial="hidden"
         animate="visible"
         variants={staggerContainer}
@@ -888,7 +893,7 @@ const ClarusDetailPage = () => {
                 <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Phone:' : '전화:'}
                 </span>
-                <a href="tel:02-515-5018" className="text-cyan-600 dark:text-cyan-400 hover:underline">
+                <a href="tel:02-515-5018" className="text-[#71000b] hover:underline">
                   02-515-5018
                 </a>
               </div>
@@ -897,7 +902,7 @@ const ClarusDetailPage = () => {
                 <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Email:' : '이메일:'}
                 </span>
-                <a href="mailto:clarus@junghocorp.com" className="text-cyan-600 dark:text-cyan-400 hover:underline">
+                <a href="mailto:clarus@junghocorp.com" className="text-[#71000b] hover:underline">
                   clarus@junghocorp.com
                 </a>
               </div>
@@ -906,7 +911,7 @@ const ClarusDetailPage = () => {
                 <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Website:' : '웹사이트:'}
                 </span>
-                <a href="https://www.magicclarus.com" target="_blank" rel="noopener noreferrer" className="text-cyan-600 dark:text-cyan-400 hover:underline">
+                <a href="https://www.magicclarus.com" target="_blank" rel="noopener noreferrer" className="text-[#71000b] hover:underline">
                   www.magicclarus.com
                 </a>
               </div>

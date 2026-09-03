@@ -248,7 +248,7 @@ const TlcDetailPage = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 pt-20">
       {/* Hero Section */}
       <motion.section 
-        className="relative py-20 bg-gradient-to-br from-primary-50 via-green-50 to-primary-50 dark:from-gray-900 dark:via-green-900/20 dark:to-gray-900 overflow-hidden"
+        className="relative py-20 bg-gradient-to-br from-blue-50 via-sky-50 to-blue-50 dark:from-gray-900 dark:via-sky-900/20 dark:to-gray-900 overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -285,8 +285,13 @@ const TlcDetailPage = () => {
             animate="visible"
             variants={staggerContainer}
           >
-            {/* 회사명 */}
-            <motion.div variants={fadeInUp} className="flex flex-col items-center justify-center">
+            {/* 로고와 회사명 */}
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+              <img 
+                src="/assets/logos/logo-junghotlc.png" 
+                alt="정호티엘씨 로고" 
+                className="h-10 sm:h-12 lg:h-14 w-auto object-contain"
+              />
               <div className="flex flex-col items-center -space-y-1 sm:-space-y-2">
                 <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight whitespace-nowrap">
                   {currentLanguage === 'en' ? 'Jungho TLC' : '정호티엘씨'}
@@ -298,7 +303,7 @@ const TlcDetailPage = () => {
             </motion.div>
 
             <motion.p 
-              className="text-lg sm:text-2xl lg:text-3xl text-primary-600 dark:text-primary-400 font-semibold max-w-3xl mx-auto pt-8 sm:pt-12 px-4"
+              className="text-lg sm:text-2xl lg:text-3xl text-[#2e91fe] font-semibold max-w-3xl mx-auto pt-8 sm:pt-12 px-4"
               variants={fadeInUp}
             >
               {currentLanguage === 'en'
@@ -314,7 +319,7 @@ const TlcDetailPage = () => {
                 <span className="text-sm text-gray-600 dark:text-gray-400">
                   {currentLanguage === 'en' ? 'Established' : '설립'}
                 </span>
-                <div className="text-xl font-bold text-primary-600 dark:text-primary-400">
+                <div className="text-xl font-bold text-[#2e91fe]">
                   {currentLanguage === 'en' ? '1982' : '1982년'}
                 </div>
               </div>
@@ -322,7 +327,7 @@ const TlcDetailPage = () => {
                 <span className="text-sm text-gray-600 dark:text-gray-400">
                   {currentLanguage === 'en' ? 'Business Field' : '사업분야'}
                 </span>
-                <div className="text-xl font-bold text-primary-600 dark:text-primary-400">
+                <div className="text-xl font-bold text-[#2e91fe]">
                   {currentLanguage === 'en' ? 'Lighting Control / Power Monitoring & SI/FMS' : '조명제어/전력감시 및 SI/FMS'}
                 </div>
               </div>
@@ -347,23 +352,23 @@ const TlcDetailPage = () => {
               {currentLanguage === 'en' ? (
                 <>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    <span className="font-semibold text-primary-600 dark:text-primary-400">Jungho TLC</span> supports stable operation of large-scale sites based on extensive domestic delivery experience in integrated lighting and power monitoring/control (SI/FMS) and smart parking lot lighting.
+                    <span className="font-semibold text-[#2e91fe]">Jungho TLC</span> supports stable operation of large-scale sites based on extensive domestic delivery experience in integrated lighting and power monitoring/control (SI/FMS) and smart parking lot lighting.
                   </p>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
                     We are leading the market based on over <span className="font-semibold">40 years of accumulated technology</span> in building automation control fields such as power control, lighting control, and SI/FMS.
                   </p>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    We simultaneously realize <span className="font-semibold text-primary-600 dark:text-primary-400">energy savings and user convenience</span> through providing customized solutions for our customers.
+                    We simultaneously realize <span className="font-semibold text-[#2e91fe]">energy savings and user convenience</span> through providing customized solutions for our customers.
                   </p>
                 </>
               ) : (
                 <>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    <span className="font-semibold text-primary-600 dark:text-primary-400">정호티엘씨</span>는 
+                    <span className="font-semibold text-[#2e91fe]">정호티엘씨</span>는 
                     조명제어, 전력감시, SI/FMS 시스템 등 빌딩 자동 제어 분야에서 <span className="font-semibold">40년 이상 축적된 기술력</span>을 바탕으로 시장을 선도하고 있으며, 풍부한 국내 납품 실적을 바탕으로 대규모 현장의 안정적인 운영을 지원합니다.
                   </p>
                   <p className="text-gray-700 dark:text-gray-50" style={isDarkMode ? { fontWeight: '500', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' } : {}}>
-                    또한 고객 맞춤형 솔루션을 제공하여 <span className="font-semibold text-primary-600 dark:text-primary-400">에너지 절감과 사용자 편의성 제고</span>를 동시에 실현하고 있습니다.
+                    또한 고객 맞춤형 솔루션을 제공하여 <span className="font-semibold text-[#2e91fe]">에너지 절감과 사용자 편의성 제고</span>를 동시에 실현하고 있습니다.
                   </p>
                 </>
               )}
@@ -518,6 +523,27 @@ const TlcDetailPage = () => {
         </div>
       </motion.section>
 
+      {/* 조달 MAS 등록 */}
+      <motion.section
+        className="py-12 bg-white dark:bg-gray-900"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div variants={fadeInUp} className="bg-[#2e91fe]/10 border border-[#2e91fe]/30 rounded-xl p-6 md:p-8 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
+              {currentLanguage === 'en' ? 'Procurement MAS Registration' : '조달 MAS 등록'}
+            </h2>
+            <p className="text-lg text-gray-700 dark:text-gray-300">
+              {currentLanguage === 'en'
+                ? 'Lighting Control Device (Item Classification No.: 3912110702)'
+                : '조명용제어장치 (물품분류번호: 3912110702)'}
+            </p>
+          </motion.div>
+        </div>
+      </motion.section>
+
       {/* 프로젝트 프로세스 */}
       <ProjectProcessSection />
 
@@ -574,7 +600,7 @@ const TlcDetailPage = () => {
             <div className="mt-8 text-center">
               <button
                 onClick={() => setShowAllAchievements(!showAllAchievements)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#2e91fe] to-[#2580e5] hover:from-[#2580e5] hover:to-[#1c6fcc] text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
               >
                 {showAllAchievements ? (
                   <>
@@ -599,7 +625,7 @@ const TlcDetailPage = () => {
 
       {/* 연락처 */}
       <motion.section 
-        className="py-20 bg-gradient-to-br from-primary-50 to-green-50 dark:from-gray-900 dark:to-gray-800"
+        className="py-20 bg-gradient-to-br from-blue-50 to-sky-50 dark:from-gray-900 dark:to-gray-800"
         initial="hidden"
         animate="visible"
         variants={staggerContainer}
@@ -615,7 +641,7 @@ const TlcDetailPage = () => {
                 <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Phone:' : '전화:'}
                 </span>
-                <a href="tel:02-553-3631" className="text-primary-600 dark:text-primary-400 hover:underline">
+                <a href="tel:02-553-3631" className="text-[#2e91fe] hover:underline">
                   02-553-3631
                 </a>
               </div>
@@ -624,7 +650,7 @@ const TlcDetailPage = () => {
                 <span className="font-semibold text-gray-700 dark:text-gray-200">
                   {currentLanguage === 'en' ? 'Email:' : '이메일:'}
                 </span>
-                <a href="mailto:support@junghocorp.com" className="text-primary-600 dark:text-primary-400 hover:underline">
+                <a href="mailto:support@junghocorp.com" className="text-[#2e91fe] hover:underline">
                   support@junghocorp.com
                 </a>
               </div>

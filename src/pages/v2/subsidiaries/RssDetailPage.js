@@ -7,6 +7,7 @@ const RssDetailPage = () => {
     nameEn: 'RSS',
     slogan: '데이터 기반 솔루션',
     icon: '📊',
+    logoUrl: '/images/logos/rss.png',
     established: '2020',
     business: '데이터 솔루션',
     colorFrom: 'from-green-50',

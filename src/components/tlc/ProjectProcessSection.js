@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useI18n } from '../../hooks/useI18n';
 
 const ProjectProcessSection = () => {
@@ -221,20 +221,20 @@ const ProjectProcessSection = () => {
                 >
                   <div className={`flex items-center p-4 rounded-lg border-2 transition-all duration-300 ${
                     activeStep === index
-                      ? 'border-green-500 bg-green-50 dark:bg-green-900/30 shadow-lg'
-                      : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-green-300 hover:bg-green-50 dark:hover:bg-green-900/20'
+                      ? 'border-[#2e91fe] bg-[#2e91fe]/10 dark:bg-[#2e91fe]/20 shadow-lg'
+                      : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-[#2e91fe]/60 hover:bg-[#2e91fe]/10 dark:hover:bg-[#2e91fe]/15'
                   }`}>
                     <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center mr-4 ${
-                      activeStep === index ? 'bg-green-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                      activeStep === index ? 'bg-[#2e91fe] text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                     }`}>
                       {step.icon}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <h3 className={`font-semibold ${
-                          activeStep === index ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-white'
+                          activeStep === index ? 'text-[#2e91fe] dark:text-[#2e91fe]' : 'text-gray-900 dark:text-white'
                         }`}>
-                          {step.title}
+                          STEP {String(step.step).padStart(2, '0')} {step.title}
                         </h3>
                         <span className="text-sm text-gray-500 dark:text-gray-400">{step.duration}</span>
                       </div>
@@ -252,14 +252,14 @@ const ProjectProcessSection = () => {
                 <div>
                   <div className="mb-6">
                     <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white mr-4">
+                      <div className="w-12 h-12 bg-[#2e91fe] rounded-full flex items-center justify-center text-white mr-4">
                         {processSteps[activeStep].icon}
                       </div>
                       <div>
                         <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
                           {processSteps[activeStep].title}
                         </h3>
-                        <p className="text-green-600 dark:text-green-400 font-medium">
+                        <p className="text-[#2e91fe] dark:text-[#2e91fe] font-medium">
                           {processSteps[activeStep].subtitle} • {processSteps[activeStep].duration}
                         </p>
                       </div>
@@ -277,7 +277,7 @@ const ProjectProcessSection = () => {
                       <ul className="space-y-2">
                         {processSteps[activeStep].details.map((detail, index) => (
                           <li key={index} className="flex items-start text-sm text-gray-600 dark:text-gray-300">
-                            <svg className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-[#2e91fe] mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                             {detail}
@@ -293,7 +293,7 @@ const ProjectProcessSection = () => {
                       <ul className="space-y-2">
                         {processSteps[activeStep].customerCheckpoints.map((checkpoint, index) => (
                           <li key={index} className="flex items-start text-sm text-gray-600 dark:text-gray-300">
-                            <div className="w-2 h-2 bg-green-500 rounded-full mr-2 mt-2 flex-shrink-0"></div>
+                            <div className="w-2 h-2 bg-[#2e91fe] rounded-full mr-2 mt-2 flex-shrink-0"></div>
                             {checkpoint}
                           </li>
                         ))}
@@ -319,7 +319,7 @@ const ProjectProcessSection = () => {
                         className={`flex-col items-center justify-center text-center ${processSteps[activeStep].imagePath ? 'hidden' : 'flex'}`}
                         style={{ display: processSteps[activeStep].imagePath ? 'none' : 'flex' }}
                       >
-                        <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-3">
+                        <div className="w-16 h-16 bg-[#2e91fe]/20 dark:bg-[#2e91fe]/20 rounded-full flex items-center justify-center mb-3">
                           <span className="text-3xl">{
                             activeStep === 0 ? '💬' :
                             activeStep === 1 ? '📐' :
@@ -345,13 +345,13 @@ const ProjectProcessSection = () => {
         </div>
 
         <div className="mt-16 text-center">
-          <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-8">
+          <div className="bg-[#2e91fe]/10 dark:bg-[#2e91fe]/15 rounded-xl p-8">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
               {currentLanguage === 'en' ? 'Process Summary' : '전체 프로세스 요약'}
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                <div className="text-2xl font-bold text-[#2e91fe] dark:text-[#2e91fe]">
                   {currentLanguage === 'en' ? '6 Steps' : '총 6단계'}
                 </div>
                 <div className="text-gray-600 dark:text-gray-400">
@@ -359,7 +359,7 @@ const ProjectProcessSection = () => {
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                <div className="text-2xl font-bold text-[#2e91fe] dark:text-[#2e91fe]">
                   {currentLanguage === 'en' ? 'Avg. 15 Days' : '평균 15일'}
                 </div>
                 <div className="text-gray-600 dark:text-gray-400">
@@ -367,13 +367,13 @@ const ProjectProcessSection = () => {
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400">100%</div>
+                <div className="text-2xl font-bold text-[#2e91fe] dark:text-[#2e91fe]">100%</div>
                 <div className="text-gray-600 dark:text-gray-400">
                   {currentLanguage === 'en' ? 'Quality Guarantee' : '품질 보증'}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                <div className="text-2xl font-bold text-[#2e91fe] dark:text-[#2e91fe]">
                   {currentLanguage === 'en' ? '24 Hours' : '24시간'}
                 </div>
                 <div className="text-gray-600 dark:text-gray-400">

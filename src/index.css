@@ -3,31 +3,35 @@
 @tailwind utilities;
 
 /* ===== 정호그룹 디자인 시스템 CSS 변수 ===== */
-/* Design System v1.0: Navy + Cyan + Gold */
+/* Design System v2.0: 공통가이드 (#0e1841 / Pretendard / #ffffff) */
 :root {
-  /* Primary Navy Colors (Deep Navy #003366 기반) */
+  /* Main Brand */
+  --jungho-main: #0e1841;   /* 메인 기본 BGColor */
+  --jungho-text: #ffffff;   /* 기본 폰트 색상 (헤더/푸터) */
+
+  /* Primary Navy Colors (#0e1841 기반) */
   --primary-50: #E6EEF5;
   --primary-100: #CCDDED;
   --primary-200: #99BBDB;
   --primary-300: #6699C9;
   --primary-400: #3377B7;
-  --primary-500: #003366;  /* Main Brand Navy */
-  --primary-600: #002B57;
-  --primary-700: #002347;
-  --primary-800: #001B38;
-  --primary-900: #001329;
+  --primary-500: #0e1841;  /* Main Brand Navy */
+  --primary-600: #0c1538;
+  --primary-700: #0a112f;
+  --primary-800: #080d26;
+  --primary-900: #06091d;
 
-  /* Background Colors (Navy 기반) */
-  --bg-dark-green-700: #004080;
-  --bg-dark-green-800: #003366;
-  --bg-dark-green-900: #002244;
+  /* Background Colors */
+  --bg-dark-green-700: #0e1841;
+  --bg-dark-green-800: #0c1538;
+  --bg-dark-green-900: #0a112f;
   --bg-dark-blue-800: #1E40AF;
   --bg-dark-blue-900: #1E3A8A;
 
   /* Accent Gold/Yellow Colors (#FFD700 기반) */
   --accent-50: #FFFBEB;
   --accent-100: #FEF3C7;
-  --accent-500: #FFD700;  /* Main Accent Gold */
+  --accent-500: #FFD700;
   --accent-600: #D4AF00;
   --accent-700: #AA8C00;
 
@@ -41,27 +45,34 @@
   --neutral-800: #1F2937;
   --neutral-900: #111827;
 
-  /* Secondary Cyan Color (#00AEEF 기반) */
+  /* Secondary Color (#2e91fe 기반) */
   --secondary-50: #E6F7FD;
   --secondary-100: #B3E7F9;
-  --secondary-500: #00AEEF;  /* Main Secondary Cyan */
-  --secondary-600: #008FCC;
-  --secondary-700: #0070AA;
+  --secondary-500: #2e91fe;
+  --secondary-600: #2580e5;
+  --secondary-700: #1c6fcc;
 
-  /* 계열사별 Colors (Navy/Cyan 톤으로 조정) */
-  --clarus-500: #0077B6;    /* Tech Blue */
-  --tlc-500: #003366;       /* Main Navy */
-  --illutech-500: #00AEEF;  /* Cyan (LED/Light 이미지) */
-  --texcom-500: #5B8DEE;    /* Light Blue-Purple */
+  /* 계열사별 Colors (공통가이드 헤더 BG 토큰) */
+  --header-main: #0e1841;       /* 메인/정호그룹, 텍스컴 기계 */
+  --header-tlc: #2e91fe;        /* 정호티엘씨 */
+  --header-clarus: #71000b;     /* 클라루스 */
+  --header-illutech: #2e91fe;   /* 일루텍 */
+  --header-texcom: #0e1841;     /* 정호텍스컴 기계사업부 */
+  --header-rss: #000000;        /* 정호텍스컴 RSS사업부 */
+  --clarus-500: #71000b;
+  --tlc-500: #2e91fe;
+  --illutech-500: #2e91fe;
+  --texcom-500: #0e1841;
+  --rss-500: #000000;
 
   /* Text Colors */
-  --text-primary-light: #003366;
+  --text-primary-light: #0e1841;
   --text-secondary-light: #6B7280;
   --text-primary-dark: #FFFFFF;
   --text-secondary-dark: #D1D5DB;
   --text-on-navy: #FFFFFF;
-  --text-bright-cyan: #00AEEF;  /* Cyan 강조색 */
-  --text-bright-green: #00AEEF;  /* Cyan으로 대체 (호환성 유지) */
+  --text-bright-cyan: #2e91fe;
+  --text-bright-green: #2e91fe;
 
   /* Typography - Pretendard 기본, Noto Sans KR fallback */
   --font-family-korean: 'Pretendard Variable', 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;

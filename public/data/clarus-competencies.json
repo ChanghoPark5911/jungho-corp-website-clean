@@ -5,8 +5,8 @@
       "icon": "🔬",
       "titleKo": "R&D Center",
       "titleEn": "R&D Center",
-      "subtitleKo": "연구개발센터",
-      "subtitleEn": "Research & Development",
+      "subtitleKo": "연구개발센터(R&D)",
+      "subtitleEn": "R&D Center",
       "descriptionKo": "조명/전력제어 시스템의 핵심 기술을 개발합니다.",
       "descriptionEn": "Developing core technologies for lighting and power control systems",
       "features": [
@@ -28,7 +28,7 @@
         }
       ],
       "imagePath": "/images/clarus/competencies/rnd-center.jpg",
-      "borderColor": "cyan"
+      "borderColor": "red"
     },
     {
       "id": "production-facility",
@@ -58,17 +58,17 @@
         }
       ],
       "imagePath": "/images/clarus/competencies/production-facility.jpg",
-      "borderColor": "blue"
+      "borderColor": "red"
     },
     {
       "id": "export-business",
       "icon": "🌏",
       "titleKo": "Export Business",
       "titleEn": "Export Business",
-      "subtitleKo": "해외수출",
-      "subtitleEn": "Global Market",
-      "descriptionKo": "북미·유럽·아시아 등 글로벌 시장을 중심으로 제품을 공급합니다.",
-      "descriptionEn": "Supplying products to global markets including North America, Europe, and Asia",
+      "subtitleKo": "해외수출(북미/아시아)",
+      "subtitleEn": "Export (North America / Asia)",
+      "descriptionKo": "북미·아시아 등 글로벌 시장을 중심으로 제품을 공급합니다.",
+      "descriptionEn": "Supplying products to global markets including North America and Asia",
       "features": [
         {
           "ko": "북미 시장 : 미국, 캐나다, 멕시코",
@@ -80,15 +80,15 @@
         }
       ],
       "imagePath": "/images/clarus/competencies/export-business.jpg",
-      "borderColor": "emerald"
+      "borderColor": "red"
     },
     {
       "id": "online-shopping",
       "icon": "🛒",
-      "titleKo": "Online Shopping Mall",
-      "titleEn": "Online Shopping Mall",
-      "subtitleKo": "온라인 영업",
-      "subtitleEn": "E-Commerce",
+      "titleKo": "Online Sales",
+      "titleEn": "Online Sales",
+      "subtitleKo": "온라인영업(Magic CLARUS)",
+      "subtitleEn": "Online Sales (Magic CLARUS)",
       "descriptionKo": "Magic CLARUS 브랜드로 온라인쇼핑몰을 통해 제품을 판매합니다",
       "descriptionEn": "Selling products through online shopping malls under the Magic CLARUS brand",
       "features": [
